@@ -135,4 +135,3 @@ message ConsensusEvent {
   uint64 order = 3;
   string status = 4;
 }
-

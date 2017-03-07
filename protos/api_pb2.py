@@ -1048,281 +1048,346 @@ _QUERY_VALUEENTRY.has_options = True
 _QUERY_VALUEENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
 _ASSET_VALUEENTRY.has_options = True
 _ASSET_VALUEENTRY._options = _descriptor._ParseOptions(descriptor_pb2.MessageOptions(), _b('8\001'))
-import grpc
-from grpc.beta import implementations as beta_implementations
-from grpc.beta import interfaces as beta_interfaces
-from grpc.framework.common import cardinality
-from grpc.framework.interfaces.face import utilities as face_utilities
+try:
+  # THESE ELEMENTS WILL BE DEPRECATED.
+  # Please use the generated *_pb2_grpc.py files instead.
+  import grpc
+  from grpc.framework.common import cardinality
+  from grpc.framework.interfaces.face import utilities as face_utilities
+  from grpc.beta import implementations as beta_implementations
+  from grpc.beta import interfaces as beta_interfaces
 
 
-class TransactionRepositoryStub(object):
+  class TransactionRepositoryStub(object):
 
-  def __init__(self, channel):
-    """Constructor.
+    def __init__(self, channel):
+      """Constructor.
 
-    Args:
-      channel: A grpc.Channel.
-    """
-    self.find = channel.unary_unary(
-        '/Api.TransactionRepository/find',
-        request_serializer=Query.SerializeToString,
-        response_deserializer=TransactionResponse.FromString,
-        )
-
-
-class TransactionRepositoryServicer(object):
-
-  def find(self, request, context):
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+      Args:
+        channel: A grpc.Channel.
+      """
+      self.find = channel.unary_unary(
+          '/Api.TransactionRepository/find',
+          request_serializer=Query.SerializeToString,
+          response_deserializer=TransactionResponse.FromString,
+          )
 
 
-def add_TransactionRepositoryServicer_to_server(servicer, server):
-  rpc_method_handlers = {
-      'find': grpc.unary_unary_rpc_method_handler(
-          servicer.find,
-          request_deserializer=Query.FromString,
-          response_serializer=TransactionResponse.SerializeToString,
-      ),
-  }
-  generic_handler = grpc.method_handlers_generic_handler(
-      'Api.TransactionRepository', rpc_method_handlers)
-  server.add_generic_rpc_handlers((generic_handler,))
+  class TransactionRepositoryServicer(object):
+
+    def find(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
 
 
-class BetaTransactionRepositoryServicer(object):
-  def find(self, request, context):
-    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def add_TransactionRepositoryServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+        'find': grpc.unary_unary_rpc_method_handler(
+            servicer.find,
+            request_deserializer=Query.FromString,
+            response_serializer=TransactionResponse.SerializeToString,
+        ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+        'Api.TransactionRepository', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
 
 
-class BetaTransactionRepositoryStub(object):
-  def find(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-    raise NotImplementedError()
-  find.future = None
+  class AssetRepositoryStub(object):
+
+    def __init__(self, channel):
+      """Constructor.
+
+      Args:
+        channel: A grpc.Channel.
+      """
+      self.find = channel.unary_unary(
+          '/Api.AssetRepository/find',
+          request_serializer=Query.SerializeToString,
+          response_deserializer=AssetResponse.FromString,
+          )
 
 
-def beta_create_TransactionRepository_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-  request_deserializers = {
-    ('Api.TransactionRepository', 'find'): Query.FromString,
-  }
-  response_serializers = {
-    ('Api.TransactionRepository', 'find'): TransactionResponse.SerializeToString,
-  }
-  method_implementations = {
-    ('Api.TransactionRepository', 'find'): face_utilities.unary_unary_inline(servicer.find),
-  }
-  server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-  return beta_implementations.server(method_implementations, options=server_options)
+  class AssetRepositoryServicer(object):
+
+    def find(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
 
 
-def beta_create_TransactionRepository_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-  request_serializers = {
-    ('Api.TransactionRepository', 'find'): Query.SerializeToString,
-  }
-  response_deserializers = {
-    ('Api.TransactionRepository', 'find'): TransactionResponse.FromString,
-  }
-  cardinalities = {
-    'find': cardinality.Cardinality.UNARY_UNARY,
-  }
-  stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-  return beta_implementations.dynamic_stub(channel, 'Api.TransactionRepository', cardinalities, options=stub_options)
+  def add_AssetRepositoryServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+        'find': grpc.unary_unary_rpc_method_handler(
+            servicer.find,
+            request_deserializer=Query.FromString,
+            response_serializer=AssetResponse.SerializeToString,
+        ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+        'Api.AssetRepository', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
 
 
-class AssetRepositoryStub(object):
+  class SumeragiStub(object):
 
-  def __init__(self, channel):
-    """Constructor.
+    def __init__(self, channel):
+      """Constructor.
 
-    Args:
-      channel: A grpc.Channel.
-    """
-    self.find = channel.unary_unary(
-        '/Api.AssetRepository/find',
-        request_serializer=Query.SerializeToString,
-        response_deserializer=AssetResponse.FromString,
-        )
-
-
-class AssetRepositoryServicer(object):
-
-  def find(self, request, context):
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+      Args:
+        channel: A grpc.Channel.
+      """
+      self.Torii = channel.unary_unary(
+          '/Api.Sumeragi/Torii',
+          request_serializer=Transaction.SerializeToString,
+          response_deserializer=StatusResponse.FromString,
+          )
+      self.Verify = channel.unary_unary(
+          '/Api.Sumeragi/Verify',
+          request_serializer=ConsensusEvent.SerializeToString,
+          response_deserializer=StatusResponse.FromString,
+          )
 
 
-def add_AssetRepositoryServicer_to_server(servicer, server):
-  rpc_method_handlers = {
-      'find': grpc.unary_unary_rpc_method_handler(
-          servicer.find,
-          request_deserializer=Query.FromString,
-          response_serializer=AssetResponse.SerializeToString,
-      ),
-  }
-  generic_handler = grpc.method_handlers_generic_handler(
-      'Api.AssetRepository', rpc_method_handlers)
-  server.add_generic_rpc_handlers((generic_handler,))
+  class SumeragiServicer(object):
+
+    def Torii(self, request, context):
+      """=+===+=
+      ==+=T=+==
+      |   |
+      |   |   This is gate at the entrance of sumeragi...
+      """
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def Verify(self, request, context):
+      """sumeragi uses.
+      """
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
 
 
-class BetaAssetRepositoryServicer(object):
-  def find(self, request, context):
-    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  def add_SumeragiServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+        'Torii': grpc.unary_unary_rpc_method_handler(
+            servicer.Torii,
+            request_deserializer=Transaction.FromString,
+            response_serializer=StatusResponse.SerializeToString,
+        ),
+        'Verify': grpc.unary_unary_rpc_method_handler(
+            servicer.Verify,
+            request_deserializer=ConsensusEvent.FromString,
+            response_serializer=StatusResponse.SerializeToString,
+        ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+        'Api.Sumeragi', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
 
 
-class BetaAssetRepositoryStub(object):
-  def find(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-    raise NotImplementedError()
-  find.future = None
+  class BetaTransactionRepositoryServicer(object):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This class was generated
+    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def find(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
 
-def beta_create_AssetRepository_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-  request_deserializers = {
-    ('Api.AssetRepository', 'find'): Query.FromString,
-  }
-  response_serializers = {
-    ('Api.AssetRepository', 'find'): AssetResponse.SerializeToString,
-  }
-  method_implementations = {
-    ('Api.AssetRepository', 'find'): face_utilities.unary_unary_inline(servicer.find),
-  }
-  server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-  return beta_implementations.server(method_implementations, options=server_options)
+  class BetaTransactionRepositoryStub(object):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This class was generated
+    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def find(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    find.future = None
 
 
-def beta_create_AssetRepository_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-  request_serializers = {
-    ('Api.AssetRepository', 'find'): Query.SerializeToString,
-  }
-  response_deserializers = {
-    ('Api.AssetRepository', 'find'): AssetResponse.FromString,
-  }
-  cardinalities = {
-    'find': cardinality.Cardinality.UNARY_UNARY,
-  }
-  stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-  return beta_implementations.dynamic_stub(channel, 'Api.AssetRepository', cardinalities, options=stub_options)
+  def beta_create_TransactionRepository_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This function was
+    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+    request_deserializers = {
+      ('Api.TransactionRepository', 'find'): Query.FromString,
+    }
+    response_serializers = {
+      ('Api.TransactionRepository', 'find'): TransactionResponse.SerializeToString,
+    }
+    method_implementations = {
+      ('Api.TransactionRepository', 'find'): face_utilities.unary_unary_inline(servicer.find),
+    }
+    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
+    return beta_implementations.server(method_implementations, options=server_options)
 
 
-class SumeragiStub(object):
+  def beta_create_TransactionRepository_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
+    """The Beta API is deprecated for 0.15.0 and later.
 
-  def __init__(self, channel):
-    """Constructor.
-
-    Args:
-      channel: A grpc.Channel.
-    """
-    self.Torii = channel.unary_unary(
-        '/Api.Sumeragi/Torii',
-        request_serializer=Transaction.SerializeToString,
-        response_deserializer=StatusResponse.FromString,
-        )
-    self.Verify = channel.unary_unary(
-        '/Api.Sumeragi/Verify',
-        request_serializer=ConsensusEvent.SerializeToString,
-        response_deserializer=StatusResponse.FromString,
-        )
-
-
-class SumeragiServicer(object):
-
-  def Torii(self, request, context):
-    """=+===+=
-    ==+=T=+==
-    |   |
-    |   |   This is gate at the entrance of sumeragi...
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
-  def Verify(self, request, context):
-    """sumeragi uses.
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This function was
+    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+    request_serializers = {
+      ('Api.TransactionRepository', 'find'): Query.SerializeToString,
+    }
+    response_deserializers = {
+      ('Api.TransactionRepository', 'find'): TransactionResponse.FromString,
+    }
+    cardinalities = {
+      'find': cardinality.Cardinality.UNARY_UNARY,
+    }
+    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
+    return beta_implementations.dynamic_stub(channel, 'Api.TransactionRepository', cardinalities, options=stub_options)
 
 
-def add_SumeragiServicer_to_server(servicer, server):
-  rpc_method_handlers = {
-      'Torii': grpc.unary_unary_rpc_method_handler(
-          servicer.Torii,
-          request_deserializer=Transaction.FromString,
-          response_serializer=StatusResponse.SerializeToString,
-      ),
-      'Verify': grpc.unary_unary_rpc_method_handler(
-          servicer.Verify,
-          request_deserializer=ConsensusEvent.FromString,
-          response_serializer=StatusResponse.SerializeToString,
-      ),
-  }
-  generic_handler = grpc.method_handlers_generic_handler(
-      'Api.Sumeragi', rpc_method_handlers)
-  server.add_generic_rpc_handlers((generic_handler,))
+  class BetaAssetRepositoryServicer(object):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This class was generated
+    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def find(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
 
-class BetaSumeragiServicer(object):
-  def Torii(self, request, context):
-    """=+===+=
-    ==+=T=+==
-    |   |
-    |   |   This is gate at the entrance of sumeragi...
-    """
-    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
-  def Verify(self, request, context):
-    """sumeragi uses.
-    """
-    context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+  class BetaAssetRepositoryStub(object):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This class was generated
+    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def find(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    find.future = None
 
 
-class BetaSumeragiStub(object):
-  def Torii(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-    """=+===+=
-    ==+=T=+==
-    |   |
-    |   |   This is gate at the entrance of sumeragi...
-    """
-    raise NotImplementedError()
-  Torii.future = None
-  def Verify(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
-    """sumeragi uses.
-    """
-    raise NotImplementedError()
-  Verify.future = None
+  def beta_create_AssetRepository_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This function was
+    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+    request_deserializers = {
+      ('Api.AssetRepository', 'find'): Query.FromString,
+    }
+    response_serializers = {
+      ('Api.AssetRepository', 'find'): AssetResponse.SerializeToString,
+    }
+    method_implementations = {
+      ('Api.AssetRepository', 'find'): face_utilities.unary_unary_inline(servicer.find),
+    }
+    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
+    return beta_implementations.server(method_implementations, options=server_options)
 
 
-def beta_create_Sumeragi_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
-  request_deserializers = {
-    ('Api.Sumeragi', 'Torii'): Transaction.FromString,
-    ('Api.Sumeragi', 'Verify'): ConsensusEvent.FromString,
-  }
-  response_serializers = {
-    ('Api.Sumeragi', 'Torii'): StatusResponse.SerializeToString,
-    ('Api.Sumeragi', 'Verify'): StatusResponse.SerializeToString,
-  }
-  method_implementations = {
-    ('Api.Sumeragi', 'Torii'): face_utilities.unary_unary_inline(servicer.Torii),
-    ('Api.Sumeragi', 'Verify'): face_utilities.unary_unary_inline(servicer.Verify),
-  }
-  server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
-  return beta_implementations.server(method_implementations, options=server_options)
+  def beta_create_AssetRepository_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This function was
+    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+    request_serializers = {
+      ('Api.AssetRepository', 'find'): Query.SerializeToString,
+    }
+    response_deserializers = {
+      ('Api.AssetRepository', 'find'): AssetResponse.FromString,
+    }
+    cardinalities = {
+      'find': cardinality.Cardinality.UNARY_UNARY,
+    }
+    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
+    return beta_implementations.dynamic_stub(channel, 'Api.AssetRepository', cardinalities, options=stub_options)
 
 
-def beta_create_Sumeragi_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
-  request_serializers = {
-    ('Api.Sumeragi', 'Torii'): Transaction.SerializeToString,
-    ('Api.Sumeragi', 'Verify'): ConsensusEvent.SerializeToString,
-  }
-  response_deserializers = {
-    ('Api.Sumeragi', 'Torii'): StatusResponse.FromString,
-    ('Api.Sumeragi', 'Verify'): StatusResponse.FromString,
-  }
-  cardinalities = {
-    'Torii': cardinality.Cardinality.UNARY_UNARY,
-    'Verify': cardinality.Cardinality.UNARY_UNARY,
-  }
-  stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-  return beta_implementations.dynamic_stub(channel, 'Api.Sumeragi', cardinalities, options=stub_options)
+  class BetaSumeragiServicer(object):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This class was generated
+    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def Torii(self, request, context):
+      """=+===+=
+      ==+=T=+==
+      |   |
+      |   |   This is gate at the entrance of sumeragi...
+      """
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def Verify(self, request, context):
+      """sumeragi uses.
+      """
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+
+
+  class BetaSumeragiStub(object):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This class was generated
+    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def Torii(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      """=+===+=
+      ==+=T=+==
+      |   |
+      |   |   This is gate at the entrance of sumeragi...
+      """
+      raise NotImplementedError()
+    Torii.future = None
+    def Verify(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      """sumeragi uses.
+      """
+      raise NotImplementedError()
+    Verify.future = None
+
+
+  def beta_create_Sumeragi_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This function was
+    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+    request_deserializers = {
+      ('Api.Sumeragi', 'Torii'): Transaction.FromString,
+      ('Api.Sumeragi', 'Verify'): ConsensusEvent.FromString,
+    }
+    response_serializers = {
+      ('Api.Sumeragi', 'Torii'): StatusResponse.SerializeToString,
+      ('Api.Sumeragi', 'Verify'): StatusResponse.SerializeToString,
+    }
+    method_implementations = {
+      ('Api.Sumeragi', 'Torii'): face_utilities.unary_unary_inline(servicer.Torii),
+      ('Api.Sumeragi', 'Verify'): face_utilities.unary_unary_inline(servicer.Verify),
+    }
+    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
+    return beta_implementations.server(method_implementations, options=server_options)
+
+
+  def beta_create_Sumeragi_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This function was
+    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+    request_serializers = {
+      ('Api.Sumeragi', 'Torii'): Transaction.SerializeToString,
+      ('Api.Sumeragi', 'Verify'): ConsensusEvent.SerializeToString,
+    }
+    response_deserializers = {
+      ('Api.Sumeragi', 'Torii'): StatusResponse.FromString,
+      ('Api.Sumeragi', 'Verify'): StatusResponse.FromString,
+    }
+    cardinalities = {
+      'Torii': cardinality.Cardinality.UNARY_UNARY,
+      'Verify': cardinality.Cardinality.UNARY_UNARY,
+    }
+    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
+    return beta_implementations.dynamic_stub(channel, 'Api.Sumeragi', cardinalities, options=stub_options)
+except ImportError:
+  pass
 # @@protoc_insertion_point(module_scope)
