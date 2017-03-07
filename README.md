@@ -3,6 +3,6 @@ Python library for Hyperledger Iroha.
 
 # Compile proto
 ```
-cd protoc; protoc --python_out=. --grpc_out=. --plugin=protoc-gen-grpc=`which grpc_python_plugin` api.proto
+cd protoc; python -m grpc_tools.protoc -I../../protos --python_out=. --grpc_python_out=. api.proto
 ```
 
