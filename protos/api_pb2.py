@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='api.proto',
   package='Api',
   syntax='proto3',
-  serialized_pb=_b('\n\tapi.proto\x12\x03\x41pi\"[\n\x13TransactionResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\x04\x12%\n\x0btransaction\x18\x03 \x03(\x0b\x32\x10.Api.Transaction\"G\n\x14RecieverConfirmation\x12\x0c\n\x04hash\x18\x01 \x01(\t\x12!\n\tsignature\x18\x02 \x01(\x0b\x32\x0e.Api.Signature\"\xd8\x01\n\rAssetResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\x04\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\x12\x19\n\x05\x61sset\x18\x04 \x01(\x0b\x32\n.Api.Asset\x12%\n\x0bsimpleAsset\x18\x05 \x01(\x0b\x32\x10.Api.SimpleAsset\x12\x1b\n\x06\x64omain\x18\x06 \x01(\x0b\x32\x0b.Api.Domain\x12\x1d\n\x07\x61\x63\x63ount\x18\x07 \x01(\x0b\x32\x0c.Api.Account\x12\x17\n\x04peer\x18\x08 \x01(\x0b\x32\t.Api.Peer\"o\n\x0eStatusResponse\x12\r\n\x05value\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\x12*\n\x07\x63onfirm\x18\x04 \x01(\x0b\x32\x19.Api.RecieverConfirmation\"z\n\x05Query\x12\x0c\n\x04type\x18\x01 \x01(\t\x12$\n\x05value\x18\x02 \x03(\x0b\x32\x15.Api.Query.ValueEntry\x1a=\n\nValueEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1e\n\x05value\x18\x02 \x01(\x0b\x32\x0f.Api.BaseObject:\x02\x38\x01\"o\n\nBaseObject\x12\x15\n\x0bvalueString\x18\x01 \x01(\tH\x00\x12\x12\n\x08valueInt\x18\x02 \x01(\x03H\x00\x12\x16\n\x0cvalueBoolean\x18\x03 \x01(\x08H\x00\x12\x15\n\x0bvalueDouble\x18\x04 \x01(\x01H\x00\x42\x07\n\x05value\"f\n\x0bSimpleAsset\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x1e\n\x05value\x18\x03 \x01(\x0b\x32\x0f.Api.BaseObject\x12\x19\n\x11smartContractName\x18\x04 \x01(\t\"\xa5\x01\n\x05\x41sset\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12$\n\x05value\x18\x03 \x03(\x0b\x32\x15.Api.Asset.ValueEntry\x12\x19\n\x11smartContractName\x18\x04 \x01(\t\x1a=\n\nValueEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1e\n\x05value\x18\x02 \x01(\x0b\x32\x0f.Api.BaseObject:\x02\x38\x01\".\n\x06\x44omain\x12\x16\n\x0eownerPublicKey\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\":\n\x07\x41\x63\x63ount\x12\x11\n\tpublicKey\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06\x61ssets\x18\x03 \x03(\t\"$\n\x05Trust\x12\r\n\x05value\x18\x01 \x01(\x01\x12\x0c\n\x04isOk\x18\x02 \x01(\x08\"E\n\x04Peer\x12\x11\n\tpublicKey\x18\x01 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\x12\x19\n\x05trust\x18\x03 \x01(\x0b\x32\n.Api.Trust\"1\n\tSignature\x12\x11\n\tpublicKey\x18\x01 \x01(\t\x12\x11\n\tsignature\x18\x02 \x01(\t\"\xa6\x02\n\x0bTransaction\x12$\n\x0ctxSignatures\x18\x01 \x03(\x0b\x32\x0e.Api.Signature\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\x14\n\x0csenderPubkey\x18\x03 \x01(\t\x12\x0c\n\x04hash\x18\x04 \x01(\t\x12\x11\n\ttimestamp\x18\x05 \x01(\x04\x12\x19\n\x05\x61sset\x18\x06 \x01(\x0b\x32\n.Api.Asset\x12%\n\x0bsimpleAsset\x18\x07 \x01(\x0b\x32\x10.Api.SimpleAsset\x12\x1b\n\x06\x64omain\x18\x08 \x01(\x0b\x32\x0b.Api.Domain\x12\x1d\n\x07\x61\x63\x63ount\x18\t \x01(\x0b\x32\x0c.Api.Account\x12\x17\n\x04peer\x18\n \x01(\x0b\x32\t.Api.Peer\x12\x15\n\rreceivePubkey\x18\x0b \x01(\t\"\x7f\n\x0e\x43onsensusEvent\x12\'\n\x0f\x65ventSignatures\x18\x01 \x03(\x0b\x32\x0e.Api.Signature\x12%\n\x0btransaction\x18\x02 \x01(\x0b\x32\x10.Api.Transaction\x12\r\n\x05order\x18\x03 \x01(\x04\x12\x0e\n\x06status\x18\x04 \x01(\t2G\n\x15TransactionRepository\x12.\n\x04\x66ind\x12\n.Api.Query\x1a\x18.Api.TransactionResponse\"\x00\x32;\n\x0f\x41ssetRepository\x12(\n\x04\x66ind\x12\n.Api.Query\x1a\x12.Api.AssetResponse\"\x00\x32r\n\x08Sumeragi\x12\x30\n\x05Torii\x12\x10.Api.Transaction\x1a\x13.Api.StatusResponse\"\x00\x12\x34\n\x06Verify\x12\x13.Api.ConsensusEvent\x1a\x13.Api.StatusResponse\"\x00\x42\x03\x80\x01\x00\x62\x06proto3')
+  serialized_pb=_b('\n\tapi.proto\x12\x03\x41pi\"[\n\x13TransactionResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\x04\x12%\n\x0btransaction\x18\x03 \x03(\x0b\x32\x10.Api.Transaction\"G\n\x14RecieverConfirmation\x12\x0c\n\x04hash\x18\x01 \x01(\t\x12!\n\tsignature\x18\x02 \x01(\x0b\x32\x0e.Api.Signature\"\xd8\x01\n\rAssetResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\x12\x0c\n\x04\x63ode\x18\x02 \x01(\x04\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\x12\x19\n\x05\x61sset\x18\x04 \x01(\x0b\x32\n.Api.Asset\x12%\n\x0bsimpleAsset\x18\x05 \x01(\x0b\x32\x10.Api.SimpleAsset\x12\x1b\n\x06\x64omain\x18\x06 \x01(\x0b\x32\x0b.Api.Domain\x12\x1d\n\x07\x61\x63\x63ount\x18\x07 \x01(\x0b\x32\x0c.Api.Account\x12\x17\n\x04peer\x18\x08 \x01(\x0b\x32\t.Api.Peer\"o\n\x0eStatusResponse\x12\r\n\x05value\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\x12*\n\x07\x63onfirm\x18\x04 \x01(\x0b\x32\x19.Api.RecieverConfirmation\"\x90\x01\n\x05Query\x12\x0c\n\x04type\x18\x01 \x01(\t\x12$\n\x05value\x18\x02 \x03(\x0b\x32\x15.Api.Query.ValueEntry\x12\x14\n\x0csenderPubkey\x18\x03 \x01(\t\x1a=\n\nValueEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1e\n\x05value\x18\x02 \x01(\x0b\x32\x0f.Api.BaseObject:\x02\x38\x01\"o\n\nBaseObject\x12\x15\n\x0bvalueString\x18\x01 \x01(\tH\x00\x12\x12\n\x08valueInt\x18\x02 \x01(\x03H\x00\x12\x16\n\x0cvalueBoolean\x18\x03 \x01(\x08H\x00\x12\x15\n\x0bvalueDouble\x18\x04 \x01(\x01H\x00\x42\x07\n\x05value\"f\n\x0bSimpleAsset\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x1e\n\x05value\x18\x03 \x01(\x0b\x32\x0f.Api.BaseObject\x12\x19\n\x11smartContractName\x18\x04 \x01(\t\"\xa5\x01\n\x05\x41sset\x12\x0e\n\x06\x64omain\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12$\n\x05value\x18\x03 \x03(\x0b\x32\x15.Api.Asset.ValueEntry\x12\x19\n\x11smartContractName\x18\x04 \x01(\t\x1a=\n\nValueEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x1e\n\x05value\x18\x02 \x01(\x0b\x32\x0f.Api.BaseObject:\x02\x38\x01\".\n\x06\x44omain\x12\x16\n\x0eownerPublicKey\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\":\n\x07\x41\x63\x63ount\x12\x11\n\tpublicKey\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0e\n\x06\x61ssets\x18\x03 \x03(\t\"$\n\x05Trust\x12\r\n\x05value\x18\x01 \x01(\x01\x12\x0c\n\x04isOk\x18\x02 \x01(\x08\"E\n\x04Peer\x12\x11\n\tpublicKey\x18\x01 \x01(\t\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\x12\x19\n\x05trust\x18\x03 \x01(\x0b\x32\n.Api.Trust\"1\n\tSignature\x12\x11\n\tpublicKey\x18\x01 \x01(\t\x12\x11\n\tsignature\x18\x02 \x01(\t\"\xa6\x02\n\x0bTransaction\x12$\n\x0ctxSignatures\x18\x01 \x03(\x0b\x32\x0e.Api.Signature\x12\x0c\n\x04type\x18\x02 \x01(\t\x12\x14\n\x0csenderPubkey\x18\x03 \x01(\t\x12\x0c\n\x04hash\x18\x04 \x01(\t\x12\x11\n\ttimestamp\x18\x05 \x01(\x04\x12\x19\n\x05\x61sset\x18\x06 \x01(\x0b\x32\n.Api.Asset\x12%\n\x0bsimpleAsset\x18\x07 \x01(\x0b\x32\x10.Api.SimpleAsset\x12\x1b\n\x06\x64omain\x18\x08 \x01(\x0b\x32\x0b.Api.Domain\x12\x1d\n\x07\x61\x63\x63ount\x18\t \x01(\x0b\x32\x0c.Api.Account\x12\x17\n\x04peer\x18\n \x01(\x0b\x32\t.Api.Peer\x12\x15\n\rreceivePubkey\x18\x0b \x01(\t\"\x7f\n\x0e\x43onsensusEvent\x12\'\n\x0f\x65ventSignatures\x18\x01 \x03(\x0b\x32\x0e.Api.Signature\x12%\n\x0btransaction\x18\x02 \x01(\x0b\x32\x10.Api.Transaction\x12\r\n\x05order\x18\x03 \x01(\x04\x12\x0e\n\x06status\x18\x04 \x01(\t2\xb2\x01\n\x15TransactionRepository\x12.\n\x04\x66ind\x12\n.Api.Query\x1a\x18.Api.TransactionResponse\"\x00\x12/\n\x05\x66\x65tch\x12\n.Api.Query\x1a\x18.Api.TransactionResponse\"\x00\x12\x38\n\x0b\x66\x65tchStream\x12\x10.Api.Transaction\x1a\x13.Api.StatusResponse\"\x00(\x01\x32;\n\x0f\x41ssetRepository\x12(\n\x04\x66ind\x12\n.Api.Query\x1a\x12.Api.AssetResponse\"\x00\x32\x9f\x01\n\x08Sumeragi\x12\x30\n\x05Torii\x12\x10.Api.Transaction\x1a\x13.Api.StatusResponse\"\x00\x12\x34\n\x06Verify\x12\x13.Api.ConsensusEvent\x1a\x13.Api.StatusResponse\"\x00\x12+\n\x06Kagami\x12\n.Api.Query\x1a\x13.Api.StatusResponse\"\x00\x32\x45\n\x07Izanami\x12:\n\x07Izanagi\x12\x18.Api.TransactionResponse\x1a\x13.Api.StatusResponse\"\x00\x42\x03\x80\x01\x00\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -274,8 +274,8 @@ _QUERY_VALUEENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=577,
-  serialized_end=638,
+  serialized_start=600,
+  serialized_end=661,
 )
 
 _QUERY = _descriptor.Descriptor(
@@ -299,6 +299,13 @@ _QUERY = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
+    _descriptor.FieldDescriptor(
+      name='senderPubkey', full_name='Api.Query.senderPubkey', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
   ],
   extensions=[
   ],
@@ -311,8 +318,8 @@ _QUERY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=516,
-  serialized_end=638,
+  serialized_start=517,
+  serialized_end=661,
 )
 
 
@@ -366,8 +373,8 @@ _BASEOBJECT = _descriptor.Descriptor(
       name='value', full_name='Api.BaseObject.value',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=640,
-  serialized_end=751,
+  serialized_start=663,
+  serialized_end=774,
 )
 
 
@@ -418,8 +425,8 @@ _SIMPLEASSET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=753,
-  serialized_end=855,
+  serialized_start=776,
+  serialized_end=878,
 )
 
 
@@ -456,8 +463,8 @@ _ASSET_VALUEENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=577,
-  serialized_end=638,
+  serialized_start=600,
+  serialized_end=661,
 )
 
 _ASSET = _descriptor.Descriptor(
@@ -507,8 +514,8 @@ _ASSET = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=858,
-  serialized_end=1023,
+  serialized_start=881,
+  serialized_end=1046,
 )
 
 
@@ -545,8 +552,8 @@ _DOMAIN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1025,
-  serialized_end=1071,
+  serialized_start=1048,
+  serialized_end=1094,
 )
 
 
@@ -590,8 +597,8 @@ _ACCOUNT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1073,
-  serialized_end=1131,
+  serialized_start=1096,
+  serialized_end=1154,
 )
 
 
@@ -628,8 +635,8 @@ _TRUST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1133,
-  serialized_end=1169,
+  serialized_start=1156,
+  serialized_end=1192,
 )
 
 
@@ -673,8 +680,8 @@ _PEER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1171,
-  serialized_end=1240,
+  serialized_start=1194,
+  serialized_end=1263,
 )
 
 
@@ -711,8 +718,8 @@ _SIGNATURE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1242,
-  serialized_end=1291,
+  serialized_start=1265,
+  serialized_end=1314,
 )
 
 
@@ -812,8 +819,8 @@ _TRANSACTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1294,
-  serialized_end=1588,
+  serialized_start=1317,
+  serialized_end=1611,
 )
 
 
@@ -864,8 +871,8 @@ _CONSENSUSEVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1590,
-  serialized_end=1717,
+  serialized_start=1613,
+  serialized_end=1740,
 )
 
 _TRANSACTIONRESPONSE.fields_by_name['transaction'].message_type = _TRANSACTION
@@ -1071,11 +1078,31 @@ try:
           request_serializer=Query.SerializeToString,
           response_deserializer=TransactionResponse.FromString,
           )
+      self.fetch = channel.unary_unary(
+          '/Api.TransactionRepository/fetch',
+          request_serializer=Query.SerializeToString,
+          response_deserializer=TransactionResponse.FromString,
+          )
+      self.fetchStream = channel.stream_unary(
+          '/Api.TransactionRepository/fetchStream',
+          request_serializer=Transaction.SerializeToString,
+          response_deserializer=StatusResponse.FromString,
+          )
 
 
   class TransactionRepositoryServicer(object):
 
     def find(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def fetch(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def fetchStream(self, request_iterator, context):
       context.set_code(grpc.StatusCode.UNIMPLEMENTED)
       context.set_details('Method not implemented!')
       raise NotImplementedError('Method not implemented!')
@@ -1087,6 +1114,16 @@ try:
             servicer.find,
             request_deserializer=Query.FromString,
             response_serializer=TransactionResponse.SerializeToString,
+        ),
+        'fetch': grpc.unary_unary_rpc_method_handler(
+            servicer.fetch,
+            request_deserializer=Query.FromString,
+            response_serializer=TransactionResponse.SerializeToString,
+        ),
+        'fetchStream': grpc.stream_unary_rpc_method_handler(
+            servicer.fetchStream,
+            request_deserializer=Transaction.FromString,
+            response_serializer=StatusResponse.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1148,6 +1185,11 @@ try:
           request_serializer=ConsensusEvent.SerializeToString,
           response_deserializer=StatusResponse.FromString,
           )
+      self.Kagami = channel.unary_unary(
+          '/Api.Sumeragi/Kagami',
+          request_serializer=Query.SerializeToString,
+          response_deserializer=StatusResponse.FromString,
+          )
 
 
   class SumeragiServicer(object):
@@ -1169,6 +1211,13 @@ try:
       context.set_details('Method not implemented!')
       raise NotImplementedError('Method not implemented!')
 
+    def Kagami(self, request, context):
+      """WIP It used by Hijiri. Name is think in progress
+      """
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
 
   def add_SumeragiServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -1182,9 +1231,52 @@ try:
             request_deserializer=ConsensusEvent.FromString,
             response_serializer=StatusResponse.SerializeToString,
         ),
+        'Kagami': grpc.unary_unary_rpc_method_handler(
+            servicer.Kagami,
+            request_deserializer=Query.FromString,
+            response_serializer=StatusResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
         'Api.Sumeragi', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+  class IzanamiStub(object):
+
+    def __init__(self, channel):
+      """Constructor.
+
+      Args:
+        channel: A grpc.Channel.
+      """
+      self.Izanagi = channel.unary_unary(
+          '/Api.Izanami/Izanagi',
+          request_serializer=TransactionResponse.SerializeToString,
+          response_deserializer=StatusResponse.FromString,
+          )
+
+
+  class IzanamiServicer(object):
+
+    def Izanagi(self, request, context):
+      """It used by Izanami. Existing peer send TransactionResponse to Initialize Peer.
+      """
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+
+  def add_IzanamiServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+        'Izanagi': grpc.unary_unary_rpc_method_handler(
+            servicer.Izanagi,
+            request_deserializer=TransactionResponse.FromString,
+            response_serializer=StatusResponse.SerializeToString,
+        ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+        'Api.Izanami', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -1195,6 +1287,10 @@ try:
     file not marked beta) for all further purposes. This class was generated
     only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
     def find(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def fetch(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def fetchStream(self, request_iterator, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
 
@@ -1207,6 +1303,12 @@ try:
     def find(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       raise NotImplementedError()
     find.future = None
+    def fetch(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    fetch.future = None
+    def fetchStream(self, request_iterator, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    fetchStream.future = None
 
 
   def beta_create_TransactionRepository_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
@@ -1216,12 +1318,18 @@ try:
     file not marked beta) for all further purposes. This function was
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_deserializers = {
+      ('Api.TransactionRepository', 'fetch'): Query.FromString,
+      ('Api.TransactionRepository', 'fetchStream'): Transaction.FromString,
       ('Api.TransactionRepository', 'find'): Query.FromString,
     }
     response_serializers = {
+      ('Api.TransactionRepository', 'fetch'): TransactionResponse.SerializeToString,
+      ('Api.TransactionRepository', 'fetchStream'): StatusResponse.SerializeToString,
       ('Api.TransactionRepository', 'find'): TransactionResponse.SerializeToString,
     }
     method_implementations = {
+      ('Api.TransactionRepository', 'fetch'): face_utilities.unary_unary_inline(servicer.fetch),
+      ('Api.TransactionRepository', 'fetchStream'): face_utilities.stream_unary_inline(servicer.fetchStream),
       ('Api.TransactionRepository', 'find'): face_utilities.unary_unary_inline(servicer.find),
     }
     server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
@@ -1235,12 +1343,18 @@ try:
     file not marked beta) for all further purposes. This function was
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_serializers = {
+      ('Api.TransactionRepository', 'fetch'): Query.SerializeToString,
+      ('Api.TransactionRepository', 'fetchStream'): Transaction.SerializeToString,
       ('Api.TransactionRepository', 'find'): Query.SerializeToString,
     }
     response_deserializers = {
+      ('Api.TransactionRepository', 'fetch'): TransactionResponse.FromString,
+      ('Api.TransactionRepository', 'fetchStream'): StatusResponse.FromString,
       ('Api.TransactionRepository', 'find'): TransactionResponse.FromString,
     }
     cardinalities = {
+      'fetch': cardinality.Cardinality.UNARY_UNARY,
+      'fetchStream': cardinality.Cardinality.STREAM_UNARY,
       'find': cardinality.Cardinality.UNARY_UNARY,
     }
     stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
@@ -1323,6 +1437,10 @@ try:
       """sumeragi uses.
       """
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def Kagami(self, request, context):
+      """WIP It used by Hijiri. Name is think in progress
+      """
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
 
   class BetaSumeragiStub(object):
@@ -1344,6 +1462,11 @@ try:
       """
       raise NotImplementedError()
     Verify.future = None
+    def Kagami(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      """WIP It used by Hijiri. Name is think in progress
+      """
+      raise NotImplementedError()
+    Kagami.future = None
 
 
   def beta_create_Sumeragi_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
@@ -1353,14 +1476,17 @@ try:
     file not marked beta) for all further purposes. This function was
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_deserializers = {
+      ('Api.Sumeragi', 'Kagami'): Query.FromString,
       ('Api.Sumeragi', 'Torii'): Transaction.FromString,
       ('Api.Sumeragi', 'Verify'): ConsensusEvent.FromString,
     }
     response_serializers = {
+      ('Api.Sumeragi', 'Kagami'): StatusResponse.SerializeToString,
       ('Api.Sumeragi', 'Torii'): StatusResponse.SerializeToString,
       ('Api.Sumeragi', 'Verify'): StatusResponse.SerializeToString,
     }
     method_implementations = {
+      ('Api.Sumeragi', 'Kagami'): face_utilities.unary_unary_inline(servicer.Kagami),
       ('Api.Sumeragi', 'Torii'): face_utilities.unary_unary_inline(servicer.Torii),
       ('Api.Sumeragi', 'Verify'): face_utilities.unary_unary_inline(servicer.Verify),
     }
@@ -1375,19 +1501,85 @@ try:
     file not marked beta) for all further purposes. This function was
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_serializers = {
+      ('Api.Sumeragi', 'Kagami'): Query.SerializeToString,
       ('Api.Sumeragi', 'Torii'): Transaction.SerializeToString,
       ('Api.Sumeragi', 'Verify'): ConsensusEvent.SerializeToString,
     }
     response_deserializers = {
+      ('Api.Sumeragi', 'Kagami'): StatusResponse.FromString,
       ('Api.Sumeragi', 'Torii'): StatusResponse.FromString,
       ('Api.Sumeragi', 'Verify'): StatusResponse.FromString,
     }
     cardinalities = {
+      'Kagami': cardinality.Cardinality.UNARY_UNARY,
       'Torii': cardinality.Cardinality.UNARY_UNARY,
       'Verify': cardinality.Cardinality.UNARY_UNARY,
     }
     stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
     return beta_implementations.dynamic_stub(channel, 'Api.Sumeragi', cardinalities, options=stub_options)
+
+
+  class BetaIzanamiServicer(object):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This class was generated
+    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def Izanagi(self, request, context):
+      """It used by Izanami. Existing peer send TransactionResponse to Initialize Peer.
+      """
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+
+
+  class BetaIzanamiStub(object):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This class was generated
+    only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def Izanagi(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      """It used by Izanami. Existing peer send TransactionResponse to Initialize Peer.
+      """
+      raise NotImplementedError()
+    Izanagi.future = None
+
+
+  def beta_create_Izanami_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This function was
+    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+    request_deserializers = {
+      ('Api.Izanami', 'Izanagi'): TransactionResponse.FromString,
+    }
+    response_serializers = {
+      ('Api.Izanami', 'Izanagi'): StatusResponse.SerializeToString,
+    }
+    method_implementations = {
+      ('Api.Izanami', 'Izanagi'): face_utilities.unary_unary_inline(servicer.Izanagi),
+    }
+    server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
+    return beta_implementations.server(method_implementations, options=server_options)
+
+
+  def beta_create_Izanami_stub(channel, host=None, metadata_transformer=None, pool=None, pool_size=None):
+    """The Beta API is deprecated for 0.15.0 and later.
+
+    It is recommended to use the GA API (classes and functions in this
+    file not marked beta) for all further purposes. This function was
+    generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
+    request_serializers = {
+      ('Api.Izanami', 'Izanagi'): TransactionResponse.SerializeToString,
+    }
+    response_deserializers = {
+      ('Api.Izanami', 'Izanagi'): StatusResponse.FromString,
+    }
+    cardinalities = {
+      'Izanagi': cardinality.Cardinality.UNARY_UNARY,
+    }
+    stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
+    return beta_implementations.dynamic_stub(channel, 'Api.Izanami', cardinalities, options=stub_options)
 except ImportError:
   pass
 # @@protoc_insertion_point(module_scope)
