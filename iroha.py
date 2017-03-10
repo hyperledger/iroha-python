@@ -16,7 +16,7 @@ from collections import namedtuple
 import ed25519
 import sha3
 
-import protos.api_pb2_grpc as api_pb2_grpc
+import api_pb2_grpc as api_pb2_grpc
 import grpc
 
 KeyPair = namedtuple('KeyPair', ['private_key', 'public_key'])

@@ -3,10 +3,10 @@ from iroha import Kannagi
 from transaction import TransactionBuilder
 
 # ToDo I should make builder...
-from protos.api_pb2 import Account,Asset,BaseObject,Query
+from api_pb2 import Account,Asset,BaseObject,Query
 
 k = Kannagi()
-publicKey = iroha.KeyPair().public_key
+publicKey = iroha.create_key_pair().public_key
 
 # This sample is bad. so we should create builder
 account = Account(
