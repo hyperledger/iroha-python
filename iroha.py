@@ -1,6 +1,5 @@
 """Python library for Hyperledger Iroha."""
 
-
 # ed25519 library uses terms "signing key" for "private key",
 # and "verifying key" for "public key".
 # This library also strips '=' from base64-encoded byte strings,
@@ -16,6 +15,9 @@ from collections import namedtuple
 
 import ed25519
 import sha3
+
+import protos.api_pb2_grpc as api_pb2_grpc
+import grpc
 
 KeyPair = namedtuple('KeyPair', ['private_key', 'public_key'])
 
@@ -60,3 +62,26 @@ def sha3_384(message):
 def sha3_512(message):
     digest_bytes = sha3.sha3_512(message).digest()
     return base64.standard_b64encode(digest_bytes)
+
+
+class Kannagi:
+    def __init__(self):
+        # ToDo configurable
+        channel = grpc.insecure_channel('localhost:50051')
+        self.sumeragi_stub = api_pb2_grpc.SumeragiStub(channel)
+        self.asset_repo_stub = api_pb2_grpc.AssetRepositoryStub(channel)
+        self.tx_repo_stub = api_pb2_grpc.TransactionRepositoryStub(channel)
+
+    def torii(self, tx):
+        res = self.sumeragi_stub.Torii(
+            tx
+        )
+        # ToDo  log class
+        print("client received: " + res.message)
+        return res
+
+    def assetRepository(self, query):
+        return self.asset_repo_stub.find(query)
+
+    def transationRepository(self, query):
+        return self.transationRepository(query)
