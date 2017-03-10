@@ -25,8 +25,8 @@ KeyPair = namedtuple('KeyPair', ['private_key', 'public_key'])
 def create_key_pair():
     # Mind the private/public key order!
     private_key, public_key = ed25519.create_keypair()
-    private_key_base64 = base64.standard_b64encode(private_key)
-    public_key_base64 = base64.standard_b64encode(public_key)
+    private_key_base64 = base64.standard_b64encode(private_key.to_bytes())
+    public_key_base64 = base64.standard_b64encode(public_key.to_bytes())
     return KeyPair(private_key=private_key_base64,
                    public_key=public_key_base64)
 
