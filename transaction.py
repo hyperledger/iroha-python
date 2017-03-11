@@ -22,6 +22,18 @@ class TransactionBuilder:
         self.object = {}
         self.object_type = TransactionBuilder.AssetType.NONE
 
+    # for Transfer
+    def __init__(self, type, senderPublicKey, receiverPublicKey):
+        self.tx = Transaction()
+        self.type = type
+        self.senderPublicKey = senderPublicKey
+        self.receiverPublicKey = receiverPublicKey
+        self.txSignatures = []
+
+        self.object = {}
+        self.object_type = TransactionBuilder.AssetType.NONE
+
+
     def add_txSignature(self, sig, hash_):
         self.txSignatures.append([sig, hash_])
         return self
@@ -59,6 +71,7 @@ class TransactionBuilder:
         return Transaction(
             type = self.type,
             senderPubkey = self.senderPublicKey,
+            receiverPublicKey = self.receiverPublicKey,
             hash = "", # This is WIP!! dangerous
             timestamp = int(datetime.now().timestamp()),
             asset = self.object[self.object_type]
