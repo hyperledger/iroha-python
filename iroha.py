@@ -124,4 +124,4 @@ class Kannagi:
     def get_all_transation(self):
         # in now, don't use query
         query = Query()
-        return self.transationRepository(query)
+        return self.tx_repo_stub.find(query)
