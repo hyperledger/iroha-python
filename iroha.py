@@ -24,7 +24,6 @@ import grpc
 
 KeyPair = namedtuple('KeyPair', ['private_key', 'public_key'])
 
-
 def create_key_pair():
     # Mind the private/public key order!
     private_key, public_key = ed25519.create_keypair()
