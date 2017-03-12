@@ -12,11 +12,11 @@ class TransactionBuilder:
         SIMPLE_ASSET = 5
         NONE = 6
 
-    def __init__(self, type, senderPublicKey):
+    def __init__(self, type, senderPublicKey, receiverPublicKey=""):
         self.tx = Transaction()
         self.type = type
         self.senderPublicKey = senderPublicKey
-        self.receiverPublicKey = ""
+        self.receiverPublicKey = receiverPublicKey
         self.txSignatures = []
 
         self.object = {}
@@ -71,7 +71,7 @@ class TransactionBuilder:
         return Transaction(
             type = self.type,
             senderPubkey = self.senderPublicKey,
-            receiverPublicKey = self.receiverPublicKey,
+            receivePubkey = self.receiverPublicKey,
             hash = "", # This is WIP!! dangerous
             timestamp = int(datetime.now().timestamp()),
             asset = self.object[self.object_type]
