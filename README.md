@@ -1,46 +1,39 @@
 # iroha-python
 
-Python library for Hyperledger Iroha.
+Python library for [Hyperledger Iroha](https://github.com/hyperledger/iroha).
 
 
 ## Install
 
-Install [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io).
-
-```sh
-git clone https://github.com/hyperledger/iroha-python.git
-cd iroha-python
-mkvirtualenv iroha-python
-workon iroha-python
-pip install -r requirements.txt
-```
-
-If you are using anaconda:
-
-```sh
-conda create -n iroha-python python=3.6
-source activate iroha-python
-```
+Supported Python versions: 2.7 and 3.6 (see `tox.ini`).
+Multiple Python versions can be installed with your system package manager or with the [pyenv](https://github.com/pyenv/pyenv) tool.
 
 ## Develop
 
-After adding a new dependency:
+### New dependencies
 
-```sh
-pip freeze > requirements.txt
-```
+After adding a new dependency, include it into the `install_requires` option of the `setup.py` script.
 
-Do this in every module:
+### Python 2 compatibility
+
+Familiarize yourself with the Python compatibility guidelines and supporting packages:
+
+* [Porting Python 2 Code to Python 3](https://docs.python.org/3/howto/pyporting.html)
+* [Writing code that runs under both Python2 and 3](https://wiki.python.org/moin/PortingToPy3k/BilingualQuickRef)
+* The [future](http://python-future.org) package
+* The [six](http://pythonhosted.org/six) package
+
+Put the following at the top of all your Python files (after a docstring and file-wide comments):
 
 ```python
-from __future__ import division, print_function, unicode_literals
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
 ```
 
 ## Test
 
-```sh
-tox
-```
+[tox](http://tox.readthedocs.io) tests the package under different virtual environments and with different Python versions.
+Simply execute the `tox` command to run all tests in all supported environments.
 
 ## Compile proto
 ```
@@ -48,4 +41,3 @@ cd protoc; python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. ap
 ```
 
 **\*Future replace protobuf with flatbuffer \('A')/**
-
