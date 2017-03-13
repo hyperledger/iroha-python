@@ -67,12 +67,42 @@ class TransactionBuilder:
         self.receiverPublicKey = receiver_publicKey_
         return self
 
+
+    # WIP
     def build(self):
-        return Transaction(
-            type = self.type,
-            senderPubkey = self.senderPublicKey,
-            receiverPublicKey = self.receiverPublicKey,
-            hash = "", # This is WIP!! dangerous
-            timestamp = int(datetime.now().timestamp()),
-            asset = self.object[self.object_type]
-        )
+        if self.object_type == TransactionBuilder.AssetType.ASSET:
+            return Transaction(
+                type=self.type,
+                senderPubkey=self.senderPublicKey,
+                receivePubkey=self.receiverPublicKey,
+                hash="",  # This is WIP!! dangerous
+                timestamp=int(datetime.now().timestamp()),
+                asset=self.object[self.object_type]
+            )
+        elif self.object_type == TransactionBuilder.AssetType.ACCOUNT:
+            return Transaction(
+                type=self.type,
+                senderPubkey=self.senderPublicKey,
+                receivePubkey=self.receiverPublicKey,
+                hash="",  # This is WIP!! dangerous
+                timestamp=int(datetime.now().timestamp()),
+                account=self.object[self.object_type]
+            )
+        elif self.object_type == TransactionBuilder.AssetType.DOMAIN:
+            return Transaction(
+                type=self.type,
+                senderPubkey=self.senderPublicKey,
+                receivePubkey=self.receiverPublicKey,
+                hash="",  # This is WIP!! dangerous
+                timestamp=int(datetime.now().timestamp()),
+                domain=self.object[self.object_type]
+            )
+        elif self.object_type == TransactionBuilder.AssetType.SIMPLE_ASSET:
+            return Transaction(
+                type=self.type,
+                senderPubkey=self.senderPublicKey,
+                receivePubkey=self.receiverPublicKey,
+                hash="",  # This is WIP!! dangerous
+                timestamp=int(datetime.now().timestamp()),
+                simpleAsset=self.object[self.object_type]
+            )
