@@ -76,7 +76,7 @@ def getAccountInfo(publicKey):
 class Kannagi:
     def __init__(self):
         # ToDo configurable
-        channel = grpc.insecure_channel('localhost:50051')
+        channel = grpc.insecure_channel('172.17.0.3:50051')
         self.sumeragi_stub = api_pb2_grpc.SumeragiStub(channel)
         self.asset_repo_stub = api_pb2_grpc.AssetRepositoryStub(channel)
         self.tx_repo_stub = api_pb2_grpc.TransactionRepositoryStub(channel)

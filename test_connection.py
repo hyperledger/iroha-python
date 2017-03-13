@@ -3,27 +3,23 @@ from iroha import Kannagi
 from transaction import TransactionBuilder
 
 # ToDo I should make builder...
-from api_pb2 import Account,Asset,BaseObject,Query
+from protos.api_pb2 import Account,Asset,BaseObject,Query
 
 k = Kannagi()
 publicKey = iroha.create_key_pair().public_key
 
+iori = "m6G6apYkfCCRZros4oN4voMzCfADI4JmbPMhnkUVd0I="
+mizuki = "tuIWczwegKNqgpohuAcMp1ZBl3Qr0igAgG1CiZMhRX0="
 # This sample is bad. so we should create builder
-account = Account(
-    publicKey=publicKey,
+asset = Asset(
+    domain="sample",
     name="mizuki",
-    assets = [
-        "iroha"
-    ]
+    value = {
+       "targetName": BaseObject( valueString = "Iori1"),
+       "Iori1": BaseObject( valueInt = 1)
+    }
 )
-tx = TransactionBuilder("add", publicKey).set_account(account).build()
+tx = TransactionBuilder("transfer", iori, mizuki).set_asset(asset).build()
 k.torii(tx)
 
-query = Query(
-    senderPubkey = publicKey,
-    type="account",
-    value = {
-    "name": BaseObject(valueString="mizuki")
-})
-
-print(k.assetRepository(query))
+print(k.get_account_info(iori))
