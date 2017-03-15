@@ -6,64 +6,64 @@
 # so all inputs/outputs are converted manually to/from binary representation.
 
 
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
-import base64
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
 
 from collections import namedtuple
 
 import ed25519
+import grpc
 import sha3
-
-from transaction import TransactionBuilder
 
 from protos.api_pb2 import Asset,BaseObject,Query
 import protos.api_pb2_grpc as api_pb2_grpc
-import grpc
+
+from transaction import TransactionBuilder
+
 
 KeyPair = namedtuple('KeyPair', ['private_key', 'public_key'])
 
-def create_key_pair():
-    # Mind the private/public key order!
-    private_key, public_key = ed25519.create_keypair()
-    private_key_base64 = base64.standard_b64encode(private_key.to_bytes())
-    public_key_base64 = base64.standard_b64encode(public_key.to_bytes())
-    return KeyPair(private_key=private_key_base64,
-                   public_key=public_key_base64)
+
+def create_key_pair(seed=None):
+    """Create a private/public key pair.
+
+    Use a system randomness source or a 32-byte seed if supplied.
+    """
+    if seed is None:
+        # Mind the private/public key order!
+        private_key, public_key = ed25519.create_keypair()
+    else:
+        assert len(seed) == 32
+        private_key = ed25519.SigningKey(seed)
+        public_key = private_key.get_verifying_key()
+    return KeyPair(private_key=private_key.to_bytes(),
+                   public_key=public_key.to_bytes())
 
 
 def sign(key_pair, message):
-    private_key_bytes = base64.standard_b64decode(key_pair.private_key)
-    private_key = ed25519.SigningKey(private_key_bytes)
-    signature_bytes = private_key.sign(message)
-    return base64.standard_b64encode(signature_bytes)
+    lib_private_key = ed25519.SigningKey(key_pair.private_key)
+    return lib_private_key.sign(message)
 
 
 def verify(public_key, signature, message):
     try:
-        public_key_bytes = base64.standard_b64decode(public_key)
-        public_key = ed25519.VerifyingKey(public_key_bytes)
-        signature_bytes = base64.standard_b64decode(signature)
-        public_key.verify(signature_bytes, message)
+        lib_public_key = ed25519.VerifyingKey(public_key)
+        lib_public_key.verify(signature, message)
         return True
     except ed25519.BadSignatureError:
         return False
 
 
 def sha3_256(message):
-    digest_bytes = sha3.sha3_256(message).digest()
-    return base64.standard_b64encode(digest_bytes)
+    return sha3.sha3_256(message).digest()
 
 
 def sha3_384(message):
-    digest_bytes = sha3.sha3_384(message).digest()
-    return base64.standard_b64encode(digest_bytes)
+    return sha3.sha3_384(message).digest()
 
 
 def sha3_512(message):
-    digest_bytes = sha3.sha3_512(message).digest()
-    return base64.standard_b64encode(digest_bytes)
+    return sha3.sha3_512(message).digest()
 
 
 def getAccountInfo(publicKey):
