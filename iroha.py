@@ -2,8 +2,6 @@
 
 # ed25519 library uses terms "signing key" for "private key",
 # and "verifying key" for "public key".
-# This library also strips '=' from base64-encoded byte strings,
-# so all inputs/outputs are converted manually to/from binary representation.
 
 
 from __future__ import (absolute_import, division,
