@@ -2,6 +2,7 @@
 
 Python library for Hyperledger Iroha.
 
+
 ## Install
 
 Install [virtualenvwrapper](https://virtualenvwrapper.readthedocs.io).
@@ -40,3 +41,11 @@ from __future__ import division, print_function, unicode_literals
 ```sh
 tox
 ```
+
+## Compile proto
+```
+cd protoc; python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. api.proto
+```
+
+**\*Future replace protobuf with flatbuffer \('A')/**
+
