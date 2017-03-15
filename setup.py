@@ -15,6 +15,7 @@ setup(
     install_requires=[
         'ed25519',
         'future',
+        'grpcio',
         'pysha3',
         'six',
     ],
