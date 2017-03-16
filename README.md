@@ -6,7 +6,7 @@ Python library for [Hyperledger Iroha](https://github.com/hyperledger/iroha).
 
 ### Python
 
-Supported Python versions: 2.7 and 3.6 (see `tox.ini`).
+Supported Python versions: 2.7 and 3.5 (see `tox.ini`).
 Multiple Python versions can be installed with your system package manager or with the [pyenv](https://github.com/pyenv/pyenv) tool.
 The pyenv itself can also be installed with a system package manager or with the [pyenv-installer](https://github.com/pyenv/pyenv-installer) script.
 
@@ -22,10 +22,10 @@ eval "$(pyenv init -)"
 echo 'export PATH="${HOME}/.pyenv/bin:${PATH}"' >> ~/.bashrc
 echo 'eval "$(pyenv init -)"' >> ~/.bashrc
 # Install the most recent Python versions (both 3 and 2)
-pyenv install 3.6.0
+pyenv install 3.5.2
 pyenv install 2.7.13
 # Bring both installed versions into the scope: we are testing against both versions
-pyenv global 3.6.0 2.7.13
+pyenv global 3.5.2 2.7.13
 # Only the "tox" package needs to be installed manually
 pip install tox
 ```
