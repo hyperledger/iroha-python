@@ -1,4 +1,4 @@
-# iroha-python
+# iroha-python [![CircleCI](https://img.shields.io/circleci/project/github/hyperledger/iroha-python/master.svg)](https://circleci.com/gh/hyperledger/iroha-python/tree/master)
 
 Python library for [Hyperledger Iroha](https://github.com/hyperledger/iroha).
 
