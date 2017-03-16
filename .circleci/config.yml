@@ -1,0 +1,35 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: python:3.6.0-alpine
+    working_directory: /root
+
+    steps:
+      - run:
+          name: Install system-wide packages
+          command: apk add --no-cache cmake curl g++ git ninja openssh
+
+      - checkout
+
+      - run:
+          name: Install flatc
+          command: |
+            set -ex
+            FBVER='1.6.0'
+            curl --location https://github.com/google/flatbuffers/archive/v${FBVER}.tar.gz | tar -xz
+            mkdir flatbuffers-build
+            cmake -GNinja -Hflatbuffers-${FBVER} -Bflatbuffers-build
+            cmake --build flatbuffers-build
+            cp flatbuffers-build/flatc /usr/local/bin
+            rm -rf flatbuffers-${FBVER} flarbuffers-build
+
+      - run:
+          name: Install tox
+          command: pip install tox
+
+      - run:
+          name: Run tests
+          command: tox -e py36
+
