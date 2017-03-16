@@ -29,6 +29,10 @@ jobs:
           command: pip install tox
 
       - run:
+          name: Generate FlatBufers schema
+          command: python setup.py genfbs
+
+      - run:
           name: Run tests
           command: tox -e py36
 
