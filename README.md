@@ -4,11 +4,13 @@ Python library for [Hyperledger Iroha](https://github.com/hyperledger/iroha).
 
 ## Install
 
+### Python
+
 Supported Python versions: 2.7 and 3.6 (see `tox.ini`).
 Multiple Python versions can be installed with your system package manager or with the [pyenv](https://github.com/pyenv/pyenv) tool.
 The pyenv itself can also be installed with a system package manager or with the [pyenv-installer](https://github.com/pyenv/pyenv-installer) script.
 
-### Example installation steps
+#### Example installation steps
 
 ```sh
 # Install pyenv using pyenv-installer
@@ -28,7 +30,32 @@ pyenv global 3.6.0 2.7.13
 pip install tox
 ```
 
+### External dependencies
+
+Download [FlatBuffers](https://github.com/google/flatbuffers), compile the `flatc` executable and place it into your `PATH`.
+
+#### Example setup
+
+```sh
+# Dowload and build FlatBuffers
+git clone --depth=1 https://github.com/google/flatbuffers /tmp/flatbuffers
+mkdir /tmp/flatbuffers/build
+cd "$_"
+cmake ..
+make -j
+# Copy the "flatc" executable into the local directory
+mkdir $HOME/bin
+cp flatc "$_"
+# Add the directory to the search path (replace "~/.bashrc" with "~/.zshrc" if needed)
+export PATH="$HOME/bin:$PATH"
+echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+```
+
 ## Develop
+
+### First-time setup
+
+Run `python setup.py genfbs` to generate the FlatBuffers schema.
 
 ### Interactive shell
 
