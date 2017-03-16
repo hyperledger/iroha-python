@@ -22,7 +22,7 @@ jobs:
             cmake -GNinja -Hflatbuffers-${FBVER} -Bflatbuffers-build
             cmake --build flatbuffers-build
             cp flatbuffers-build/flatc /usr/local/bin
-            rm -rf flatbuffers-${FBVER} flarbuffers-build
+            rm -rf flatbuffers-${FBVER} flatbuffers-build
 
       - run:
           name: Install tox
