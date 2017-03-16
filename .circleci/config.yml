@@ -20,7 +20,7 @@ jobs:
             FBVER='1.6.0'
             curl --location --silent https://github.com/google/flatbuffers/archive/v${FBVER}.tar.gz | tar -xz
             cmake -GNinja -Hflatbuffers-${FBVER} -Bflatbuffers-build
-            cmake --build flatbuffers-build
+            cmake --build flatbuffers-build --target flatc
             cp flatbuffers-build/flatc /usr/local/bin
             rm -rf flatbuffers-${FBVER} flatbuffers-build
 
