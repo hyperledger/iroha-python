@@ -14,8 +14,8 @@ setup(
     # Keep the dependencies lexicographically sorted.
     install_requires=[
         'ed25519',
+        'flatbuffers',
         'future',
-        'grpcio',
         'pysha3',
         'six',
     ],
