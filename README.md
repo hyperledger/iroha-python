@@ -34,22 +34,8 @@ pip install tox
 
 Download [FlatBuffers](https://github.com/google/flatbuffers), compile the `flatc` executable and place it into your `PATH`.
 
-#### Example setup
-
-```sh
-# Dowload and build FlatBuffers
-git clone --depth=1 https://github.com/google/flatbuffers /tmp/flatbuffers
-mkdir /tmp/flatbuffers/build
-cd "$_"
-cmake ..
-make -j
-# Copy the "flatc" executable into the local directory
-mkdir $HOME/bin
-cp flatc "$_"
-# Add the directory to the search path (replace "~/.bashrc" with "~/.zshrc" if needed)
-export PATH="$HOME/bin:$PATH"
-echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
-```
+`.circleci/config.yml` contains working build commands.
+These commands might need some adaptation to your local environment.
 
 ## Develop
 
