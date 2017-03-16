@@ -7,7 +7,7 @@ attribute "priority";
 // -------------------------------
 //   This is asset used by iroha.　
 // -------------------------------
-enum BaseObjectType : byte { Text = 1, Integer, Boolean, Decimal, None}
+enum BaseObjectType : byte { Text = 1, Integer, Boolean, Decimal, NoneType}
 
 table BaseObject{
    text: string;
@@ -15,7 +15,7 @@ table BaseObject{
    boolean: bool;
    decimal: float;
 
-   type: BaseObjectType = None;
+   type: BaseObjectType = NoneType;
    name: string (required);
 }
 table Asset{
