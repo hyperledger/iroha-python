@@ -8,6 +8,26 @@ Supported Python versions: 2.7 and 3.6 (see `tox.ini`).
 Multiple Python versions can be installed with your system package manager or with the [pyenv](https://github.com/pyenv/pyenv) tool.
 The pyenv itself can also be installed with a system package manager or with the [pyenv-installer](https://github.com/pyenv/pyenv-installer) script.
 
+### Example installation steps
+
+```sh
+# Install pyenv using pyenv-installer
+curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+# pyenv initialization
+export PATH="${HOME}/.pyenv/bin:${PATH}"
+eval "$(pyenv init -)"
+# Also initialize on startup; if you are using zsh, replace "~/.bashrc" with "~/.zshrc"
+echo 'export PATH="${HOME}/.pyenv/bin:${PATH}"' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+# Install the most recent Python versions (both 3 and 2)
+pyenv install 3.6.0
+pyenv install 2.7.13
+# Bring both installed versions into the scope: we are testing against both versions
+pyenv global 3.6.0 2.7.13
+# Only the "tox" package needs to be installed manually
+pip install tox
+```
+
 ## Develop
 
 ### Interactive shell
