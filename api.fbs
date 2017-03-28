@@ -1,0 +1,141 @@
+
+
+namespace iroha;
+
+attribute "priority";
+
+// -------------------------------
+//   This is asset used by iroha.　
+// -------------------------------
+enum BaseObjectType : byte { Text = 1, Integer, Boolean, Decimal, NoneType}
+
+table BaseObject{
+   text: string;
+   integer: int;
+   boolean: bool;
+   decimal: float;
+
+   type: BaseObjectType = NoneType;
+   name: string (required);
+}
+table Asset{
+  name:   string (required);
+  domain: string (required);
+
+  isSingleAsset: bool;
+  objects: [BaseObject];
+
+  smartContractName: string;
+}
+table Account{
+  publicKey: string (required);
+  assets: [Asset];
+}
+table Domain{
+  ownerPublicKey: string;
+  name: string;
+}
+table Peer{
+  publicKey: string;
+  address: string;
+}
+union Object  {  Asset, Domain, Account, Peer }
+
+// -------------------------------
+//  This is command used by iroha
+// -------------------------------
+union Command { Add, Transfer, Update, Remove, Batch, Unbatch, Contract }
+table Add{
+  object: Object (required);
+}
+table Transfer{
+  receiver: string (required);
+  object:   Object (required);
+}
+table Update{
+  object: Object (required);
+}
+table Remove{
+  object: Object (required);
+}
+table Batch{
+  alias: string (required);
+  // This is bad... and I should write it, because
+  // vector of union types not supported.
+  // I want to write commands: [Command];
+  commands: [string];
+}
+table Unbatch{
+  alias: string (required);
+}
+table Contract{
+  object:        Object (required);
+  command:       string;
+  contractName:  string (required);
+}
+
+table TxSignature {
+  publicKey: string (required);
+  signature: string (required);
+}
+table Transaction {
+  sender:   string (required);
+  command: Command (required);
+  txSignatures: [TxSignature] (required);
+  hash:                string (required);
+}
+
+table Response{
+  status: int;
+  message: string;
+
+  transaction: [Transaction];
+  object: Object;
+}
+
+table Request{
+  transaction: [Transaction] (required);
+}
+
+// TIP Think In Progress
+enum QueryType : byte {
+  TransactionHistory, HashTree, ObjectInformation
+}
+table Query{
+  type: QueryType;
+  uuid: string;
+}
+
+rpc_service Repository {
+  find(Query): Response (streaming: "none");
+}
+
+rpc_service Sumeragi {
+  //  =+===+=
+  // ==+=T=+==
+  //   |   |
+  //   |   |   This is gate at the entrance of sumeragi...
+  Torii(Request): Response (streaming: "none");
+
+  // sumeragi uses.
+  Verify(ConsensusEvent): Response (streaming: "none");
+
+}
+
+// Use sumeragi
+enum State : byte { Undetermined, Commited, Rejected }
+table EventSignature {
+  publicKey: string (required);
+  signature: string (required);
+}
+
+table ConsensusEvent{
+  transaction: [Transaction] (required);
+  eventSignatures: [EventSignature];
+  state: State;
+}
+
+root_type ConsensusEvent;
+
+file_identifier "IROH";
+file_extension "iroha";
