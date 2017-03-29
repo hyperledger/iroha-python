@@ -9,7 +9,7 @@ jobs:
     steps:
       - run:
           name: Install system-wide packages
-          command: apk add --no-cache --quiet cmake curl g++ git ninja openssh python2-dev python3-dev
+          command: apk add --no-cache --no-progress cmake curl g++ git ninja openssh python2-dev python3-dev
 
       - checkout
 
@@ -18,15 +18,16 @@ jobs:
           command: |
             set -ex
             FBVER='1.6.0'
-            curl --location --silent https://github.com/google/flatbuffers/archive/v${FBVER}.tar.gz | tar -xz
+            curl --output fb.tar.gz --location --silent --show-error https://github.com/google/flatbuffers/archive/v${FBVER}.tar.gz
+            tar -xzf fb.tar.gz
             cmake -GNinja -Hflatbuffers-${FBVER} -Bflatbuffers-build
             cmake --build flatbuffers-build --target flatc
             cp flatbuffers-build/flatc /usr/local/bin
-            rm -rf flatbuffers-${FBVER} flatbuffers-build
+            rm -rf fb.tar.gz flatbuffers-${FBVER} flatbuffers-build
 
       - run:
           name: Install tox
-          command: pip3 --quiet install tox
+          command: pip3 install tox
 
       - run:
           name: Generate FlatBufers schema
