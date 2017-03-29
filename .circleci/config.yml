@@ -4,7 +4,7 @@ jobs:
   build:
     docker:
       - image: alpine:3.5
-    working_directory: /root
+    working_directory: /iroha-python
 
     steps:
       - run:
