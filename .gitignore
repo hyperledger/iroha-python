@@ -99,4 +99,4 @@ _generated/
 *.a
 
 # proto
-*_pb2.py
+*_pb2*
