@@ -97,3 +97,6 @@ _generated/
 # *.o *a
 *.o
 *.a
+
+# proto
+*_pb2.py
