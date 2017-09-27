@@ -18,5 +18,3 @@ jobs:
           command: |
           make all
           tox
-
-
