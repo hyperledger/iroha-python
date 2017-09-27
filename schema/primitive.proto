@@ -1,0 +1,107 @@
+syntax = "proto3";
+package iroha.protocol;
+
+message Signature {
+    bytes pubkey = 1;
+    bytes signature = 2;
+}
+
+message Object {
+    int64     v_int64  = 1;
+    string    v_string = 2;
+    double    v_double = 3;
+    bool      v_bool   = 4;
+    map<string,Object> v_map = 5;
+    repeated Object v_list = 6;
+}
+
+message Filter {
+    map<string,Object> filter = 1;
+}
+
+message Header {
+    string creator = 1; // identify account id
+    uint64 created_at    = 2;
+}
+
+enum AssetPermission {
+    TRANSFER = 0; // [*1]
+    ADD = 1; // [*1]
+    SUBTRACT = 2;
+    UPDATE = 3;
+}
+
+enum DomainPermission {
+    CREATE_DOMAIN = 0;
+    CREATE_ASSET = 1;
+    DELETE_DOMAIN = 2;
+    DELETE_ASSET = 3;
+    MOVE_DOMIAN = 4;
+    MOVE_ASSET = 5;
+    INVITE = 6;
+    BAN = 7;
+    FORGIVE = 8;
+    SET_DEFAULT_PERMISSION = 9;
+    SET_PERMISSION = 10;
+}
+
+enum PeerRole {
+    validator = 0;  // now all peers are validators, but this is for future versions
+    reader = 1;  // read only
+}
+
+// ============ Iroha primitive model ===================
+// response にも使う
+/*
+message Account {
+    string id = 1;
+    string name = 2; // 無指定でRootの名前、Domainを指定した時そのDomainでの名前
+    repeated bytes signatories = 3;
+    int32 quorum = 4;
+    repeated string domain = 5; // Domain が指定されていない場合所属DomainのID's
+    int32 permission = 6; // domain が指定された場合そのDomainに対してもつPermission
+    bool ban = 7; // Domain が指定された場合そのDomainにバンされているかどうか
+    repeated string granter = 8; // GrantされているアカウントのID's
+    repeated string grantee = 9; // GrantしているアカウントのID's
+}
+
+message Asset {
+    string id = 1;
+    string address = 2; // "domain.com/asset"
+    oneof value {
+        int64 amount = 3;
+        Object object = 4;
+    }
+    int32 default_permission = 5;
+}
+
+message Wallet {
+    string id = 1;
+    string account = 2; // "account@domain.com"
+    string asset = 3; // "domain.com/asset"
+    int32 permission = 4;
+    bool ban = 5;
+    oneof value {
+        int64 amount = 6;
+        Object objects = 7;
+    }
+}
+
+message Domain {
+    enum AccessModifier {
+        PUBLIC = 0;
+        PRIVATE = 1;
+    }
+
+    string id = 1;
+    string address = 2; // "domain.com"
+    int32 default_permission = 3;
+    AccessModifier access_modifier = 4;
+}
+
+*/
+// ====================== 露 =======================
+message Amount {
+    uint64 integer_part = 1;
+    uint64 fractial_part = 2;
+}

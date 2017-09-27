@@ -1,0 +1,64 @@
+syntax = "proto3";
+package iroha.protocol;
+import "schema/primitive.proto";
+
+message Command {
+
+    // ======================= 露 ========================
+    // creatorにSignatoryを追加する [*1]
+    message AddSignatory {
+        string account_id = 1;
+        bytes pubkey = 2;
+    }
+    // creator の Signatoryを削除する [*1]
+    message RemoveSignatory {
+        string account_id = 1;
+        bytes pubkey = 2;
+    }
+
+    message AddAssetQuantity {
+	    string account_id = 1;
+	    string asset_id = 2;
+	    Amount amount = 3;
+    }
+    message CreateAsset {
+        string asset_name = 1;
+        string domain_id = 2;
+        uint32 precision = 3;
+    }
+    message CreateAccount {
+        string account_name = 1;
+        string domain_id = 2;
+        bytes main_pubkey = 3;
+    }
+    message CreateDomain {
+        string domain_name = 1;
+    }
+    message SetAccountQuorum {
+        string account_id = 1;
+        uint32 quorum = 2;
+    }
+    message TransferAsset {
+        string src_account_id = 1;
+        string dest_account_id = 2;
+        string asset_id = 3;
+        Amount amount = 4;
+    }
+
+
+    oneof command {
+        // to account
+        CreateAccount create_account = 11; // [*1]
+        AddSignatory add_signatory = 12; // [*1]
+        RemoveSignatory remove_signatory = 13; // [*1]
+
+        // to domain
+        CreateDomain create_domain = 31; // [*1]
+        CreateAsset create_asset = 32; // [*2]
+
+        // 露
+        AddAssetQuantity add_asset_quantity = 101;
+        SetAccountQuorum set_account_quorum = 102;
+        TransferAsset transfer_asset = 103;
+    }
+}
