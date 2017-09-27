@@ -14,7 +14,9 @@ jobs:
       - checkout
 
       - run:
-          name: no test
+          name: tox
           command: |
-          ls
+          make all
+          tox
+
 
