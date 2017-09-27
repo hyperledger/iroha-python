@@ -91,3 +91,10 @@ ENV/
 .idea/
 
 _generated/
+
+# key
+*.pem
+
+# *.o *a
+*.o
+*.a
