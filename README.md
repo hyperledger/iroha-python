@@ -41,7 +41,7 @@ These commands might need some adaptation to your local environment.
 
 ### First-time setup
 
-Run `python setup.py genfbs` to generate the FlatBuffers schema.
+Run `python setup.py genproto gened25519` to generate the Protobuffers schema.
 
 ### Interactive shell
 

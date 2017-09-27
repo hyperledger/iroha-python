@@ -46,7 +46,7 @@ class GenerateEd25519Sha3(Command):
 
 setup(
     name='iroha',
-    version='0.1.0',
+    version='0.95',
     description='Python library for Hyperledger Iroha',
     url='https://github.com/hyperledger/iroha-python',
     license='Apache',
