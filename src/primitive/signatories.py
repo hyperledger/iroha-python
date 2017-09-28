@@ -14,13 +14,16 @@ class Signatories:
     def sign(self,tx):
         logger.debug("Signatories.sign")
         payload = tx.payload
+        signs = []
         for signatory in self.signatories:
             if len(list(filter( lambda signature : signature.pubkey == signatory.public_key, tx.signatures))) == 0:
-                sign = Signature(
-                    pubkey = signatory.public_key,
-                    signature = crypto.sign(signatory, crypto.sign_hash(payload))
+                signs.append(
+                    Signature(
+                        pubkey = signatory.public_key,
+                        signature = crypto.sign(signatory, crypto.sign_hash(payload))
+                    )
                 )
-                tx.signatures.extend([sign])
+        tx.signatures.extend(signs)
 
     def clean(self):
         self.signatories = []

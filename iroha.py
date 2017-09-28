@@ -6,7 +6,7 @@ from __future__ import (absolute_import, division,
 
 from src.helper import crypto
 from src.creator import Creator
-from src.network.connection import  Connection
+from src.network.connection import Connection
 
 def keygen():
     return crypto.create_key_pair()

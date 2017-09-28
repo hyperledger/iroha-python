@@ -45,7 +45,7 @@ def verify(transaction):
             logger.info("Stateless Command Failed")
             return False
 
-    for signature in transaction.signature:
+    for signature in transaction.signatures:
         if not crypto.verify(signature.pubkey,
                              signature.signature,
                              crypto.sign_hash(payload)):
@@ -242,7 +242,11 @@ def verify_asset_id(asset_id):
     return True
 
 def verify_pubkey(pubkey):
-    key = crypto.b64decode(pubkey)
+    try:
+        key = crypto.b64decode(pubkey)
+    except:
+        logger.info("Stateless Public Key not Bease64 Encode")
+        return False
     if len(key) == 32:
         return True
     logger.info("Stateless Public Key Length Failed: " + key.decode())
