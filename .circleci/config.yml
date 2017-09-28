@@ -15,3 +15,8 @@ jobs:
           command: |
             make all
             tox
+      - run:
+          name: lint
+          command: |
+            pylint `find src -name '?*py'`
+            pylint `find tests -name '?*py'`
