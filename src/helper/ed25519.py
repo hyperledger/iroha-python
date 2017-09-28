@@ -16,13 +16,11 @@ def generate():
     publist = []
     for i in range(32):
         publist.append(public_key[i])
-    print(publist)
     publicKey64 = base64.b64encode(bytes(publist))
 
     prilist = []
     for i in range(64):
         prilist.append(private_key[i])
-    print(prilist)
     privateKey64 = base64.b64encode(bytes(prilist))
 
     return (publicKey64, privateKey64)
@@ -72,7 +70,6 @@ def sign(message, public, private):
     siglist = []
     for i in range(64):
         siglist.append(signature[i])
-    print(len(siglist))
     return base64.b64encode(bytes(siglist))
 
 
