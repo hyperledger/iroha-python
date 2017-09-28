@@ -1,10 +1,10 @@
 version: 2
 
 jobs:
+  working_directory: /opt/iroha-python
   build:
     docker:
       - image: satellitex/python_with_protobuf
-    working_directory: /iroha-python
 
     steps:
       - checkout
