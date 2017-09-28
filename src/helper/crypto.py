@@ -7,8 +7,6 @@ import time
 
 from collections import namedtuple
 
-from schema.transaction_pb2 import Transaction
-
 KeyPair = namedtuple('KeyPair', ['private_key', 'public_key'])
 
 def create_key_pair():
@@ -16,8 +14,6 @@ def create_key_pair():
     public_key, private_key = ed25519.generate()
     return KeyPair(private_key=private_key,
                    public_key=public_key)
-
-myKeyPair = create_key_pair()
 
 def sign(key_pair, message):
     return ed25519.sign(message,key_pair.public_key,key_pair.private_key)
