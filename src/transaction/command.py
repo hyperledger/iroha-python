@@ -1,4 +1,5 @@
 from schema.commands_pb2 import Command
+from src.helper import logger
 
 def wrap_cmd(cmd):
     if type(cmd) == type(Command.CreateAccount()):
@@ -17,6 +18,6 @@ def wrap_cmd(cmd):
         return Command(add_asset_quantity = cmd)
     elif type(cmd) == type(Command.TransferAsset()):
         return Command(transfer_asset = cmd)
-    else:
-        # TODO throw except
-        return False
+    # TODO throw except
+    logger.warning("Not Command Type")
+    return False

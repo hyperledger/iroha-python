@@ -29,7 +29,7 @@ class CryptTest(unittest.TestCase):
 
         self.tx = Transaction(
             payload = self.payload,
-            signature = [
+            signatures = [
                 Signature(
                     pubkey = self.keypair.public_key,
                     signature = crypto.sign(self.keypair,crypto.sign_hash(self.payload))
