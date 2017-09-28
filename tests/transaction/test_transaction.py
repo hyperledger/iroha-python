@@ -27,7 +27,13 @@ class TransactionTest(unittest.TestCase):
         tx.add_command(
             Command.AddSignatory(
                 account_id = "test@test",
-                pubkey = b"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                pubkey = keypairs[0].public_key
+            )
+        )
+        tx.add_command(
+            Command.SetAccountQuorum(
+                account_id = "test@test",
+                quorum = 2
             )
         )
 
@@ -51,5 +57,14 @@ class TransactionTest(unittest.TestCase):
         tx.signatures_clean()
         self.assertEqual(tx.count_signatures(),0)
         self.assertEqual(tx.signatories.size(),0)
+        self.assertTrue(tx.verify())
 
-
+        tx.add_command(
+            Command.AddSignatory(
+                account_id = "test@test",
+                pubkey = b"00"
+            )
+        )
+        tx.add_key_pairs(keypairs)
+        tx.sign()
+        self.assertFalse(tx.verify())

@@ -1,10 +1,10 @@
 from src.helper import logger,crypto
 
 from schema.transaction_pb2 import Transaction as TransactionSchema
-from schema.commands_pb2 import Command
 
 from src.primitive.signatories import Signatories
 from src.transaction import command as helper_command
+from src.helper import stateless_validator
 
 class Transaction:
     def __init__(self):
@@ -61,14 +61,7 @@ class Transaction:
 
     def verify(self):
         logger.debug("Transaction.verify")
-        for signature in self.tx.signatures:
-            if not crypto.verify(
-                signature.pubkey,
-                signature.signature,
-                self.hash()
-            ):
-                return False
-        return True
+        return stateless_validator.verify(self.tx)
 
     def add_command(self,cmd):
         self.tx.payload.commands.extend(
@@ -78,7 +71,7 @@ class Transaction:
     def add_commands(self,cmds):
         wcmds = []
         for cmd in cmds:
-            wcmds.append(helper_command(cmd))
+            wcmds.append(helper_command.wrap_cmd(cmd))
         self.tx.payload.commands.extend(
             [wcmds]
         )
