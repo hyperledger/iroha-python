@@ -1,19 +1,17 @@
 version: 2
-
 jobs:
-  working_directory: /opt/iroha-python
   build:
+    working_directory: /opt/iroha-python
     docker:
       - image: satellitex/python_with_protobuf
-
     steps:
       - checkout
       - run:
-        name: pip3 install
-        command: |
-          pip install -r requirements.txt
+          name: pip3 install
+          command: |
+            pip install -r requirements.txt
       - run:
-        name: tox
-        command: |
-          make all
-          tox
+          name: tox
+          command: |
+            make all
+            tox
