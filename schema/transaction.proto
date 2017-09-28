@@ -12,5 +12,5 @@ message Transaction {
     }
 
     Payload payload = 1;
-    repeated Signature signature = 2;
+    repeated Signature signatures = 2;
 }
