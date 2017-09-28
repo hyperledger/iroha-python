@@ -1,20 +1,17 @@
 version: 2
-
 jobs:
   build:
+    working_directory: /opt/iroha-python
     docker:
-      - image: alpine:3.5
-    working_directory: /iroha-python
-
+      - image: satellitex/python_with_protobuf
     steps:
-      - run:
-          name: Install system-wide packages
-          command: apk add --no-cache --no-progress cmake curl g++ git ninja openssh python2-dev python3-dev
-
       - checkout
-
       - run:
-          name: no test
+          name: pip3 install
           command: |
-          ls
-
+            pip install -r requirements.txt
+      - run:
+          name: tox
+          command: |
+            make all
+            tox
