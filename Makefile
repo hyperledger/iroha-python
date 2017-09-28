@@ -2,7 +2,7 @@ SHELL := /bin/bash
 SCHEMA := schema
 PROTO_SCHEMA := schema
 
-all: clean all-proto ed25519
+all: all-proto ed25519
 
 all-proto:
 	protoc -I=./ --python_out=./$(PROTO_SCHEMA) ./$(SCHEMA)/*proto
