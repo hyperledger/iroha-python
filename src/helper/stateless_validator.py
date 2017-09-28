@@ -34,9 +34,8 @@ def command(cmd):
         return add_asset_quantity(cmd.add_asset_quantity)
     elif cmd.HasField("transfer_asset"):
         return transfer_asset(cmd.transfer_asset)
-    else:
-        logger.info("Stateless validate Not has field")
-        return False
+    logger.info("Stateless validate Not has field")
+    return False
 
 def verify(transaction):
     logger.info("Transaction Stateless Verify")
@@ -142,9 +141,8 @@ def query(qry):
         return get_account_assets(payload.get_account_assets)
     elif payload.HasField("get_transactions"):
         return get_transactions(payload.get_transactions)
-    else:
-        logger.info("Stateless validate Not has field")
-        return False
+    logger.info("Stateless validate Not has field")
+    return False
 
 
 

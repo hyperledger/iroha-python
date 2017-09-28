@@ -14,8 +14,8 @@ def keygen():
 
 def genCreator(creator_account_id,keys):
     creator = Creator()
-    creator.setAccountId(creator_account_id)
-    creator.setKeys(keys)
+    creator.set_account_id(creator_account_id)
+    creator.set_keys(keys)
     return creator
 
 

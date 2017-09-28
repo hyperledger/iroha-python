@@ -10,8 +10,8 @@ class Creator:
     def __init__(self):
         logger.info("Constract Creator")
 
-    def setAccountId(self,account_id):
+    def set_account_id(self, account_id):
         self.creator_account_id = account_id
 
-    def setKeys(self,keys):
+    def set_keys(self, keys):
         self.signatories = keys
