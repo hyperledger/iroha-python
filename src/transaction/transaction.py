@@ -1,7 +1,10 @@
 from src.helper import logger,crypto
 
 from schema.transaction_pb2 import Transaction as TransactionSchema
+from schema.commands_pb2 import Command
+
 from src.primitive.signatories import Signatories
+from src.transaction import command as helper_command
 
 class Transaction:
     def __init__(self):
@@ -42,8 +45,40 @@ class Transaction:
 
     def signatures_clean(self):
         logger.debug("Transaction.signatures_clean")
-        self.tx.signature = []
+        while self.tx.signatures.__len__():
+           self.tx.signatures.pop()
+
+    def count_signatures(self):
+        return self.tx.signatures.__len__()
 
     def signatories_clean(self):
         logger.debug("Transaction.signatories_clean")
         self.signatories.clean()
+
+    def hash(self):
+        logger.debug("Transaction.hash")
+        return crypto.sign_hash(self.tx.payload)
+
+    def verify(self):
+        logger.debug("Transaction.verify")
+        for signature in self.tx.signatures:
+            if not crypto.verify(
+                signature.pubkey,
+                signature.signature,
+                self.hash()
+            ):
+                return False
+        return True
+
+    def add_command(self,cmd):
+        self.tx.payload.commands.extend(
+            [helper_command.wrap_cmd(cmd)]
+        )
+
+    def add_commands(self,cmds):
+        wcmds = []
+        for cmd in cmds:
+            wcmds.append(helper_command(cmd))
+        self.tx.payload.commands.extend(
+            [wcmds]
+        )

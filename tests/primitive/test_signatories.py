@@ -51,3 +51,6 @@ class PrimitiveTest(unittest.TestCase):
                     crypto.sign_hash(tx.payload)
                 )
             )
+
+        signatories.clean()
+        self.assertEqual(signatories.size(),0)
