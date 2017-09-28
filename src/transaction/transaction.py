@@ -75,3 +75,6 @@ class Transaction:
         self.tx.payload.commands.extend(
             [wcmds]
         )
+
+    def debug_proto_transaction(self):
+        return self.tx
