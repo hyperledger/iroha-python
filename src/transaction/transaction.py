@@ -48,7 +48,7 @@ class Transaction:
     def signatures_clean(self):
         logger.debug("Transaction.signatures_clean")
         while self.tx.signatures.__len__():
-           self.tx.signatures.pop()
+            self.tx.signatures.pop()
 
     def count_signatures(self):
         logger.debug("Transaction.count_signatures")

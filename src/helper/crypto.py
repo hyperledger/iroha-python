@@ -2,7 +2,6 @@
 from src.helper import ed25519
 import sha3
 import base64
-from datetime import datetime
 import time
 
 from collections import namedtuple
