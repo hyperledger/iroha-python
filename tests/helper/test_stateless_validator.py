@@ -2,10 +2,11 @@ import unittest
 
 from schema.transaction_pb2 import Transaction
 from schema.commands_pb2 import Command
-from schema.primitive_pb2 import Signature, Amount
-from schema.response_pb2 import Query, GetAccount, GetTransactions
+from schema.primitive_pb2 import Signature
+from schema.response_pb2 import Query, GetAccount, GetAccountTransactions, GetAccountAssets, GetAccountAssetTransactions, GetSignatories, GetTransactions
 
 from src.helper import crypto, logger, stateless_validator
+from src.helper.amount import int2amount
 
 class TestCommand(unittest.TestCase):
 
@@ -220,10 +221,7 @@ class TestCommand(unittest.TestCase):
             add_asset_quantity = Command.AddAssetQuantity(
                 account_id="chika@ichigo.mashimaro",
                 asset_id="ichigo.mashimaro/yen",
-                amount=Amount(
-                    integer_part=100,
-                    fractial_part=0
-                )
+                amount=int2amount(100)
             )
         )
         self.assertTrue(stateless_validator.command(add_asset_q))
@@ -231,10 +229,7 @@ class TestCommand(unittest.TestCase):
             add_asset_quantity = Command.AddAssetQuantity(
                 account_id="chika@ichigo.mashimaro",
                 asset_id="ichigo.mashimaro/",
-                amount=Amount(
-                    integer_part=100,
-                    fractial_part=0
-                )
+                amount=int2amount(100)
             )
         )
         self.assertFalse(stateless_validator.command(add_asset_q))
@@ -245,13 +240,19 @@ class TestCommand(unittest.TestCase):
                 src_account_id="chika@ichigo.mashimaro",
                 dest_account_id="miu@ichigo.mashimaro",
                 asset_id="ichigo.mashimaro/yen",
-                amount=Amount(
-                    integer_part=100,
-                    fractial_part=0
-                )
+                amount=int2amount(100)
             )
         )
         self.assertTrue(stateless_validator.command(transfer_as))
+        transfer_as = Command(
+            transfer_asset = Command.TransferAsset(
+                src_account_id="chika@ichigo.mashimaro",
+                dest_account_id="miu@ichigo.mashimaro",
+                asset_id="ichigo.mashimaro/yen",
+                amount=int2amount(0)
+            )
+        )
+        self.assertFalse(stateless_validator.command(transfer_as))
 
 
     def test_stateless_query(self):

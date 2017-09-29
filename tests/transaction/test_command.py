@@ -1,9 +1,9 @@
 import unittest
 
 from src.helper import logger,crypto
+from src.helper.amount import int2amount
 from src.transaction.command import wrap_cmd
 from schema.commands_pb2 import Command
-from schema.primitive_pb2 import Amount
 
 class CommandTest(unittest.TestCase):
     def setUp(self):
@@ -58,16 +58,12 @@ class CommandTest(unittest.TestCase):
         )
         self.assertEqual(create_as, wrap_cmd(create_as.create_asset))
 
-    # TODO use amount
     def test_wrap_cmd_add_asset_quantity(self):
         add_asset_q = Command(
             add_asset_quantity = Command.AddAssetQuantity(
                 account_id="chika@ichigo.mashimaro",
                 asset_id="ichigo.mashimaro/yen",
-                amount=Amount(
-                    integer_part=100,
-                    fractial_part=0
-                )
+                amount=int2amount(100)
             )
         )
         self.assertEqual(add_asset_q, wrap_cmd(add_asset_q.add_asset_quantity))
@@ -78,10 +74,7 @@ class CommandTest(unittest.TestCase):
                 src_account_id="chika@ichigo.mashimaro",
                 dest_account_id="miu@ichigo.mashimaro",
                 asset_id="ichigo.mashimaro/yen",
-                amount=Amount(
-                    integer_part=100,
-                    fractial_part=0
-                )
+                amount=int2amount(100)
             )
         )
         self.assertEqual(transfer_as,wrap_cmd(transfer_as.transfer_asset))
