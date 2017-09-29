@@ -3,7 +3,7 @@ import unittest
 from src.helper import logger,crypto
 from src.query.query import Query, QuerySchema
 
-from schema.response_pb2 import GetAccount, GetAccountAssets
+from schema.response_pb2 import GetAccount, GetAccountAssets, GetTransactions
 
 class QueryTest(unittest.TestCase):
     def setUp(self):
@@ -52,3 +52,10 @@ class QueryTest(unittest.TestCase):
                 )
             )
         )
+
+        query.set_request(
+            GetTransactions(
+                tx_hashes = [b"xx",b"aa"]
+            )
+        )
+        self.assertFalse(query.verify())
