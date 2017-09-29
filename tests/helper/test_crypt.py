@@ -1,6 +1,4 @@
 from src.helper import crypto
-import base64
-import sha3
 import unittest
 
 from schema.transaction_pb2 import Transaction
