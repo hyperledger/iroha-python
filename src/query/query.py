@@ -43,3 +43,7 @@ class Query:
     def debug_proto_query(self):
         logger.debug("debug_porto_query")
         return self.query
+
+    def issue(self):
+        logger.debug("Query.issue")
+        # TODO

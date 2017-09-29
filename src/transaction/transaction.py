@@ -84,3 +84,11 @@ class Transaction:
     def debug_proto_transaction(self):
         logger.debug("debug_porto_transaction")
         return self.tx
+
+    def issue(self):
+        logger.debug("Transaction.issue")
+        # TODO
+
+    def check(self):
+        logger.debug("Transaction.check")
+        # TODO
