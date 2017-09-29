@@ -125,6 +125,50 @@ class RequestTest(unittest.TestCase):
             ]
         )
 
+    def test_error_response(self):
+        logger.debug("test_signatories_response")
+        payload = QueryResponse.Payload(
+            error_response = ErrorResponse(
+                reason = ErrorResponse.NO_ACCOUNT
+            )
+        )
+        res = self.helper_make_response(payload)
+        self.assertTrue(res.verify())
+        self.assertTrue(res.has_error())
+        self.assertFalse(res.has_transactions())
+        self.assertEqual(
+            res.error_response(),
+            ErrorResponse(
+                reason=ErrorResponse.NO_ACCOUNT
+            )
+        )
+
+    def test_verify_response(self):
+        logger.debug("test_signatories_response")
+        payload = QueryResponse.Payload(
+            error_response = ErrorResponse(
+                reason = ErrorResponse.NO_ACCOUNT
+            )
+        )
+        res = Response(
+            QueryResponse(
+                payload=payload,
+                signature=Signature(
+                    pubkey=self.keyapir.public_key,
+                    signature=crypto.sign(self.keyapir, crypto.sign_hash(b"ng"))
+                )
+            )
+        )
+        self.assertTrue(res.verify())
+        self.assertTrue(res.has_error())
+        self.assertFalse(res.has_transactions())
+        self.assertEqual(
+            res.error_response(),
+            ErrorResponse(
+                reason=ErrorResponse.NO_ACCOUNT
+            )
+        )
+
     def helper_make_response(self,payload):
         return Response(
             QueryResponse(
