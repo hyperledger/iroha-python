@@ -1,6 +1,6 @@
 import unittest
 
-from src.helper import logger,crypto
+from src.helper import logger
 from src.query.query import Query, QuerySchema
 
 from schema.response_pb2 import GetAccount, GetAccountAssets, GetTransactions
