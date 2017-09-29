@@ -1,7 +1,7 @@
 from __future__ import print_function
 
-from src.helper import crypto
-from src.helper import logger
+from src.helper import crypto, logger
+from src.helper.amount import amount2int
 
 import re
 
@@ -45,7 +45,7 @@ def verify(transaction):
             logger.info("Stateless Command Failed")
             return False
 
-    for signature in transaction.signature:
+    for signature in transaction.signatures:
         if not crypto.verify(signature.pubkey,
                              signature.signature,
                              crypto.sign_hash(payload)):
@@ -242,7 +242,11 @@ def verify_asset_id(asset_id):
     return True
 
 def verify_pubkey(pubkey):
-    key = crypto.b64decode(pubkey)
+    try:
+        key = crypto.b64decode(pubkey)
+    except:
+        logger.info("Stateless Public Key not Base64 Encode")
+        return False
     if len(key) == 32:
         return True
     logger.info("Stateless Public Key Length Failed: " + key.decode())
@@ -255,6 +259,8 @@ def verify_quorum(quorum):
     logger.info("Stateless Quorum Failed: " + str(quorum))
     return False
 
-# TODO not deceided amount structure
 def verify_amount(amount):
+    if amount2int(amount) == 0:
+        logger.warning("Stateless Amount 0 Error")
+        return False
     return True

@@ -1,4 +1,4 @@
-from src.helper import crypto, ed25519, logger
+from src.helper import crypto, ed25519
 import unittest
 
 class Ed25519Test(unittest.TestCase):
@@ -9,8 +9,8 @@ class Ed25519Test(unittest.TestCase):
         private_key = b"+BTZfRSPRgDdxmjZlK+QhJ3RQryMH23LIPqg5C/Eu2QcBoj3QM6ovTcmPok0iFYI1y9M683ZS4Ifp10jr9dQrQ=="
         public_key = b"b+etgin9x1S16omALSjr4HTVzv9IEXQzlvSTp7el0Js="
 
-        signature = b"HlJIjuds2OaSeyOjWjpnpXis55NvH3TD1SNVEwedu7sAY+Ypkksg3ovHUGfBhwd8uVmIX+JgnjrhKgPdyeO7DA==";
-        message = b"0f1a39c82593e8b48e69f000c765c8e8072269d3bd4010634fa51d4e685076e30db22a9fb75def7379be0e808392922cb8c43d5dd5d5039828ed7ade7e1c6c81";
+        signature = b"HlJIjuds2OaSeyOjWjpnpXis55NvH3TD1SNVEwedu7sAY+Ypkksg3ovHUGfBhwd8uVmIX+JgnjrhKgPdyeO7DA=="
+        message = b"0f1a39c82593e8b48e69f000c765c8e8072269d3bd4010634fa51d4e685076e30db22a9fb75def7379be0e808392922cb8c43d5dd5d5039828ed7ade7e1c6c81"
 
         signatureb = ed25519.sign(message, pubb, prib)
 

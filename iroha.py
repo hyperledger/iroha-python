@@ -6,7 +6,21 @@ from __future__ import (absolute_import, division,
 
 from src.helper import crypto
 from src.creator import Creator
-from src.network.connection import  Connection
+from src.network.connection import Connection
+
+from schema.commands_pb2 import Command
+
+# typedef CommandName for access to iroha.XX
+CreateAccount = Command.CreateAccount
+AddSignatory = Command.AddSignatory
+RemoveSignatory = Command.RemoveSignatory
+
+CreateDomain = Command.CreateDomain
+CreateAsset = Command.CreateAsset
+
+AddAssetQuantity = Command.AddAssetQuantity
+SetAccountQuorum = Command.SetAccountQuorum
+TransferAsset = Command.TransferAsset
 
 def keygen():
     return crypto.create_key_pair()
