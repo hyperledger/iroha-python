@@ -8,7 +8,7 @@ from src.helper import stateless_validator
 
 class Transaction:
     def __init__(self):
-        logger.info("Create Transaction Constract")
+        logger.info("Create Transaction Construct")
         self.tx = TransactionSchema(
             payload = TransactionSchema.Payload(
                 created_time = crypto.now()
@@ -19,9 +19,11 @@ class Transaction:
 
 
     def set_creator_account_id(self,creator_account_id):
+        logger.debug("Transaction.set_creator_account_id")
         self.tx.payload.creator_account_id = creator_account_id
 
     def set_tx_counter(self,tx_counter):
+        logger.debug("Transaction.set_tx_counter")
         self.tx.payload.tx_counter = tx_counter
 
 
@@ -49,6 +51,7 @@ class Transaction:
            self.tx.signatures.pop()
 
     def count_signatures(self):
+        logger.debug("Transaction.count_signatures")
         return self.tx.signatures.__len__()
 
     def signatories_clean(self):
@@ -64,11 +67,13 @@ class Transaction:
         return stateless_validator.verify(self.tx)
 
     def add_command(self,cmd):
+        logger.debug("add_command")
         self.tx.payload.commands.extend(
             [helper_command.wrap_cmd(cmd)]
         )
 
     def add_commands(self,cmds):
+        logger.debug("add_commands")
         wcmds = []
         for cmd in cmds:
             wcmds.append(helper_command.wrap_cmd(cmd))
@@ -77,4 +82,5 @@ class Transaction:
         )
 
     def debug_proto_transaction(self):
+        logger.debug("debug_porto_transaction")
         return self.tx
