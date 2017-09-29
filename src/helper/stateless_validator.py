@@ -1,7 +1,7 @@
 from __future__ import print_function
 
-from src.helper import crypto
-from src.helper import logger
+from src.helper import crypto, logger
+from src.helper.amount import amount2int
 
 import re
 
@@ -259,6 +259,8 @@ def verify_quorum(quorum):
     logger.info("Stateless Quorum Failed: " + str(quorum))
     return False
 
-# TODO not deceided amount structure
 def verify_amount(amount):
+    if amount2int(amount) == 0:
+        logger.warning("Stateless Amount 0 Error")
+        return False
     return True
