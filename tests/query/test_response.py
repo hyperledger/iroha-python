@@ -155,19 +155,12 @@ class RequestTest(unittest.TestCase):
                 payload=payload,
                 signature=Signature(
                     pubkey=self.keyapir.public_key,
-                    signature=crypto.sign(self.keyapir, crypto.sign_hash(b"ng"))
+                    signature=crypto.sign(self.keyapir, b"ng")
                 )
             )
         )
-        self.assertTrue(res.verify())
-        self.assertTrue(res.has_error())
-        self.assertFalse(res.has_transactions())
-        self.assertEqual(
-            res.error_response(),
-            ErrorResponse(
-                reason=ErrorResponse.NO_ACCOUNT
-            )
-        )
+        self.assertFalse(res.verify())
+
 
     def helper_make_response(self,payload):
         return Response(
