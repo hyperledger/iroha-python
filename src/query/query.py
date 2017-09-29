@@ -2,6 +2,7 @@ from schema.response_pb2 import Query as QuerySchema
 
 from src.helper import logger, crypto, stateless_validator
 from src.primitive.signatories import Signatories
+from src.query.request import wrap_query
 
 class Query:
     def __init__(self):
@@ -35,9 +36,9 @@ class Query:
         logger.debug("Query.verify")
         return stateless_validator.query(self.query)
 
-    def set_request(self,cmd):
-        logger.debug("set_request")
-
+    def set_request(self,request):
+        logger.debug("Query.set_request")
+        wrap_query(self.query.payload,request)
 
     def debug_proto_query(self):
         logger.debug("debug_porto_query")
