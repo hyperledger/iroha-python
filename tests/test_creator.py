@@ -4,6 +4,7 @@ from src.helper import logger,crypto
 from src.creator import Creator
 
 from schema.transaction_pb2 import Transaction
+from schema.response_pb2 import Query
 from schema.primitive_pb2 import Signature
 
 class CreatorTest(unittest.TestCase):
@@ -11,7 +12,8 @@ class CreatorTest(unittest.TestCase):
         logger.setDebug()
         logger.info("CreatorTest")
 
-    def test_creator(self):
+    def test_create_tx(self):
+        logger.info("test_create_tx")
         creator = Creator()
 
         keypairs = []
@@ -49,4 +51,22 @@ class CreatorTest(unittest.TestCase):
                 ]
             )
         )
+
+    def test_create_query(self):
+        logger.info("test_create_query")
+        creator = Creator()
+
+        creator.set_account_id("taiyo@blue.player")
+
+        query = creator.create_query()
+        self.assertEqual(
+            query.debug_proto_query(),
+            Query(
+                payload = Query.Payload(
+                    creator_account_id = "taiyo@blue.player",
+                    created_time = query.debug_proto_query().payload.created_time
+                )
+            )
+        )
+
 
