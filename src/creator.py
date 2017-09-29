@@ -9,7 +9,7 @@ from src.transaction.transaction import Transaction
 
 class Creator:
     def __init__(self):
-        logger.info("Constract Creator")
+        logger.info("Construct Creator")
 
     def set_account_id(self, account_id):
         logger.debug("Creator.set_account_id")
