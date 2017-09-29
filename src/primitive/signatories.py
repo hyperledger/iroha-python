@@ -8,14 +8,14 @@ class Signatories:
 
     def append(self, keypair):
         logger.debug("Signatories.append")
-        if len(list(filter( lambda signatory : signatory.public_key == keypair.public_key, self.signatories))) == 0:
+        if not [ signatory for signatory in self.signatories if signatory.public_key == keypair.public_key ]:
             self.signatories.append(keypair)
 
     def sign(self,tx):
         logger.debug("Signatories.sign")
         payload = tx.payload
         for signatory in self.signatories:
-            if len(list(filter( lambda signature : signature.pubkey == signatory.public_key, tx.signatures))) == 0:
+            if not [ signature for signature in tx.signatures if signature.pubkey == signatory.public_key ]:
                 tx.signatures.extend([
                     Signature(
                         pubkey = signatory.public_key,
