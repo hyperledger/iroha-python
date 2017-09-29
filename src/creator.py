@@ -20,7 +20,7 @@ class Creator:
         self.signatories = keys
 
     def create_tx(self):
-        logger.debug("cerate_tx")
+        logger.debug("create_tx")
         retx = Transaction()
         retx.add_key_pairs(self.signatories)
         retx.set_creator_account_id(self.creator_account_id)

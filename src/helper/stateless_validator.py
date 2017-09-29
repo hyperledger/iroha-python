@@ -245,7 +245,7 @@ def verify_pubkey(pubkey):
     try:
         key = crypto.b64decode(pubkey)
     except:
-        logger.info("Stateless Public Key not Bease64 Encode")
+        logger.info("Stateless Public Key not Base64 Encode")
         return False
     if len(key) == 32:
         return True
