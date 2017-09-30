@@ -3,10 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 class IrohaPythonExceptipn(Exception):
     message = "Occured Error"
 
-    def __init__(self, payload=None):
-        Exception.__init__(self)
-        self.payload = payload
-
 """
     HasFieldException
 """
