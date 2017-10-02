@@ -9,6 +9,8 @@ from src.creator import Creator
 from src.network.connection import Connection
 
 from schema.commands_pb2 import Command
+from schema.endpoint_pb2 import ToriiResponse, TxStatus
+from schema.response_pb2 import GetAccountAssets,GetTransactions,GetAccount,GetAccountAssetTransactions,GetAccountTransactions,GetSignatories
 
 # typedef CommandName for access to iroha.XX
 CreateAccount = Command.CreateAccount
@@ -32,7 +34,7 @@ def keygen():
     return crypto.create_key_pair()
 
 
-def genCreator(creator_account_id,keys,connection):
+def gen_creator(creator_account_id,keys,connection):
     """
     Generate creator. ( reference: `Creator` )
 
@@ -50,7 +52,7 @@ def genCreator(creator_account_id,keys,connection):
     return creator
 
 
-def genConnection(ip,port):
+def gen_connection(ip,port):
     """
     Generate Connection used to connect iroha.
 
