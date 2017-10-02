@@ -21,7 +21,7 @@ class Connection:
         self.ip = "0.0.0.0"
         self.port = "8080"
         if "ip" in connection_env and "port" in connection_env:
-            self.set_env(connection_env)
+            self.set_env(ip=connection_env["ip"],port=connection_env["port"])
             self.gen_stub()
 
 
@@ -41,7 +41,7 @@ class Connection:
             raise exception.InvalidIpException(ip)
         if not stateless_validator.verify_ip(ip):
             raise exception.InvalidIpException(ip)
-        if type(connection_env["port"] != type("")):
+        if type(port) != type(""):
             raise exception.InvalidPortException(port)
         if not stateless_validator.verify_port(port):
             raise exception.InvalidPortException(port)

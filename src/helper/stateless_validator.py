@@ -269,7 +269,7 @@ def verify_amount(amount):
 
 def verify_ip(peer_ip):
     if not PEER_IP in cmp:
-        cmp[PEER_IP] = re.compile(r"^[0-9]{1,4}(\.[0-9]{1,4){3}$")
+        cmp[PEER_IP] = re.compile(r"^[0-9]{1,3}(\.[0-9]{1,3}){3}$")
     if cmp[PEER_IP].match(peer_ip) is None:
         logger.info("Stateless Peer Ip Failed: " + peer_ip)
         return False
