@@ -67,9 +67,12 @@ class Creator:
         """
         logger.debug("Creator.create_tx")
         retx = Transaction()
-        retx.set_connection(self.connection)
-        retx.add_key_pairs(self.signatories)
-        retx.set_creator_account_id(self.creator_account_id)
+        if self.connection:
+            retx.set_connection(self.connection)
+        if self.signatories:
+            retx.add_key_pairs(self.signatories)
+        if self.creator_account_id:
+            retx.set_creator_account_id(self.creator_account_id)
         retx.time_stamp()
         return retx
 
@@ -83,7 +86,9 @@ class Creator:
         """
         logger.debug("Creator.create_query")
         retq = Query()
-        retq.set_connection(self.connection)
-        retq.set_creator_account_id(self.creator_account_id)
+        if self.connection:
+            retq.set_connection(self.connection)
+        if self.creator_account_id:
+            retq.set_creator_account_id(self.creator_account_id)
         retq.time_stamp()
         return retq
