@@ -1,8 +1,6 @@
-import iroha
 import time
-from src.helper import logger, crypto
-from schema.transaction_pb2 import Transaction
-from schema.commands_pb2 import Command
+from src.helper import logger
+import iroha
 
 logger.setDebug()
 
