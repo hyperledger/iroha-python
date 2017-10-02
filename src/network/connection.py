@@ -55,6 +55,22 @@ class Connection:
         self.stub_tx = self.__get_command_stub(channel)
         self.stub_query = self.__get_query_stub(channel)
 
+    def tx_stub(self):
+        """
+        Get Transaction Connection Stub
+
+        :return: transaction service stub
+        """
+        return self.stub_tx
+
+    def query_stub(self):
+        """
+        Get Query Connection Stub
+
+        :return: query service stub
+        """
+        return self.stub_query
+
 
     def __get_command_stub(self,channel):
         return CommandServiceStub(channel)
