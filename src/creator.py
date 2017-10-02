@@ -23,12 +23,9 @@ class Creator:
             connection ( `Connection` ): connection used to connect iroha.
         """
         logger.info("Construct Creator")
-        if account_id:
-            self.set_account_id(account_id)
-        if keys:
-            self.set_keys(keys)
-        if connection:
-            self.set_connection(connection)
+        self.set_account_id(account_id)
+        self.set_keys(keys)
+        self.set_connection(connection)
 
     def set_account_id(self, account_id):
         """
@@ -39,6 +36,7 @@ class Creator:
         """
         logger.debug("Creator.set_account_id")
         self.creator_account_id = account_id
+
 
     def set_keys(self, keys):
         """
