@@ -36,3 +36,6 @@ class InvalidIpException(IrohaPythonException):
 
 class InvalidPortException(IrohaPythonException):
     message = "InvalidPortException"
+
+class NotConnectionStubException(IrohaPythonException):
+    message = "NotConnectionStubException"

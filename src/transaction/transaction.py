@@ -40,10 +40,10 @@ class Transaction:
 
     def set_connection(self,connection):
         """
-        Set connection of this transaction
+        Set connection used to connect iroha
 
         Args:
-            connection ( `Connection` ): connection is connector of transaction
+            connection ( `Connection` ): connection used to connect iroha
         """
         logger.debug("Transaction.set_connection")
         self.connection = connection
