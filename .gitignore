@@ -100,3 +100,6 @@ _generated/
 
 # proto
 *_pb2*
+
+# log
+log
