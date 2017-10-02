@@ -6,6 +6,7 @@ from __future__ import (absolute_import, division,
 
 from src.helper import logger
 from src.transaction.transaction import Transaction
+from src.query.query import Query
 
 class Creator:
     def __init__(self):
@@ -26,3 +27,10 @@ class Creator:
         retx.set_creator_account_id(self.creator_account_id)
         retx.time_stamp()
         return retx
+
+    def create_query(self):
+        logger.debug("create_query")
+        retq = Query()
+        retq.set_creator_account_id(self.creator_account_id)
+        retq.time_stamp()
+        return retq

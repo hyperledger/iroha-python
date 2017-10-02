@@ -1,10 +1,9 @@
 from __future__ import print_function
 
-from src.helper import crypto, logger
-from src.helper.amount import amount2int
-
 import re
 
+from src.helper import crypto, logger
+from src.primitive.amount import amount2int
 
 MAX_DELAY = 1000 * 3600 * 24  # max-delay between tx creation and validation
 
