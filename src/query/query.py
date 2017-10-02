@@ -3,6 +3,7 @@ from schema.response_pb2 import Query as QuerySchema
 from src.helper import logger, crypto, stateless_validator
 from src.primitive.signatories import Signatories
 from src.query.request import wrap_query
+from src.query.response import Response
 
 class Query:
     """
@@ -38,6 +39,16 @@ class Query:
         """
         logger.debug("Query.set_tx_counter")
         self.query.payload.query_counter = query_counter
+
+    def set_connection(self,connection):
+        """
+        Set connection used to connect iroha
+
+        Args:
+            connection ( `Connection` ) : connection used to connect iroha
+        """
+        logger.debug("Query.set_counnection")
+        self.connection = connection
 
     def time_stamp(self):
         """
@@ -98,4 +109,5 @@ class Query:
             response from iroha respond to this query.
         """
         logger.debug("Query.issue")
-        # TODO
+        response = self.connection.query_stub().Find(self.query)
+        return Response( response )

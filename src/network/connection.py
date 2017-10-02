@@ -11,9 +11,11 @@ class Connection:
         Connection establish to iroha.
         If connection_env is empty, nothing to do.
 
-        :param connection_env:
-            ip = ip address string of iroha. ( default "0.0.0.0" )
-            port = port number string of iroha. (default : "8080" )
+        Args:
+            **connection_env: Arbitrary keyword arguments.
+                ip ( str ): ip address string of iroha. ( default "0.0.0.0" )
+                port (str): port number string of iroha. (default : "8080" )
+
         """
         logger.info("Constract Conncection")
         self.ip = "0.0.0.0"
@@ -27,10 +29,12 @@ class Connection:
         """
         Set environemnt of connect iroha
 
-        :param connection_env:
-            ip = ip address string of iroha. ( default "0.0.0.0" )
-            port = port number string of iroha. (default : "8080" )
+        Args:
+            **connection_env: Arbitrary keyword arguments.
+                ip ( str ): ip address string of iroha. ( default "0.0.0.0" )
+                port (str): port number string of iroha. (default : "8080" )
         """
+
         ip = connection_env["ip"]
         port = connection_env["port"]
         if type(ip) != type(""):
@@ -49,7 +53,7 @@ class Connection:
         """
         Generate Stub for connection to iroha.
 
-        :except It is called, when failed connect or another error.
+        Notes: It is called, when failed connect or another error.
         """
         channel = grpc.insecure_channel(self.ip + ':' + self.port)
         self.stub_tx = self.__get_command_stub(channel)
@@ -59,16 +63,29 @@ class Connection:
         """
         Get Transaction Connection Stub
 
-        :return: transaction service stub
+        Returns:
+            `CommandServiceStub`: transaction service stub
+
+        Raises:
+            `NotConnectionStubException`: Do not initialize TransactionStub.
+            (Maybe, don't call Connection.gen_stub())
         """
+        if not self.stub_tx:
+            raise exception.NotConnectionStubException
         return self.stub_tx
 
     def query_stub(self):
         """
         Get Query Connection Stub
+        Returns:
+            `QueryServiceStub`: query service stub
 
-        :return: query service stub
+        Raises:
+            `NotConnectionStubException`: Do not initialize QueryStub.
+            (Maybe, don't call Connection.gen_stub())
         """
+        if not self.stub_query:
+            raise exception.NotConnectionStubException
         return self.stub_query
 
 
