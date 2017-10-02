@@ -13,7 +13,7 @@ class RequestTest(unittest.TestCase):
     def setUp(self):
         logger.setInfo()
         logger.info("RequestTest")
-        self.keyapir = crypto.create_key_pair()
+        self.keypair = crypto.create_key_pair()
 
     def test_account_response(self):
         logger.debug("test_account_response")
@@ -68,7 +68,7 @@ class RequestTest(unittest.TestCase):
         payload = QueryResponse.Payload(
             signatories_response = SignatoriesResponse(
                 keys = [
-                    self.keyapir.public_key
+                    self.keypair.public_key
                 ]
             )
         )
@@ -79,7 +79,7 @@ class RequestTest(unittest.TestCase):
         self.assertEqual(
             res.signatories(),
             [
-                self.keyapir.public_key
+                self.keypair.public_key
             ]
         )
 
@@ -154,8 +154,8 @@ class RequestTest(unittest.TestCase):
             QueryResponse(
                 payload=payload,
                 signature=Signature(
-                    pubkey=self.keyapir.public_key,
-                    signature=crypto.sign(self.keyapir, b"ng")
+                    pubkey=self.keypair.public_key,
+                    signature=crypto.sign(self.keypair, b"ng")
                 )
             )
         )
@@ -167,8 +167,8 @@ class RequestTest(unittest.TestCase):
             QueryResponse(
                 payload=payload,
                 signature=Signature(
-                    pubkey=self.keyapir.public_key,
-                    signature=crypto.sign(self.keyapir, crypto.sign_hash(payload))
+                    pubkey=self.keypair.public_key,
+                    signature=crypto.sign(self.keypair, crypto.sign_hash(payload))
                 )
             )
         )

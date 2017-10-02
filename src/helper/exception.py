@@ -1,26 +1,26 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-class IrohaPythonExceptipn(Exception):
+class IrohaPythonException(Exception):
     message = "Occured Error"
 
 """
     HasFieldException
 """
-class NotCommandException(IrohaPythonExceptipn):
+class NotCommandException(IrohaPythonException):
     message = "NotCommandException"
 
-class NotErrorResponseException(IrohaPythonExceptipn):
+class NotErrorResponseException(IrohaPythonException):
     message = "NotErrorResponseException"
 
-class NotAccountResponseException(IrohaPythonExceptipn):
+class NotAccountResponseException(IrohaPythonException):
     message = "NotAccountResponseException"
 
-class NotAccountAssetResponseException(IrohaPythonExceptipn):
+class NotAccountAssetResponseException(IrohaPythonException):
     message = "NotAccountAssetResponseException"
 
-class NotSignatoriesResponseExcepiton(IrohaPythonExceptipn):
+class NotSignatoriesResponseExcepiton(IrohaPythonException):
     message = "NotSignatoriesResponseExcepiton"
 
 
-class NotTransactionsResponseException(IrohaPythonExceptipn):
+class NotTransactionsResponseException(IrohaPythonException):
     message = "NotTransactionsResponseException"

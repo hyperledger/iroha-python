@@ -41,7 +41,7 @@ class Query:
         wrap_query(self.query.payload,request)
 
     def debug_proto_query(self):
-        logger.debug("debug_porto_query")
+        logger.debug("debug_proto_query")
         return self.query
 
     def issue(self):
