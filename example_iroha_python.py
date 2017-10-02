@@ -1,9 +1,7 @@
 import time
-from src.helper import logger
 import iroha
 
-logger.setDebug()
-
+iroha.setDebugLog()
 
 # Generate Connection used to connect iroha
 connection = iroha.gen_connection(ip="127.0.0.1",port="50051")
