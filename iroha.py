@@ -4,7 +4,7 @@
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 
-from src.helper import crypto
+from src.helper import crypto, logger
 from src.creator import Creator
 from src.network.connection import Connection
 
@@ -65,3 +65,10 @@ def gen_connection(ip,port):
     """
     connect = Connection(ip=ip,port=port)
     return connect
+
+def setDebugLog():
+    logger.setDebug()
+def setInfoLog():
+    logger.setInfo()
+def setWarningLog():
+    logger.setWarning()
