@@ -34,7 +34,7 @@ class Connection:
                 ip ( str ): ip address string of iroha. ( default "0.0.0.0" )
                 port (str): port number string of iroha. (default : "8080" )
         """
-
+        logger.debug("Connection.set_env")
         ip = connection_env["ip"]
         port = connection_env["port"]
         if type(ip) != type(""):
@@ -47,7 +47,7 @@ class Connection:
             raise exception.InvalidPortException(port)
 
         self.ip = ip
-        self.prot = port
+        self.port = port
 
     def gen_stub(self):
         """
@@ -55,6 +55,7 @@ class Connection:
 
         Notes: It is called, when failed connect or another error.
         """
+        logger.debug("Connection.get_stub")
         channel = grpc.insecure_channel(self.ip + ':' + self.port)
         self.stub_tx = self.__get_command_stub(channel)
         self.stub_query = self.__get_query_stub(channel)
@@ -70,6 +71,7 @@ class Connection:
             `NotConnectionStubException`: Do not initialize TransactionStub.
             (Maybe, don't call Connection.gen_stub())
         """
+        logger.debug("Connection.tx_stub")
         if not self.stub_tx:
             raise exception.NotConnectionStubException
         return self.stub_tx
@@ -84,6 +86,7 @@ class Connection:
             `NotConnectionStubException`: Do not initialize QueryStub.
             (Maybe, don't call Connection.gen_stub())
         """
+        logger.debug("Connection.stub_query")
         if not self.stub_query:
             raise exception.NotConnectionStubException
         return self.stub_query

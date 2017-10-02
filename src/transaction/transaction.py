@@ -1,6 +1,7 @@
 from src.helper import logger,crypto
 
 from schema.transaction_pb2 import Transaction as TransactionSchema
+from schema.endpoint_pb2 import TxStatusRequest
 
 from src.primitive.signatories import Signatories
 from src.transaction import command as helper_command
@@ -177,4 +178,7 @@ class Transaction:
         """
         logger.debug("Transaction.check")
         # TODO thinking now
-        return self.connection.tx_stub().Status(self.hash())
+        check = TxStatusRequest(
+            tx_hash=self.hash()
+        )
+        return self.connection.tx_stub().Status(check)
