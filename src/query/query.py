@@ -23,7 +23,8 @@ class Query:
         """
         Set creator of this query.
 
-        :param creator_account_id: it is creator's account id of query
+        Args:
+            creator_account_id (str) : it is creator's account id of query
         """
         logger.debug("Query.set_creator_account_id")
         self.query.payload.creator_account_id = creator_account_id
@@ -32,8 +33,8 @@ class Query:
         """
         Set query counter of this query
 
-        :param query_counter:
-            query_counter is counter of query
+        Args:
+            query_counter (int) : query_counter is counter of query
         """
         logger.debug("Query.set_tx_counter")
         self.query.payload.query_counter = query_counter
@@ -49,7 +50,8 @@ class Query:
         """
         Get hash of this query
 
-        :return: hash of this query
+        Returns:
+            bytes: The return value is hash of this query
         """
         logger.debug("Query.hash")
         return crypto.sign_hash(self.query.payload)
@@ -58,19 +60,18 @@ class Query:
         """
         Verify stateless validate this query
 
-        :return:
-            :True: stateless validation success
-            :False: stateless validation failed
+        Returns:
+            bool: The return value. True for success, False otherwise.
         """
         logger.debug("Query.verify")
         return stateless_validator.query(self.query)
 
     def set_request(self,request):
         """
-        Set request strcuture of query
+        Set request strcuture of query.
 
-        :param request:
-            It is request of query.
+        Args:
+            request ( `Request` ) : It is request of query.
             `GetAccount`, `GetAccountTransactions`, `GetAccountAssetTransactions`, `GetTransactions`,
              `GetAccountAssets` or `GetSignatories`.
         """
@@ -82,7 +83,8 @@ class Query:
         Debug function.
         Return query proto structure had this query.
 
-        :return: Query protobuf data
+        Returns:
+             `QueryResponse`: Query protobuf data
         """
         logger.debug("debug_proto_query")
         return self.query
@@ -91,7 +93,8 @@ class Query:
         """
         Issue to iroha for this query and return that response.
 
-        :return: `Response` type ( this is wrapped QueryResponse proto structure )
+        Returns:
+            `Response`: this is wrapped `QueryResponse` proto structure.
             response from iroha respond to this query.
         """
         logger.debug("Query.issue")
