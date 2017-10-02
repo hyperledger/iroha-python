@@ -11,3 +11,4 @@ pysha3==1.0.2
 pylint==1.7.2
 tox==2.8.2
 six==1.10.0
+pydocstyle==2.0.0
