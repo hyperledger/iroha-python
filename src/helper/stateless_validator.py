@@ -13,6 +13,8 @@ ACCOUNT_ID = "account_id"
 DOMAIN_ID = "domain_id"
 ASSET_NAME = "asset_name"
 ASSET_ID = "asset_id"
+PEER_IP = "peer_ip"
+PEER_PORT = "peer_port"
 
 
 def command(cmd):
@@ -261,5 +263,22 @@ def verify_quorum(quorum):
 def verify_amount(amount):
     if amount2int(amount) == 0:
         logger.warning("Stateless Amount 0 Error")
+        return False
+    return True
+
+
+def verify_ip(peer_ip):
+    if not PEER_IP in cmp:
+        cmp[PEER_IP] = re.compile(r"^[0-9]{1,4}(\.[0-9]{1,4){3}$")
+    if cmp[PEER_IP].match(peer_ip) is None:
+        logger.info("Stateless Peer Ip Failed: " + peer_ip)
+        return False
+    return True
+
+def verify_port(peer_port):
+    if not PEER_PORT in cmp:
+        cmp[PEER_PORT] = re.compile(r"^[0-9]{1,5}$")
+    if cmp[PEER_PORT].match(peer_port) is None:
+        logger.info("Stateless Peer Port Failed: " + peer_port)
         return False
     return True

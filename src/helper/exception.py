@@ -1,7 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
+from src.helper import logger
 
 class IrohaPythonException(Exception):
     message = "Occured Error"
+    def __init__(self,option=None):
+        logger.warning(self.message)
+        if option:
+            logger.warning(option)
 
 """
     HasFieldException
@@ -24,3 +29,10 @@ class NotSignatoriesResponseExcepiton(IrohaPythonException):
 
 class NotTransactionsResponseException(IrohaPythonException):
     message = "NotTransactionsResponseException"
+
+
+class InvalidIpException(IrohaPythonException):
+    message = "InvalidIpException"
+
+class InvalidPortException(IrohaPythonException):
+    message = "InvalidPortException"
