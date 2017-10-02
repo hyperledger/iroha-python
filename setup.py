@@ -39,7 +39,6 @@ class GenerateEd25519Sha3(Command):
 
     def run(self):
         xrun('cd','src/lib/ed25519')
-        xrun('make','clean')
         xrun('make')
 
 
@@ -56,9 +55,7 @@ setup(
         'protobuf',
         'grpcio',
         'grpcio-tools',
-        'pysha3',
-        'pylint',
-        'six'
+        'pysha3'
     ],
     cmdclass={
         'genproto': GenerateProtobufCommand,
