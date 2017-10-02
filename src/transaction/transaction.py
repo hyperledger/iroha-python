@@ -26,6 +26,9 @@ class Transaction:
         logger.debug("Transaction.set_tx_counter")
         self.tx.payload.tx_counter = tx_counter
 
+    def set_connection(self,connection):
+        logger.debug("Transaction.set_connection")
+        self.connection = connection
 
     def add_key_pair(self,keypair):
         logger.debug("Transaction.add_key_pair")
@@ -63,16 +66,36 @@ class Transaction:
         return crypto.sign_hash(self.tx.payload)
 
     def verify(self):
+        """
+        Stateless validate this transaction.
+
+        Returns:
+            bool: 
+
+        """
         logger.debug("Transaction.verify")
         return stateless_validator.verify(self.tx)
 
     def add_command(self,cmd):
+        """
+        Add Command to this transaction
+        Args:
+            cmd( `CreateAccount`,`AddSignatory`,`RemoveSignatory`,`CreateDomain`,`CreateAsset`,
+                `AddAssetQuantity`,`SetAccountQuorum` or `TransferAsset` ): command of protobuf structre.
+
+        """
         logger.debug("add_command")
         self.tx.payload.commands.extend(
             [helper_command.wrap_cmd(cmd)]
         )
 
     def add_commands(self,cmds):
+        """
+        Add Commands to this transaction
+        Args:
+            cmds ( [](`CreateAccount`,`AddSignatory`,`RemoveSignatory`,`CreateDomain`,`CreateAsset`,
+                `AddAssetQuantity`,`SetAccountQuorum` or `TransferAsset`) ): array of command type protobuf structre.
+        """
         logger.debug("add_commands")
         wcmds = []
         for cmd in cmds:
@@ -86,8 +109,11 @@ class Transaction:
         return self.tx
 
     def issue(self):
+        """
+        Issue to iroha with this transaction
+        """
         logger.debug("Transaction.issue")
-        # TODO
+        self.connection.tx_stub().Torii(self.tx)
 
     def check(self):
         logger.debug("Transaction.check")
