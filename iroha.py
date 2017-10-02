@@ -23,17 +23,43 @@ SetAccountQuorum = Command.SetAccountQuorum
 TransferAsset = Command.TransferAsset
 
 def keygen():
+    """
+    Generate keypair ( public key and private key )
+
+    Returns:
+        `KeyPair`: base64 encoded ed25519 with sha3_256 keypair [ public_key, private_key ].
+    """
     return crypto.create_key_pair()
 
 
-def genCreator(creator_account_id,keys):
-    creator = Creator()
-    creator.set_account_id(creator_account_id)
-    creator.set_keys(keys)
+def genCreator(creator_account_id,keys,connection):
+    """
+    Generate creator. ( reference: `Creator` )
+
+    Args:
+        creator_account_id ( str ): creator account id
+        keys ( []`KeyPair` ) : array of keypair. this means signatories of creator.
+        connection ( `Connection` ) : connection used to connect iroha.
+            `Conncect` can be got by iroha.connection(ip,port).
+
+    Returns:
+        `Creator`: Generated creator with account_id, signatories(keys) and connection
+
+    """
+    creator = Creator(creator_account_id,keys,connection)
     return creator
 
 
-def connection(ip,port):
-    connect = Connection()
-    connect.setUp(ip,port)
+def genConnection(ip,port):
+    """
+    Generate Connection used to connect iroha.
+
+    Args:
+        ip: ip address string of iroha.
+        port: port number string of iroha.
+
+    Returns:
+        `Connection`: connector used to connect iroha.
+    """
+    connect = Connection(ip=ip,port=port)
     return connect
