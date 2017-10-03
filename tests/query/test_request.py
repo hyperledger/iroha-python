@@ -1,6 +1,6 @@
 from schema.response_pb2 import GetAccount, GetAccountTransactions, GetAccountAssetTransactions, GetTransactions, GetAccountAssets, GetSignatories, Query
-from src.helper import logger
-from src.query.request import wrap_query
+from iroha.helper import logger
+from iroha.query.request import wrap_query
 
 import unittest
 

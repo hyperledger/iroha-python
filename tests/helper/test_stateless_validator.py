@@ -4,8 +4,8 @@ from schema.commands_pb2 import Command
 from schema.primitive_pb2 import Signature
 from schema.response_pb2 import Query, GetAccount, GetTransactions
 from schema.transaction_pb2 import Transaction
-from src.helper import crypto, logger, stateless_validator
-from src.primitive.amount import int2amount
+from iroha.helper import crypto, logger, stateless_validator
+from iroha.primitive.amount import int2amount
 
 
 class TestCommand(unittest.TestCase):

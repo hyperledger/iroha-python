@@ -1,7 +1,7 @@
 import unittest
 
-from src.helper import logger
-from src.primitive import amount
+from iroha.helper import logger
+from iroha.primitive import amount
 
 
 class CipherTest(unittest.TestCase):

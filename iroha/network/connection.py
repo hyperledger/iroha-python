@@ -1,6 +1,6 @@
 import grpc
 from schema.endpoint_pb2 import CommandServiceStub, QueryServiceStub
-from src.helper import logger, stateless_validator, exception
+from iroha.helper import logger, stateless_validator, exception
 
 class Connection:
     """

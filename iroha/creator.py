@@ -4,9 +4,9 @@
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 
-from src.helper import logger
-from src.transaction.transaction import Transaction
-from src.query.query import Query
+from iroha.helper import logger
+from iroha.transaction.transaction import Transaction
+from iroha.query.query import Query
 
 class Creator:
     """

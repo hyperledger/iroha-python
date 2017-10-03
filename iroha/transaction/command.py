@@ -1,5 +1,5 @@
 from schema.commands_pb2 import Command
-from src.helper import logger
+from iroha.helper import logger
 
 def wrap_cmd(cmd):
     if type(cmd) == type(Command.CreateAccount()):

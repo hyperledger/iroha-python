@@ -1,5 +1,5 @@
-from src.helper import logger, crypto
-from src.helper.exception import NotErrorResponseException, NotAccountAssetResponseException, NotAccountResponseException, NotSignatoriesResponseExcepiton, NotTransactionsResponseException
+from iroha.helper import logger, crypto
+from iroha.helper.exception import NotErrorResponseException, NotAccountAssetResponseException, NotAccountResponseException, NotSignatoriesResponseExcepiton, NotTransactionsResponseException
 
 class Response:
     def __init__(self,query_response):

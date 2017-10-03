@@ -1,7 +1,7 @@
 import unittest
 
-from src.helper import logger,crypto
-from src.transaction.transaction import Transaction
+from iroha.helper import logger,crypto
+from iroha.transaction.transaction import Transaction
 
 from schema.commands_pb2 import Command
 

@@ -1,5 +1,5 @@
 from schema.response_pb2 import GetAccount, GetAccountTransactions, GetAccountAssetTransactions, GetTransactions, GetAccountAssets, GetSignatories
-from src.helper import logger
+from iroha.helper import logger
 
 def wrap_query(query_payload,request):
     if type(request) == type(GetAccount()):

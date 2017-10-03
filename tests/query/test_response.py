@@ -2,9 +2,9 @@ from schema.response_pb2 import AccountResponse, AccountAssetResponse, QueryResp
 from schema.response_pb2 import Account, AccountAsset
 from schema.primitive_pb2 import Signature
 from schema.transaction_pb2 import Transaction
-from src.helper import logger, crypto
-from src.primitive.amount import int2amount
-from src.query.response import Response
+from iroha.helper import logger, crypto
+from iroha.primitive.amount import int2amount
+from iroha.query.response import Response
 
 import unittest
 

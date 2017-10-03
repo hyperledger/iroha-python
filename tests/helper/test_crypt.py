@@ -1,10 +1,10 @@
-from src.helper import crypto
+from iroha.helper import crypto
 import unittest
 
 from schema.transaction_pb2 import Transaction
 from schema.primitive_pb2 import Signature
 from schema.commands_pb2 import Command
-from src.helper import logger
+from iroha.helper import logger
 
 class CryptTest(unittest.TestCase):
 

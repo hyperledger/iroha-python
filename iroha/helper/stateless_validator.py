@@ -2,8 +2,8 @@ from __future__ import print_function
 
 import re
 
-from src.helper import crypto, logger
-from src.primitive.amount import amount2int
+from iroha.helper import crypto, logger
+from iroha.primitive.amount import amount2int
 
 MAX_DELAY = 1000 * 3600 * 24  # max-delay between tx creation and validation
 

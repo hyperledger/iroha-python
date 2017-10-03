@@ -1,7 +1,7 @@
 import unittest
 
-from src.network.connection import Connection
-from src.helper import logger
+from iroha.network.connection import Connection
+from iroha.helper import logger
 
 class ConnectionTest(unittest.TestCase):
 

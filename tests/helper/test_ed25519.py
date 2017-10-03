@@ -1,4 +1,4 @@
-from src.helper import crypto, ed25519
+from iroha.helper import crypto, ed25519
 import unittest
 
 class Ed25519Test(unittest.TestCase):

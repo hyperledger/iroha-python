@@ -1,6 +1,6 @@
 import unittest
-from src.helper import random
-from src.helper import logger
+from iroha.helper import random
+from iroha.helper import logger
 
 class TestRandom(unittest.TestCase):
 
