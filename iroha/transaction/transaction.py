@@ -9,7 +9,7 @@ from iroha.helper import stateless_validator
 
 class Transaction:
     def __init__(self):
-        logger.info("Create Transaction Construct")
+        logger.debug("Create Transaction Construct")
         self.tx = TransactionSchema(
             payload = TransactionSchema.Payload(
                 created_time = crypto.now()

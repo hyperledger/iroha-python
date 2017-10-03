@@ -22,7 +22,7 @@ class Creator:
             keys ( []`KeyPair` ): array of `KeyPair`. There are signatories of this creator.
             connection ( `Connection` ): connection used to connect iroha.
         """
-        logger.info("Construct Creator")
+        logger.debug("Construct Creator")
         self.set_account_id(account_id)
         self.set_keys(keys)
         self.set_connection(connection)
