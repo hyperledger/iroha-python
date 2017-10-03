@@ -71,7 +71,8 @@ class Creator:
             retx.add_key_pairs(self.signatories)
         if self.creator_account_id:
             retx.set_creator_account_id(self.creator_account_id)
-        retx.set_tx_counter(0) #TODO
+        # TODO It has not deceided yet
+        retx.set_tx_counter(0)
         retx.time_stamp()
         return retx
 
@@ -89,6 +90,7 @@ class Creator:
             retq.set_connection(self.connection)
         if self.creator_account_id:
             retq.set_creator_account_id(self.creator_account_id)
-        retq.set_query_counter(0) #TODO
+        # TODO It has not deceided yet
+        retq.set_query_counter(0)
         retq.time_stamp()
         return retq
