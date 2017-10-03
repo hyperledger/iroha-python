@@ -19,10 +19,9 @@ class Connection:
         """
         logger.info("Constract Conncection")
         self.ip = "0.0.0.0"
-        self.port = "8080"
-        if "ip" in connection_env and "port" in connection_env:
-            self.set_env(ip=connection_env["ip"],port=connection_env["port"])
-            self.gen_stub()
+        self.port = 8080
+        self.set_env(ip=connection_env["ip"], port=connection_env["port"])
+        self.gen_stub()
 
 
     def set_env(self,**connection_env):
@@ -32,22 +31,23 @@ class Connection:
         Args:
             **connection_env: Arbitrary keyword arguments.
                 ip ( str ): ip address string of iroha. ( default "0.0.0.0" )
-                port (str): port number string of iroha. (default : "8080" )
+                port (int): port number string of iroha. (default : 8080 )
         """
         logger.debug("Connection.set_env")
-        ip = connection_env["ip"]
-        port = connection_env["port"]
-        if type(ip) != type(""):
-            raise exception.InvalidIpException(ip)
-        if not stateless_validator.verify_ip(ip):
-            raise exception.InvalidIpException(ip)
-        if type(port) != type(""):
-            raise exception.InvalidPortException(port)
-        if not stateless_validator.verify_port(port):
-            raise exception.InvalidPortException(port)
-
-        self.ip = ip
-        self.port = port
+        if "ip" in connection_env:
+            ip = connection_env["ip"]
+            if not isinstance(ip,str):
+                raise exception.InvalidIpException(ip)
+            if not stateless_validator.verify_ip(ip):
+                raise exception.InvalidIpException(ip)
+            self.ip = ip
+        if "port" in connection_env:
+            port = connection_env["port"]
+            if isinstance(port,int):
+                raise exception.InvalidPortException(port)
+            if not stateless_validator.verify_port(port):
+                raise exception.InvalidPortException(port)
+            self.port = port
 
     def gen_stub(self):
         """
@@ -56,7 +56,7 @@ class Connection:
         Notes: It is called, when failed connect or another error.
         """
         logger.debug("Connection.get_stub")
-        channel = grpc.insecure_channel(self.ip + ':' + self.port)
+        channel = grpc.insecure_channel(self.ip + ':' + str(self.port))
         self.stub_tx = self.__get_command_stub(channel)
         self.stub_query = self.__get_query_stub(channel)
 

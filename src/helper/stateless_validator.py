@@ -276,9 +276,6 @@ def verify_ip(peer_ip):
     return True
 
 def verify_port(peer_port):
-    if not PEER_PORT in cmp:
-        cmp[PEER_PORT] = re.compile(r"^[0-9]{1,5}$")
-    if cmp[PEER_PORT].match(peer_port) is None:
-        logger.info("Stateless Peer Port Failed: " + peer_port)
-        return False
-    return True
+    if 0 <= peer_port and peer_port <= 65535:
+        return True
+    return False
