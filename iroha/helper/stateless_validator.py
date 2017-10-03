@@ -8,13 +8,12 @@ from iroha.primitive.amount import amount2int
 MAX_DELAY = 1000 * 3600 * 24  # max-delay between tx creation and validation
 
 cmp = {}
-ACCOUNT_NAME = "account_name"
-ACCOUNT_ID = "account_id"
-DOMAIN_ID = "domain_id"
-ASSET_NAME = "asset_name"
-ASSET_ID = "asset_id"
-PEER_IP = "peer_ip"
-PEER_PORT = "peer_port"
+ACCOUNT_NAME = re.compile(r"^[a-z_0-9]{1,32}$")
+ACCOUNT_ID = re.compile(r"^[a-z_0-9]{1,32}\@[a-z_0-9]{1,32}(\.[a-z_0-9]{1,32}){0,4}$")
+DOMAIN_ID = re.compile(r"^[a-z_0-9]{1,32}(\.[a-z_0-9]{1,32}){0,4}$")
+ASSET_NAME = re.compile(r"^[a-z_0-9]{1,32}$")
+ASSET_ID = re.compile(r"^[a-z_0-9]{1,32}(\.[a-z_0-9]{1,32}){0,4}\/[a-z_0-9]{1,32}$")
+PEER_IP = re.compile(r"^[0-9]{1,3}(\.[0-9]{1,3}){3}$")
 
 
 def command(cmd):
@@ -202,42 +201,32 @@ def verify_created_time(time):
     return False
 
 def verify_account_name(account_name):
-    if not ACCOUNT_NAME in cmp:
-        cmp[ACCOUNT_NAME] = re.compile(r"^[a-z_0-9]{1,32}$")
-    if cmp[ACCOUNT_NAME].match(account_name) is None:
+    if ACCOUNT_NAME.match(account_name) is None:
         logger.info("Stateless Account Name Failed: " + account_name)
         return False
     return True
 
 def verify_account_id(account_id):
-    if not ACCOUNT_ID in cmp:
-        cmp[ACCOUNT_ID] = re.compile(r"^[a-z_0-9]{1,32}\@[a-z_0-9]{1,32}(\.[a-z_0-9]{1,32}){0,4}$")
-    if cmp[ACCOUNT_ID].match(account_id) is None:
+    if ACCOUNT_ID.match(account_id) is None:
         logger.info("Stateless Account Id Failed: " + account_id)
         return False
     return True
 
 def verify_domain_id(domain_id):
-    if not DOMAIN_ID in cmp:
-        cmp[DOMAIN_ID] = re.compile(r"^[a-z_0-9]{1,32}(\.[a-z_0-9]{1,32}){0,4}$")
-    if cmp[DOMAIN_ID].match(domain_id) is None:
+    if DOMAIN_ID.match(domain_id) is None:
         logger.info("Stateless Domain Id Failed: " + domain_id)
         return False
     return True
 
 
 def verify_asset_name(asset_name):
-    if not ASSET_NAME in cmp:
-        cmp[ASSET_NAME] = re.compile(r"^[a-z_0-9]{1,32}$")
-    if cmp[ASSET_NAME].match(asset_name) is None:
+    if ASSET_NAME.match(asset_name) is None:
         logger.info("Stateless Asset Name Failed: " + asset_name)
         return False
     return True
 
 def verify_asset_id(asset_id):
-    if not ASSET_ID in cmp:
-        cmp[ASSET_ID] = re.compile(r"^[a-z_0-9]{1,32}(\.[a-z_0-9]{1,32}){0,4}\/[a-z_0-9]{1,32}$")
-    if cmp[ASSET_ID].match(asset_id) is None:
+    if ASSET_ID.match(asset_id) is None:
         logger.info("Stateless Asset Id Failed: " + asset_id)
         return False
     return True
@@ -268,9 +257,7 @@ def verify_amount(amount):
 
 
 def verify_ip(peer_ip):
-    if not PEER_IP in cmp:
-        cmp[PEER_IP] = re.compile(r"^[0-9]{1,3}(\.[0-9]{1,3}){3}$")
-    if cmp[PEER_IP].match(peer_ip) is None:
+    if PEER_IP.match(peer_ip) is None:
         logger.info("Stateless Peer Ip Failed: " + peer_ip)
         return False
     return True
