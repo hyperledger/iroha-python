@@ -1,0 +1,550 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>iroha.helper package &#8212; iroha  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="iroha.lib package" href="iroha.lib.html" />
+    <link rel="prev" title="iroha package" href="iroha.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="iroha-helper-package">
+<h1>iroha.helper package<a class="headerlink" href="#iroha-helper-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-iroha.helper.crypto">
+<span id="iroha-helper-crypto-module"></span><h2>iroha.helper.crypto module<a class="headerlink" href="#module-iroha.helper.crypto" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="iroha.helper.crypto.KeyPair">
+<em class="property">class </em><code class="descclassname">iroha.helper.crypto.</code><code class="descname">KeyPair</code><span class="sig-paren">(</span><em>private_key</em>, <em>public_key</em><span class="sig-paren">)</span><a class="headerlink" href="#iroha.helper.crypto.KeyPair" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<dl class="attribute">
+<dt id="iroha.helper.crypto.KeyPair.private_key">
+<code class="descname">private_key</code><a class="headerlink" href="#iroha.helper.crypto.KeyPair.private_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="iroha.helper.crypto.KeyPair.public_key">
+<code class="descname">public_key</code><a class="headerlink" href="#iroha.helper.crypto.KeyPair.public_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.crypto.b64decode">
+<code class="descclassname">iroha.helper.crypto.</code><code class="descname">b64decode</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/crypto.html#b64decode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.crypto.b64decode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.crypto.b64encode">
+<code class="descclassname">iroha.helper.crypto.</code><code class="descname">b64encode</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/crypto.html#b64encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.crypto.b64encode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.crypto.create_key_pair">
+<code class="descclassname">iroha.helper.crypto.</code><code class="descname">create_key_pair</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/crypto.html#create_key_pair"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.crypto.create_key_pair" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.crypto.db_decode">
+<code class="descclassname">iroha.helper.crypto.</code><code class="descname">db_decode</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/crypto.html#db_decode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.crypto.db_decode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.crypto.db_encode">
+<code class="descclassname">iroha.helper.crypto.</code><code class="descname">db_encode</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/crypto.html#db_encode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.crypto.db_encode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.crypto.now">
+<code class="descclassname">iroha.helper.crypto.</code><code class="descname">now</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/crypto.html#now"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.crypto.now" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.crypto.sha3_256">
+<code class="descclassname">iroha.helper.crypto.</code><code class="descname">sha3_256</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/crypto.html#sha3_256"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.crypto.sha3_256" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.crypto.sign">
+<code class="descclassname">iroha.helper.crypto.</code><code class="descname">sign</code><span class="sig-paren">(</span><em>key_pair</em>, <em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/crypto.html#sign"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.crypto.sign" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.crypto.sign_hash">
+<code class="descclassname">iroha.helper.crypto.</code><code class="descname">sign_hash</code><span class="sig-paren">(</span><em>proto</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/crypto.html#sign_hash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.crypto.sign_hash" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.crypto.verify">
+<code class="descclassname">iroha.helper.crypto.</code><code class="descname">verify</code><span class="sig-paren">(</span><em>public_key</em>, <em>signature</em>, <em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/crypto.html#verify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.crypto.verify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-iroha.helper.ed25519">
+<span id="iroha-helper-ed25519-module"></span><h2>iroha.helper.ed25519 module<a class="headerlink" href="#module-iroha.helper.ed25519" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="iroha.helper.ed25519.generate">
+<code class="descclassname">iroha.helper.ed25519.</code><code class="descname">generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/ed25519.html#generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.ed25519.generate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.ed25519.generate_int">
+<code class="descclassname">iroha.helper.ed25519.</code><code class="descname">generate_int</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/ed25519.html#generate_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.ed25519.generate_int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.ed25519.hex2bin">
+<code class="descclassname">iroha.helper.ed25519.</code><code class="descname">hex2bin</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/ed25519.html#hex2bin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.ed25519.hex2bin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.ed25519.sign">
+<code class="descclassname">iroha.helper.ed25519.</code><code class="descname">sign</code><span class="sig-paren">(</span><em>message</em>, <em>public</em>, <em>private</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/ed25519.html#sign"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.ed25519.sign" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.ed25519.sign_int">
+<code class="descclassname">iroha.helper.ed25519.</code><code class="descname">sign_int</code><span class="sig-paren">(</span><em>message</em>, <em>public</em>, <em>private</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/ed25519.html#sign_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.ed25519.sign_int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.ed25519.verify">
+<code class="descclassname">iroha.helper.ed25519.</code><code class="descname">verify</code><span class="sig-paren">(</span><em>message</em>, <em>signature</em>, <em>public</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/ed25519.html#verify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.ed25519.verify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.ed25519.verify_int">
+<code class="descclassname">iroha.helper.ed25519.</code><code class="descname">verify_int</code><span class="sig-paren">(</span><em>message</em>, <em>signature</em>, <em>public</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/ed25519.html#verify_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.ed25519.verify_int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.ed25519.verify_with_hex">
+<code class="descclassname">iroha.helper.ed25519.</code><code class="descname">verify_with_hex</code><span class="sig-paren">(</span><em>message</em>, <em>signature</em>, <em>public</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/ed25519.html#verify_with_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.ed25519.verify_with_hex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-iroha.helper.exception">
+<span id="iroha-helper-exception-module"></span><h2>iroha.helper.exception module<a class="headerlink" href="#module-iroha.helper.exception" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="iroha.helper.exception.InvalidIpException">
+<em class="property">exception </em><code class="descclassname">iroha.helper.exception.</code><code class="descname">InvalidIpException</code><span class="sig-paren">(</span><em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/exception.html#InvalidIpException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.exception.InvalidIpException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iroha.helper.exception.IrohaPythonException" title="iroha.helper.exception.IrohaPythonException"><code class="xref py py-class docutils literal"><span class="pre">iroha.helper.exception.IrohaPythonException</span></code></a></p>
+<dl class="attribute">
+<dt id="iroha.helper.exception.InvalidIpException.message">
+<code class="descname">message</code><em class="property"> = 'InvalidIpException'</em><a class="headerlink" href="#iroha.helper.exception.InvalidIpException.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="iroha.helper.exception.InvalidPortException">
+<em class="property">exception </em><code class="descclassname">iroha.helper.exception.</code><code class="descname">InvalidPortException</code><span class="sig-paren">(</span><em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/exception.html#InvalidPortException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.exception.InvalidPortException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iroha.helper.exception.IrohaPythonException" title="iroha.helper.exception.IrohaPythonException"><code class="xref py py-class docutils literal"><span class="pre">iroha.helper.exception.IrohaPythonException</span></code></a></p>
+<dl class="attribute">
+<dt id="iroha.helper.exception.InvalidPortException.message">
+<code class="descname">message</code><em class="property"> = 'InvalidPortException'</em><a class="headerlink" href="#iroha.helper.exception.InvalidPortException.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="iroha.helper.exception.IrohaPythonException">
+<em class="property">exception </em><code class="descclassname">iroha.helper.exception.</code><code class="descname">IrohaPythonException</code><span class="sig-paren">(</span><em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/exception.html#IrohaPythonException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.exception.IrohaPythonException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+<dl class="attribute">
+<dt id="iroha.helper.exception.IrohaPythonException.message">
+<code class="descname">message</code><em class="property"> = 'Occured Error'</em><a class="headerlink" href="#iroha.helper.exception.IrohaPythonException.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="iroha.helper.exception.NotAccountAssetResponseException">
+<em class="property">exception </em><code class="descclassname">iroha.helper.exception.</code><code class="descname">NotAccountAssetResponseException</code><span class="sig-paren">(</span><em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/exception.html#NotAccountAssetResponseException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.exception.NotAccountAssetResponseException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iroha.helper.exception.IrohaPythonException" title="iroha.helper.exception.IrohaPythonException"><code class="xref py py-class docutils literal"><span class="pre">iroha.helper.exception.IrohaPythonException</span></code></a></p>
+<dl class="attribute">
+<dt id="iroha.helper.exception.NotAccountAssetResponseException.message">
+<code class="descname">message</code><em class="property"> = 'NotAccountAssetResponseException'</em><a class="headerlink" href="#iroha.helper.exception.NotAccountAssetResponseException.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="iroha.helper.exception.NotAccountResponseException">
+<em class="property">exception </em><code class="descclassname">iroha.helper.exception.</code><code class="descname">NotAccountResponseException</code><span class="sig-paren">(</span><em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/exception.html#NotAccountResponseException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.exception.NotAccountResponseException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iroha.helper.exception.IrohaPythonException" title="iroha.helper.exception.IrohaPythonException"><code class="xref py py-class docutils literal"><span class="pre">iroha.helper.exception.IrohaPythonException</span></code></a></p>
+<dl class="attribute">
+<dt id="iroha.helper.exception.NotAccountResponseException.message">
+<code class="descname">message</code><em class="property"> = 'NotAccountResponseException'</em><a class="headerlink" href="#iroha.helper.exception.NotAccountResponseException.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="iroha.helper.exception.NotCommandException">
+<em class="property">exception </em><code class="descclassname">iroha.helper.exception.</code><code class="descname">NotCommandException</code><span class="sig-paren">(</span><em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/exception.html#NotCommandException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.exception.NotCommandException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iroha.helper.exception.IrohaPythonException" title="iroha.helper.exception.IrohaPythonException"><code class="xref py py-class docutils literal"><span class="pre">iroha.helper.exception.IrohaPythonException</span></code></a></p>
+<dl class="attribute">
+<dt id="iroha.helper.exception.NotCommandException.message">
+<code class="descname">message</code><em class="property"> = 'NotCommandException'</em><a class="headerlink" href="#iroha.helper.exception.NotCommandException.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="iroha.helper.exception.NotConnectionStubException">
+<em class="property">exception </em><code class="descclassname">iroha.helper.exception.</code><code class="descname">NotConnectionStubException</code><span class="sig-paren">(</span><em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/exception.html#NotConnectionStubException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.exception.NotConnectionStubException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iroha.helper.exception.IrohaPythonException" title="iroha.helper.exception.IrohaPythonException"><code class="xref py py-class docutils literal"><span class="pre">iroha.helper.exception.IrohaPythonException</span></code></a></p>
+<dl class="attribute">
+<dt id="iroha.helper.exception.NotConnectionStubException.message">
+<code class="descname">message</code><em class="property"> = 'NotConnectionStubException'</em><a class="headerlink" href="#iroha.helper.exception.NotConnectionStubException.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="iroha.helper.exception.NotErrorResponseException">
+<em class="property">exception </em><code class="descclassname">iroha.helper.exception.</code><code class="descname">NotErrorResponseException</code><span class="sig-paren">(</span><em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/exception.html#NotErrorResponseException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.exception.NotErrorResponseException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iroha.helper.exception.IrohaPythonException" title="iroha.helper.exception.IrohaPythonException"><code class="xref py py-class docutils literal"><span class="pre">iroha.helper.exception.IrohaPythonException</span></code></a></p>
+<dl class="attribute">
+<dt id="iroha.helper.exception.NotErrorResponseException.message">
+<code class="descname">message</code><em class="property"> = 'NotErrorResponseException'</em><a class="headerlink" href="#iroha.helper.exception.NotErrorResponseException.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="iroha.helper.exception.NotSignatoriesResponseExcepiton">
+<em class="property">exception </em><code class="descclassname">iroha.helper.exception.</code><code class="descname">NotSignatoriesResponseExcepiton</code><span class="sig-paren">(</span><em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/exception.html#NotSignatoriesResponseExcepiton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.exception.NotSignatoriesResponseExcepiton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iroha.helper.exception.IrohaPythonException" title="iroha.helper.exception.IrohaPythonException"><code class="xref py py-class docutils literal"><span class="pre">iroha.helper.exception.IrohaPythonException</span></code></a></p>
+<dl class="attribute">
+<dt id="iroha.helper.exception.NotSignatoriesResponseExcepiton.message">
+<code class="descname">message</code><em class="property"> = 'NotSignatoriesResponseExcepiton'</em><a class="headerlink" href="#iroha.helper.exception.NotSignatoriesResponseExcepiton.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="iroha.helper.exception.NotTransactionsResponseException">
+<em class="property">exception </em><code class="descclassname">iroha.helper.exception.</code><code class="descname">NotTransactionsResponseException</code><span class="sig-paren">(</span><em>option=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/exception.html#NotTransactionsResponseException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.exception.NotTransactionsResponseException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#iroha.helper.exception.IrohaPythonException" title="iroha.helper.exception.IrohaPythonException"><code class="xref py py-class docutils literal"><span class="pre">iroha.helper.exception.IrohaPythonException</span></code></a></p>
+<dl class="attribute">
+<dt id="iroha.helper.exception.NotTransactionsResponseException.message">
+<code class="descname">message</code><em class="property"> = 'NotTransactionsResponseException'</em><a class="headerlink" href="#iroha.helper.exception.NotTransactionsResponseException.message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-iroha.helper.logger">
+<span id="iroha-helper-logger-module"></span><h2>iroha.helper.logger module<a class="headerlink" href="#module-iroha.helper.logger" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="iroha.helper.logger.debug">
+<code class="descclassname">iroha.helper.logger.</code><code class="descname">debug</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/logger.html#debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.logger.debug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.logger.info">
+<code class="descclassname">iroha.helper.logger.</code><code class="descname">info</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/logger.html#info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.logger.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.logger.setDebug">
+<code class="descclassname">iroha.helper.logger.</code><code class="descname">setDebug</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/logger.html#setDebug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.logger.setDebug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.logger.setInfo">
+<code class="descclassname">iroha.helper.logger.</code><code class="descname">setInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/logger.html#setInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.logger.setInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.logger.setWarning">
+<code class="descclassname">iroha.helper.logger.</code><code class="descname">setWarning</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/logger.html#setWarning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.logger.setWarning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.logger.warning">
+<code class="descclassname">iroha.helper.logger.</code><code class="descname">warning</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/logger.html#warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.logger.warning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-iroha.helper.random">
+<span id="iroha-helper-random-module"></span><h2>iroha.helper.random module<a class="headerlink" href="#module-iroha.helper.random" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="iroha.helper.random.uuid">
+<code class="descclassname">iroha.helper.random.</code><code class="descname">uuid</code><span class="sig-paren">(</span><em>num</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/random.html#uuid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.random.uuid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-iroha.helper.stateless_validator">
+<span id="iroha-helper-stateless-validator-module"></span><h2>iroha.helper.stateless_validator module<a class="headerlink" href="#module-iroha.helper.stateless_validator" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.add_asset_quantity">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">add_asset_quantity</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#add_asset_quantity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.add_asset_quantity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.add_signatory">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">add_signatory</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#add_signatory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.add_signatory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.command">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">command</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.command" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.create_account">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">create_account</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#create_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.create_account" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.create_asset">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">create_asset</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#create_asset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.create_asset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.create_domain">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">create_domain</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#create_domain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.create_domain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.get_account">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">get_account</code><span class="sig-paren">(</span><em>req</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#get_account"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.get_account" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.get_account_asset_transactions">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">get_account_asset_transactions</code><span class="sig-paren">(</span><em>req</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#get_account_asset_transactions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.get_account_asset_transactions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.get_account_assets">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">get_account_assets</code><span class="sig-paren">(</span><em>req</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#get_account_assets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.get_account_assets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.get_account_transactions">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">get_account_transactions</code><span class="sig-paren">(</span><em>req</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#get_account_transactions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.get_account_transactions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.get_signatories">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">get_signatories</code><span class="sig-paren">(</span><em>req</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#get_signatories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.get_signatories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.get_transactions">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">get_transactions</code><span class="sig-paren">(</span><em>req</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#get_transactions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.get_transactions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.query">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">query</code><span class="sig-paren">(</span><em>qry</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#query"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.query" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.remove_signatory">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">remove_signatory</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#remove_signatory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.remove_signatory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.set_account_quorum">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">set_account_quorum</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#set_account_quorum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.set_account_quorum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.transfer_asset">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">transfer_asset</code><span class="sig-paren">(</span><em>cmd</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#transfer_asset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.transfer_asset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify</code><span class="sig-paren">(</span><em>transaction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify_account_id">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify_account_id</code><span class="sig-paren">(</span><em>account_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify_account_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify_account_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify_account_name">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify_account_name</code><span class="sig-paren">(</span><em>account_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify_account_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify_account_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify_amount">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify_amount</code><span class="sig-paren">(</span><em>amount</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify_amount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify_amount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify_asset_id">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify_asset_id</code><span class="sig-paren">(</span><em>asset_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify_asset_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify_asset_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify_asset_name">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify_asset_name</code><span class="sig-paren">(</span><em>asset_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify_asset_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify_asset_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify_created_time">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify_created_time</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify_created_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify_created_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify_domain_id">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify_domain_id</code><span class="sig-paren">(</span><em>domain_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify_domain_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify_domain_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify_ip">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify_ip</code><span class="sig-paren">(</span><em>peer_ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify_ip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify_ip" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify_port">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify_port</code><span class="sig-paren">(</span><em>peer_port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify_port"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify_port" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify_pubkey">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify_pubkey</code><span class="sig-paren">(</span><em>pubkey</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify_pubkey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify_pubkey" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="iroha.helper.stateless_validator.verify_quorum">
+<code class="descclassname">iroha.helper.stateless_validator.</code><code class="descname">verify_quorum</code><span class="sig-paren">(</span><em>quorum</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/iroha/helper/stateless_validator.html#verify_quorum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#iroha.helper.stateless_validator.verify_quorum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-iroha.helper">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-iroha.helper" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">iroha</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="iroha.html">iroha package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="iroha.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">iroha.helper package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-iroha.helper.crypto">iroha.helper.crypto module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-iroha.helper.ed25519">iroha.helper.ed25519 module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-iroha.helper.exception">iroha.helper.exception module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-iroha.helper.logger">iroha.helper.logger module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-iroha.helper.random">iroha.helper.random module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-iroha.helper.stateless_validator">iroha.helper.stateless_validator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-iroha.helper">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="iroha.lib.html">iroha.lib package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iroha.network.html">iroha.network package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iroha.primitive.html">iroha.primitive package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iroha.query.html">iroha.query package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="iroha.transaction.html">iroha.transaction package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="iroha.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iroha.html#module-iroha.creator">iroha.creator module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="iroha.html#module-iroha">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="iroha.html">iroha package</a><ul>
+      <li>Previous: <a href="iroha.html" title="previous chapter">iroha package</a></li>
+      <li>Next: <a href="iroha.lib.html" title="next chapter">iroha.lib package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/iroha.helper.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

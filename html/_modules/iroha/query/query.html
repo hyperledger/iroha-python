@@ -1,0 +1,215 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>iroha.query.query &#8212; iroha  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for iroha.query.query</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">schema.response_pb2</span> <span class="k">import</span> <span class="n">Query</span> <span class="k">as</span> <span class="n">QuerySchema</span>
+
+<span class="kn">from</span> <span class="nn">iroha.helper</span> <span class="k">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">crypto</span><span class="p">,</span> <span class="n">stateless_validator</span>
+<span class="kn">from</span> <span class="nn">iroha.primitive.signatories</span> <span class="k">import</span> <span class="n">Signatories</span>
+<span class="kn">from</span> <span class="nn">iroha.query.request</span> <span class="k">import</span> <span class="n">wrap_query</span>
+<span class="kn">from</span> <span class="nn">iroha.query.response</span> <span class="k">import</span> <span class="n">Response</span>
+
+<div class="viewcode-block" id="Query"><a class="viewcode-back" href="../../../iroha.query.html#iroha.query.query.Query">[docs]</a><span class="k">class</span> <span class="nc">Query</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    class Query ; wrap of create query, sign, connevtin and response.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Create Query Construct&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">QuerySchema</span><span class="p">(</span>
+            <span class="n">payload</span> <span class="o">=</span> <span class="n">QuerySchema</span><span class="o">.</span><span class="n">Payload</span><span class="p">(</span>
+                <span class="n">created_time</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="p">)</span>
+            <span class="c1"># TODO query has signature</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signatories</span> <span class="o">=</span> <span class="n">Signatories</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Query.set_creator_account_id"><a class="viewcode-back" href="../../../iroha.query.html#iroha.query.query.Query.set_creator_account_id">[docs]</a>    <span class="k">def</span> <span class="nf">set_creator_account_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">creator_account_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set creator of this query.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            creator_account_id (str) : it is creator&#39;s account id of query</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Query.set_creator_account_id&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">creator_account_id</span> <span class="o">=</span> <span class="n">creator_account_id</span></div>
+
+<div class="viewcode-block" id="Query.set_query_counter"><a class="viewcode-back" href="../../../iroha.query.html#iroha.query.query.Query.set_query_counter">[docs]</a>    <span class="k">def</span> <span class="nf">set_query_counter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">query_counter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set query counter of this query</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query_counter (int) : query_counter is counter of query</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Query.set_tx_counter&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">query_counter</span> <span class="o">=</span> <span class="n">query_counter</span></div>
+
+<div class="viewcode-block" id="Query.set_connection"><a class="viewcode-back" href="../../../iroha.query.html#iroha.query.query.Query.set_connection">[docs]</a>    <span class="k">def</span> <span class="nf">set_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">connection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set connection used to connect iroha</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            connection ( `Connection` ) : connection used to connect iroha</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Query.set_counnection&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span></div>
+
+<div class="viewcode-block" id="Query.time_stamp"><a class="viewcode-back" href="../../../iroha.query.html#iroha.query.query.Query.time_stamp">[docs]</a>    <span class="k">def</span> <span class="nf">time_stamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set current(call this function) time timestamp of this query</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Query.time_stamp&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">created_time</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">now</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Query.hash"><a class="viewcode-back" href="../../../iroha.query.html#iroha.query.query.Query.hash">[docs]</a>    <span class="k">def</span> <span class="nf">hash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get hash of this query</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The return value is hash of this query</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Query.hash&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">crypto</span><span class="o">.</span><span class="n">sign_hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.verify"><a class="viewcode-back" href="../../../iroha.query.html#iroha.query.query.Query.verify">[docs]</a>    <span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verify stateless validate this query</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: The return value. True for success, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Query.verify&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">stateless_validator</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.set_request"><a class="viewcode-back" href="../../../iroha.query.html#iroha.query.query.Query.set_request">[docs]</a>    <span class="k">def</span> <span class="nf">set_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">request</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set request strcuture of query.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            request ( `Request` ) : It is request of query.</span>
+<span class="sd">            `GetAccount`, `GetAccountTransactions`, `GetAccountAssetTransactions`, `GetTransactions`,</span>
+<span class="sd">             `GetAccountAssets` or `GetSignatories`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Query.set_request&quot;</span><span class="p">)</span>
+        <span class="n">wrap_query</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">payload</span><span class="p">,</span><span class="n">request</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Query.debug_proto_query"><a class="viewcode-back" href="../../../iroha.query.html#iroha.query.query.Query.debug_proto_query">[docs]</a>    <span class="k">def</span> <span class="nf">debug_proto_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Debug function.</span>
+<span class="sd">        Return query proto structure had this query.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">             `QueryResponse`: Query protobuf data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;debug_proto_query&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span></div>
+
+<div class="viewcode-block" id="Query.issue"><a class="viewcode-back" href="../../../iroha.query.html#iroha.query.query.Query.issue">[docs]</a>    <span class="k">def</span> <span class="nf">issue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Issue to iroha for this query and return that response.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `Response`: this is wrapped `QueryResponse` proto structure.</span>
+<span class="sd">            response from iroha respond to this query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Query.issue&quot;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">query_stub</span><span class="p">()</span><span class="o">.</span><span class="n">Find</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span> <span class="n">response</span> <span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">iroha</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../iroha.html">iroha package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../iroha.html">iroha</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,174 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>iroha &#8212; iroha  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for iroha</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Python library for Hyperledger Iroha.&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span>
+                        <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">iroha.helper</span> <span class="k">import</span> <span class="n">crypto</span><span class="p">,</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">iroha.creator</span> <span class="k">import</span> <span class="n">Creator</span>
+<span class="kn">from</span> <span class="nn">iroha.network.connection</span> <span class="k">import</span> <span class="n">Connection</span>
+
+<span class="kn">from</span> <span class="nn">schema.commands_pb2</span> <span class="k">import</span> <span class="n">Command</span>
+<span class="kn">from</span> <span class="nn">schema.endpoint_pb2</span> <span class="k">import</span> <span class="n">ToriiResponse</span><span class="p">,</span> <span class="n">TxStatus</span>
+<span class="kn">from</span> <span class="nn">schema.response_pb2</span> <span class="k">import</span> <span class="n">GetAccountAssets</span><span class="p">,</span><span class="n">GetTransactions</span><span class="p">,</span><span class="n">GetAccount</span><span class="p">,</span><span class="n">GetAccountAssetTransactions</span><span class="p">,</span><span class="n">GetAccountTransactions</span><span class="p">,</span><span class="n">GetSignatories</span>
+
+<span class="c1"># typedef CommandName for access to iroha.XX</span>
+<span class="n">CreateAccount</span> <span class="o">=</span> <span class="n">Command</span><span class="o">.</span><span class="n">CreateAccount</span>
+<span class="n">AddSignatory</span> <span class="o">=</span> <span class="n">Command</span><span class="o">.</span><span class="n">AddSignatory</span>
+<span class="n">RemoveSignatory</span> <span class="o">=</span> <span class="n">Command</span><span class="o">.</span><span class="n">RemoveSignatory</span>
+
+<span class="n">CreateDomain</span> <span class="o">=</span> <span class="n">Command</span><span class="o">.</span><span class="n">CreateDomain</span>
+<span class="n">CreateAsset</span> <span class="o">=</span> <span class="n">Command</span><span class="o">.</span><span class="n">CreateAsset</span>
+
+<span class="n">AddAssetQuantity</span> <span class="o">=</span> <span class="n">Command</span><span class="o">.</span><span class="n">AddAssetQuantity</span>
+<span class="n">SetAccountQuorum</span> <span class="o">=</span> <span class="n">Command</span><span class="o">.</span><span class="n">SetAccountQuorum</span>
+<span class="n">TransferAsset</span> <span class="o">=</span> <span class="n">Command</span><span class="o">.</span><span class="n">TransferAsset</span>
+
+<div class="viewcode-block" id="keygen"><a class="viewcode-back" href="../iroha.html#iroha.keygen">[docs]</a><span class="k">def</span> <span class="nf">keygen</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate keypair ( public key and private key )</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        `KeyPair`: base64 encoded ed25519 with sha3_256 keypair [ public_key, private_key ].</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">crypto</span><span class="o">.</span><span class="n">create_key_pair</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="gen_creator"><a class="viewcode-back" href="../iroha.html#iroha.gen_creator">[docs]</a><span class="k">def</span> <span class="nf">gen_creator</span><span class="p">(</span><span class="n">creator_account_id</span><span class="p">,</span><span class="n">keys</span><span class="p">,</span><span class="n">connection</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate creator. ( reference: `Creator` )</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        creator_account_id ( str ): creator account id</span>
+<span class="sd">        keys ( []`KeyPair` ) : array of keypair. this means signatories of creator.</span>
+<span class="sd">        connection ( `Connection` ) : connection used to connect iroha.</span>
+<span class="sd">            `Conncect` can be got by iroha.connection(ip,port).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        `Creator`: Generated creator with account_id, signatories(keys) and connection</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">creator</span> <span class="o">=</span> <span class="n">Creator</span><span class="p">(</span><span class="n">creator_account_id</span><span class="p">,</span><span class="n">keys</span><span class="p">,</span><span class="n">connection</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">creator</span></div>
+
+
+<div class="viewcode-block" id="gen_connection"><a class="viewcode-back" href="../iroha.html#iroha.gen_connection">[docs]</a><span class="k">def</span> <span class="nf">gen_connection</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span><span class="n">port</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate Connection used to connect iroha.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ip: ip address string of iroha.</span>
+<span class="sd">        port: port number string of iroha.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        `Connection`: connector used to connect iroha.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">connect</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="n">ip</span><span class="p">,</span><span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">connect</span></div>
+
+<div class="viewcode-block" id="setDebugLog"><a class="viewcode-back" href="../iroha.html#iroha.setDebugLog">[docs]</a><span class="k">def</span> <span class="nf">setDebugLog</span><span class="p">():</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">setDebug</span><span class="p">()</span></div>
+<div class="viewcode-block" id="setInfoLog"><a class="viewcode-back" href="../iroha.html#iroha.setInfoLog">[docs]</a><span class="k">def</span> <span class="nf">setInfoLog</span><span class="p">():</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">setInfo</span><span class="p">()</span></div>
+<div class="viewcode-block" id="setWarningLog"><a class="viewcode-back" href="../iroha.html#iroha.setWarningLog">[docs]</a><span class="k">def</span> <span class="nf">setWarningLog</span><span class="p">():</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">setWarning</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">iroha</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../iroha.html">iroha package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
