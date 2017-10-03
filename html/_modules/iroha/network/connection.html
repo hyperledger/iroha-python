@@ -1,0 +1,201 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>iroha.network.connection &#8212; iroha  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for iroha.network.connection</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">grpc</span>
+<span class="kn">from</span> <span class="nn">schema.endpoint_pb2</span> <span class="k">import</span> <span class="n">CommandServiceStub</span><span class="p">,</span> <span class="n">QueryServiceStub</span>
+<span class="kn">from</span> <span class="nn">iroha.helper</span> <span class="k">import</span> <span class="n">logger</span><span class="p">,</span> <span class="n">stateless_validator</span><span class="p">,</span> <span class="n">exception</span>
+
+<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../iroha.network.html#iroha.network.connection.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Connection has managed to connection to iroha.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">connection_env</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Connection establish to iroha.</span>
+<span class="sd">        If connection_env is empty, nothing to do.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            **connection_env: Arbitrary keyword arguments.</span>
+<span class="sd">                ip ( str ): ip address string of iroha. ( default &quot;0.0.0.0&quot; )</span>
+<span class="sd">                port (int): port number string of iroha. (default : 8080 )</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Constract Conncection&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ip</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="mi">8080</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_env</span><span class="p">(</span><span class="n">ip</span><span class="o">=</span><span class="n">connection_env</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">],</span> <span class="n">port</span><span class="o">=</span><span class="n">connection_env</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gen_stub</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Connection.set_env"><a class="viewcode-back" href="../../../iroha.network.html#iroha.network.connection.Connection.set_env">[docs]</a>    <span class="k">def</span> <span class="nf">set_env</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">**</span><span class="n">connection_env</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set environemnt of connect iroha</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            **connection_env: Arbitrary keyword arguments.</span>
+<span class="sd">                ip ( str ): ip address string of iroha. ( default &quot;0.0.0.0&quot; )</span>
+<span class="sd">                port (int): port number string of iroha. (default : 8080 )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Connection.set_env&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;ip&quot;</span> <span class="ow">in</span> <span class="n">connection_env</span><span class="p">:</span>
+            <span class="n">ip</span> <span class="o">=</span> <span class="n">connection_env</span><span class="p">[</span><span class="s2">&quot;ip&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span><span class="nb">str</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">exception</span><span class="o">.</span><span class="n">InvalidIpException</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">stateless_validator</span><span class="o">.</span><span class="n">verify_ip</span><span class="p">(</span><span class="n">ip</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">exception</span><span class="o">.</span><span class="n">InvalidIpException</span><span class="p">(</span><span class="n">ip</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ip</span> <span class="o">=</span> <span class="n">ip</span>
+        <span class="k">if</span> <span class="s2">&quot;port&quot;</span> <span class="ow">in</span> <span class="n">connection_env</span><span class="p">:</span>
+            <span class="n">port</span> <span class="o">=</span> <span class="n">connection_env</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">port</span><span class="p">,</span><span class="nb">int</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">exception</span><span class="o">.</span><span class="n">InvalidPortException</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">stateless_validator</span><span class="o">.</span><span class="n">verify_port</span><span class="p">(</span><span class="n">port</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">exception</span><span class="o">.</span><span class="n">InvalidPortException</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span></div>
+
+<div class="viewcode-block" id="Connection.gen_stub"><a class="viewcode-back" href="../../../iroha.network.html#iroha.network.connection.Connection.gen_stub">[docs]</a>    <span class="k">def</span> <span class="nf">gen_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generate Stub for connection to iroha.</span>
+
+<span class="sd">        Notes: It is called, when failed connect or another error.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Connection.get_stub&quot;</span><span class="p">)</span>
+        <span class="n">channel</span> <span class="o">=</span> <span class="n">grpc</span><span class="o">.</span><span class="n">insecure_channel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ip</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stub_tx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_command_stub</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stub_query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_query_stub</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Connection.tx_stub"><a class="viewcode-back" href="../../../iroha.network.html#iroha.network.connection.Connection.tx_stub">[docs]</a>    <span class="k">def</span> <span class="nf">tx_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get Transaction Connection Stub</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            `CommandServiceStub`: transaction service stub</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            `NotConnectionStubException`: Do not initialize TransactionStub.</span>
+<span class="sd">            (Maybe, don&#39;t call Connection.gen_stub())</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Connection.tx_stub&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stub_tx</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exception</span><span class="o">.</span><span class="n">NotConnectionStubException</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stub_tx</span></div>
+
+<div class="viewcode-block" id="Connection.query_stub"><a class="viewcode-back" href="../../../iroha.network.html#iroha.network.connection.Connection.query_stub">[docs]</a>    <span class="k">def</span> <span class="nf">query_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get Query Connection Stub</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            `QueryServiceStub`: query service stub</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            `NotConnectionStubException`: Do not initialize QueryStub.</span>
+<span class="sd">            (Maybe, don&#39;t call Connection.gen_stub())</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Connection.stub_query&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">stub_query</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">exception</span><span class="o">.</span><span class="n">NotConnectionStubException</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stub_query</span></div>
+
+
+    <span class="k">def</span> <span class="nf">__get_command_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">channel</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CommandServiceStub</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__get_query_stub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">channel</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">QueryServiceStub</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">iroha</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../iroha.html">iroha package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../iroha.html">iroha</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

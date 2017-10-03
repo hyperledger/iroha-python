@@ -1,0 +1,286 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>iroha.transaction.transaction &#8212; iroha  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for iroha.transaction.transaction</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">iroha.helper</span> <span class="k">import</span> <span class="n">logger</span><span class="p">,</span><span class="n">crypto</span>
+
+<span class="kn">from</span> <span class="nn">schema.transaction_pb2</span> <span class="k">import</span> <span class="n">Transaction</span> <span class="k">as</span> <span class="n">TransactionSchema</span>
+<span class="kn">from</span> <span class="nn">schema.endpoint_pb2</span> <span class="k">import</span> <span class="n">TxStatusRequest</span>
+
+<span class="kn">from</span> <span class="nn">iroha.primitive.signatories</span> <span class="k">import</span> <span class="n">Signatories</span>
+<span class="kn">from</span> <span class="nn">iroha.transaction</span> <span class="k">import</span> <span class="n">command</span> <span class="k">as</span> <span class="n">helper_command</span>
+<span class="kn">from</span> <span class="nn">iroha.helper</span> <span class="k">import</span> <span class="n">stateless_validator</span>
+
+<div class="viewcode-block" id="Transaction"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction">[docs]</a><span class="k">class</span> <span class="nc">Transaction</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Create Transaction Construct&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span> <span class="o">=</span> <span class="n">TransactionSchema</span><span class="p">(</span>
+            <span class="n">payload</span> <span class="o">=</span> <span class="n">TransactionSchema</span><span class="o">.</span><span class="n">Payload</span><span class="p">(</span>
+                <span class="n">created_time</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="p">),</span>
+            <span class="n">signatures</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signatories</span> <span class="o">=</span> <span class="n">Signatories</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Transaction.set_creator_account_id"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.set_creator_account_id">[docs]</a>    <span class="k">def</span> <span class="nf">set_creator_account_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">creator_account_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set creator of this transaction.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            creator_account_id ( str ) : it is creator&#39;s account id of transaction</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.set_creator_account_id&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">creator_account_id</span> <span class="o">=</span> <span class="n">creator_account_id</span></div>
+
+<div class="viewcode-block" id="Transaction.set_tx_counter"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.set_tx_counter">[docs]</a>    <span class="k">def</span> <span class="nf">set_tx_counter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">tx_counter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set tx counter of this transaction</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            tx_counter ( int ) : tx_counter is counter of transaction</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.set_tx_counter&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">tx_counter</span> <span class="o">=</span> <span class="n">tx_counter</span></div>
+
+<div class="viewcode-block" id="Transaction.set_connection"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.set_connection">[docs]</a>    <span class="k">def</span> <span class="nf">set_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">connection</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set connection used to connect iroha</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            connection ( `Connection` ): connection used to connect iroha</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.set_connection&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span> <span class="o">=</span> <span class="n">connection</span></div>
+
+<div class="viewcode-block" id="Transaction.add_key_pair"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.add_key_pair">[docs]</a>    <span class="k">def</span> <span class="nf">add_key_pair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">keypair</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add keypair ( public key and private key generated iroha.keygen() )</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            keypair ( `KeyPair` ) : keypair generated iroha.keygen()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.add_key_pair&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signatories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">keypair</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transaction.add_key_pairs"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.add_key_pairs">[docs]</a>    <span class="k">def</span> <span class="nf">add_key_pairs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">keypairs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add keypairs ( public key and private key generated iroha.keygen() )</span>
+<span class="sd">        Args:</span>
+<span class="sd">            keypairs ( []`KeyPair` ): array of keypair</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.add_key_pairs&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keypairs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signatories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transaction.time_stamp"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.time_stamp">[docs]</a>    <span class="k">def</span> <span class="nf">time_stamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set current(call this function) time timestamp of this transaction</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.time_stamp&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">created_time</span> <span class="o">=</span> <span class="n">crypto</span><span class="o">.</span><span class="n">now</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Transaction.sign"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.sign">[docs]</a>    <span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Do sign to this transaction from this signatories.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.sign&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signatories</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signatories</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Transaction.signatures_clean"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.signatures_clean">[docs]</a>    <span class="k">def</span> <span class="nf">signatures_clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete all signature info. ( So, after call this func number of signatures of transaction is 0 )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.signatures_clean&quot;</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">signatures</span><span class="o">.</span><span class="fm">__len__</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">signatures</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Transaction.count_signatures"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.count_signatures">[docs]</a>    <span class="k">def</span> <span class="nf">count_signatures</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Count all signatures.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            int: number of this transactions&#39;s signatures</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.count_signatures&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">signatures</span><span class="o">.</span><span class="fm">__len__</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Transaction.signatories_clean"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.signatories_clean">[docs]</a>    <span class="k">def</span> <span class="nf">signatories_clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete all signatories info. ( not delete signatures of transaction info )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.signatories_clean&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signatories</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Transaction.hash"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.hash">[docs]</a>    <span class="k">def</span> <span class="nf">hash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get hash of this transaction</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The return value is hash of this transction</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.hash&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">crypto</span><span class="o">.</span><span class="n">sign_hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transaction.verify"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.verify">[docs]</a>    <span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verify stateless validate this transaction.</span>
+<span class="sd">        Included signature check.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: The return value. True for success, False otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.verify&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">stateless_validator</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transaction.add_command"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.add_command">[docs]</a>    <span class="k">def</span> <span class="nf">add_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cmd</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add Command to this transaction</span>
+<span class="sd">        Args:</span>
+<span class="sd">            cmd( `CreateAccount`,`AddSignatory`,`RemoveSignatory`,`CreateDomain`,`CreateAsset`,</span>
+<span class="sd">                `AddAssetQuantity`,`SetAccountQuorum` or `TransferAsset` ): command of protobuf structre.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;add_command&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">helper_command</span><span class="o">.</span><span class="n">wrap_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">)]</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transaction.add_commands"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.add_commands">[docs]</a>    <span class="k">def</span> <span class="nf">add_commands</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cmds</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add Commands to this transaction</span>
+<span class="sd">        Args:</span>
+<span class="sd">            cmds ( [](`CreateAccount`,`AddSignatory`,`RemoveSignatory`,`CreateDomain`,`CreateAsset`,</span>
+<span class="sd">                `AddAssetQuantity`,`SetAccountQuorum` or `TransferAsset`) ): array of command type protobuf structre.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;add_commands&quot;</span><span class="p">)</span>
+        <span class="n">wcmds</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="n">cmds</span><span class="p">:</span>
+            <span class="n">wcmds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">helper_command</span><span class="o">.</span><span class="n">wrap_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">wcmds</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transaction.debug_proto_transaction"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.debug_proto_transaction">[docs]</a>    <span class="k">def</span> <span class="nf">debug_proto_transaction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;debug_porto_transaction&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span></div>
+
+<div class="viewcode-block" id="Transaction.issue"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.issue">[docs]</a>    <span class="k">def</span> <span class="nf">issue</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Issue to iroha with this transaction</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.issue&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">tx_stub</span><span class="p">()</span><span class="o">.</span><span class="n">Torii</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transaction.check"><a class="viewcode-back" href="../../../iroha.transaction.html#iroha.transaction.transaction.Transaction.check">[docs]</a>    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check this transaction status for iroha</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            TxStatusResponse: Transaction Status Code</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transaction.check&quot;</span><span class="p">)</span>
+        <span class="c1"># TODO thinking now</span>
+        <span class="n">check</span> <span class="o">=</span> <span class="n">TxStatusRequest</span><span class="p">(</span>
+            <span class="n">tx_hash</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hash</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">tx_stub</span><span class="p">()</span><span class="o">.</span><span class="n">Status</span><span class="p">(</span><span class="n">check</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">iroha</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../iroha.html">iroha package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../iroha.html">iroha</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

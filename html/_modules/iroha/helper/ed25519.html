@@ -1,0 +1,252 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>iroha.helper.ed25519 &#8212; iroha  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for iroha.helper.ed25519</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">ctypes</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+
+<span class="n">me</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="n">libed2559</span> <span class="o">=</span> <span class="n">cdll</span><span class="o">.</span><span class="n">LoadLibrary</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">me</span><span class="p">,</span> <span class="s2">&quot;../lib/ed25519/lib/libed25519.so&quot;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="generate"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.ed25519.generate">[docs]</a><span class="k">def</span> <span class="nf">generate</span><span class="p">():</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)())</span>
+    <span class="n">public_key</span> <span class="o">=</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)())</span>
+    <span class="n">private_key</span> <span class="o">=</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="mi">64</span><span class="p">)())</span>
+
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_create_seed</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)]</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_create_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_create_keypair</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)]</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_create_keypair</span><span class="p">(</span><span class="n">public_key</span><span class="p">,</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+    <span class="n">publist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>
+        <span class="n">publist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">public_key</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">publicKey64</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">publist</span><span class="p">))</span>
+
+    <span class="n">prilist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
+        <span class="n">prilist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">private_key</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">privateKey64</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">prilist</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">publicKey64</span><span class="p">,</span> <span class="n">privateKey64</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="generate_int"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.ed25519.generate_int">[docs]</a><span class="k">def</span> <span class="nf">generate_int</span><span class="p">():</span>
+    <span class="n">seed</span> <span class="o">=</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)())</span>
+    <span class="n">public_key</span> <span class="o">=</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)())</span>
+    <span class="n">private_key</span> <span class="o">=</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="mi">64</span><span class="p">)())</span>
+
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_create_seed</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)]</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_create_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_create_keypair</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)]</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_create_keypair</span><span class="p">(</span><span class="n">public_key</span><span class="p">,</span> <span class="n">private_key</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+    <span class="n">publist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>
+        <span class="n">publist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">public_key</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="n">prilist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
+        <span class="n">prilist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">private_key</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">publist</span><span class="p">,</span> <span class="n">prilist</span><span class="p">)</span></div>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">ed25519_sign(</span>
+<span class="sd">  unsigned char *signature,</span>
+<span class="sd">  const unsigned char *message,</span>
+<span class="sd">  size_t message_len,</span>
+<span class="sd">  const unsigned char *public_key,</span>
+<span class="sd">  const unsigned char *private_key</span>
+<span class="sd">);</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="sign"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.ed25519.sign">[docs]</a><span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">private</span><span class="p">):</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="mi">64</span><span class="p">)())</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_sign</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">c_long</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)]</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_sign</span><span class="p">(</span>
+        <span class="n">signature</span><span class="p">,</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">message</span><span class="p">)),</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">),</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">public</span><span class="p">)))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">public</span><span class="p">))),</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">private</span><span class="p">)))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">private</span><span class="p">)))</span>
+    <span class="p">)</span>
+
+    <span class="n">siglist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
+        <span class="n">siglist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">signature</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">siglist</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="sign_int"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.ed25519.sign_int">[docs]</a><span class="k">def</span> <span class="nf">sign_int</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">public</span><span class="p">,</span> <span class="n">private</span><span class="p">):</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="mi">64</span><span class="p">)())</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_sign</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">c_long</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)]</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_sign</span><span class="p">(</span>
+        <span class="n">signature</span><span class="p">,</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">message</span><span class="p">)),</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">),</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">public</span><span class="p">))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">public</span><span class="p">))),</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">private</span><span class="p">))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">private</span><span class="p">)))</span>
+    <span class="p">)</span>
+    <span class="n">siglist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">64</span><span class="p">):</span>
+        <span class="n">siglist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">signature</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">siglist</span></div>
+
+
+<div class="viewcode-block" id="verify_int"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.ed25519.verify_int">[docs]</a><span class="k">def</span> <span class="nf">verify_int</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">public</span><span class="p">):</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_verify</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">c_long</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;int sig:&#39;</span><span class="p">,</span> <span class="n">signature</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;int siglen:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">signature</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;int pub:&#39;</span><span class="p">,</span> <span class="n">public</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;int publen:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">public</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_verify</span><span class="p">(</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">signature</span><span class="p">))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">signature</span><span class="p">))),</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">message</span><span class="p">)),</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">),</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">public</span><span class="p">))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">public</span><span class="p">))),</span>
+    <span class="p">)</span></div>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">ed25519_verify(</span>
+<span class="sd">  const unsigned char *signature,</span>
+<span class="sd">  const unsigned char *message,</span>
+<span class="sd">  size_t message_len,</span>
+<span class="sd">  const unsigned char *public_key</span>
+<span class="sd">);</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="verify"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.ed25519.verify">[docs]</a><span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">public</span><span class="p">):</span>
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_verify</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">c_long</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_verify</span><span class="p">(</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">signature</span><span class="p">)))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">signature</span><span class="p">))),</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">message</span><span class="p">)),</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">),</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">public</span><span class="p">)))</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">public</span><span class="p">))),</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="hex2bin"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.ed25519.hex2bin">[docs]</a><span class="k">def</span> <span class="nf">hex2bin</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span>
+            <span class="s1">&#39;0b&#39;</span> <span class="o">+</span> <span class="nb">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="mi">16</span><span class="p">),</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span> <span class="nb">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">message</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]),</span> <span class="mi">16</span><span class="p">),</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span>
+            <span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">b</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="verify_with_hex"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.ed25519.verify_with_hex">[docs]</a><span class="k">def</span> <span class="nf">verify_with_hex</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">public</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">hex2bin</span><span class="p">(</span><span class="n">public</span><span class="p">))</span>
+
+    <span class="n">pubhex</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">),</span> <span class="n">hex2bin</span><span class="p">(</span><span class="n">public</span><span class="p">))))</span>
+    <span class="n">sighex</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">byteorder</span><span class="o">=</span><span class="s1">&#39;big&#39;</span><span class="p">),</span> <span class="n">hex2bin</span><span class="p">(</span><span class="n">signature</span><span class="p">))))</span>
+
+    <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_verify</span><span class="o">.</span><span class="n">argtypes</span> <span class="o">=</span> <span class="p">[</span><span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">),</span> <span class="n">c_long</span><span class="p">,</span> <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">libed2559</span><span class="o">.</span><span class="n">ed25519_verify</span><span class="p">(</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="mi">64</span><span class="p">)</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">sighex</span><span class="p">)),</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="mi">64</span><span class="p">)</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">message</span><span class="p">)),</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">message</span><span class="p">),</span>
+        <span class="n">POINTER</span><span class="p">(</span><span class="n">c_ubyte</span><span class="p">)((</span><span class="n">c_ubyte</span> <span class="o">*</span> <span class="mi">32</span><span class="p">)</span><span class="o">.</span><span class="n">from_buffer_copy</span><span class="p">(</span><span class="n">pubhex</span><span class="p">)),</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">iroha</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../iroha.html">iroha package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../iroha.html">iroha</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

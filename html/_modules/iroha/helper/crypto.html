@@ -1,0 +1,149 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>iroha.helper.crypto &#8212; iroha  documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for iroha.helper.crypto</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="kn">from</span> <span class="nn">iroha.helper</span> <span class="k">import</span> <span class="n">ed25519</span>
+<span class="kn">import</span> <span class="nn">sha3</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
+
+<span class="n">KeyPair</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;KeyPair&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;private_key&#39;</span><span class="p">,</span> <span class="s1">&#39;public_key&#39;</span><span class="p">])</span>
+
+<div class="viewcode-block" id="create_key_pair"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.crypto.create_key_pair">[docs]</a><span class="k">def</span> <span class="nf">create_key_pair</span><span class="p">():</span>
+    <span class="c1"># Mind the private/public key order!</span>
+    <span class="n">public_key</span><span class="p">,</span> <span class="n">private_key</span> <span class="o">=</span> <span class="n">ed25519</span><span class="o">.</span><span class="n">generate</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">KeyPair</span><span class="p">(</span><span class="n">private_key</span><span class="o">=</span><span class="n">private_key</span><span class="p">,</span>
+                   <span class="n">public_key</span><span class="o">=</span><span class="n">public_key</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sign"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.crypto.sign">[docs]</a><span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="n">key_pair</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ed25519</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="n">key_pair</span><span class="o">.</span><span class="n">public_key</span><span class="p">,</span><span class="n">key_pair</span><span class="o">.</span><span class="n">private_key</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="verify"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.crypto.verify">[docs]</a><span class="k">def</span> <span class="nf">verify</span><span class="p">(</span><span class="n">public_key</span><span class="p">,</span> <span class="n">signature</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">ed25519</span><span class="o">.</span><span class="n">verify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span><span class="n">signature</span><span class="p">,</span><span class="n">public_key</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sha3_256"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.crypto.sha3_256">[docs]</a><span class="k">def</span> <span class="nf">sha3_256</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="n">digest_bytes</span> <span class="o">=</span> <span class="n">sha3</span><span class="o">.</span><span class="n">sha3_256</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">standard_b64encode</span><span class="p">(</span><span class="n">digest_bytes</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="b64encode"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.crypto.b64encode">[docs]</a><span class="k">def</span> <span class="nf">b64encode</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">standard_b64encode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="b64decode"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.crypto.b64decode">[docs]</a><span class="k">def</span> <span class="nf">b64decode</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">base64</span><span class="o">.</span><span class="n">standard_b64decode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sign_hash"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.crypto.sign_hash">[docs]</a><span class="k">def</span> <span class="nf">sign_hash</span><span class="p">(</span><span class="n">proto</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">sha3</span><span class="o">.</span><span class="n">sha3_256</span><span class="p">(</span><span class="n">proto</span><span class="o">.</span><span class="n">SerializeToString</span><span class="p">())</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="db_encode"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.crypto.db_encode">[docs]</a><span class="k">def</span> <span class="nf">db_encode</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">b64encode</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="db_decode"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.crypto.db_decode">[docs]</a><span class="k">def</span> <span class="nf">db_decode</span><span class="p">(</span><span class="n">message</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">b64decode</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="now"><a class="viewcode-back" href="../../../iroha.helper.html#iroha.helper.crypto.now">[docs]</a><span class="k">def</span> <span class="nf">now</span><span class="p">():</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">*</span><span class="mf">1000.0</span><span class="p">)</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">iroha</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../iroha.html">iroha package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../iroha.html">iroha</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
