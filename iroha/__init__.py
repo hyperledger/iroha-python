@@ -7,6 +7,7 @@ from __future__ import (absolute_import, division,
 from iroha.helper import crypto, logger
 from iroha.creator import Creator
 from iroha.network.connection import Connection
+from iroha.primitive.amount import amount2int, int2amount
 
 from schema.commands_pb2 import Command
 from schema.endpoint_pb2 import ToriiResponse, TxStatus
