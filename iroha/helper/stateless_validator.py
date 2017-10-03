@@ -7,7 +7,6 @@ from iroha.primitive.amount import amount2int
 
 MAX_DELAY = 1000 * 3600 * 24  # max-delay between tx creation and validation
 
-cmp = {}
 ACCOUNT_NAME = re.compile(r"^[a-z_0-9]{1,32}$")
 ACCOUNT_ID = re.compile(r"^[a-z_0-9]{1,32}\@[a-z_0-9]{1,32}(\.[a-z_0-9]{1,32}){0,4}$")
 DOMAIN_ID = re.compile(r"^[a-z_0-9]{1,32}(\.[a-z_0-9]{1,32}){0,4}$")
