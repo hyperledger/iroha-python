@@ -7,12 +7,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: pip3 install
-          command: |
-            pip install -r requirements.txt
-      - run:
           name: tox
           command: |
+            pip install -r requirements.txt
             make all
             tox
       - run:
