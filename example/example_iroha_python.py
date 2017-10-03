@@ -1,10 +1,10 @@
 import time
-from iroha import iroha
+import iroha
 
 iroha.setDebugLog()
 
 # Generate Connection used to connect iroha
-connection = iroha.gen_connection(ip="127.0.0.1",port="50051")
+connection = iroha.gen_connection(ip="127.0.0.1",port=50051)
 #connection = iroha.gen_connection(ip="0.0.0.0",port="10001")
 creator = "sioya@sporting.salt"
 tx_counter = 0
