@@ -1,5 +1,5 @@
 import time
-from iroha import iroha
+import iroha
 
 iroha.setDebugLog()
 
