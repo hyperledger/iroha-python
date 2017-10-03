@@ -12,9 +12,8 @@ def xrun(*args):
                    check=True)
 
 
-class GenerateProtobufCommand(Command):
-    description = 'generate Protobuf schema'
-
+class GeneratePrev(Command):
+    description = 'generate previous'
     user_options = []
 
     def initialize_options(self):
@@ -24,23 +23,7 @@ class GenerateProtobufCommand(Command):
         pass
 
     def run(self):
-        xrun('make', 'all-proto')
-
-
-class GenerateEd25519Sha3(Command):
-    description = 'generate ed25519 sha3'
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        xrun('cd','src/lib/ed25519')
-        xrun('make')
-
+        xrun('make', 'all')
 
 
 setup(
@@ -49,7 +32,7 @@ setup(
     description='Python library for Hyperledger Iroha',
     url='https://github.com/hyperledger/iroha-python',
     license='Apache',
-    packages=find_packages(),
+    packages=find_packages(exclude=('tests')),
     # Keep the dependencies lexicographically sorted.
     install_requires=[
         'protobuf',
@@ -58,7 +41,6 @@ setup(
         'pysha3'
     ],
     cmdclass={
-        'genproto': GenerateProtobufCommand,
-        'gened25519' : GenerateEd25519Sha3
+        'gen': GeneratePrev
     },
 )
