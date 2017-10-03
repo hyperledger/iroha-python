@@ -15,5 +15,4 @@ jobs:
       - run:
           name: lint
           command: |
-            pylint `find iroha -name '?*py'`
-            pylint `find tests -name '?*py'`
+            pylint iroha
