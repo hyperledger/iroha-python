@@ -4,9 +4,9 @@
 from __future__ import (absolute_import, division,
                         print_function, unicode_literals)
 
-from src.helper import crypto, logger
-from src.creator import Creator
-from src.network.connection import Connection
+from iroha.helper import crypto, logger
+from iroha.creator import Creator
+from iroha.network.connection import Connection
 
 from schema.commands_pb2 import Command
 from schema.endpoint_pb2 import ToriiResponse, TxStatus

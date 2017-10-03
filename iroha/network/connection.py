@@ -1,6 +1,6 @@
 import grpc
 from schema.endpoint_pb2 import CommandServiceStub, QueryServiceStub
-from src.helper import logger, stateless_validator, exception
+from iroha.helper import logger, stateless_validator, exception
 
 class Connection:
     """
@@ -43,7 +43,7 @@ class Connection:
             self.ip = ip
         if "port" in connection_env:
             port = connection_env["port"]
-            if isinstance(port,int):
+            if not isinstance(port,int):
                 raise exception.InvalidPortException(port)
             if not stateless_validator.verify_port(port):
                 raise exception.InvalidPortException(port)

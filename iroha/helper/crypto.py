@@ -1,5 +1,5 @@
 # coding=utf-8
-from src.helper import ed25519
+from iroha.helper import ed25519
 import sha3
 import base64
 import time

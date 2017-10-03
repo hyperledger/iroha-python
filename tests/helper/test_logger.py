@@ -1,5 +1,5 @@
 import unittest
-from src.helper import logger
+from iroha.helper import logger
 
 class LoggerTest(unittest.TestCase):
     def test_logger_debug(self):

@@ -1,4 +1,4 @@
-from src.helper import crypto
+from iroha.helper import crypto
 import sha3
 import unittest
 

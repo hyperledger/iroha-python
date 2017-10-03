@@ -1,9 +1,9 @@
 from schema.response_pb2 import Query as QuerySchema
 
-from src.helper import logger, crypto, stateless_validator
-from src.primitive.signatories import Signatories
-from src.query.request import wrap_query
-from src.query.response import Response
+from iroha.helper import logger, crypto, stateless_validator
+from iroha.primitive.signatories import Signatories
+from iroha.query.request import wrap_query
+from iroha.query.response import Response
 
 class Query:
     """

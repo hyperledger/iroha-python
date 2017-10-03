@@ -1,4 +1,4 @@
-from src.helper import logger
+from iroha.helper import logger
 from schema.primitive_pb2 import Amount, uint256
 
 UINT64_NUMBER = int(18446744073709551616)

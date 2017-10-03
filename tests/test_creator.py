@@ -1,7 +1,7 @@
 import unittest
 
-from src.helper import logger,crypto
-from src.creator import Creator
+from iroha.helper import logger,crypto
+from iroha.creator import Creator
 
 from schema.transaction_pb2 import Transaction
 from schema.response_pb2 import Query

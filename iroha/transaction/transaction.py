@@ -1,11 +1,11 @@
-from src.helper import logger,crypto
+from iroha.helper import logger,crypto
 
 from schema.transaction_pb2 import Transaction as TransactionSchema
 from schema.endpoint_pb2 import TxStatusRequest
 
-from src.primitive.signatories import Signatories
-from src.transaction import command as helper_command
-from src.helper import stateless_validator
+from iroha.primitive.signatories import Signatories
+from iroha.transaction import command as helper_command
+from iroha.helper import stateless_validator
 
 class Transaction:
     def __init__(self):

@@ -1,7 +1,7 @@
 import unittest
 
-from src.helper import logger,crypto
-from src.primitive.signatories import Signatories
+from iroha.helper import logger,crypto
+from iroha.primitive.signatories import Signatories
 
 from schema.transaction_pb2 import Transaction
 

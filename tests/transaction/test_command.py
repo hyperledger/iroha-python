@@ -1,9 +1,9 @@
 import unittest
 
 from schema.commands_pb2 import Command
-from src.helper import logger, crypto
-from src.primitive.amount import int2amount
-from src.transaction.command import wrap_cmd
+from iroha.helper import logger, crypto
+from iroha.primitive.amount import int2amount
+from iroha.transaction.command import wrap_cmd
 
 
 class CommandTest(unittest.TestCase):

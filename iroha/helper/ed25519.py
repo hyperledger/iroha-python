@@ -1,7 +1,7 @@
 from ctypes import *
 import base64
 
-libed2559 = cdll.LoadLibrary('./src/lib/ed25519/lib/libed25519.so')
+libed2559 = cdll.LoadLibrary('./iroha/lib/ed25519/lib/libed25519.so')
 
 
 def generate():

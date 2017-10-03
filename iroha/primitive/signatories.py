@@ -1,4 +1,4 @@
-from src.helper import logger, crypto
+from iroha.helper import logger, crypto
 
 from schema.primitive_pb2 import Signature
 
