@@ -1,4 +1,4 @@
 #!/bin/sh
-cd src/lib/ed25519
+cd iroha/lib/ed25519
 make clean
 make
