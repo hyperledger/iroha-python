@@ -14,7 +14,7 @@ class Connection:
         Args:
             **connection_env: Arbitrary keyword arguments.
                 ip ( str ): ip address string of iroha. ( default "0.0.0.0" )
-                port (str): port number string of iroha. (default : "8080" )
+                port (int): port number string of iroha. (default : 8080 )
 
         """
         logger.info("Constract Conncection")
