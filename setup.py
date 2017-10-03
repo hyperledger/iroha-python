@@ -33,6 +33,7 @@ setup(
     url='https://github.com/hyperledger/iroha-python',
     license='Apache',
     packages=find_packages(exclude=('tests')),
+    data_files=[('iroha/lib/ed25519/lib', ['iroha/lib/ed25519/lib/libed25519.so'])],
     # Keep the dependencies lexicographically sorted.
     install_requires=[
         'protobuf',
