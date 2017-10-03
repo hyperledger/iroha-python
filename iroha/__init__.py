@@ -67,8 +67,17 @@ def gen_connection(ip,port):
     return connect
 
 def setDebugLog():
+    """
+    Set Debug Output Level : Debug ( means many debug message )
+    """
     logger.setDebug()
 def setInfoLog():
+    """
+    Set Debug Output Level : Info
+    """
     logger.setInfo()
 def setWarningLog():
+    """
+    Set Debug Output Level : Warning ( means few debug message )
+    """
     logger.setWarning()
