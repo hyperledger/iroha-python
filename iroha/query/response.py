@@ -3,7 +3,7 @@ from iroha.helper.exception import NotErrorResponseException, NotAccountAssetRes
 
 class Response:
     def __init__(self,query_response):
-        logger.info("Create Response Construct")
+        logger.debug("Create Response Construct")
         self.response = query_response
 
     def verify(self):
