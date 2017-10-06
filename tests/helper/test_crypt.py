@@ -41,11 +41,11 @@ class CryptTest(unittest.TestCase):
         logger.info(hash)
         logger.info(crypto.b64encode(hash))
 
-        sign = crypto.sign(self.keypair,hash)
+        sign = crypto.sign(self.keypair, hash)
 
         logger.info(sign)
 
-        is_verify = crypto.verify(self.keypair.public_key,sign,hash)
+        is_verify = crypto.verify(self.keypair.public_key, sign, hash)
 
         logger.info(is_verify)
         self.assertTrue(is_verify)
