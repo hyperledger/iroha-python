@@ -7,7 +7,7 @@
 protobuf==3.3.0
 grpcio==1.4.0
 grpcio-tools==1.4.0
-pysha3==1.0.2
 pylint==1.7.2
 tox==2.8.2
 pydocstyle==2.0.0
+pysha3==1.0.2

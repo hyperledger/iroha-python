@@ -5,6 +5,9 @@ import subprocess
 
 from setuptools import find_packages, setup
 from distutils.cmd import Command
+from distutils.core import setup, Extension, Command
+from distutils.util import get_platform
+import os
 
 
 def xrun(*args):
@@ -25,6 +28,9 @@ class GeneratePrev(Command):
     def run(self):
         xrun('make', 'all')
 
+sources = ["iroha/ed25519_sha3/ed25519_sha3module.c"]
+sources.extend(["iroha/ed25519_sha3/lib/" + s for s in os.listdir("iroha/ed25519_sha3/lib/") if s.endswith(".c")])
+module_ed25519_sha3 = Extension("ed25519_sha3",include_dirs=["iroha/ed25519_sha3/lib/"], sources=sources)
 
 setup(
     name='iroha',
@@ -33,7 +39,7 @@ setup(
     url='https://github.com/hyperledger/iroha-python',
     license='Apache',
     packages=find_packages(),
-    data_files=[('iroha/lib/ed25519/lib', ['iroha/lib/ed25519/lib/libed25519.so'])],
+    ext_modules=[module_ed25519_sha3],
     # Keep the dependencies lexicographically sorted.
     install_requires=[
         'protobuf',
