@@ -44,7 +44,7 @@ def verify(transaction):
             logger.info("Stateless Command Failed")
             return False
 
-    for signature in transaction.signatures:
+    for signature in transaction.signature:
         if not crypto.verify(signature.pubkey,
                              signature.signature,
                              crypto.sign_hash(payload)):

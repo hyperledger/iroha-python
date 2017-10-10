@@ -14,7 +14,7 @@ class Transaction:
             payload = TransactionSchema.Payload(
                 created_time = crypto.now()
             ),
-            signatures = []
+            signature = []
         )
         self.signatories = Signatories()
 
@@ -89,8 +89,8 @@ class Transaction:
         Delete all signature info. ( So, after call this func number of signatures of transaction is 0 )
         """
         logger.debug("Transaction.signatures_clean")
-        while self.tx.signatures.__len__():
-            self.tx.signatures.pop()
+        while self.tx.signature.__len__():
+            self.tx.signature.pop()
 
     def count_signatures(self):
         """
@@ -100,7 +100,7 @@ class Transaction:
 
         """
         logger.debug("Transaction.count_signatures")
-        return self.tx.signatures.__len__()
+        return self.tx.signature.__len__()
 
     def signatories_clean(self):
         """

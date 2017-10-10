@@ -15,8 +15,8 @@ class Signatories:
         logger.debug("Signatories.sign")
         payload = tx.payload
         for signatory in self.signatories:
-            if not [ signature for signature in tx.signatures if signature.pubkey == signatory.public_key ]:
-                tx.signatures.extend([
+            if not [ signature for signature in tx.signature if signature.pubkey == signatory.public_key ]:
+                tx.signature.extend([
                     Signature(
                         pubkey = signatory.public_key,
                         signature = crypto.sign(signatory, crypto.sign_hash(payload))

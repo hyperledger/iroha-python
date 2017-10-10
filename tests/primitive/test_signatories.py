@@ -28,14 +28,14 @@ class PrimitiveTest(unittest.TestCase):
             payload = Transaction.Payload(
                 creator_account_id = "test@test"
             ),
-            signatures = []
+            signature = []
         )
 
         signatories.sign(tx)
 
-        self.assertEqual(len(tx.signatures),3)
+        self.assertEqual(len(tx.signature),3)
         for i in range(0,3):
-            sig = tx.signatures[i]
+            sig = tx.signature[i]
             self.assertTrue(
                 crypto.verify(
                     sig.pubkey,

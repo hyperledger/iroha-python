@@ -33,7 +33,7 @@ class CreatorTest(unittest.TestCase):
                     creator_account_id = "test@test",
                     created_time = tx.debug_proto_transaction().payload.created_time
                 ),
-                signatures = [
+                signature = [
                     Signature(
                         pubkey = keypairs[0].public_key,
                         signature = crypto.sign(

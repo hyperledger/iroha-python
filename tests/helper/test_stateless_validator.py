@@ -34,7 +34,7 @@ class TestCommand(unittest.TestCase):
 
         tx = Transaction(
             payload = payload,
-            signatures = [
+            signature = [
                 Signature(
                     pubkey = self.keypair.public_key,
                     signature = crypto.sign(self.keypair,crypto.sign_hash(payload))
@@ -61,7 +61,7 @@ class TestCommand(unittest.TestCase):
 
         tx = Transaction(
             payload = payload,
-            signatures = [
+            signature = [
                 Signature(
                     pubkey = self.keypair.public_key,
                     signature = crypto.sign(self.keypair,crypto.sign_hash(payload))
@@ -81,7 +81,7 @@ class TestCommand(unittest.TestCase):
 
         tx = Transaction(
             payload = payload,
-            signatures = [
+            signature = [
                 Signature(
                     pubkey = self.keypair.public_key,
                     signature = crypto.sign(self.keypair,crypto.sign_hash(payload))
@@ -117,7 +117,7 @@ class TestCommand(unittest.TestCase):
         )
         tx = Transaction(
             payload = payload,
-            signatures = [
+            signature = [
                 Signature(
                     pubkey = self.keypair.public_key,
                     signature = crypto.sign(self.keypair,crypto.sign_hash(payload2))
