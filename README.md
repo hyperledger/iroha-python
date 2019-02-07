@@ -28,7 +28,7 @@ alice_tx = iroha.transaction(
         'TransferAsset', 
         src_account_id='alice@test', 
         dest_account_id='bob@test', 
-        asset_id=‘bitcoin#test',
+        asset_id='bitcoin#test',
         description='test',
         amount='1'
     )]
