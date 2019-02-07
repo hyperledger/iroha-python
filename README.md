@@ -1,80 +1,47 @@
-# iroha-python [![CircleCI](https://img.shields.io/circleci/project/github/hyperledger/iroha-python/master.svg)](https://circleci.com/gh/hyperledger/iroha-python/tree/master)
+# Python library for Hyperledger Iroha
 
-Python library for [Hyperledger Iroha](https://github.com/hyperledger/iroha).
 
-## Install
+This is a source repository for HL Iroha Python library.
 
-### Python
+Currently, latest HL Iroha rc2 release (`hyperledger/iroha:1.0.0_rc2-hotfix` Docker image) is supported.
 
-Supported Python versions: 2.7 and 3.5 (see `tox.ini`).
-Multiple Python versions can be installed with your system package manager or with the [pyenv](https://github.com/pyenv/pyenv) tool.
-The pyenv itself can also be installed with a system package manager or with the [pyenv-installer](https://github.com/pyenv/pyenv-installer) script.
+The library works in Python 3 environment (Python 2 is not supported now).
 
-#### Example installation steps
+### Installation
 
-```sh
-# Install pyenv using pyenv-installer
-curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
-# pyenv initialization
-export PATH="${HOME}/.pyenv/bin:${PATH}"
-eval "$(pyenv init -)"
-# Also initialize on startup; if you are using zsh, replace "~/.bashrc" with "~/.zshrc"
-echo 'export PATH="${HOME}/.pyenv/bin:${PATH}"' >> ~/.bashrc
-echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-# Install the most recent Python versions (both 3 and 2)
-pyenv install 3.5.2
-pyenv install 2.7.13
-# Bring both installed versions into the scope: we are testing against both versions
-pyenv global 3.5.2 2.7.13
-# Only the "tox" package needs to be installed manually
-pip install tox
+```bash
+pip install iroha
 ```
 
-### External dependencies
 
-Download [FlatBuffers](https://github.com/google/flatbuffers), compile the `flatc` executable and place it into your `PATH`.
-
-`.circleci/config.yml` contains working build commands.
-These commands might need some adaptation to your local environment.
-
-## Develop
-
-### First-time setup
-
-Run `python setup.py genfbs` to generate the FlatBuffers schema.
-
-### Interactive shell
-
-Run `tox -e dev` to get an [IPython shell](https://ipython.org/) in a virtual environment with all dependencies installed.
-
-### New dependencies
-
-After adding a new dependency, include it into the `install_requires` option of the `setup.py` script.
-
-### Python 2 compatibility
-
-Familiarize yourself with the Python compatibility guidelines and supporting packages:
-
-* [Porting Python 2 Code to Python 3](https://docs.python.org/3/howto/pyporting.html)
-* [Writing code that runs under both Python2 and 3](https://wiki.python.org/moin/PortingToPy3k/BilingualQuickRef)
-* The [future](http://python-future.org) package
-* The [six](http://pythonhosted.org/six) package
-
-Put the following at the top of all your Python files (after a docstring and file-wide comments):
+### Usage Example
 
 ```python
-from __future__ import (absolute_import, division,
-                        print_function, unicode_literals)
+from iroha import Iroha, IrohaCrypto, IrohaGrpc
+
+iroha = Iroha('alice@test')
+net = IrohaGrpc('127.0.0.1:50051')
+
+alice_key = IrohaCrypto.private_key()
+alice_tx = iroha.transaction(
+    [iroha.command(
+        'TransferAsset', 
+        src_account_id='alice@test', 
+        dest_account_id='bob@test', 
+        asset_id='bitcoin#test',
+        description='test',
+        amount='1'
+    )]
+)
+IrohaCrypto.sign_transaction(alice_tx, alice_key)
+net.send_tx(alice_tx)
+
+for status in net.tx_status_stream(alice_tx):
+    print(status)
 ```
 
-## Test
+Please explore [examples](examples) directory for more usage examples.
 
-[tox](http://tox.readthedocs.io) tests the package under different virtual environments and with different Python versions.
-Simply execute the `tox` command to run all tests in all supported environments.
+All the library methods have docstrings in its source [iroha.py](iroha/iroha.py).
 
-## Compile proto
-```
-cd protoc; python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. api.proto
-```
 
-**\*Future replace protobuf with flatbuffer \('A')/**

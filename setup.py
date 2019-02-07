@@ -1,49 +1,25 @@
-from __future__ import (absolute_import, division,
-                        print_function, unicode_literals)
+import setuptools
 
-import subprocess
+with open('README.md', 'r') as readme_file:
+    long_description = readme_file.read()
 
-from setuptools import find_packages, setup
-from distutils.cmd import Command
-
-
-def xrun(*args):
-    subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                   check=True)
-
-
-class GenerateFlatbuffersCommand(Command):
-    description = 'generate FlatBuffers schema'
-
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        xrun('flatc', '--python', '-o', '_generated', 'api.fbs')
-        xrun('touch', '_generated/__init__.py')
-
-
-setup(
+setuptools.setup(
     name='iroha',
-    version='0.1.0',
+    version='0.0.2',
     description='Python library for Hyperledger Iroha',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    license='Apache-2.0',
     url='https://github.com/hyperledger/iroha-python',
-    license='Apache',
-    packages=find_packages(),
-    # Keep the dependencies lexicographically sorted.
+    packages=setuptools.find_packages(
+        exclude=['dist', 'build', '*.pyc', '.DS_Store',
+                 '.vscode',  '.idea', '__pycache__', '*.bak']),
     install_requires=[
-        'ed25519',
-        'flatbuffers',
-        'future',
-        'pysha3',
-        'six',
+        'grpcio-tools',
+        'pysha3;python_version<"3.6"'
     ],
-    cmdclass={
-        'genfbs': GenerateFlatbuffersCommand,
-    },
+    classifiers=[
+        'Programming Language :: Python :: 3',
+        'Operating System :: OS Independent'
+    ]
 )
