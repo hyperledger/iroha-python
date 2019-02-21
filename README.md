@@ -44,4 +44,4 @@ Please explore [examples](examples) directory for more usage examples.
 
 All the library methods have docstrings in its source [iroha.py](iroha/iroha.py).
 
-
+*The links above are broken outside the [hyperledger/iroha-python](https://github.com/hyperledger/iroha-python) GitHub repository.*

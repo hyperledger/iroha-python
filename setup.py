@@ -5,7 +5,7 @@ with open('README.md', 'r') as readme_file:
 
 setuptools.setup(
     name='iroha',
-    version='0.0.2',
+    version='0.0.3',
     description='Python library for Hyperledger Iroha',
     long_description=long_description,
     long_description_content_type='text/markdown',
