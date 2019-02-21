@@ -266,7 +266,7 @@ class Iroha(object):
         return query_wrapper
 
     @staticmethod
-    def batch(atomic=True, *transactions):
+    def batch(transactions, atomic=True):
         """
         Tie transactions to be a single batch. All of them will have a common batch meta.
         :param transactions: list of transactions to be tied into a batch

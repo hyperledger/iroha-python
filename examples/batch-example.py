@@ -145,7 +145,7 @@ def alice_creates_exchange_batch():
         # alice does not know bob's quorum.
         # bob knowing own quorum in case of accept should sign the tx using all the number of missing keys at once
     )
-    iroha.batch(alice_tx, bob_tx, atomic=True)
+    iroha.batch([alice_tx, bob_tx], atomic=True)
     # sign transactions only after batch meta creation
     ic.sign_transaction(alice_tx, *alice_private_keys)
     send_batch_and_print_status(alice_tx, bob_tx)
