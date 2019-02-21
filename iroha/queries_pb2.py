@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='iroha.protocol',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\rqueries.proto\x12\x0eiroha.protocol\x1a\x0fprimitive.proto\"S\n\x10TxPaginationMeta\x12\x11\n\tpage_size\x18\x01 \x01(\r\x12\x17\n\rfirst_tx_hash\x18\x02 \x01(\tH\x00\x42\x13\n\x11opt_first_tx_hash\" \n\nGetAccount\x12\x12\n\naccount_id\x18\x01 \x01(\t\"$\n\x0eGetSignatories\x12\x12\n\naccount_id\x18\x01 \x01(\t\"g\n\x16GetAccountTransactions\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x39\n\x0fpagination_meta\x18\x02 \x01(\x0b\x32 .iroha.protocol.TxPaginationMeta\"~\n\x1bGetAccountAssetTransactions\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x10\n\x08\x61sset_id\x18\x02 \x01(\t\x12\x39\n\x0fpagination_meta\x18\x03 \x01(\x0b\x32 .iroha.protocol.TxPaginationMeta\"$\n\x0fGetTransactions\x12\x11\n\ttx_hashes\x18\x01 \x03(\t\"&\n\x10GetAccountAssets\x12\x12\n\naccount_id\x18\x01 \x01(\t\"t\n\x10GetAccountDetail\x12\x14\n\naccount_id\x18\x01 \x01(\tH\x00\x12\r\n\x03key\x18\x02 \x01(\tH\x01\x12\x10\n\x06writer\x18\x03 \x01(\tH\x02\x42\x10\n\x0eopt_account_idB\t\n\x07opt_keyB\x0c\n\nopt_writer\" \n\x0cGetAssetInfo\x12\x10\n\x08\x61sset_id\x18\x01 \x01(\t\"\n\n\x08GetRoles\"%\n\x12GetRolePermissions\x12\x0f\n\x07role_id\x18\x01 \x01(\t\"\x18\n\x16GetPendingTransactions\"[\n\x10QueryPayloadMeta\x12\x14\n\x0c\x63reated_time\x18\x01 \x01(\x04\x12\x1a\n\x12\x63reator_account_id\x18\x02 \x01(\t\x12\x15\n\rquery_counter\x18\x03 \x01(\x04\"\xef\x06\n\x05Query\x12.\n\x07payload\x18\x01 \x01(\x0b\x32\x1d.iroha.protocol.Query.Payload\x12,\n\tsignature\x18\x02 \x01(\x0b\x32\x19.iroha.protocol.Signature\x1a\x87\x06\n\x07Payload\x12.\n\x04meta\x18\x01 \x01(\x0b\x32 .iroha.protocol.QueryPayloadMeta\x12\x31\n\x0bget_account\x18\x03 \x01(\x0b\x32\x1a.iroha.protocol.GetAccountH\x00\x12\x39\n\x0fget_signatories\x18\x04 \x01(\x0b\x32\x1e.iroha.protocol.GetSignatoriesH\x00\x12J\n\x18get_account_transactions\x18\x05 \x01(\x0b\x32&.iroha.protocol.GetAccountTransactionsH\x00\x12U\n\x1eget_account_asset_transactions\x18\x06 \x01(\x0b\x32+.iroha.protocol.GetAccountAssetTransactionsH\x00\x12;\n\x10get_transactions\x18\x07 \x01(\x0b\x32\x1f.iroha.protocol.GetTransactionsH\x00\x12>\n\x12get_account_assets\x18\x08 \x01(\x0b\x32 .iroha.protocol.GetAccountAssetsH\x00\x12>\n\x12get_account_detail\x18\t \x01(\x0b\x32 .iroha.protocol.GetAccountDetailH\x00\x12-\n\tget_roles\x18\n \x01(\x0b\x32\x18.iroha.protocol.GetRolesH\x00\x12\x42\n\x14get_role_permissions\x18\x0b \x01(\x0b\x32\".iroha.protocol.GetRolePermissionsH\x00\x12\x36\n\x0eget_asset_info\x18\x0c \x01(\x0b\x32\x1c.iroha.protocol.GetAssetInfoH\x00\x12J\n\x18get_pending_transactions\x18\r \x01(\x0b\x32&.iroha.protocol.GetPendingTransactionsH\x00\x42\x07\n\x05query\"k\n\x0b\x42locksQuery\x12.\n\x04meta\x18\x01 \x01(\x0b\x32 .iroha.protocol.QueryPayloadMeta\x12,\n\tsignature\x18\x02 \x01(\x0b\x32\x19.iroha.protocol.Signatureb\x06proto3')
+  serialized_pb=_b('\n\rqueries.proto\x12\x0eiroha.protocol\x1a\x0fprimitive.proto\"S\n\x10TxPaginationMeta\x12\x11\n\tpage_size\x18\x01 \x01(\r\x12\x17\n\rfirst_tx_hash\x18\x02 \x01(\tH\x00\x42\x13\n\x11opt_first_tx_hash\" \n\nGetAccount\x12\x12\n\naccount_id\x18\x01 \x01(\t\"\x1a\n\x08GetBlock\x12\x0e\n\x06height\x18\x01 \x01(\x04\"$\n\x0eGetSignatories\x12\x12\n\naccount_id\x18\x01 \x01(\t\"g\n\x16GetAccountTransactions\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x39\n\x0fpagination_meta\x18\x02 \x01(\x0b\x32 .iroha.protocol.TxPaginationMeta\"~\n\x1bGetAccountAssetTransactions\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x10\n\x08\x61sset_id\x18\x02 \x01(\t\x12\x39\n\x0fpagination_meta\x18\x03 \x01(\x0b\x32 .iroha.protocol.TxPaginationMeta\"$\n\x0fGetTransactions\x12\x11\n\ttx_hashes\x18\x01 \x03(\t\"&\n\x10GetAccountAssets\x12\x12\n\naccount_id\x18\x01 \x01(\t\"t\n\x10GetAccountDetail\x12\x14\n\naccount_id\x18\x01 \x01(\tH\x00\x12\r\n\x03key\x18\x02 \x01(\tH\x01\x12\x10\n\x06writer\x18\x03 \x01(\tH\x02\x42\x10\n\x0eopt_account_idB\t\n\x07opt_keyB\x0c\n\nopt_writer\" \n\x0cGetAssetInfo\x12\x10\n\x08\x61sset_id\x18\x01 \x01(\t\"\n\n\x08GetRoles\"%\n\x12GetRolePermissions\x12\x0f\n\x07role_id\x18\x01 \x01(\t\"\x18\n\x16GetPendingTransactions\"[\n\x10QueryPayloadMeta\x12\x14\n\x0c\x63reated_time\x18\x01 \x01(\x04\x12\x1a\n\x12\x63reator_account_id\x18\x02 \x01(\t\x12\x15\n\rquery_counter\x18\x03 \x01(\x04\"\x9e\x07\n\x05Query\x12.\n\x07payload\x18\x01 \x01(\x0b\x32\x1d.iroha.protocol.Query.Payload\x12,\n\tsignature\x18\x02 \x01(\x0b\x32\x19.iroha.protocol.Signature\x1a\xb6\x06\n\x07Payload\x12.\n\x04meta\x18\x01 \x01(\x0b\x32 .iroha.protocol.QueryPayloadMeta\x12\x31\n\x0bget_account\x18\x03 \x01(\x0b\x32\x1a.iroha.protocol.GetAccountH\x00\x12\x39\n\x0fget_signatories\x18\x04 \x01(\x0b\x32\x1e.iroha.protocol.GetSignatoriesH\x00\x12J\n\x18get_account_transactions\x18\x05 \x01(\x0b\x32&.iroha.protocol.GetAccountTransactionsH\x00\x12U\n\x1eget_account_asset_transactions\x18\x06 \x01(\x0b\x32+.iroha.protocol.GetAccountAssetTransactionsH\x00\x12;\n\x10get_transactions\x18\x07 \x01(\x0b\x32\x1f.iroha.protocol.GetTransactionsH\x00\x12>\n\x12get_account_assets\x18\x08 \x01(\x0b\x32 .iroha.protocol.GetAccountAssetsH\x00\x12>\n\x12get_account_detail\x18\t \x01(\x0b\x32 .iroha.protocol.GetAccountDetailH\x00\x12-\n\tget_roles\x18\n \x01(\x0b\x32\x18.iroha.protocol.GetRolesH\x00\x12\x42\n\x14get_role_permissions\x18\x0b \x01(\x0b\x32\".iroha.protocol.GetRolePermissionsH\x00\x12\x36\n\x0eget_asset_info\x18\x0c \x01(\x0b\x32\x1c.iroha.protocol.GetAssetInfoH\x00\x12J\n\x18get_pending_transactions\x18\r \x01(\x0b\x32&.iroha.protocol.GetPendingTransactionsH\x00\x12-\n\tget_block\x18\x0e \x01(\x0b\x32\x18.iroha.protocol.GetBlockH\x00\x42\x07\n\x05query\"k\n\x0b\x42locksQuery\x12.\n\x04meta\x18\x01 \x01(\x0b\x32 .iroha.protocol.QueryPayloadMeta\x12,\n\tsignature\x18\x02 \x01(\x0b\x32\x19.iroha.protocol.Signatureb\x06proto3')
   ,
   dependencies=[primitive__pb2.DESCRIPTOR,])
 
@@ -99,6 +99,37 @@ _GETACCOUNT = _descriptor.Descriptor(
 )
 
 
+_GETBLOCK = _descriptor.Descriptor(
+  name='GetBlock',
+  full_name='iroha.protocol.GetBlock',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='height', full_name='iroha.protocol.GetBlock.height', index=0,
+      number=1, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=169,
+  serialized_end=195,
+)
+
+
 _GETSIGNATORIES = _descriptor.Descriptor(
   name='GetSignatories',
   full_name='iroha.protocol.GetSignatories',
@@ -125,8 +156,8 @@ _GETSIGNATORIES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=169,
-  serialized_end=205,
+  serialized_start=197,
+  serialized_end=233,
 )
 
 
@@ -163,8 +194,8 @@ _GETACCOUNTTRANSACTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=207,
-  serialized_end=310,
+  serialized_start=235,
+  serialized_end=338,
 )
 
 
@@ -208,8 +239,8 @@ _GETACCOUNTASSETTRANSACTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=312,
-  serialized_end=438,
+  serialized_start=340,
+  serialized_end=466,
 )
 
 
@@ -239,8 +270,8 @@ _GETTRANSACTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=440,
-  serialized_end=476,
+  serialized_start=468,
+  serialized_end=504,
 )
 
 
@@ -270,8 +301,8 @@ _GETACCOUNTASSETS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=478,
-  serialized_end=516,
+  serialized_start=506,
+  serialized_end=544,
 )
 
 
@@ -324,8 +355,8 @@ _GETACCOUNTDETAIL = _descriptor.Descriptor(
       name='opt_writer', full_name='iroha.protocol.GetAccountDetail.opt_writer',
       index=2, containing_type=None, fields=[]),
   ],
-  serialized_start=518,
-  serialized_end=634,
+  serialized_start=546,
+  serialized_end=662,
 )
 
 
@@ -355,8 +386,8 @@ _GETASSETINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=636,
-  serialized_end=668,
+  serialized_start=664,
+  serialized_end=696,
 )
 
 
@@ -379,8 +410,8 @@ _GETROLES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=670,
-  serialized_end=680,
+  serialized_start=698,
+  serialized_end=708,
 )
 
 
@@ -410,8 +441,8 @@ _GETROLEPERMISSIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=682,
-  serialized_end=719,
+  serialized_start=710,
+  serialized_end=747,
 )
 
 
@@ -434,8 +465,8 @@ _GETPENDINGTRANSACTIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=721,
-  serialized_end=745,
+  serialized_start=749,
+  serialized_end=773,
 )
 
 
@@ -479,8 +510,8 @@ _QUERYPAYLOADMETA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=747,
-  serialized_end=838,
+  serialized_start=775,
+  serialized_end=866,
 )
 
 
@@ -575,6 +606,13 @@ _QUERY_PAYLOAD = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='get_block', full_name='iroha.protocol.Query.Payload.get_block', index=12,
+      number=14, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -590,8 +628,8 @@ _QUERY_PAYLOAD = _descriptor.Descriptor(
       name='query', full_name='iroha.protocol.Query.Payload.query',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=945,
-  serialized_end=1720,
+  serialized_start=973,
+  serialized_end=1795,
 )
 
 _QUERY = _descriptor.Descriptor(
@@ -627,8 +665,8 @@ _QUERY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=841,
-  serialized_end=1720,
+  serialized_start=869,
+  serialized_end=1795,
 )
 
 
@@ -665,8 +703,8 @@ _BLOCKSQUERY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1722,
-  serialized_end=1829,
+  serialized_start=1797,
+  serialized_end=1904,
 )
 
 _TXPAGINATIONMETA.oneofs_by_name['opt_first_tx_hash'].fields.append(
@@ -695,6 +733,7 @@ _QUERY_PAYLOAD.fields_by_name['get_roles'].message_type = _GETROLES
 _QUERY_PAYLOAD.fields_by_name['get_role_permissions'].message_type = _GETROLEPERMISSIONS
 _QUERY_PAYLOAD.fields_by_name['get_asset_info'].message_type = _GETASSETINFO
 _QUERY_PAYLOAD.fields_by_name['get_pending_transactions'].message_type = _GETPENDINGTRANSACTIONS
+_QUERY_PAYLOAD.fields_by_name['get_block'].message_type = _GETBLOCK
 _QUERY_PAYLOAD.containing_type = _QUERY
 _QUERY_PAYLOAD.oneofs_by_name['query'].fields.append(
   _QUERY_PAYLOAD.fields_by_name['get_account'])
@@ -729,12 +768,16 @@ _QUERY_PAYLOAD.fields_by_name['get_asset_info'].containing_oneof = _QUERY_PAYLOA
 _QUERY_PAYLOAD.oneofs_by_name['query'].fields.append(
   _QUERY_PAYLOAD.fields_by_name['get_pending_transactions'])
 _QUERY_PAYLOAD.fields_by_name['get_pending_transactions'].containing_oneof = _QUERY_PAYLOAD.oneofs_by_name['query']
+_QUERY_PAYLOAD.oneofs_by_name['query'].fields.append(
+  _QUERY_PAYLOAD.fields_by_name['get_block'])
+_QUERY_PAYLOAD.fields_by_name['get_block'].containing_oneof = _QUERY_PAYLOAD.oneofs_by_name['query']
 _QUERY.fields_by_name['payload'].message_type = _QUERY_PAYLOAD
 _QUERY.fields_by_name['signature'].message_type = primitive__pb2._SIGNATURE
 _BLOCKSQUERY.fields_by_name['meta'].message_type = _QUERYPAYLOADMETA
 _BLOCKSQUERY.fields_by_name['signature'].message_type = primitive__pb2._SIGNATURE
 DESCRIPTOR.message_types_by_name['TxPaginationMeta'] = _TXPAGINATIONMETA
 DESCRIPTOR.message_types_by_name['GetAccount'] = _GETACCOUNT
+DESCRIPTOR.message_types_by_name['GetBlock'] = _GETBLOCK
 DESCRIPTOR.message_types_by_name['GetSignatories'] = _GETSIGNATORIES
 DESCRIPTOR.message_types_by_name['GetAccountTransactions'] = _GETACCOUNTTRANSACTIONS
 DESCRIPTOR.message_types_by_name['GetAccountAssetTransactions'] = _GETACCOUNTASSETTRANSACTIONS
@@ -763,6 +806,13 @@ GetAccount = _reflection.GeneratedProtocolMessageType('GetAccount', (_message.Me
   # @@protoc_insertion_point(class_scope:iroha.protocol.GetAccount)
   ))
 _sym_db.RegisterMessage(GetAccount)
+
+GetBlock = _reflection.GeneratedProtocolMessageType('GetBlock', (_message.Message,), dict(
+  DESCRIPTOR = _GETBLOCK,
+  __module__ = 'queries_pb2'
+  # @@protoc_insertion_point(class_scope:iroha.protocol.GetBlock)
+  ))
+_sym_db.RegisterMessage(GetBlock)
 
 GetSignatories = _reflection.GeneratedProtocolMessageType('GetSignatories', (_message.Message,), dict(
   DESCRIPTOR = _GETSIGNATORIES,
