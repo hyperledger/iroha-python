@@ -22,7 +22,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='iroha.protocol',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x13qry_responses.proto\x12\x0eiroha.protocol\x1a\x0b\x62lock.proto\x1a\x11transaction.proto\x1a\x0fprimitive.proto\"?\n\x05\x41sset\x12\x10\n\x08\x61sset_id\x18\x01 \x01(\t\x12\x11\n\tdomain_id\x18\x02 \x01(\t\x12\x11\n\tprecision\x18\x03 \x01(\r\"1\n\x06\x44omain\x12\x11\n\tdomain_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64\x65\x66\x61ult_role\x18\x02 \x01(\t\"S\n\x07\x41\x63\x63ount\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x11\n\tdomain_id\x18\x02 \x01(\t\x12\x0e\n\x06quorum\x18\x03 \x01(\r\x12\x11\n\tjson_data\x18\x04 \x01(\t\"E\n\x0c\x41\x63\x63ountAsset\x12\x10\n\x08\x61sset_id\x18\x01 \x01(\t\x12\x12\n\naccount_id\x18\x02 \x01(\t\x12\x0f\n\x07\x62\x61lance\x18\x03 \x01(\t\"L\n\x14\x41\x63\x63ountAssetResponse\x12\x34\n\x0e\x61\x63\x63ount_assets\x18\x01 \x03(\x0b\x32\x1c.iroha.protocol.AccountAsset\"\'\n\x15\x41\x63\x63ountDetailResponse\x12\x0e\n\x06\x64\x65tail\x18\x01 \x01(\t\"R\n\x0f\x41\x63\x63ountResponse\x12(\n\x07\x61\x63\x63ount\x18\x01 \x01(\x0b\x32\x17.iroha.protocol.Account\x12\x15\n\raccount_roles\x18\x02 \x03(\t\"5\n\rAssetResponse\x12$\n\x05\x61sset\x18\x01 \x01(\x0b\x32\x15.iroha.protocol.Asset\"\x1e\n\rRolesResponse\x12\r\n\x05roles\x18\x01 \x03(\t\"N\n\x17RolePermissionsResponse\x12\x33\n\x0bpermissions\x18\x01 \x03(\x0e\x32\x1e.iroha.protocol.RolePermission\"\xa3\x02\n\rErrorResponse\x12\x34\n\x06reason\x18\x01 \x01(\x0e\x32$.iroha.protocol.ErrorResponse.Reason\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x12\n\nerror_code\x18\x03 \x01(\r\"\xb6\x01\n\x06Reason\x12\x15\n\x11STATELESS_INVALID\x10\x00\x12\x14\n\x10STATEFUL_INVALID\x10\x01\x12\x0e\n\nNO_ACCOUNT\x10\x02\x12\x15\n\x11NO_ACCOUNT_ASSETS\x10\x03\x12\x15\n\x11NO_ACCOUNT_DETAIL\x10\x04\x12\x12\n\x0eNO_SIGNATORIES\x10\x05\x12\x11\n\rNOT_SUPPORTED\x10\x06\x12\x0c\n\x08NO_ASSET\x10\x07\x12\x0c\n\x08NO_ROLES\x10\x08\"#\n\x13SignatoriesResponse\x12\x0c\n\x04keys\x18\x01 \x03(\t\"I\n\x14TransactionsResponse\x12\x31\n\x0ctransactions\x18\x01 \x03(\x0b\x32\x1b.iroha.protocol.Transaction\"\x95\x01\n\x18TransactionsPageResponse\x12\x31\n\x0ctransactions\x18\x01 \x03(\x0b\x32\x1b.iroha.protocol.Transaction\x12\x1d\n\x15\x61ll_transactions_size\x18\x02 \x01(\r\x12\x16\n\x0cnext_tx_hash\x18\x03 \x01(\tH\x00\x42\x0f\n\rnext_page_tag\"\xd4\x05\n\rQueryResponse\x12G\n\x17\x61\x63\x63ount_assets_response\x18\x01 \x01(\x0b\x32$.iroha.protocol.AccountAssetResponseH\x00\x12H\n\x17\x61\x63\x63ount_detail_response\x18\x02 \x01(\x0b\x32%.iroha.protocol.AccountDetailResponseH\x00\x12;\n\x10\x61\x63\x63ount_response\x18\x03 \x01(\x0b\x32\x1f.iroha.protocol.AccountResponseH\x00\x12\x37\n\x0e\x65rror_response\x18\x04 \x01(\x0b\x32\x1d.iroha.protocol.ErrorResponseH\x00\x12\x43\n\x14signatories_response\x18\x05 \x01(\x0b\x32#.iroha.protocol.SignatoriesResponseH\x00\x12\x45\n\x15transactions_response\x18\x06 \x01(\x0b\x32$.iroha.protocol.TransactionsResponseH\x00\x12\x37\n\x0e\x61sset_response\x18\x07 \x01(\x0b\x32\x1d.iroha.protocol.AssetResponseH\x00\x12\x37\n\x0eroles_response\x18\x08 \x01(\x0b\x32\x1d.iroha.protocol.RolesResponseH\x00\x12L\n\x19role_permissions_response\x18\t \x01(\x0b\x32\'.iroha.protocol.RolePermissionsResponseH\x00\x12N\n\x1atransactions_page_response\x18\x0b \x01(\x0b\x32(.iroha.protocol.TransactionsPageResponseH\x00\x12\x12\n\nquery_hash\x18\n \x01(\tB\n\n\x08response\"5\n\rBlockResponse\x12$\n\x05\x62lock\x18\x01 \x01(\x0b\x32\x15.iroha.protocol.Block\"%\n\x12\x42lockErrorResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x9d\x01\n\x12\x42lockQueryResponse\x12\x37\n\x0e\x62lock_response\x18\x01 \x01(\x0b\x32\x1d.iroha.protocol.BlockResponseH\x00\x12\x42\n\x14\x62lock_error_response\x18\x02 \x01(\x0b\x32\".iroha.protocol.BlockErrorResponseH\x00\x42\n\n\x08responseb\x06proto3')
+  serialized_pb=_b('\n\x13qry_responses.proto\x12\x0eiroha.protocol\x1a\x0b\x62lock.proto\x1a\x11transaction.proto\x1a\x0fprimitive.proto\"?\n\x05\x41sset\x12\x10\n\x08\x61sset_id\x18\x01 \x01(\t\x12\x11\n\tdomain_id\x18\x02 \x01(\t\x12\x11\n\tprecision\x18\x03 \x01(\r\"1\n\x06\x44omain\x12\x11\n\tdomain_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64\x65\x66\x61ult_role\x18\x02 \x01(\t\"S\n\x07\x41\x63\x63ount\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x11\n\tdomain_id\x18\x02 \x01(\t\x12\x0e\n\x06quorum\x18\x03 \x01(\r\x12\x11\n\tjson_data\x18\x04 \x01(\t\"E\n\x0c\x41\x63\x63ountAsset\x12\x10\n\x08\x61sset_id\x18\x01 \x01(\t\x12\x12\n\naccount_id\x18\x02 \x01(\t\x12\x0f\n\x07\x62\x61lance\x18\x03 \x01(\t\"L\n\x14\x41\x63\x63ountAssetResponse\x12\x34\n\x0e\x61\x63\x63ount_assets\x18\x01 \x03(\x0b\x32\x1c.iroha.protocol.AccountAsset\"\'\n\x15\x41\x63\x63ountDetailResponse\x12\x0e\n\x06\x64\x65tail\x18\x01 \x01(\t\"R\n\x0f\x41\x63\x63ountResponse\x12(\n\x07\x61\x63\x63ount\x18\x01 \x01(\x0b\x32\x17.iroha.protocol.Account\x12\x15\n\raccount_roles\x18\x02 \x03(\t\"5\n\rAssetResponse\x12$\n\x05\x61sset\x18\x01 \x01(\x0b\x32\x15.iroha.protocol.Asset\"\x1e\n\rRolesResponse\x12\r\n\x05roles\x18\x01 \x03(\t\"N\n\x17RolePermissionsResponse\x12\x33\n\x0bpermissions\x18\x01 \x03(\x0e\x32\x1e.iroha.protocol.RolePermission\"\xa3\x02\n\rErrorResponse\x12\x34\n\x06reason\x18\x01 \x01(\x0e\x32$.iroha.protocol.ErrorResponse.Reason\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x12\n\nerror_code\x18\x03 \x01(\r\"\xb6\x01\n\x06Reason\x12\x15\n\x11STATELESS_INVALID\x10\x00\x12\x14\n\x10STATEFUL_INVALID\x10\x01\x12\x0e\n\nNO_ACCOUNT\x10\x02\x12\x15\n\x11NO_ACCOUNT_ASSETS\x10\x03\x12\x15\n\x11NO_ACCOUNT_DETAIL\x10\x04\x12\x12\n\x0eNO_SIGNATORIES\x10\x05\x12\x11\n\rNOT_SUPPORTED\x10\x06\x12\x0c\n\x08NO_ASSET\x10\x07\x12\x0c\n\x08NO_ROLES\x10\x08\"#\n\x13SignatoriesResponse\x12\x0c\n\x04keys\x18\x01 \x03(\t\"I\n\x14TransactionsResponse\x12\x31\n\x0ctransactions\x18\x01 \x03(\x0b\x32\x1b.iroha.protocol.Transaction\"\x95\x01\n\x18TransactionsPageResponse\x12\x31\n\x0ctransactions\x18\x01 \x03(\x0b\x32\x1b.iroha.protocol.Transaction\x12\x1d\n\x15\x61ll_transactions_size\x18\x02 \x01(\r\x12\x16\n\x0cnext_tx_hash\x18\x03 \x01(\tH\x00\x42\x0f\n\rnext_page_tag\"\x8d\x06\n\rQueryResponse\x12G\n\x17\x61\x63\x63ount_assets_response\x18\x01 \x01(\x0b\x32$.iroha.protocol.AccountAssetResponseH\x00\x12H\n\x17\x61\x63\x63ount_detail_response\x18\x02 \x01(\x0b\x32%.iroha.protocol.AccountDetailResponseH\x00\x12;\n\x10\x61\x63\x63ount_response\x18\x03 \x01(\x0b\x32\x1f.iroha.protocol.AccountResponseH\x00\x12\x37\n\x0e\x65rror_response\x18\x04 \x01(\x0b\x32\x1d.iroha.protocol.ErrorResponseH\x00\x12\x43\n\x14signatories_response\x18\x05 \x01(\x0b\x32#.iroha.protocol.SignatoriesResponseH\x00\x12\x45\n\x15transactions_response\x18\x06 \x01(\x0b\x32$.iroha.protocol.TransactionsResponseH\x00\x12\x37\n\x0e\x61sset_response\x18\x07 \x01(\x0b\x32\x1d.iroha.protocol.AssetResponseH\x00\x12\x37\n\x0eroles_response\x18\x08 \x01(\x0b\x32\x1d.iroha.protocol.RolesResponseH\x00\x12L\n\x19role_permissions_response\x18\t \x01(\x0b\x32\'.iroha.protocol.RolePermissionsResponseH\x00\x12N\n\x1atransactions_page_response\x18\x0b \x01(\x0b\x32(.iroha.protocol.TransactionsPageResponseH\x00\x12\x37\n\x0e\x62lock_response\x18\x0c \x01(\x0b\x32\x1d.iroha.protocol.BlockResponseH\x00\x12\x12\n\nquery_hash\x18\n \x01(\tB\n\n\x08response\"5\n\rBlockResponse\x12$\n\x05\x62lock\x18\x01 \x01(\x0b\x32\x15.iroha.protocol.Block\"%\n\x12\x42lockErrorResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x9d\x01\n\x12\x42lockQueryResponse\x12\x37\n\x0e\x62lock_response\x18\x01 \x01(\x0b\x32\x1d.iroha.protocol.BlockResponseH\x00\x12\x42\n\x14\x62lock_error_response\x18\x02 \x01(\x0b\x32\".iroha.protocol.BlockErrorResponseH\x00\x42\n\n\x08responseb\x06proto3')
   ,
   dependencies=[block__pb2.DESCRIPTOR,transaction__pb2.DESCRIPTOR,primitive__pb2.DESCRIPTOR,])
 
@@ -686,7 +686,14 @@ _QUERYRESPONSE = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='query_hash', full_name='iroha.protocol.QueryResponse.query_hash', index=10,
+      name='block_response', full_name='iroha.protocol.QueryResponse.block_response', index=10,
+      number=12, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='query_hash', full_name='iroha.protocol.QueryResponse.query_hash', index=11,
       number=10, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -708,7 +715,7 @@ _QUERYRESPONSE = _descriptor.Descriptor(
       index=0, containing_type=None, fields=[]),
   ],
   serialized_start=1289,
-  serialized_end=2013,
+  serialized_end=2070,
 )
 
 
@@ -738,8 +745,8 @@ _BLOCKRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2015,
-  serialized_end=2068,
+  serialized_start=2072,
+  serialized_end=2125,
 )
 
 
@@ -769,8 +776,8 @@ _BLOCKERRORRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2070,
-  serialized_end=2107,
+  serialized_start=2127,
+  serialized_end=2164,
 )
 
 
@@ -810,8 +817,8 @@ _BLOCKQUERYRESPONSE = _descriptor.Descriptor(
       name='response', full_name='iroha.protocol.BlockQueryResponse.response',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2110,
-  serialized_end=2267,
+  serialized_start=2167,
+  serialized_end=2324,
 )
 
 _ACCOUNTASSETRESPONSE.fields_by_name['account_assets'].message_type = _ACCOUNTASSET
@@ -835,6 +842,7 @@ _QUERYRESPONSE.fields_by_name['asset_response'].message_type = _ASSETRESPONSE
 _QUERYRESPONSE.fields_by_name['roles_response'].message_type = _ROLESRESPONSE
 _QUERYRESPONSE.fields_by_name['role_permissions_response'].message_type = _ROLEPERMISSIONSRESPONSE
 _QUERYRESPONSE.fields_by_name['transactions_page_response'].message_type = _TRANSACTIONSPAGERESPONSE
+_QUERYRESPONSE.fields_by_name['block_response'].message_type = _BLOCKRESPONSE
 _QUERYRESPONSE.oneofs_by_name['response'].fields.append(
   _QUERYRESPONSE.fields_by_name['account_assets_response'])
 _QUERYRESPONSE.fields_by_name['account_assets_response'].containing_oneof = _QUERYRESPONSE.oneofs_by_name['response']
@@ -865,6 +873,9 @@ _QUERYRESPONSE.fields_by_name['role_permissions_response'].containing_oneof = _Q
 _QUERYRESPONSE.oneofs_by_name['response'].fields.append(
   _QUERYRESPONSE.fields_by_name['transactions_page_response'])
 _QUERYRESPONSE.fields_by_name['transactions_page_response'].containing_oneof = _QUERYRESPONSE.oneofs_by_name['response']
+_QUERYRESPONSE.oneofs_by_name['response'].fields.append(
+  _QUERYRESPONSE.fields_by_name['block_response'])
+_QUERYRESPONSE.fields_by_name['block_response'].containing_oneof = _QUERYRESPONSE.oneofs_by_name['response']
 _BLOCKRESPONSE.fields_by_name['block'].message_type = block__pb2._BLOCK
 _BLOCKQUERYRESPONSE.fields_by_name['block_response'].message_type = _BLOCKRESPONSE
 _BLOCKQUERYRESPONSE.fields_by_name['block_error_response'].message_type = _BLOCKERRORRESPONSE
