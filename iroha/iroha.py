@@ -304,31 +304,21 @@ class IrohaGrpc(object):
         Send a transaction to Iroha
         :param transaction: protobuf Transaction
         :return: None
+        :raise: grpc.RpcError with .code() available in case of any error
         """
-        code = grpc.StatusCode.OK
-        try:
-            self._command_service_stub.Torii(transaction)
-        except grpc.RpcError as error:
-            code = error.code()
-            print('Error occurred inside send_tx:', error)
-        return code
+        self._command_service_stub.Torii(transaction)
 
-    def send_txs(self, *transactions):
+    def send_txs(self, transactions):
         """
         Send a series of transactions to Iroha at once.
         Useful for submitting batches of transactions.
-        :param transactions: protobuf transactions to be sent
+        :param transactions: list of protobuf transactions to be sent
         :return: None
+        :raise: grpc.RpcError with .code() available in case of any error
         """
         tx_list = endpoint_pb2.TxList()
         tx_list.transactions.extend(transactions)
-        code = grpc.StatusCode.OK
-        try:
-            self._command_service_stub.ListTorii(tx_list)
-        except grpc.RpcError as error:
-            code = error.code()
-            print('Error occurred inside send_txs:', error)
-        return code
+        self._command_service_stub.ListTorii(tx_list)
 
     def send_query(self, query):
         """
@@ -357,14 +347,12 @@ class IrohaGrpc(object):
         :param transaction: the transaction, which status is about to be known
         :return: a tuple with the symbolic status description,
         integral status code, and error message string (will be empty if no error occurred)
+        :raise: grpc.RpcError with .code() available in case of any error
         """
         request = endpoint_pb2.TxStatusRequest()
         request.tx_hash = binascii.hexlify(IrohaCrypto.hash(transaction))
         response = self._command_service_stub.Status(request)
-        status_code = response.tx_status
-        status_name = endpoint_pb2.TxStatus.Name(response.tx_status)
-        error_message = response.error_message
-        return status_name, status_code, error_message
+        return self._parse_tx_status(response)
 
     def tx_status_stream(self, transaction):
         """
@@ -372,12 +360,24 @@ class IrohaGrpc(object):
         :param transaction: the transaction, which status is about to be known
         :return: an iterable over a series of tuples with symbolic status description,
         integral status code, and error message string (will be empty if no error occurred)
+        :raise: grpc.RpcError with .code() available in case of any error
         """
         request = endpoint_pb2.TxStatusRequest()
         request.tx_hash = binascii.hexlify(IrohaCrypto.hash(transaction))
         response = self._command_service_stub.StatusStream(request)
         for status in response:
-            status_name = endpoint_pb2.TxStatus.Name(status.tx_status)
-            status_code = status.tx_status
-            error_code = status.error_code
+            status_name, status_code, error_code = self._parse_tx_status(status)
             yield status_name, status_code, error_code
+
+    @staticmethod
+    def _parse_tx_status(response):
+        """
+        Parse protocol.ToriiResponse into a tuple
+        :param response: response to be parsed
+        :return: a tuple with the symbolic status description,
+        integral status code, and error message string (will be empty if no error occurred)
+        """
+        status_name = endpoint_pb2.TxStatus.Name(response.tx_status)
+        status_code = response.tx_status
+        error_message = response.error_message
+        return status_name, status_code, error_message
