@@ -346,7 +346,7 @@ class IrohaGrpc(object):
         Request a status of a transaction
         :param transaction: the transaction, which status is about to be known
         :return: a tuple with the symbolic status description,
-        integral status code, and error message string (will be empty if no error occurred)
+        integral status code, and error code (will be 0 if no error occurred)
         :raise: grpc.RpcError with .code() available in case of any error
         """
         request = endpoint_pb2.TxStatusRequest()
@@ -359,7 +359,7 @@ class IrohaGrpc(object):
         Generator of transaction statuses from status stream
         :param transaction: the transaction, which status is about to be known
         :return: an iterable over a series of tuples with symbolic status description,
-        integral status code, and error message string (will be empty if no error occurred)
+        integral status code, and error code (will be 0 if no error occurred)
         :raise: grpc.RpcError with .code() available in case of any error
         """
         request = endpoint_pb2.TxStatusRequest()
@@ -375,9 +375,9 @@ class IrohaGrpc(object):
         Parse protocol.ToriiResponse into a tuple
         :param response: response to be parsed
         :return: a tuple with the symbolic status description,
-        integral status code, and error message string (will be empty if no error occurred)
+        integral status code, and error code (will be 0 if no error occurred)
         """
         status_name = endpoint_pb2.TxStatus.Name(response.tx_status)
         status_code = response.tx_status
-        error_message = response.error_message
-        return status_name, status_code, error_message
+        error_code = response.error_code
+        return status_name, status_code, error_code
