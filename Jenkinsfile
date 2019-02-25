@@ -37,7 +37,7 @@ pipeline {
                         iC = docker.image('ubuntu:latest')
                         iC.inside("") {
                             scmVars = checkout scm
-                            sh(script: "apt update && apt install -yqq curl git python3-dev python3-pip")
+                            sh(script: "apt update && apt install -yqq curl git zip python3-dev python3-pip")
                             sh(script: "python3 -m pip install grpcio_tools protobuf")
                             sh(script: "curl -OL https://github.com/google/protobuf/releases/download/v3.5.1/${PROTOC_ZIP}")
                             sh(script: "unzip -o ${PROTOC_ZIP} -d /usr/local bin/protoc")
