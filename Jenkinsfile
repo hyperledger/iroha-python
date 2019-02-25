@@ -42,8 +42,8 @@ pipeline {
                             sh(script: "curl -OL https://github.com/google/protobuf/releases/download/v3.5.1/${PROTOC_ZIP}")
                             sh(script: "unzip -o ${PROTOC_ZIP} -d /usr/local bin/protoc")
                             sh(script: "rm -f ${PROTOC_ZIP}")
-                            sh(script: "bash scripts/download-schema.py")
-                            sh(script: "bash scripts/compile-proto.py")
+                            sh(script: "python3 scripts/download-schema.py")
+                            sh(script: "python3 scripts/compile-proto.py")
                         }
                     }
                     // script {
