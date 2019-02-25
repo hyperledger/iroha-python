@@ -63,9 +63,9 @@ def send_transaction_and_print_status(transaction):
 
 
 @trace
-def send_batch_and_print_status(*transactions):
+def send_batch_and_print_status(transactions):
     global net
-    net.send_txs(*transactions)
+    net.send_txs(transactions)
     for tx in transactions:
         hex_hash = binascii.hexlify(ic.hash(tx))
         print('\t' + '-' * 20)
@@ -148,7 +148,7 @@ def alice_creates_exchange_batch():
     iroha.batch([alice_tx, bob_tx], atomic=True)
     # sign transactions only after batch meta creation
     ic.sign_transaction(alice_tx, *alice_private_keys)
-    send_batch_and_print_status(alice_tx, bob_tx)
+    send_batch_and_print_status([alice_tx, bob_tx])
 
 
 @trace
@@ -166,7 +166,7 @@ def bob_accepts_exchange_request():
         else:
             ic.sign_transaction(tx, *bob_private_keys)
     send_batch_and_print_status(
-        *pending_transactions.transactions_response.transactions)
+        pending_transactions.transactions_response.transactions)
 
 
 @trace
@@ -206,7 +206,7 @@ def bob_declines_exchange_request():
             ic.sign_transaction(tx, *alice_private_keys)
             # zeroes as private keys are also acceptable
     send_batch_and_print_status(
-        *pending_transactions.transactions_response.transactions)
+        pending_transactions.transactions_response.transactions)
 
 
 create_users()
