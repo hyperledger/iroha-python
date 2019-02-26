@@ -45,6 +45,19 @@ pipeline {
                             sh(script: "./scripts/download-schema.py")
                             sh(script: "./scripts/compile-proto.py")
                         }
+                        iC = docker.image('quay.io/pypa/manylinux1_x86_64')
+                        iC.inside("-v ${WORKSPACE}:/io") {
+                          sh(script: """
+                          for PYBIN in /opt/python/*/bin; do
+                              "\${PYBIN}/pip" install -r /io/dev-requirements.txt
+                              "\${PYBIN}/pip" wheel /io/ -w wheelhouse/
+                          done
+
+                          for whl in wheelhouse/*.whl; do
+                              auditwheel repair "\${whl}" -w /io/wheelhouse/
+                          done
+                          """, returnStdout: true)
+                        }
                     }
                     // script {
                     //     def scmVars = checkout scm
