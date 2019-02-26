@@ -34,16 +34,16 @@ pipeline {
                 agent { label 'd3-build-agent||docker-build-agent' }
                 steps {
                     script {
-                        iC = docker.image('ubuntu:latest')
+                        iC = docker.image('hyperledger/iroha:develop-build')
                         iC.inside("") {
                             scmVars = checkout scm
-                            sh(script: "apt update && apt install -yqq curl git zip python3-dev python3-pip")
-                            sh(script: "python3 -m pip install grpcio_tools protobuf")
-                            sh(script: "curl -OL https://github.com/google/protobuf/releases/download/v3.5.1/${PROTOC_ZIP}")
-                            sh(script: "unzip -o ${PROTOC_ZIP} -d /usr/local bin/protoc")
-                            sh(script: "rm -f ${PROTOC_ZIP}")
-                            sh(script: "python3 scripts/download-schema.py")
-                            sh(script: "python3 scripts/compile-proto.py")
+                            // sh(script: "apt update && apt install -yqq curl git zip") // python3-dev python3-pip
+                            // sh(script: "python3 -m pip install grpcio_tools protobuf")
+                            // sh(script: "curl -OL https://github.com/google/protobuf/releases/download/v3.5.1/${PROTOC_ZIP}")
+                            // sh(script: "unzip -o ${PROTOC_ZIP} -d /usr/local bin/protoc")
+                            // sh(script: "rm -f ${PROTOC_ZIP}")
+                            sh(script: "./scripts/download-schema.py")
+                            sh(script: "./scripts/compile-proto.py")
                         }
                     }
                     // script {
