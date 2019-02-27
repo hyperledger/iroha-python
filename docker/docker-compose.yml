@@ -1,0 +1,50 @@
+version: '3.5'
+
+networks:
+  iroha:
+    name: iroha-${SUBNET}
+    attachable: true
+
+services:
+  iroha:
+    image: hyperledger/iroha:1.0.0_rc3
+    container_name: iroha-${SUBNET}
+    depends_on:
+      - iroha-postgres
+    tty: true
+    environment:
+      - KEY=keys/node0
+    entrypoint:
+      - /opt/iroha_data/entrypoint.sh
+    networks:
+      - iroha
+    volumes:
+      - ./iroha:/opt/iroha_data
+    logging:
+      driver: none
+
+  iroha-postgres:
+    image: postgres:9.5
+    container_name: iroha-postgres-${SUBNET}
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    networks:
+      - iroha
+    logging:
+      driver: none
+
+  grpcwebproxy:
+    build:
+      context: grpcwebproxy/
+    container_name: grpcwebproxy-${SUBNET}
+    depends_on:
+      - iroha
+    entrypoint:
+      - grpcwebproxy
+      - --backend_addr=iroha:50051
+      - --run_tls_server=false
+      - --allow_all_origins=true
+    networks:
+      - iroha
+    logging:
+      driver: none
