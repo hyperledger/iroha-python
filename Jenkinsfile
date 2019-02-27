@@ -1,7 +1,6 @@
 pipeline {
   environment {
     DOCKER_NETWORK = ''
-    PROTOC_ZIP = 'protoc-3.5.1-linux-x86_64.zip'
   }
   options {
     skipDefaultCheckout()
