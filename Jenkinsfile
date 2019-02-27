@@ -27,21 +27,29 @@ pipeline {
         }
       }
     }
-    stage('Build') {
+    stage('Linux') {
       agent { label 'd3-build-agent||docker-build-agent' }
-      steps {
-        script {
-          iC = docker.image('hyperledger/iroha:develop-build')
-          iC.inside("") {
-              scmVars = checkout scm
-              sh(script: "./scripts/download-schema.py")
-              sh(script: "./scripts/compile-proto.py")
+      stages {
+        stage('Prepare') {
+          steps {
+            script {
+              iC = docker.image('hyperledger/iroha:develop-build')
+              iC.inside("") {
+                  scmVars = checkout scm
+                  sh(script: "./scripts/download-schema.py")
+                  sh(script: "./scripts/compile-proto.py")
+              }
+            }
           }
-          iC = docker.image('quay.io/pypa/manylinux1_x86_64')
-          iC.inside("-v ${WORKSPACE}:/io") {
-            sh(script: '/opt/python/cp35-cp35m/bin/pip wheel /io/ -w /io/wheelhouse/', returnStdout: true)                          
+        }
+        stage('Build wheels') {
+          steps {
+            script {
+              def wheels = load ".jenkinsci/linux-build-wheels.groovy"
+              wheels.doPythonWheels()
+              archiveArtifacts artifacts: 'wheelhouse/iroha*.whl', allowEmptyArchive: true  
+            }
           }
-          archiveArtifacts artifacts: 'wheelhouse/*.whl', allowEmptyArchive: true
         }
       }
           // script {
