@@ -19,7 +19,7 @@
     // if (env.GIT_LOCAL_BRANCH == "master" &&  checkTag)
     withCredentials([usernamePassword(credentialsId: 'ci_nexus', passwordVariable: 'CI_NEXUS_PASSWORD', usernameVariable: 'CI_NEXUS_USERNAME')]) {
         sh "twine upload --skip-existing -u ${CI_NEXUS_USERNAME} -p ${CI_NEXUS_PASSWORD} --repository-url https://nexus.soramitsu.co.jp/repository/pypi-upload-${repo}/ wheelhouse/iroha*.whl"
-    // }
+    }
 }
 
 return this
