@@ -51,7 +51,7 @@ pipeline {
             }
           }
         }
-        stage('Build wheels') {
+        stage('Publish wheels') {
           steps {
             script {
               def wheels = load ".jenkinsci/linux-build-wheels.groovy"
