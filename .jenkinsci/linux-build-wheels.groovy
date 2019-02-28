@@ -1,7 +1,8 @@
 #!/usr/bin/env groovy
 
 def doPythonWheels() {
-    version = sh(script: 'git describe --tags \$(git rev-list --tags --max-count=1) || "0.0.1"', returnStdout: true).trim()
+    // version = sh(script: 'git describe --tags \$(git rev-list --tags --max-count=1) || true', returnStdout: true).trim()
+    version = "0.0.1"
     repo = 'release'
     if (env.GIT_LOCAL_BRANCH != "master") {
         repo = 'develop'
