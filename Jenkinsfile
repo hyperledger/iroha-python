@@ -51,6 +51,17 @@ pipeline {
             }
           }
         }
+
+        stage('Tests') {
+          steps {
+            script {
+              def wheels = load ".jenkinsci/linux-build-wheels.groovy"
+              wheels.testWheels()
+              // archiveArtifacts artifacts: 'wheelhouse/iroha*.whl', allowEmptyArchive: true  
+            }
+          }
+        }
+
         stage('Publish wheels') {
           steps {
             script {
