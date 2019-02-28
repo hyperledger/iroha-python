@@ -36,9 +36,9 @@ def testWheels() {
     writeFile file: ".env", text: "SUBNET=${DOCKER_NETWORK}"
     sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml pull")
     sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml up --build -d")
-    iC = docker.image('python:3.5-alpine')
+    iC = docker.image('python:3.5-slim')
     iC.inside("--network='iroha-${DOCKER_NETWORK}'") {
-        sh(script: "find wheelhouse -type f -name \"iroha*.whl\" -exec pip install {} --no-index -f wheelhouse \\;")
+        sh(script: " #!/bin/sh find wheelhouse -type f -name \"iroha*.whl\" -exec pip install {} --no-index -f wheelhouse \\;")
     }
 }
 
