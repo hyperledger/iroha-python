@@ -20,8 +20,8 @@ services:
       - iroha
     volumes:
       - ./iroha:/opt/iroha_data
-    logging:
-      driver: none
+    # logging:
+    #   driver: none
 
   iroha-postgres:
     image: postgres:9.5
