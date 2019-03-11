@@ -32,19 +32,3 @@ services:
       - iroha
     logging:
       driver: none
-
-  grpcwebproxy:
-    build:
-      context: grpcwebproxy/
-    container_name: grpcwebproxy-${SUBNET}
-    depends_on:
-      - iroha
-    entrypoint:
-      - grpcwebproxy
-      - --backend_addr=iroha:50051
-      - --run_tls_server=false
-      - --allow_all_origins=true
-    networks:
-      - iroha
-    logging:
-      driver: none
