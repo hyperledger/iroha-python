@@ -1,3 +1,4 @@
+def wheels = load ".jenkinsci/linux-build-wheels.groovy"
 pipeline {
   environment {
     DOCKER_NETWORK = ''
@@ -29,7 +30,6 @@ pipeline {
     }
     stage('Linux') {
       agent { label 'd3-build-agent||docker-build-agent' }
-      def wheels = load ".jenkinsci/linux-build-wheels.groovy"
       stages {
         stage('Prepare') {
           steps {
