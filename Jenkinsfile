@@ -1,4 +1,3 @@
-def wheels = load ".jenkinsci/linux-build-wheels.groovy"
 pipeline {
   environment {
     DOCKER_NETWORK = ''
@@ -46,6 +45,7 @@ pipeline {
         stage('Build wheels') {
           steps {
             script {
+              def wheels = load ".jenkinsci/linux-build-wheels.groovy"
               wheels.doPythonWheels()
               // archiveArtifacts artifacts: 'wheelhouse/iroha*.whl', allowEmptyArchive: true  
             }
@@ -54,6 +54,7 @@ pipeline {
         stage('Tests') {
           steps {
             script {
+              def wheels = load ".jenkinsci/linux-build-wheels.groovy"
               wheels.testWheels()
               // archiveArtifacts artifacts: 'wheelhouse/iroha*.whl', allowEmptyArchive: true  
             }
@@ -62,6 +63,7 @@ pipeline {
         stage('Publish wheels') {
           steps {
             script {
+              def wheels = load ".jenkinsci/linux-build-wheels.groovy"
               archiveArtifacts artifacts: 'wheelhouse/iroha*.whl', allowEmptyArchive: true  
               wheels.publishWheels()
             }
