@@ -51,7 +51,6 @@ pipeline {
             }
           }
         }
-
         stage('Tests') {
           steps {
             script {
@@ -61,7 +60,6 @@ pipeline {
             }
           }
         }
-
         stage('Publish wheels') {
           steps {
             script {

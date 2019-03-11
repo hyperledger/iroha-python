@@ -33,13 +33,18 @@ def publishWheels() {
 
 def testWheels() {
     def scmVars = checkout scm
-    DOCKER_NETWORK = "iroha-${scmVars.CHANGE_ID}-${scmVars.GIT_COMMIT}-${BUILD_NUMBER}"
-    writeFile file: ".env", text: "SUBNET=${DOCKER_NETWORK}"
-    sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml pull")
-    sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml up --build -d")
-    iC = docker.image('python:3.5-slim')
-    iC.inside("--network='iroha-${DOCKER_NETWORK}'") {
-        sh(script: "find wheelhouse -type f -name \"iroha*.whl\" -exec pip install {} --no-index -f wheelhouse \\;")
+    def tests = ['tx-example.py', 'batch-example.py', 'blocks-query.py']
+    for (String item : tests) {
+        DOCKER_NETWORK = "iroha-${scmVars.CHANGE_ID}-${scmVars.GIT_COMMIT}-${BUILD_NUMBER}"
+        writeFile file: ".env", text: "SUBNET=${DOCKER_NETWORK}"
+        sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml pull")
+        sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml up --build -d")
+        iC = docker.image('python:3.5-slim')
+        iC.inside("--network='iroha-${DOCKER_NETWORK}'") {
+            sh(script: "find wheelhouse -type f -name \"iroha*.whl\" -exec pip install {} --no-index -f wheelhouse \\;")
+            sh(script: "./examples/${item}")
+        }
+        sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml down")
     }
 }
 
