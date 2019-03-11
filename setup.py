@@ -19,7 +19,7 @@ setuptools.setup(
     install_requires=[
         'protobuf>=3.5.2.post1',
         'grpcio-tools>=1.12.1',
-        'pysha3',
+        'pysha3;python_version<"3.6"',
 
     ],
     classifiers=[
