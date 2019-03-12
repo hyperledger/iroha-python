@@ -1,6 +1,7 @@
 pipeline {
   environment {
     DOCKER_NETWORK = ''
+    IROHA_VERSION = '1.0.0_rc4_hf1'
   }
   options {
     skipDefaultCheckout()
@@ -47,7 +48,6 @@ pipeline {
             script {
               def wheels = load ".jenkinsci/linux-build-wheels.groovy"
               wheels.doPythonWheels()
-              // archiveArtifacts artifacts: 'wheelhouse/iroha*.whl', allowEmptyArchive: true  
             }
           }
         }
@@ -56,7 +56,6 @@ pipeline {
             script {
               def wheels = load ".jenkinsci/linux-build-wheels.groovy"
               wheels.testWheels()
-              // archiveArtifacts artifacts: 'wheelhouse/iroha*.whl', allowEmptyArchive: true  
             }
           }
         }
