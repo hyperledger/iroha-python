@@ -7,7 +7,7 @@ networks:
 
 services:
   iroha:
-    image: hyperledger/iroha:1.0.0_rc4_hf1
+    image: hyperledger/iroha:${IROHA_VERSION}
     container_name: iroha-${SUBNET}
     depends_on:
       - iroha-postgres
