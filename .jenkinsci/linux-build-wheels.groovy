@@ -42,7 +42,7 @@ def testWheels() {
         iC = docker.image('python:3.5-slim')
         iC.inside("--network='${DOCKER_NETWORK}'") {
             sh(script: "find wheelhouse -type f -name \"iroha*.whl\" -exec pip install {} \\;")
-            sh(script: "while ! timeout 2 bash -c \"echo > /dev/tcp/iroha/50051\"; do sleep 2")
+            sh(script: "while ! timeout 2 bash -c \"echo > /dev/tcp/iroha/50051\"; do sleep 2; done")
             sh(script: "IROHA_HOST_ADDR=iroha ./examples/${item}")
         }
         sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml down")
