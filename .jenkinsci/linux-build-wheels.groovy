@@ -40,7 +40,7 @@ def testWheels() {
         sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml pull")
         sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml up --build -d")
         iC = docker.image('python:3.5-slim')
-        iC.inside("--network='iroha-${DOCKER_NETWORK}'") {
+        iC.inside("--network='${DOCKER_NETWORK}'") {
             sh(script: "find wheelhouse -type f -name \"iroha*.whl\" -exec pip install {} \\;")
             sh(script: "IROHA_HOST_ADDR=iroha ./examples/${item}")
         }
