@@ -2,7 +2,7 @@ version: '3.5'
 
 networks:
   iroha:
-    name: iroha-${SUBNET}
+    name: ${SUBNET}
     attachable: true
 
 services:
