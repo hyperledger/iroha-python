@@ -4,21 +4,27 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+import os
+import binascii
+from iroha import IrohaCrypto
+from iroha import Iroha, IrohaGrpc
+from iroha.primitive_pb2 import can_set_my_account_detail
 import sys
 
 if sys.version_info[0] < 3:
     raise Exception('Python 3 or a more recent version is required.')
 
-from iroha.primitive_pb2 import can_set_my_account_detail
-from iroha import Iroha, IrohaGrpc
-from iroha import IrohaCrypto
-import binascii
 
-admin_private_key = 'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70'
+IROHA_HOST_ADDR = os.getenv('IROHA_HOST_ADDR', '127.0.0.1')
+IROHA_PORT = os.getenv('IROHA_PORT', '50051')
+ADMIN_ACCOUNT_ID = os.getenv('ADMIN_ACCOUNT_ID', 'admin@test')
+ADMIN_PRIVATE_KEY = os.getenv(
+    'ADMIN_PRIVATE_KEY', 'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70')
+
 user_private_key = IrohaCrypto.private_key()
 user_public_key = IrohaCrypto.derive_public_key(user_private_key)
-iroha = Iroha('admin@test')
-net = IrohaGrpc()
+iroha = Iroha(ADMIN_ACCOUNT_ID)
+net = IrohaGrpc('{}:{}'.format(IROHA_HOST_ADDR, IROHA_PORT))
 
 
 def trace(func):
@@ -57,7 +63,7 @@ def create_domain_and_asset():
                       domain_id='domain', precision=2)
     ]
     tx = IrohaCrypto.sign_transaction(
-        iroha.transaction(commands), admin_private_key)
+        iroha.transaction(commands), ADMIN_PRIVATE_KEY)
     send_transaction_and_print_status(tx)
 
 
@@ -70,7 +76,7 @@ def add_coin_to_admin():
         iroha.command('AddAssetQuantity',
                       asset_id='coin#domain', amount='1000.00')
     ])
-    IrohaCrypto.sign_transaction(tx, admin_private_key)
+    IrohaCrypto.sign_transaction(tx, ADMIN_PRIVATE_KEY)
     send_transaction_and_print_status(tx)
 
 
@@ -83,7 +89,7 @@ def create_account_userone():
         iroha.command('CreateAccount', account_name='userone', domain_id='domain',
                       public_key=user_public_key)
     ])
-    IrohaCrypto.sign_transaction(tx, admin_private_key)
+    IrohaCrypto.sign_transaction(tx, ADMIN_PRIVATE_KEY)
     send_transaction_and_print_status(tx)
 
 
@@ -96,7 +102,7 @@ def transfer_coin_from_admin_to_userone():
         iroha.command('TransferAsset', src_account_id='admin@test', dest_account_id='userone@domain',
                       asset_id='coin#domain', description='init top up', amount='2.00')
     ])
-    IrohaCrypto.sign_transaction(tx, admin_private_key)
+    IrohaCrypto.sign_transaction(tx, ADMIN_PRIVATE_KEY)
     send_transaction_and_print_status(tx)
 
 
@@ -122,7 +128,7 @@ def set_age_to_userone():
         iroha.command('SetAccountDetail',
                       account_id='userone@domain', key='age', value='18')
     ])
-    IrohaCrypto.sign_transaction(tx, admin_private_key)
+    IrohaCrypto.sign_transaction(tx, ADMIN_PRIVATE_KEY)
     send_transaction_and_print_status(tx)
 
 
@@ -133,7 +139,7 @@ def get_coin_info():
     :return:
     """
     query = iroha.query('GetAssetInfo', asset_id='coin#domain')
-    IrohaCrypto.sign_query(query, admin_private_key)
+    IrohaCrypto.sign_query(query, ADMIN_PRIVATE_KEY)
 
     response = net.send_query(query)
     data = response.asset_response.asset
@@ -146,7 +152,7 @@ def get_account_assets():
     List all the assets of userone@domain
     """
     query = iroha.query('GetAccountAssets', account_id='userone@domain')
-    IrohaCrypto.sign_query(query, admin_private_key)
+    IrohaCrypto.sign_query(query, ADMIN_PRIVATE_KEY)
 
     response = net.send_query(query)
     data = response.account_assets_response.account_assets
@@ -161,7 +167,7 @@ def get_userone_details():
     Get all the kv-storage entries for userone@domain
     """
     query = iroha.query('GetAccountDetail', account_id='userone@domain')
-    IrohaCrypto.sign_query(query, admin_private_key)
+    IrohaCrypto.sign_query(query, ADMIN_PRIVATE_KEY)
 
     response = net.send_query(query)
     data = response.account_detail_response

@@ -7,7 +7,14 @@
 import binascii
 from iroha import IrohaCrypto as ic
 from iroha import Iroha, IrohaGrpc
+import os
 import sys
+
+IROHA_HOST_ADDR = os.getenv('IROHA_HOST_ADDR', '127.0.0.1')
+IROHA_PORT = os.getenv('IROHA_PORT', '50051')
+ADMIN_ACCOUNT_ID = os.getenv('ADMIN_ACCOUNT_ID', 'admin@test')
+ADMIN_PRIVATE_KEY = os.getenv(
+    'ADMIN_PRIVATE_KEY', 'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70')
 
 print("""
 
@@ -18,10 +25,8 @@ PLEASE ENSURE THAT MST IS ENABLED IN IROHA CONFIG
 if sys.version_info[0] < 3:
     raise Exception('Python 3 or a more recent version is required.')
 
-iroha = Iroha('admin@test')
-net = IrohaGrpc()
-
-admin_private_key = 'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70'
+iroha = Iroha(ADMIN_ACCOUNT_ID)
+net = IrohaGrpc('{}:{}'.format(IROHA_HOST_ADDR, IROHA_PORT))
 
 alice_private_keys = [
     'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506caba1',
@@ -97,7 +102,7 @@ def create_users():
                       asset_id='dogecoin#test', description='init doge', amount='20000')
     ]
     init_tx = iroha.transaction(init_cmds)
-    ic.sign_transaction(init_tx, admin_private_key)
+    ic.sign_transaction(init_tx, ADMIN_PRIVATE_KEY)
     send_transaction_and_print_status(init_tx)
 
 
