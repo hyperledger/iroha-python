@@ -6,10 +6,8 @@
 
 from iroha import Iroha, IrohaGrpc
 from iroha import IrohaCrypto
-import os
 import sys
-import time
-import uuid
+import os
 
 if sys.version_info[0] < 3:
     raise Exception('Python 3 or a more recent version is required.')
@@ -24,25 +22,31 @@ iroha = Iroha(ADMIN_ACCOUNT_ID)
 net = IrohaGrpc('{}:{}'.format(IROHA_HOST_ADDR, IROHA_PORT))
 
 
-def send_tx():
-    rand_name = uuid.uuid4().hex
-    rand_key = IrohaCrypto.private_key()
-    domain = ADMIN_ACCOUNT_ID.split('@')[1]
-    tx = iroha.transaction([
-        iroha.command('CreateAccount',
-                      account_name=rand_name,
-                      domain_id=domain,
-                      public_key=rand_key)
-    ])
-    IrohaCrypto.sign_transaction(tx, ADMIN_PRIVATE_KEY)
-    net.send_tx(tx)
-    print('tx is sent')
+def trace(func):
+    """
+    A decorator for tracing methods' begin/end execution points
+    """
+
+    def tracer(*args, **kwargs):
+        name = func.__name__
+        print('\tEntering "{}"'.format(name))
+        result = func(*args, **kwargs)
+        print('\tLeaving "{}"'.format(name))
+        return result
+
+    return tracer
 
 
-if __name__ == '__main__':
+@trace
+def get_blocks():
+    """
+    Subscribe to blocks stream from the network
+    :return:
+    """
     query = iroha.blocks_query()
     IrohaCrypto.sign_query(query, ADMIN_PRIVATE_KEY)
-    blocks = net.send_blocks_stream_query(
-        query, timeout=120)  # timeout in seconds
-    send_tx()
-    print(next(blocks))
+    for block in net.send_blocks_stream_query(query):
+        print('The next block arrived:', block)
+
+
+get_blocks()
