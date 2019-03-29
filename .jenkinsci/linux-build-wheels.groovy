@@ -1,10 +1,11 @@
 #!/usr/bin/env groovy
 
 def doPythonWheels() {
-    // version = sh(script: 'git describe --tags \$(git rev-list --tags --max-count=1) || true', returnStdout: true).trim()
-    version = "0.0.1"
+    version = sh(script: 'git describe --tags \$(git rev-list --tags --max-count=1) || true', returnStdout: true).trim()
+    repo = "master"
     if (env.GIT_LOCAL_BRANCH != "master") {
         version += ".dev" + env.BUILD_NUMBER
+        repo = "develop"
     }
 
     sh(script: "sed -i.bak 's/{{ PYPI_VERSION }}/${version}/g' setup.py;")
@@ -18,7 +19,8 @@ def doPythonWheels() {
 def publishWheels() {
     checkTag = sh(script: 'git describe --tags --exact-match ${GIT_COMMIT}', returnStatus: true)
     withCredentials([usernamePassword(credentialsId: 'ci_nexus', passwordVariable: 'CI_NEXUS_PASSWORD', usernameVariable: 'CI_NEXUS_USERNAME')]) {
-        sh(script: "find wheelhouse -type f -name \"iroha*.whl\" -exec curl -u ${CI_NEXUS_USERNAME}:${CI_NEXUS_PASSWORD} --upload-file {} https://nexus.iroha.tech/repository/artifacts/iroha-python/{} \\;")
+        sh(script: "find wheelhouse -type f -name \"iroha*.whl\" -exec curl -u ${CI_NEXUS_USERNAME}:${CI_NEXUS_PASSWORD} --upload-file {} https://nexus.iroha.tech/repository/artifacts/iroha-python/${repo}/{} \\;")
+        sh(script: "find wheelhouse -type f -name \"iroha*.whl\" -exec echo 'https://nexus.iroha.tech/service/rest/repository/browse/artifacts/iroha-python/${repo}/{} \\;")
     }
     if (env.GIT_LOCAL_BRANCH == '' && checkTag) {
         iC = docker.image('quay.io/pypa/manylinux1_x86_64')
@@ -35,6 +37,7 @@ def testWheels() {
     for (String item : tests) {
         DOCKER_NETWORK = "${scmVars.CHANGE_ID}-${scmVars.GIT_COMMIT}-${BUILD_NUMBER}"
         writeFile file: ".env", text: "SUBNET=${DOCKER_NETWORK}\nIROHA_VERSION=${IROHA_VERSION}"
+        sh(script: "wget https://raw.githubusercontent.com/hyperledger/iroha/develop/example/config.docker -O docker/iroha/config.docker")
         sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml pull")
         sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml up --build -d")
         iC = docker.image('python:3.5-slim')
