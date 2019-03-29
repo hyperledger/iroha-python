@@ -1,7 +1,7 @@
 pipeline {
   environment {
     DOCKER_NETWORK = ''
-    IROHA_VERSION = '1.0.0_rc4-hotfix1'
+    IROHA_VERSION = 'latest'
   }
   options {
     skipDefaultCheckout()

@@ -10,7 +10,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Soramitsu Co Ltd',
-    author_email='ci@soramitsu.co.jp',
+    author_email='admin@soramitsu.co.jp',
     license='Apache-2.0',
     url='https://github.com/hyperledger/iroha-python',
     packages=setuptools.find_packages(
