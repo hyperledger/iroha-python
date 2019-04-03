@@ -14,6 +14,10 @@ services:
     tty: true
     environment:
       - KEY=keys/node0
+      - IROHA_POSTGRES_HOST=some-postgres
+      - IROHA_POSTGRES_PORT=5432
+      - IROHA_POSTGRES_USER=postgres
+      - IROHA_POSTGRES_PASSWORD=mysecretpassword
     entrypoint:
       - /opt/iroha_data/entrypoint.sh
     networks:
@@ -28,6 +32,7 @@ services:
     container_name: iroha-postgres-${SUBNET}
     environment:
       - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_USER=postgres
     networks:
       - iroha
     logging:
