@@ -18,9 +18,8 @@ ADMIN_ACCOUNT_ID = os.getenv('ADMIN_ACCOUNT_ID', 'admin@test')
 ADMIN_PRIVATE_KEY = os.getenv(
     'ADMIN_PRIVATE_KEY', 'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70')
 
-iroha = Iroha('{}:{}'.format(IROHA_HOST_ADDR, IROHA_PORT))
-net = IrohaGrpc()
-
+iroha = Iroha(ADMIN_ACCOUNT_ID)
+net = IrohaGrpc('{}:{}'.format(IROHA_HOST_ADDR, IROHA_PORT))
 
 def trace(func):
     """
