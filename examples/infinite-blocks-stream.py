@@ -21,7 +21,6 @@ ADMIN_PRIVATE_KEY = os.getenv(
 iroha = Iroha(ADMIN_ACCOUNT_ID)
 net = IrohaGrpc('{}:{}'.format(IROHA_HOST_ADDR, IROHA_PORT))
 
-
 def trace(func):
     """
     A decorator for tracing methods' begin/end execution points

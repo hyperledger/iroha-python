@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from six.moves import getoutput
 import os.path
@@ -20,6 +20,6 @@ print(getoutput('python -m grpc_tools.protoc --proto_path={} \
 	--python_out={} --grpc_python_out={} {}'.
                 format(proto_path, python_out, python_out, endpoint_proto)))
 
-print(getoutput('sed -i "" \'s/^\\(import.*_pb2\\)/from . \\1/\' {}'.
+print(getoutput('sed -i.bak \'s/^\\(import.*_pb2\\)/from . \\1/\' {}'.
                 format(out_pb2)))
 print('Done.')

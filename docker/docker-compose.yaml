@@ -1,0 +1,34 @@
+version: '3.5'
+
+networks:
+  iroha:
+    name: ${SUBNET}
+    attachable: true
+
+services:
+  iroha:
+    image: hyperledger/iroha:${IROHA_VERSION}
+    container_name: iroha-${SUBNET}
+    depends_on:
+      - iroha-postgres
+    tty: true
+    environment:
+      - KEY=keys/node0
+    entrypoint:
+      - /opt/iroha_data/entrypoint.sh
+    networks:
+      - iroha
+    volumes:
+      - ./iroha:/opt/iroha_data
+    # logging:
+    #   driver: none
+
+  iroha-postgres:
+    image: postgres:9.5
+    container_name: iroha-postgres-${SUBNET}
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+    networks:
+      - iroha
+    logging:
+      driver: none
