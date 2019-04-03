@@ -39,7 +39,6 @@ def testWheels() {
         DOCKER_NETWORK = "${scmVars.CHANGE_ID}-${scmVars.GIT_COMMIT}-${BUILD_NUMBER}"
         writeFile file: ".env", text: "SUBNET=${DOCKER_NETWORK}\nIROHA_VERSION=${IROHA_VERSION}"
         sh(script: "wget https://raw.githubusercontent.com/hyperledger/iroha/develop/example/config.docker -O docker/iroha/config.docker")
-        sh(script: "sed -i 's/some-postgres/iroha-postgres/' docker/iroha/config.docker;")
         sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml pull")
         sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml up --build -d")
         iC = docker.image('python:3.5-slim')

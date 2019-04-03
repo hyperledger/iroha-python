@@ -23,7 +23,7 @@ services:
     # logging:
     #   driver: none
 
-  iroha-postgres:
+  some-postgres:
     image: postgres:9.5
     container_name: iroha-postgres-${SUBNET}
     environment:
