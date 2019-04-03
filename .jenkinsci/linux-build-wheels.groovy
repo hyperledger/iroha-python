@@ -49,11 +49,6 @@ def testWheels() {
         }
         sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml down")
     }
-    // iC = docker.image('quay.io/pypa/manylinux1_x86_64')
-    // iC.inside("") {
-    //     // sh(script: '/opt/python/cp35-cp35m/bin/pip install twine', returnStdout: true)
-
-    // }
 }
 
 return this
