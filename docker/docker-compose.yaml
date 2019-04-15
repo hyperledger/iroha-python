@@ -10,10 +10,14 @@ services:
     image: hyperledger/iroha:${IROHA_VERSION}
     container_name: iroha-${SUBNET}
     depends_on:
-      - iroha-postgres
+      - some-postgres
     tty: true
     environment:
       - KEY=keys/node0
+      - IROHA_POSTGRES_HOST=some-postgres
+      - IROHA_POSTGRES_PORT=5432
+      - IROHA_POSTGRES_USER=postgres
+      - IROHA_POSTGRES_PASSWORD=mysecretpassword
     entrypoint:
       - /opt/iroha_data/entrypoint.sh
     networks:
@@ -23,11 +27,12 @@ services:
     # logging:
     #   driver: none
 
-  iroha-postgres:
+  some-postgres:
     image: postgres:9.5
     container_name: iroha-postgres-${SUBNET}
     environment:
       - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_USER=postgres
     networks:
       - iroha
     logging:
