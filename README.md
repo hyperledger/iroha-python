@@ -3,7 +3,7 @@
 
 This is a source repository for HL Iroha Python library.
 
-Currently, latest HL Iroha rc2 release (`hyperledger/iroha:1.0.0_rc2-hotfix` Docker image) is supported.
+Currently, latest HL Iroha rc5 release (`hyperledger/iroha:latest` Docker image) is supported.
 
 The library works in Python 3 environment (Python 2 is not supported now).
 
