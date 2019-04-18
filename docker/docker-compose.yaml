@@ -11,6 +11,7 @@ services:
     container_name: iroha-${SUBNET}
     depends_on:
       - some-postgres
+    restart: always
     tty: true
     environment:
       - KEY=keys/node0
