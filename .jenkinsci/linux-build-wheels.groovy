@@ -36,20 +36,21 @@ def publishWheels() {
 def testWheels() {
     def scmVars = checkout scm
     def tests = ['tx-example.py', 'batch-example.py', 'blocks-query.py']
+    DOCKER_NETWORK = "${scmVars.CHANGE_ID}-${scmVars.GIT_COMMIT}-${BUILD_NUMBER}"
+    writeFile file: ".env", text: "SUBNET=${DOCKER_NETWORK}\nIROHA_VERSION=${IROHA_VERSION}"
+    sh(script: "wget https://raw.githubusercontent.com/hyperledger/iroha/develop/example/config.docker -O docker/iroha/config.docker")
+    sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml pull")
+    sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml up --build -d")
     for (String item : tests) {
-        DOCKER_NETWORK = "${scmVars.CHANGE_ID}-${scmVars.GIT_COMMIT}-${BUILD_NUMBER}"
-        writeFile file: ".env", text: "SUBNET=${DOCKER_NETWORK}\nIROHA_VERSION=${IROHA_VERSION}"
-        sh(script: "wget https://raw.githubusercontent.com/hyperledger/iroha/develop/example/config.docker -O docker/iroha/config.docker")
-        sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml pull")
-        sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml up --build -d")
         iC = docker.image('python:3.5-slim')
         iC.inside("--network='${DOCKER_NETWORK}'") {
             sh(script: "find wheelhouse -type f -name \"iroha*.whl\" -exec pip install {} \\;")
             sh(script: "while ! timeout 2 bash -c \"echo > /dev/tcp/iroha/50051\"; do sleep 2; done")
             sh(script: "IROHA_HOST_ADDR=iroha ./examples/${item}")
         }
-        sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml down")
+        sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml restart")
     }
+    sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml down")
 }
 
 return this
