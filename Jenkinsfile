@@ -64,7 +64,7 @@ pipeline {
             script {
               def wheels = load ".jenkinsci/linux-build-wheels.groovy"
               archiveArtifacts artifacts: 'wheelhouse/iroha*.whl', allowEmptyArchive: true
-              if (currentBuild.result == "SUCCESS") {
+              if (currentBuild.currentResult == "SUCCESS") {
                 wheels.publishWheels()
               }
             }
