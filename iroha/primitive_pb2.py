@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='iroha.protocol',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x0fprimitive.proto\x12\x0eiroha.protocol\"2\n\tSignature\x12\x12\n\npublic_key\x18\x01 \x01(\t\x12\x11\n\tsignature\x18\x02 \x01(\t\")\n\x04Peer\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\x12\x10\n\x08peer_key\x18\x02 \x01(\t\"4\n\x15\x41\x63\x63ountDetailRecordId\x12\x0e\n\x06writer\x18\x01 \x01(\t\x12\x0b\n\x03key\x18\x02 \x01(\t*\xba\t\n\x0eRolePermission\x12\x13\n\x0f\x63\x61n_append_role\x10\x00\x12\x13\n\x0f\x63\x61n_create_role\x10\x01\x12\x13\n\x0f\x63\x61n_detach_role\x10\x02\x12\x15\n\x11\x63\x61n_add_asset_qty\x10\x03\x12\x1a\n\x16\x63\x61n_subtract_asset_qty\x10\x04\x12\x10\n\x0c\x63\x61n_add_peer\x10\x05\x12\x15\n\x11\x63\x61n_add_signatory\x10\x06\x12\x18\n\x14\x63\x61n_remove_signatory\x10\x07\x12\x12\n\x0e\x63\x61n_set_quorum\x10\x08\x12\x16\n\x12\x63\x61n_create_account\x10\t\x12\x12\n\x0e\x63\x61n_set_detail\x10\n\x12\x14\n\x10\x63\x61n_create_asset\x10\x0b\x12\x10\n\x0c\x63\x61n_transfer\x10\x0c\x12\x0f\n\x0b\x63\x61n_receive\x10\r\x12\x15\n\x11\x63\x61n_create_domain\x10\x0e\x12\x1c\n\x18\x63\x61n_add_domain_asset_qty\x10+\x12!\n\x1d\x63\x61n_subtract_domain_asset_qty\x10,\x12\x13\n\x0f\x63\x61n_read_assets\x10\x0f\x12\x11\n\rcan_get_roles\x10\x10\x12\x16\n\x12\x63\x61n_get_my_account\x10\x11\x12\x18\n\x14\x63\x61n_get_all_accounts\x10\x12\x12\x1b\n\x17\x63\x61n_get_domain_accounts\x10\x13\x12\x1a\n\x16\x63\x61n_get_my_signatories\x10\x14\x12\x1b\n\x17\x63\x61n_get_all_signatories\x10\x15\x12\x1e\n\x1a\x63\x61n_get_domain_signatories\x10\x16\x12\x16\n\x12\x63\x61n_get_my_acc_ast\x10\x17\x12\x17\n\x13\x63\x61n_get_all_acc_ast\x10\x18\x12\x1a\n\x16\x63\x61n_get_domain_acc_ast\x10\x19\x12\x19\n\x15\x63\x61n_get_my_acc_detail\x10\x1a\x12\x1a\n\x16\x63\x61n_get_all_acc_detail\x10\x1b\x12\x1d\n\x19\x63\x61n_get_domain_acc_detail\x10\x1c\x12\x16\n\x12\x63\x61n_get_my_acc_txs\x10\x1d\x12\x17\n\x13\x63\x61n_get_all_acc_txs\x10\x1e\x12\x1a\n\x16\x63\x61n_get_domain_acc_txs\x10\x1f\x12\x1a\n\x16\x63\x61n_get_my_acc_ast_txs\x10 \x12\x1b\n\x17\x63\x61n_get_all_acc_ast_txs\x10!\x12\x1e\n\x1a\x63\x61n_get_domain_acc_ast_txs\x10\"\x12\x12\n\x0e\x63\x61n_get_my_txs\x10#\x12\x13\n\x0f\x63\x61n_get_all_txs\x10$\x12\x12\n\x0e\x63\x61n_get_blocks\x10*\x12\x11\n\rcan_get_peers\x10-\x12\x1f\n\x1b\x63\x61n_grant_can_set_my_quorum\x10%\x12\"\n\x1e\x63\x61n_grant_can_add_my_signatory\x10&\x12%\n!can_grant_can_remove_my_signatory\x10\'\x12$\n can_grant_can_transfer_my_assets\x10(\x12\'\n#can_grant_can_set_my_account_detail\x10)*\x9e\x01\n\x13GrantablePermission\x12\x18\n\x14\x63\x61n_add_my_signatory\x10\x00\x12\x1b\n\x17\x63\x61n_remove_my_signatory\x10\x01\x12\x15\n\x11\x63\x61n_set_my_quorum\x10\x02\x12\x1d\n\x19\x63\x61n_set_my_account_detail\x10\x03\x12\x1a\n\x16\x63\x61n_transfer_my_assets\x10\x04\x62\x06proto3')
+  serialized_pb=_b('\n\x0fprimitive.proto\x12\x0eiroha.protocol\"2\n\tSignature\x12\x12\n\npublic_key\x18\x01 \x01(\t\x12\x11\n\tsignature\x18\x02 \x01(\t\")\n\x04Peer\x12\x0f\n\x07\x61\x64\x64ress\x18\x01 \x01(\t\x12\x10\n\x08peer_key\x18\x02 \x01(\t\"4\n\x15\x41\x63\x63ountDetailRecordId\x12\x0e\n\x06writer\x18\x01 \x01(\t\x12\x0b\n\x03key\x18\x02 \x01(\t*\xcf\t\n\x0eRolePermission\x12\x13\n\x0f\x63\x61n_append_role\x10\x00\x12\x13\n\x0f\x63\x61n_create_role\x10\x01\x12\x13\n\x0f\x63\x61n_detach_role\x10\x02\x12\x15\n\x11\x63\x61n_add_asset_qty\x10\x03\x12\x1a\n\x16\x63\x61n_subtract_asset_qty\x10\x04\x12\x10\n\x0c\x63\x61n_add_peer\x10\x05\x12\x13\n\x0f\x63\x61n_remove_peer\x10.\x12\x15\n\x11\x63\x61n_add_signatory\x10\x06\x12\x18\n\x14\x63\x61n_remove_signatory\x10\x07\x12\x12\n\x0e\x63\x61n_set_quorum\x10\x08\x12\x16\n\x12\x63\x61n_create_account\x10\t\x12\x12\n\x0e\x63\x61n_set_detail\x10\n\x12\x14\n\x10\x63\x61n_create_asset\x10\x0b\x12\x10\n\x0c\x63\x61n_transfer\x10\x0c\x12\x0f\n\x0b\x63\x61n_receive\x10\r\x12\x15\n\x11\x63\x61n_create_domain\x10\x0e\x12\x1c\n\x18\x63\x61n_add_domain_asset_qty\x10+\x12!\n\x1d\x63\x61n_subtract_domain_asset_qty\x10,\x12\x13\n\x0f\x63\x61n_read_assets\x10\x0f\x12\x11\n\rcan_get_roles\x10\x10\x12\x16\n\x12\x63\x61n_get_my_account\x10\x11\x12\x18\n\x14\x63\x61n_get_all_accounts\x10\x12\x12\x1b\n\x17\x63\x61n_get_domain_accounts\x10\x13\x12\x1a\n\x16\x63\x61n_get_my_signatories\x10\x14\x12\x1b\n\x17\x63\x61n_get_all_signatories\x10\x15\x12\x1e\n\x1a\x63\x61n_get_domain_signatories\x10\x16\x12\x16\n\x12\x63\x61n_get_my_acc_ast\x10\x17\x12\x17\n\x13\x63\x61n_get_all_acc_ast\x10\x18\x12\x1a\n\x16\x63\x61n_get_domain_acc_ast\x10\x19\x12\x19\n\x15\x63\x61n_get_my_acc_detail\x10\x1a\x12\x1a\n\x16\x63\x61n_get_all_acc_detail\x10\x1b\x12\x1d\n\x19\x63\x61n_get_domain_acc_detail\x10\x1c\x12\x16\n\x12\x63\x61n_get_my_acc_txs\x10\x1d\x12\x17\n\x13\x63\x61n_get_all_acc_txs\x10\x1e\x12\x1a\n\x16\x63\x61n_get_domain_acc_txs\x10\x1f\x12\x1a\n\x16\x63\x61n_get_my_acc_ast_txs\x10 \x12\x1b\n\x17\x63\x61n_get_all_acc_ast_txs\x10!\x12\x1e\n\x1a\x63\x61n_get_domain_acc_ast_txs\x10\"\x12\x12\n\x0e\x63\x61n_get_my_txs\x10#\x12\x13\n\x0f\x63\x61n_get_all_txs\x10$\x12\x12\n\x0e\x63\x61n_get_blocks\x10*\x12\x11\n\rcan_get_peers\x10-\x12\x1f\n\x1b\x63\x61n_grant_can_set_my_quorum\x10%\x12\"\n\x1e\x63\x61n_grant_can_add_my_signatory\x10&\x12%\n!can_grant_can_remove_my_signatory\x10\'\x12$\n can_grant_can_transfer_my_assets\x10(\x12\'\n#can_grant_can_set_my_account_detail\x10)*\x9e\x01\n\x13GrantablePermission\x12\x18\n\x14\x63\x61n_add_my_signatory\x10\x00\x12\x1b\n\x17\x63\x61n_remove_my_signatory\x10\x01\x12\x15\n\x11\x63\x61n_set_my_quorum\x10\x02\x12\x1d\n\x19\x63\x61n_set_my_account_detail\x10\x03\x12\x1a\n\x16\x63\x61n_transfer_my_assets\x10\x04\x62\x06proto3')
 )
 
 _ROLEPERMISSION = _descriptor.EnumDescriptor(
@@ -54,170 +54,174 @@ _ROLEPERMISSION = _descriptor.EnumDescriptor(
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_add_signatory', index=6, number=6,
+      name='can_remove_peer', index=6, number=46,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_remove_signatory', index=7, number=7,
+      name='can_add_signatory', index=7, number=6,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_set_quorum', index=8, number=8,
+      name='can_remove_signatory', index=8, number=7,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_create_account', index=9, number=9,
+      name='can_set_quorum', index=9, number=8,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_set_detail', index=10, number=10,
+      name='can_create_account', index=10, number=9,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_create_asset', index=11, number=11,
+      name='can_set_detail', index=11, number=10,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_transfer', index=12, number=12,
+      name='can_create_asset', index=12, number=11,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_receive', index=13, number=13,
+      name='can_transfer', index=13, number=12,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_create_domain', index=14, number=14,
+      name='can_receive', index=14, number=13,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_add_domain_asset_qty', index=15, number=43,
+      name='can_create_domain', index=15, number=14,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_subtract_domain_asset_qty', index=16, number=44,
+      name='can_add_domain_asset_qty', index=16, number=43,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_read_assets', index=17, number=15,
+      name='can_subtract_domain_asset_qty', index=17, number=44,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_roles', index=18, number=16,
+      name='can_read_assets', index=18, number=15,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_my_account', index=19, number=17,
+      name='can_get_roles', index=19, number=16,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_all_accounts', index=20, number=18,
+      name='can_get_my_account', index=20, number=17,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_domain_accounts', index=21, number=19,
+      name='can_get_all_accounts', index=21, number=18,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_my_signatories', index=22, number=20,
+      name='can_get_domain_accounts', index=22, number=19,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_all_signatories', index=23, number=21,
+      name='can_get_my_signatories', index=23, number=20,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_domain_signatories', index=24, number=22,
+      name='can_get_all_signatories', index=24, number=21,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_my_acc_ast', index=25, number=23,
+      name='can_get_domain_signatories', index=25, number=22,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_all_acc_ast', index=26, number=24,
+      name='can_get_my_acc_ast', index=26, number=23,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_domain_acc_ast', index=27, number=25,
+      name='can_get_all_acc_ast', index=27, number=24,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_my_acc_detail', index=28, number=26,
+      name='can_get_domain_acc_ast', index=28, number=25,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_all_acc_detail', index=29, number=27,
+      name='can_get_my_acc_detail', index=29, number=26,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_domain_acc_detail', index=30, number=28,
+      name='can_get_all_acc_detail', index=30, number=27,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_my_acc_txs', index=31, number=29,
+      name='can_get_domain_acc_detail', index=31, number=28,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_all_acc_txs', index=32, number=30,
+      name='can_get_my_acc_txs', index=32, number=29,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_domain_acc_txs', index=33, number=31,
+      name='can_get_all_acc_txs', index=33, number=30,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_my_acc_ast_txs', index=34, number=32,
+      name='can_get_domain_acc_txs', index=34, number=31,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_all_acc_ast_txs', index=35, number=33,
+      name='can_get_my_acc_ast_txs', index=35, number=32,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_domain_acc_ast_txs', index=36, number=34,
+      name='can_get_all_acc_ast_txs', index=36, number=33,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_my_txs', index=37, number=35,
+      name='can_get_domain_acc_ast_txs', index=37, number=34,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_all_txs', index=38, number=36,
+      name='can_get_my_txs', index=38, number=35,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_blocks', index=39, number=42,
+      name='can_get_all_txs', index=39, number=36,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_get_peers', index=40, number=45,
+      name='can_get_blocks', index=40, number=42,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_grant_can_set_my_quorum', index=41, number=37,
+      name='can_get_peers', index=41, number=45,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_grant_can_add_my_signatory', index=42, number=38,
+      name='can_grant_can_set_my_quorum', index=42, number=37,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_grant_can_remove_my_signatory', index=43, number=39,
+      name='can_grant_can_add_my_signatory', index=43, number=38,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_grant_can_transfer_my_assets', index=44, number=40,
+      name='can_grant_can_remove_my_signatory', index=44, number=39,
       serialized_options=None,
       type=None),
     _descriptor.EnumValueDescriptor(
-      name='can_grant_can_set_my_account_detail', index=45, number=41,
+      name='can_grant_can_transfer_my_assets', index=45, number=40,
+      serialized_options=None,
+      type=None),
+    _descriptor.EnumValueDescriptor(
+      name='can_grant_can_set_my_account_detail', index=46, number=41,
       serialized_options=None,
       type=None),
   ],
   containing_type=None,
   serialized_options=None,
   serialized_start=185,
-  serialized_end=1395,
+  serialized_end=1416,
 )
 _sym_db.RegisterEnumDescriptor(_ROLEPERMISSION)
 
@@ -251,8 +255,8 @@ _GRANTABLEPERMISSION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1398,
-  serialized_end=1556,
+  serialized_start=1419,
+  serialized_end=1577,
 )
 _sym_db.RegisterEnumDescriptor(_GRANTABLEPERMISSION)
 
@@ -263,6 +267,7 @@ can_detach_role = 2
 can_add_asset_qty = 3
 can_subtract_asset_qty = 4
 can_add_peer = 5
+can_remove_peer = 46
 can_add_signatory = 6
 can_remove_signatory = 7
 can_set_quorum = 8
