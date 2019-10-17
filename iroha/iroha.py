@@ -57,7 +57,7 @@ class IrohaCrypto(object):
         return hash
 
     @staticmethod
-    def _signature(message, private_key):
+    def signature(message, private_key):
         """
         Calculate signature for given message and private key
         :param message: proto that has payload message inside
@@ -85,7 +85,7 @@ class IrohaCrypto(object):
         assert len(private_keys), 'At least one private key has to be passed'
         signatures = []
         for private_key in private_keys:
-            signature = IrohaCrypto._signature(transaction, private_key)
+            signature = IrohaCrypto.signature(transaction, private_key)
             signatures.append(signature)
         transaction.signatures.extend(signatures)
         return transaction
@@ -98,7 +98,7 @@ class IrohaCrypto(object):
         :param private_key: hex string of private key to sign the query
         :return: the modified query
         """
-        signature = IrohaCrypto._signature(query, private_key)
+        signature = IrohaCrypto.signature(query, private_key)
         query.signature.CopyFrom(signature)
         return query
 
