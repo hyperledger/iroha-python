@@ -103,6 +103,23 @@ class IrohaCrypto(object):
         return query
 
     @staticmethod
+    def is_signature_valid(message, signature):
+        """
+        Verify signature validity.
+        :param signature: the signature to be checked
+        :param message: message to check the signature against
+        :return: bool, whether the signature is valid for the message
+        """
+        message_hash = IrohaCrypto.hash(message)
+        try:
+            signature_bytes = binascii.unhexlify(signature.signature)
+            public_key = binascii.unhexlify(signature.public_key)
+            ed25519.checkvalid(signature_bytes, message_hash, public_key)
+            return True
+        except (ed25519.SignatureMismatch, ValueError):
+            return False
+
+    @staticmethod
     def reduced_hash(transaction):
         """
         Calculates hash of reduced payload of a transaction
