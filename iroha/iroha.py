@@ -32,8 +32,8 @@ class IrohaCrypto(object):
         """
         Calculate public key from private key
         :param private_key: hex encoded private key
-        :param use_multihash:
-        :param multihash_code:
+        :param use_multihash: boolean flag of multihash usage
+        :param multihash_code: hex number for multihash encoding
         :return: hex encoded public key
         """
         # TODO: add param description
@@ -62,7 +62,7 @@ class IrohaCrypto(object):
             obj = getattr(proto_with_payload, 'meta')
 
         bytes = obj.SerializeToString()
-        hash = hashlib.sha3_256(bytes).digest() # TODO: needs multihash? hashlib.ssh256() ?
+        hash = hashlib.sha3_256(bytes).digest()
         return hash
 
     @staticmethod
@@ -71,6 +71,8 @@ class IrohaCrypto(object):
         Calculate signature for given message and private key
         :param message: proto that has payload message inside
         :param private_key: hex string with private key
+        :param use_multihash: boolean flag of multihash usage
+        :param multihash_code: hex number for multihash encoding
         :return: a proto Signature message
         """
         public_key = IrohaCrypto.derive_public_key(private_key)
@@ -140,7 +142,7 @@ class IrohaCrypto(object):
         :return: hex representation of hash
         """
         bytes = transaction.payload.reduced_payload.SerializeToString()
-        hash = hashlib.sha3_256(bytes).digest() # TODO: needs multihash? hashlib.ssh256() ?
+        hash = hashlib.sha3_256(bytes).digest()
         hex_hash = binascii.hexlify(hash)
         return hex_hash
 
