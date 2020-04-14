@@ -5,8 +5,10 @@
 #
 
 from . import ed25519
+from . import ed25519_sha2
 import hashlib
 import binascii
+import multihash
 import grpc
 import time
 import re
@@ -26,14 +28,21 @@ class IrohaCrypto(object):
     """
 
     @staticmethod
-    def derive_public_key(private_key):
+    def derive_public_key(private_key, use_multihash=False, multihash_code=0x12):
         """
         Calculate public key from private key
         :param private_key: hex encoded private key
+        :param use_multihash:
+        :param multihash_code:
         :return: hex encoded public key
         """
+        # TODO: add param description
         secret = binascii.unhexlify(private_key)
-        public_key = ed25519.publickey_unsafe(secret)
+        if use_multihash:
+            digest = ed25519_sha2.publickey(secret)
+            public_key = multihash.encode(digest, multihash_code)
+        else:
+            public_key = ed25519.publickey_unsafe(secret)
         hex_public_key = binascii.hexlify(public_key)
         return hex_public_key
 
@@ -53,11 +62,11 @@ class IrohaCrypto(object):
             obj = getattr(proto_with_payload, 'meta')
 
         bytes = obj.SerializeToString()
-        hash = hashlib.sha3_256(bytes).digest()
+        hash = hashlib.sha3_256(bytes).digest() # TODO: needs multihash? hashlib.ssh256() ?
         return hash
 
     @staticmethod
-    def _signature(message, private_key):
+    def _signature(message, private_key, use_multihash=False, multihash_code=0x12):
         """
         Calculate signature for given message and private key
         :param message: proto that has payload message inside
@@ -68,7 +77,11 @@ class IrohaCrypto(object):
         sk = binascii.unhexlify(private_key)
         pk = binascii.unhexlify(public_key)
         message_hash = IrohaCrypto.hash(message)
-        signature_bytes = ed25519.signature_unsafe(message_hash, sk, pk)
+        if use_multihash:
+            digest = ed25519_sha2.signature(message_hash, sk, pk)
+            signature_bytes = multihash.encode(digest, multihash_code)
+        else:
+            signature_bytes = ed25519.signature_unsafe(message_hash, sk, pk)
         signature = primitive_pb2.Signature()
         signature.public_key = public_key
         signature.signature = binascii.hexlify(signature_bytes)
@@ -127,7 +140,7 @@ class IrohaCrypto(object):
         :return: hex representation of hash
         """
         bytes = transaction.payload.reduced_payload.SerializeToString()
-        hash = hashlib.sha3_256(bytes).digest()
+        hash = hashlib.sha3_256(bytes).digest() # TODO: needs multihash? hashlib.ssh256() ?
         hex_hash = binascii.hexlify(hash)
         return hex_hash
 
