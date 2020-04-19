@@ -9,8 +9,9 @@
 #
 # Additions and changes made to the original sources are released as specified
 # in 'LICENSE' document distributed with this software.
-
-# TODO: update license message
+#
+# Copyright Soramitsu Co., Ltd. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
 
 import hashlib
 import operator as _oper
