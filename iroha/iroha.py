@@ -5,12 +5,14 @@
 #
 
 from . import ed25519
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+from cryptography.hazmat.primitives import serialization
 import hashlib
 import binascii
 import grpc
 import time
 import re
-import os
 
 from . import commands_pb2
 from . import endpoint_pb2
@@ -33,8 +35,10 @@ class IrohaCrypto(object):
         :return: hex encoded public key
         """
         secret = binascii.unhexlify(private_key)
-        public_key = ed25519.publickey_unsafe(secret)
-        hex_public_key = binascii.hexlify(public_key)
+        pk_object = Ed25519PrivateKey.from_private_bytes(secret)
+        public_key = pk_object.public_key()
+        public_bytes = public_key.public_bytes(encoding=serialization.Encoding.Raw, format=serialization.PublicFormat.Raw)
+        hex_public_key = binascii.hexlify(public_bytes)
         return hex_public_key
 
     @staticmethod
@@ -59,16 +63,17 @@ class IrohaCrypto(object):
     @staticmethod
     def _signature(message, private_key):
         """
-        Calculate signature for given message and private key
-        :param message: proto that has payload message inside
+        Calculate signature for given message and private key        :param message: proto that has payload message inside
         :param private_key: hex string with private key
         :return: a proto Signature message
         """
+        private_key = IrohaCrypto.private_key()
         public_key = IrohaCrypto.derive_public_key(private_key)
         sk = binascii.unhexlify(private_key)
         pk = binascii.unhexlify(public_key)
         message_hash = IrohaCrypto.hash(message)
-        signature_bytes = ed25519.signature_unsafe(message_hash, sk, pk)
+        pk_object = Ed25519PrivateKey.from_private_bytes(sk)
+        signature_bytes = pk_object.sign(message_hash)
         signature = primitive_pb2.Signature()
         signature.public_key = public_key
         signature.signature = binascii.hexlify(signature_bytes)
@@ -137,7 +142,10 @@ class IrohaCrypto(object):
         Generates new random private key
         :return: hex representation of private key
         """
-        return binascii.b2a_hex(os.urandom(32))
+        newpk = Ed25519PrivateKey.generate()
+        pkoutput = newpk.private_bytes(encoding=serialization.Encoding.Raw, format=serialization.PrivateFormat.Raw, encryption_algorithm=serialization.NoEncryption())
+        return binascii.b2a_hex(pkoutput)
+
 
 
 class Iroha(object):
