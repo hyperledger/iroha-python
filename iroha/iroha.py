@@ -6,7 +6,8 @@
 
 from . import ed25519
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+#Ed25519PublicKey can be used to replace ed25519
+#from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 from cryptography.hazmat.primitives import serialization
 import hashlib
 import binascii
@@ -70,7 +71,6 @@ class IrohaCrypto(object):
         private_key = IrohaCrypto.private_key()
         public_key = IrohaCrypto.derive_public_key(private_key)
         sk = binascii.unhexlify(private_key)
-        pk = binascii.unhexlify(public_key)
         message_hash = IrohaCrypto.hash(message)
         pk_object = Ed25519PrivateKey.from_private_bytes(sk)
         signature_bytes = pk_object.sign(message_hash)
