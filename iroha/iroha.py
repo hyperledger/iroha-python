@@ -5,7 +5,7 @@
 #
 
 from . import ed25519 as ed25519_sha3
-import nacl.signing as ed25519_sha2
+import ed25519 as ed25519_sha2
 import hashlib
 import binascii
 import grpc
@@ -32,37 +32,37 @@ class IrohaCrypto(object):
         :param private_key: hex encoded private key
         :return: hex encoded public key
         """
-        if isinstance(private_key, str):  # default, legacy
+        if isinstance(private_key, (str, bytes)):  # default, legacy
             secret = binascii.unhexlify(private_key)
             public_key = ed25519_sha3.publickey_unsafe(secret)
             hex_public_key = binascii.hexlify(public_key)
             return hex_public_key
         elif isinstance(private_key, ed25519_sha2.SigningKey):
-            return 'ed0120' + binascii.hexlify(private_key.verify_key.encode())
+            pub = private_key.get_verifying_key()
+            bid = binascii.hexlify(pub.vk_s).decode("utf-8")
+            return 'ed0120' + bid
 
     @staticmethod
-    def get_payload_to_be_signed(proto):
-        """
-        :proto: proto transaction or query
-        :return: bytes representation of what has to be signed
-        """
-        if hasattr(proto, 'payload'):
-            return proto.payload.SerializeToString()
-        # signing of meta is implemented for block streaming queries,
-        # because they do not have a payload in their schema
-        elif hasattr(proto, 'meta'):
-            return proto.meta.SerializeToString()
-        raise RuntimeError('Unknown message type.')
-
-    @staticmethod
-    def hash(proto_with_payload):
+    def hash(proto_with_payload, sha2=False):
         """
         Calculates hash of payload of proto message
         :proto_with_payload: proto transaction or query
         :return: bytes representation of hash
         """
-        obj = IrohaCrypto.get_payload_to_be_signed(proto_with_payload)
-        hash = hashlib.sha3_256(obj).digest()
+        obj = None
+        if hasattr(proto_with_payload, 'payload'):
+            obj = getattr(proto_with_payload, 'payload')
+        # hash of meta is implemented for block streaming queries,
+        # because they do not have a payload in their schema
+        elif hasattr(proto_with_payload, 'meta'):
+            obj = getattr(proto_with_payload, 'meta')
+
+        bytes_message = obj.SerializeToString()
+        if sha2 is False:
+            hash = hashlib.sha3_256(bytes_message).digest()
+        else:
+            message = binascii.hexlify(bytes_message)
+            hash = hashlib.sha512(message).digest()
         return hash
 
     @staticmethod
@@ -74,15 +74,15 @@ class IrohaCrypto(object):
         :return: a proto Signature message
         """
         public_key = IrohaCrypto.derive_public_key(private_key)
-        if isinstance(private_key, str):  # default, legacy
+        if isinstance(private_key, (str, bytes)):  # default, legacy
             message_hash = IrohaCrypto.hash(message)
             sk = binascii.unhexlify(private_key)
             pk = binascii.unhexlify(public_key)
             signature_bytes = ed25519_sha3.signature_unsafe(
                 message_hash, sk, pk)
         elif isinstance(private_key, ed25519_sha2.SigningKey):
-            signature_bytes = private_key.sign(
-                IrohaCrypto.get_payload_to_be_signed(message)).signature
+            message_hash = IrohaCrypto.hash(message, sha2=True)
+            signature_bytes = private_key.sign(message_hash)
         else:
             raise RuntimeError('Unsupported private key type.')
         signature = primitive_pb2.Signature()
@@ -130,9 +130,9 @@ class IrohaCrypto(object):
         try:
             signature_bytes = binascii.unhexlify(signature.signature)
             public_key = binascii.unhexlify(signature.public_key)
-            ed25519.checkvalid(signature_bytes, message_hash, public_key)
+            ed25519_sha3.checkvalid(signature_bytes, message_hash, public_key)
             return True
-        except (ed25519.SignatureMismatch, ValueError):
+        except (ed25519_sha3.SignatureMismatch, ValueError):
             return False
 
     @staticmethod
