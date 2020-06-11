@@ -4,11 +4,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-from . import ed25519
-from . import ed25519_sha2
+from . import ed25519 as ed25519_sha3
+import ed25519 as ed25519_sha2
 import hashlib
 import binascii
-import multihash
 import grpc
 import time
 import re
@@ -26,25 +25,35 @@ class IrohaCrypto(object):
     """
     Collection of general crypto-related functions
     """
-
     @staticmethod
-    def derive_public_key(private_key, use_multihash=False, multihash_code=0x12):
+    def derive_public_key(private_key):
         """
         Calculate public key from private key
         :param private_key: hex encoded private key
-        :param use_multihash: boolean flag of multihash usage
-        :param multihash_code: hex number for multihash encoding
         :return: hex encoded public key
         """
-        # TODO: add param description
-        secret = binascii.unhexlify(private_key)
-        if use_multihash:
-            digest = ed25519_sha2.publickey(secret)
-            public_key = multihash.encode(digest, multihash_code)
-        else:
-            public_key = ed25519.publickey_unsafe(secret)
-        hex_public_key = binascii.hexlify(public_key)
-        return hex_public_key
+        if isinstance(private_key, str):  # default, legacy
+            secret = binascii.unhexlify(private_key)
+            public_key = ed25519_sha3.publickey_unsafe(secret)
+            hex_public_key = binascii.hexlify(public_key)
+            return hex_public_key
+        elif isinstance(private_key, ed25519_sha2.SigningKey):
+            return private_key.get_verifying_key().to_ascii(prefix='ed0120',
+                                                            encoding='hex')
+
+    @staticmethod
+    def get_payload_to_be_signed(proto):
+        """
+        :proto: proto transaction or query
+        :return: bytes representation of what has to be signed
+        """
+        if hasattr(proto, 'payload'):
+            return proto.payload.SerializeToString()
+        # signing of meta is implemented for block streaming queries,
+        # because they do not have a payload in their schema
+        elif hasattr(proto, 'meta'):
+            return proto.meta.SerializeToString()
+        raise RuntimeError('Unknown message type.')
 
     @staticmethod
     def hash(proto_with_payload):
@@ -53,37 +62,30 @@ class IrohaCrypto(object):
         :proto_with_payload: proto transaction or query
         :return: bytes representation of hash
         """
-        obj = None
-        if hasattr(proto_with_payload, 'payload'):
-            obj = getattr(proto_with_payload, 'payload')
-        # hash of meta is implemented for block streaming queries,
-        # because they do not have a payload in their schema
-        elif hasattr(proto_with_payload, 'meta'):
-            obj = getattr(proto_with_payload, 'meta')
-
-        bytes = obj.SerializeToString()
-        hash = hashlib.sha3_256(bytes).digest()
+        obj = IrohaCrypto.get_payload_to_be_signed(proto_with_payload)
+        hash = hashlib.sha3_256(obj).digest()
         return hash
 
     @staticmethod
-    def _signature(message, private_key, use_multihash=False, multihash_code=0x12):
+    def _signature(message, private_key):
         """
         Calculate signature for given message and private key
         :param message: proto that has payload message inside
         :param private_key: hex string with private key
-        :param use_multihash: boolean flag of multihash usage
-        :param multihash_code: hex number for multihash encoding
         :return: a proto Signature message
         """
         public_key = IrohaCrypto.derive_public_key(private_key)
-        sk = binascii.unhexlify(private_key)
-        pk = binascii.unhexlify(public_key)
-        message_hash = IrohaCrypto.hash(message)
-        if use_multihash:
-            digest = ed25519_sha2.signature(message_hash, sk, pk)
-            signature_bytes = multihash.encode(digest, multihash_code)
+        if isinstance(private_key, str):  # default, legacy
+            message_hash = IrohaCrypto.hash(message)
+            sk = binascii.unhexlify(private_key)
+            pk = binascii.unhexlify(public_key)
+            signature_bytes = ed25519_sha3.signature_unsafe(
+                message_hash, sk, pk)
+        elif isinstance(private_key, ed25519_sha2.SigningKey):
+            signature_bytes = private_key.sign(
+                IrohaCrypto.get_payload_to_be_signed(message))
         else:
-            signature_bytes = ed25519.signature_unsafe(message_hash, sk, pk)
+            raise RuntimeError('Unsupported private key type.')
         signature = primitive_pb2.Signature()
         signature.public_key = public_key
         signature.signature = binascii.hexlify(signature_bytes)
@@ -149,7 +151,7 @@ class IrohaCrypto(object):
     @staticmethod
     def private_key():
         """
-        Generates new random private key
+        Generates new random ed25519/sha3 private key
         :return: hex representation of private key
         """
         return binascii.b2a_hex(os.urandom(32))
