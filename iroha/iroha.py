@@ -5,7 +5,7 @@
 #
 
 from . import ed25519 as ed25519_sha3
-import ed25519 as ed25519_sha2
+import nacl.signing as ed25519_sha2
 import hashlib
 import binascii
 import grpc
@@ -38,8 +38,7 @@ class IrohaCrypto(object):
             hex_public_key = binascii.hexlify(public_key)
             return hex_public_key
         elif isinstance(private_key, ed25519_sha2.SigningKey):
-            return private_key.get_verifying_key().to_ascii(prefix='ed0120',
-                                                            encoding='hex')
+            return 'ed0120' + binascii.hexlify(private_key.verify_key.encode())
 
     @staticmethod
     def get_payload_to_be_signed(proto):
@@ -83,7 +82,7 @@ class IrohaCrypto(object):
                 message_hash, sk, pk)
         elif isinstance(private_key, ed25519_sha2.SigningKey):
             signature_bytes = private_key.sign(
-                IrohaCrypto.get_payload_to_be_signed(message))
+                IrohaCrypto.get_payload_to_be_signed(message)).signature
         else:
             raise RuntimeError('Unsupported private key type.')
         signature = primitive_pb2.Signature()
