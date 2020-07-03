@@ -6,10 +6,12 @@
 syntax = "proto3";
 package iroha.protocol;
 
+option go_package = "iroha.generated/protocol";
+
 import "transaction.proto";
 
 message Proposal {
-    uint64 height = 1;
-    repeated iroha.protocol.Transaction transactions = 2;
-    uint64 created_time = 3;
+  uint64 height = 1;
+  repeated iroha.protocol.Transaction transactions = 2;
+  uint64 created_time = 3;
 }
