@@ -48,7 +48,7 @@ def test_create_signature(test_data):
         message_hash = IrohaCrypto.hash(test_data.message, sha2=False)
         sign_byte = binascii.unhexlify(signature.signature)
         validate = ed25519_sha2.VerifyingKey.verify(key_pair.get_verifying_key(), sign_byte, message_hash)
-        assert validate == message_hash
+        assert validate is None
     else:
         signature = IrohaCrypto._signature(test_data.message, test_data.private_key)
         validate = IrohaCrypto.is_signature_valid(test_data.message, signature)
