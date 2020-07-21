@@ -38,31 +38,31 @@ class IrohaCrypto(object):
             hex_public_key = binascii.hexlify(public_key)
             return hex_public_key
         elif isinstance(private_key, ed25519_sha2.SigningKey):
-            pub = private_key.verify_key._key
-            bid = binascii.hexlify(pub).decode("utf-8")
-            return 'ed0120' + bid
+            return 'ed0120' + binascii.hexlify(private_key.verify_key._key).decode("utf-8")
 
     @staticmethod
-    def hash(proto_with_payload, sha2=False):
+    def get_payload_to_be_signed(proto):
+        """
+        :proto: proto transaction or query
+        :return: bytes representation of what has to be signed
+        """
+        if hasattr(proto, 'payload'):
+            return proto.payload.SerializeToString()
+        # signing of meta is implemented for block streaming queries,
+        # because they do not have a payload in their schema
+        elif hasattr(proto, 'meta'):
+            return proto.meta.SerializeToString()
+        raise RuntimeError('Unknown message type.')
+
+    @staticmethod
+    def hash(proto_with_payload):
         """
         Calculates hash of payload of proto message
         :proto_with_payload: proto transaction or query
         :return: bytes representation of hash
         """
-        obj = None
-        if hasattr(proto_with_payload, 'payload'):
-            obj = getattr(proto_with_payload, 'payload')
-        # hash of meta is implemented for block streaming queries,
-        # because they do not have a payload in their schema
-        elif hasattr(proto_with_payload, 'meta'):
-            obj = getattr(proto_with_payload, 'meta')
-
-        bytes_message = obj.SerializeToString()
-        if sha2 is False:
-            hash = hashlib.sha3_256(bytes_message).digest()
-        else:
-            message = binascii.hexlify(bytes_message)
-            hash = hashlib.sha512(message).digest()
+        obj = IrohaCrypto.get_payload_to_be_signed(proto_with_payload)
+        hash = hashlib.sha3_256(obj).digest()
         return hash
 
     @staticmethod
@@ -81,10 +81,8 @@ class IrohaCrypto(object):
             signature_bytes = ed25519_sha3.signature_unsafe(
                 message_hash, sk, pk)
         elif isinstance(private_key, ed25519_sha2.SigningKey):
-            message_hash = IrohaCrypto.hash(message, sha2=False)
-            signature_bytes = private_key.sign(message_hash).signature
-            verification = ed25519_sha2.VerifyKey.verify(private_key.verify_key, message_hash, signature_bytes)
-            assert verification == message_hash
+            signature_bytes = private_key.sign(
+                IrohaCrypto.get_payload_to_be_signed(message)).signature
         else:
             raise RuntimeError('Unsupported private key type.')
         signature = primitive_pb2.Signature()
@@ -121,14 +119,14 @@ class IrohaCrypto(object):
         return query
 
     @staticmethod
-    def is_signature_valid(message, signature, sha2=False):
+    def is_signature_valid(message, signature):
         """
         Verify signature validity.
         :param signature: the signature to be checked
         :param message: message to check the signature against
         :return: bool, whether the signature is valid for the message
         """
-        message_hash = IrohaCrypto.hash(message, sha2)
+        message_hash = IrohaCrypto.hash(message)
         try:
                 signature_bytes = binascii.unhexlify(signature.signature)
                 public_key = binascii.unhexlify(signature.public_key)

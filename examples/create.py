@@ -8,7 +8,6 @@ import os
 import binascii
 from iroha import IrohaCrypto
 from iroha import Iroha, IrohaGrpc, ed25519_sha2
-from iroha.primitive_pb2 import can_set_my_account_detail
 import sys
 
 if sys.version_info[0] < 3:
@@ -16,15 +15,10 @@ if sys.version_info[0] < 3:
 
 
 IROHA_HOST_ADDR = os.getenv('IROHA_HOST_ADDR', '127.0.0.1')
-IROHA_PORT = os.getenv('IROHA_PORT', '2345')
+IROHA_PORT = os.getenv('IROHA_PORT', '50051')
 ADMIN_ACCOUNT_ID = os.getenv('ADMIN_ACCOUNT_ID', 'ursama@test')
-# ADMIN_PRIVATE_KEY = os.getenv(
-#     'ADMIN_PRIVATE_KEY', '51cec58ded55857ff908d4f205abe940aa5f20786753ec60ad56ed0db3d27048')
-private = b'\x99\xfe\x89i\xac\xda\xfb\t\xbf\xdd\x00F7\x0e/\xa2X\x0b\x0c%\x91\xa266%%\r\xa1Mw\x1bc'
-key_pair = ed25519_sha2.SigningKey(private)
-ADMIN_PRIVATE_KEY = key_pair
-user_private_key = IrohaCrypto.private_key()
-user_public_key = IrohaCrypto.derive_public_key(user_private_key)
+seed = b'\x99\xfe\x89i\xac\xda\xfb\t\xbf\xdd\x00F7\x0e/\xa2X\x0b\x0c%\x91\xa266%%\r\xa1Mw\x1bc'
+ADMIN_PRIVATE_KEY = ed25519_sha2.SigningKey(seed)
 iroha = Iroha(ADMIN_ACCOUNT_ID)
 net = IrohaGrpc('{}:{}'.format(IROHA_HOST_ADDR, IROHA_PORT))
 
@@ -60,7 +54,7 @@ def create_domain_and_asset():
     Creates domain 'domain' and asset 'coin#domain' with precision 2
     """
     commands = [
-        iroha.command('CreateAccount', account_name='ursama2',
+        iroha.command('CreateAccount', account_name='ursa',
                       domain_id='test', public_key='ed0120ca0d372c15b712b46fa1c6e4afc4fd7e23e91dbf869da497db898d884f45ac40')
     ]
     tx = IrohaCrypto.sign_transaction(
