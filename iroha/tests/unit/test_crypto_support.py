@@ -29,27 +29,25 @@ data_ids = ['priv_key, pub_key({},{})'.format(t.private_key, t.public_key)
 
 @pytest.mark.parametrize('test_data', data_scope, ids=data_ids)
 def test_derive_public_key(test_data):
-    """Checking call with different data types of the derive_public_key method"""
+    """Checking call with different data types"""
     if test_data.seed is not None:  # if seed is present in the data, then we create a key_pair out of it.
         key_pair = ed25519_sha2.SigningKey(seed=test_data.seed)
         public_key = IrohaCrypto.derive_public_key(key_pair)
     else:
         public_key = IrohaCrypto.derive_public_key(test_data.private_key)
-    print(public_key)
     assert public_key == test_data.public_key
 
 
 @pytest.mark.parametrize('test_data', data_scope, ids=data_ids)
 def test_create_signature(test_data):
+    """Checking call with different data types"""
     if test_data.seed is not None:
         key_pair = ed25519_sha2.SigningKey(seed=test_data.seed)
         signature = IrohaCrypto._signature(test_data.message, key_pair)
-        vk = getattr(key_pair, "verify_key")
-        print(binascii.unhexlify(vk))
-        message_hash = IrohaCrypto.hash(test_data.message, sha2=True)
+        message = IrohaCrypto.get_payload_to_be_signed(test_data.message)
         sign_byte = binascii.unhexlify(signature.signature)
-        validate = ed25519_sha2.VerifyKey.verify(key_pair.verify_key, message_hash, sign_byte)
-        assert validate == message_hash
+        validate = ed25519_sha2.VerifyKey.verify(key_pair.verify_key, message, sign_byte)
+        assert validate == message
     else:
         signature = IrohaCrypto._signature(test_data.message, test_data.private_key)
         validate = IrohaCrypto.is_signature_valid(test_data.message, signature)
