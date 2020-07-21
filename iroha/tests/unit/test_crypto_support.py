@@ -3,8 +3,7 @@
 import pytest
 import binascii
 from collections import namedtuple
-from iroha import Iroha, IrohaCrypto
-import ed25519 as ed25519_sha2
+from iroha import Iroha, IrohaCrypto, ed25519_sha2
 
 user_private_key = IrohaCrypto.private_key()
 iroha = Iroha('ADMIN_ACCOUNT_ID')
@@ -32,7 +31,7 @@ data_ids = ['priv_key, pub_key({},{})'.format(t.private_key, t.public_key)
 def test_derive_public_key(test_data):
     """Checking call with different data types of the derive_public_key method"""
     if test_data.seed is not None:  # if seed is present in the data, then we create a key_pair out of it.
-        key_pair = ed25519_sha2.SigningKey(test_data.private_key)
+        key_pair = ed25519_sha2.SigningKey(seed=test_data.seed)
         public_key = IrohaCrypto.derive_public_key(key_pair)
     else:
         public_key = IrohaCrypto.derive_public_key(test_data.private_key)
@@ -43,12 +42,14 @@ def test_derive_public_key(test_data):
 @pytest.mark.parametrize('test_data', data_scope, ids=data_ids)
 def test_create_signature(test_data):
     if test_data.seed is not None:
-        key_pair = ed25519_sha2.SigningKey(test_data.seed)
+        key_pair = ed25519_sha2.SigningKey(seed=test_data.seed)
         signature = IrohaCrypto._signature(test_data.message, key_pair)
-        message_hash = IrohaCrypto.hash(test_data.message, sha2=False)
+        vk = getattr(key_pair, "verify_key")
+        print(binascii.unhexlify(vk))
+        message_hash = IrohaCrypto.hash(test_data.message, sha2=True)
         sign_byte = binascii.unhexlify(signature.signature)
-        validate = ed25519_sha2.VerifyingKey.verify(key_pair.get_verifying_key(), sign_byte, message_hash)
-        assert validate is None
+        validate = ed25519_sha2.VerifyKey.verify(key_pair.verify_key, message_hash, sign_byte)
+        assert validate == message_hash
     else:
         signature = IrohaCrypto._signature(test_data.message, test_data.private_key)
         validate = IrohaCrypto.is_signature_valid(test_data.message, signature)

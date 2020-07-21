@@ -5,7 +5,7 @@
 #
 
 from . import ed25519 as ed25519_sha3
-import ed25519 as ed25519_sha2
+import nacl.signing as ed25519_sha2
 import hashlib
 import binascii
 import grpc
@@ -38,8 +38,8 @@ class IrohaCrypto(object):
             hex_public_key = binascii.hexlify(public_key)
             return hex_public_key
         elif isinstance(private_key, ed25519_sha2.SigningKey):
-            pub = private_key.get_verifying_key()
-            bid = binascii.hexlify(pub.vk_s).decode("utf-8")
+            pub = private_key.verify_key._key
+            bid = binascii.hexlify(pub).decode("utf-8")
             return 'ed0120' + bid
 
     @staticmethod
@@ -81,8 +81,10 @@ class IrohaCrypto(object):
             signature_bytes = ed25519_sha3.signature_unsafe(
                 message_hash, sk, pk)
         elif isinstance(private_key, ed25519_sha2.SigningKey):
-            message_hash = IrohaCrypto.hash(message, sha2=True)
-            signature_bytes = private_key.sign(message_hash)
+            message_hash = IrohaCrypto.hash(message, sha2=False)
+            signature_bytes = private_key.sign(message_hash).signature
+            verification = ed25519_sha2.VerifyKey.verify(private_key.verify_key, message_hash, signature_bytes)
+            assert verification == message_hash
         else:
             raise RuntimeError('Unsupported private key type.')
         signature = primitive_pb2.Signature()
@@ -119,21 +121,21 @@ class IrohaCrypto(object):
         return query
 
     @staticmethod
-    def is_signature_valid(message, signature):
+    def is_signature_valid(message, signature, sha2=False):
         """
         Verify signature validity.
         :param signature: the signature to be checked
         :param message: message to check the signature against
         :return: bool, whether the signature is valid for the message
         """
-        message_hash = IrohaCrypto.hash(message)
+        message_hash = IrohaCrypto.hash(message, sha2)
         try:
-            signature_bytes = binascii.unhexlify(signature.signature)
-            public_key = binascii.unhexlify(signature.public_key)
-            ed25519_sha3.checkvalid(signature_bytes, message_hash, public_key)
-            return True
+                signature_bytes = binascii.unhexlify(signature.signature)
+                public_key = binascii.unhexlify(signature.public_key)
+                ed25519_sha3.checkvalid(signature_bytes, message_hash, public_key)
+                return True
         except (ed25519_sha3.SignatureMismatch, ValueError):
-            return False
+                return False
 
     @staticmethod
     def reduced_hash(transaction):
