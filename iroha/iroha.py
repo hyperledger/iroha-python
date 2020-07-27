@@ -25,6 +25,7 @@ class IrohaCrypto(object):
     """
     Collection of general crypto-related functions
     """
+
     @staticmethod
     def derive_public_key(private_key):
         """
@@ -119,21 +120,37 @@ class IrohaCrypto(object):
         return query
 
     @staticmethod
+    def is_sha2_signature_valid(message, signature):
+        """
+        Verify sha2 signature validity.
+        :param signature: the signature to be checked
+        :param message: message to check the signature against
+        :return: bool, whether the signature is valid for the message
+        """
+        parse_message = IrohaCrypto.get_payload_to_be_signed(message)
+        signature_bytes = binascii.unhexlify(signature.signature)
+        public_key = ed25519_sha2.VerifyKey(binascii.unhexlify(signature.public_key)[3:])
+        valid_message = ed25519_sha2.VerifyKey.verify(public_key, parse_message, signature_bytes)
+        if valid_message == parse_message:
+            return True
+        return False
+
+    @staticmethod
     def is_signature_valid(message, signature):
         """
-        Verify signature validity.
+        Verify sha3 signature validity. To check sha2 signature need use the "is_sha2_signature_valid" method
         :param signature: the signature to be checked
         :param message: message to check the signature against
         :return: bool, whether the signature is valid for the message
         """
         message_hash = IrohaCrypto.hash(message)
         try:
-                signature_bytes = binascii.unhexlify(signature.signature)
-                public_key = binascii.unhexlify(signature.public_key)
-                ed25519_sha3.checkvalid(signature_bytes, message_hash, public_key)
-                return True
+            signature_bytes = binascii.unhexlify(signature.signature)
+            public_key = binascii.unhexlify(signature.public_key)
+            ed25519_sha3.checkvalid(signature_bytes, message_hash, public_key)
+            return True
         except (ed25519_sha3.SignatureMismatch, ValueError):
-                return False
+            return False
 
     @staticmethod
     def reduced_hash(transaction):
@@ -332,12 +349,12 @@ class IrohaGrpc(object):
         :param secure: enable grpc ssl channel
         """
         self._address = address if address else '127.0.0.1:50051'
-        
+
         if secure:
             self._channel = grpc.secure_channel(self._address, grpc.ssl_channel_credentials())
         else:
             self._channel = grpc.insecure_channel(self._address)
-        
+
         self._timeout = timeout
         self._command_service_stub = endpoint_pb2_grpc.CommandService_v1Stub(
             self._channel)
