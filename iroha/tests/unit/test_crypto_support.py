@@ -1,50 +1,26 @@
 """Test to check cryptographic functions"""
 
-import pytest
-import binascii
-from collections import namedtuple
-from iroha import Iroha, IrohaCrypto, ed25519_sha2
-
-user_private_key = IrohaCrypto.private_key()
-iroha = Iroha('ADMIN_ACCOUNT_ID')
-Test_data = namedtuple('Test_data', ['message', 'private_key', 'public_key', 'seed'])
-command = [Iroha.command('CreateDomain', domain_id='domain', default_role='user')]
-transaction = Iroha.transaction(iroha, command)
-Test_data.__new__.__defaults__ = (transaction, None, None, None)
-
-data_scope = ([Test_data(private_key="f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70",
-                         public_key=b'313a07e6384776ed95447710d15e59148473ccfc052a681317a72a69f2a49910'),
-               Test_data(private_key=b'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70',
-                         public_key=b'313a07e6384776ed95447710d15e59148473ccfc052a681317a72a69f2a49910'),
-               Test_data(public_key='ed0120ca0d372c15b712b46fa1c6e4afc4fd7e23e91dbf869da497db898d884f45ac40',
-                         seed=b'\x99\xfe\x89i\xac\xda\xfb\t\xbf\xdd\x00F7\x0e/\xa2X\x0b\x0c%\x91\xa266%%\r\xa1Mw\x1bc')
-               ])
-data_ids = ['priv_key, pub_key({},{})'.format(t.private_key, t.public_key)
-            for t in data_scope]
+from iroha import IrohaCrypto, ed25519_sha2
 
 
-@pytest.mark.parametrize('test_data', data_scope, ids=data_ids)
-def test_derive_public_key(test_data):
+def test_derive_public_key(data_for_crypto_test):
     """Checking call with different data types"""
-    if test_data.seed is not None:  # if seed is present in the data, then we create a key_pair out of it.
-        key_pair = ed25519_sha2.SigningKey(seed=test_data.seed)
+    if data_for_crypto_test.seed is not None:  # if seed is present in the data, then we create a key_pair out of it.
+        key_pair = ed25519_sha2.SigningKey(seed=data_for_crypto_test.seed)
         public_key = IrohaCrypto.derive_public_key(key_pair)
     else:
-        public_key = IrohaCrypto.derive_public_key(test_data.private_key)
-    assert public_key == test_data.public_key
+        public_key = IrohaCrypto.derive_public_key(data_for_crypto_test.private_key)
+    assert public_key == data_for_crypto_test.public_key
 
 
-@pytest.mark.parametrize('test_data', data_scope, ids=data_ids)
-def test_create_signature(test_data):
+def test_create_signature(data_for_crypto_test):
     """Checking call with different data types"""
-    if test_data.seed is not None:
-        key_pair = ed25519_sha2.SigningKey(seed=test_data.seed)
-        signature = IrohaCrypto._signature(test_data.message, key_pair)
-        message = IrohaCrypto.get_payload_to_be_signed(test_data.message)
-        sign_byte = binascii.unhexlify(signature.signature)
-        validate = ed25519_sha2.VerifyKey.verify(key_pair.verify_key, message, sign_byte)
-        assert validate == message
+    if data_for_crypto_test.seed is not None:
+        key_pair = ed25519_sha2.SigningKey(seed=data_for_crypto_test.seed)
+        signature = IrohaCrypto._signature(data_for_crypto_test.message, key_pair)
+        validate = IrohaCrypto.is_sha2_signature_valid(data_for_crypto_test.message, signature)
+        assert validate
     else:
-        signature = IrohaCrypto._signature(test_data.message, test_data.private_key)
-        validate = IrohaCrypto.is_signature_valid(test_data.message, signature)
+        signature = IrohaCrypto._signature(data_for_crypto_test.message, data_for_crypto_test.private_key)
+        validate = IrohaCrypto.is_signature_valid(data_for_crypto_test.message, signature)
         assert validate
