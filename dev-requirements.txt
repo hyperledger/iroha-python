@@ -1,3 +1,4 @@
-protobuf==3.8.0
+PyNaCl==1.4.0
+protobuf==3.12.2
 grpcio_tools==1.21.1
 six==1.12.0

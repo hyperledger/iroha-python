@@ -4,7 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-from . import ed25519
+from . import ed25519 as ed25519_sha3
+import nacl.signing as ed25519_sha2
 import hashlib
 import binascii
 import grpc
@@ -32,10 +33,27 @@ class IrohaCrypto(object):
         :param private_key: hex encoded private key
         :return: hex encoded public key
         """
-        secret = binascii.unhexlify(private_key)
-        public_key = ed25519.publickey_unsafe(secret)
-        hex_public_key = binascii.hexlify(public_key)
-        return hex_public_key
+        if isinstance(private_key, (str, bytes)):  # default, legacy
+            secret = binascii.unhexlify(private_key)
+            public_key = ed25519_sha3.publickey_unsafe(secret)
+            hex_public_key = binascii.hexlify(public_key)
+            return hex_public_key
+        elif isinstance(private_key, ed25519_sha2.SigningKey):
+            return 'ed0120' + binascii.hexlify(private_key.verify_key._key).decode("utf-8")
+
+    @staticmethod
+    def get_payload_to_be_signed(proto):
+        """
+        :proto: proto transaction or query
+        :return: bytes representation of what has to be signed
+        """
+        if hasattr(proto, 'payload'):
+            return proto.payload.SerializeToString()
+        # signing of meta is implemented for block streaming queries,
+        # because they do not have a payload in their schema
+        elif hasattr(proto, 'meta'):
+            return proto.meta.SerializeToString()
+        raise RuntimeError('Unknown message type.')
 
     @staticmethod
     def hash(proto_with_payload):
@@ -44,16 +62,8 @@ class IrohaCrypto(object):
         :proto_with_payload: proto transaction or query
         :return: bytes representation of hash
         """
-        obj = None
-        if hasattr(proto_with_payload, 'payload'):
-            obj = getattr(proto_with_payload, 'payload')
-        # hash of meta is implemented for block streaming queries,
-        # because they do not have a payload in their schema
-        elif hasattr(proto_with_payload, 'meta'):
-            obj = getattr(proto_with_payload, 'meta')
-
-        bytes = obj.SerializeToString()
-        hash = hashlib.sha3_256(bytes).digest()
+        obj = IrohaCrypto.get_payload_to_be_signed(proto_with_payload)
+        hash = hashlib.sha3_256(obj).digest()
         return hash
 
     @staticmethod
@@ -65,10 +75,17 @@ class IrohaCrypto(object):
         :return: a proto Signature message
         """
         public_key = IrohaCrypto.derive_public_key(private_key)
-        sk = binascii.unhexlify(private_key)
-        pk = binascii.unhexlify(public_key)
-        message_hash = IrohaCrypto.hash(message)
-        signature_bytes = ed25519.signature_unsafe(message_hash, sk, pk)
+        if isinstance(private_key, (str, bytes)):  # default, legacy
+            message_hash = IrohaCrypto.hash(message)
+            sk = binascii.unhexlify(private_key)
+            pk = binascii.unhexlify(public_key)
+            signature_bytes = ed25519_sha3.signature_unsafe(
+                message_hash, sk, pk)
+        elif isinstance(private_key, ed25519_sha2.SigningKey):
+            signature_bytes = private_key.sign(
+                IrohaCrypto.get_payload_to_be_signed(message)).signature
+        else:
+            raise RuntimeError('Unsupported private key type.')
         signature = primitive_pb2.Signature()
         signature.public_key = public_key
         signature.signature = binascii.hexlify(signature_bytes)
@@ -103,9 +120,25 @@ class IrohaCrypto(object):
         return query
 
     @staticmethod
+    def is_sha2_signature_valid(message, signature):
+        """
+        Verify sha2 signature validity.
+        :param signature: the signature to be checked
+        :param message: message to check the signature against
+        :return: bool, whether the signature is valid for the message
+        """
+        parse_message = IrohaCrypto.get_payload_to_be_signed(message)
+        signature_bytes = binascii.unhexlify(signature.signature)
+        public_key = ed25519_sha2.VerifyKey(binascii.unhexlify(signature.public_key)[3:])
+        valid_message = ed25519_sha2.VerifyKey.verify(public_key, parse_message, signature_bytes)
+        if valid_message == parse_message:
+            return True
+        return False
+
+    @staticmethod
     def is_signature_valid(message, signature):
         """
-        Verify signature validity.
+        Verify sha3 signature validity. To check sha2 signature need use the "is_sha2_signature_valid" method
         :param signature: the signature to be checked
         :param message: message to check the signature against
         :return: bool, whether the signature is valid for the message
@@ -114,9 +147,9 @@ class IrohaCrypto(object):
         try:
             signature_bytes = binascii.unhexlify(signature.signature)
             public_key = binascii.unhexlify(signature.public_key)
-            ed25519.checkvalid(signature_bytes, message_hash, public_key)
+            ed25519_sha3.checkvalid(signature_bytes, message_hash, public_key)
             return True
-        except (ed25519.SignatureMismatch, ValueError):
+        except (ed25519_sha3.SignatureMismatch, ValueError):
             return False
 
     @staticmethod
@@ -134,7 +167,7 @@ class IrohaCrypto(object):
     @staticmethod
     def private_key():
         """
-        Generates new random private key
+        Generates new random ed25519/sha3 private key
         :return: hex representation of private key
         """
         return binascii.b2a_hex(os.urandom(32))
@@ -316,12 +349,12 @@ class IrohaGrpc(object):
         :param secure: enable grpc ssl channel
         """
         self._address = address if address else '127.0.0.1:50051'
-        
+
         if secure:
             self._channel = grpc.secure_channel(self._address, grpc.ssl_channel_credentials())
         else:
             self._channel = grpc.insecure_channel(self._address)
-        
+
         self._timeout = timeout
         self._command_service_stub = endpoint_pb2_grpc.CommandService_v1Stub(
             self._channel)
