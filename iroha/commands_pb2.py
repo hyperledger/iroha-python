@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='iroha.protocol',
   syntax='proto3',
   serialized_options=b'Z\030iroha.generated/protocol',
-  serialized_pb=b'\n\x0e\x63ommands.proto\x12\x0eiroha.protocol\x1a\x0fprimitive.proto\"4\n\x10\x41\x64\x64\x41ssetQuantity\x12\x10\n\x08\x61sset_id\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\t\"-\n\x07\x41\x64\x64Peer\x12\"\n\x04peer\x18\x01 \x01(\x0b\x32\x14.iroha.protocol.Peer\" \n\nRemovePeer\x12\x12\n\npublic_key\x18\x01 \x01(\t\"6\n\x0c\x41\x64\x64Signatory\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x12\n\npublic_key\x18\x02 \x01(\t\"G\n\x0b\x43reateAsset\x12\x12\n\nasset_name\x18\x01 \x01(\t\x12\x11\n\tdomain_id\x18\x02 \x01(\t\x12\x11\n\tprecision\x18\x03 \x01(\r\"L\n\rCreateAccount\x12\x14\n\x0c\x61\x63\x63ount_name\x18\x01 \x01(\t\x12\x11\n\tdomain_id\x18\x02 \x01(\t\x12\x12\n\npublic_key\x18\x03 \x01(\t\"B\n\x10SetAccountDetail\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x0b\n\x03key\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\t\"7\n\x0c\x43reateDomain\x12\x11\n\tdomain_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64\x65\x66\x61ult_role\x18\x02 \x01(\t\"9\n\x0fRemoveSignatory\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x12\n\npublic_key\x18\x02 \x01(\t\"6\n\x10SetAccountQuorum\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x0e\n\x06quorum\x18\x02 \x01(\r\"w\n\rTransferAsset\x12\x16\n\x0esrc_account_id\x18\x01 \x01(\t\x12\x17\n\x0f\x64\x65st_account_id\x18\x02 \x01(\t\x12\x10\n\x08\x61sset_id\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x0e\n\x06\x61mount\x18\x05 \x01(\t\"3\n\nAppendRole\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x11\n\trole_name\x18\x02 \x01(\t\"3\n\nDetachRole\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x11\n\trole_name\x18\x02 \x01(\t\"T\n\nCreateRole\x12\x11\n\trole_name\x18\x01 \x01(\t\x12\x33\n\x0bpermissions\x18\x02 \x03(\x0e\x32\x1e.iroha.protocol.RolePermission\"^\n\x0fGrantPermission\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x37\n\npermission\x18\x02 \x01(\x0e\x32#.iroha.protocol.GrantablePermission\"_\n\x10RevokePermission\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x37\n\npermission\x18\x02 \x01(\x0e\x32#.iroha.protocol.GrantablePermission\"9\n\x15SubtractAssetQuantity\x12\x10\n\x08\x61sset_id\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\t\"r\n\x1a\x43ompareAndSetAccountDetail\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x0b\n\x03key\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\t\x12\x13\n\told_value\x18\x04 \x01(\tH\x00\x42\x0f\n\ropt_old_value\"-\n\x0fSetSettingValue\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"\x9d\x01\n\nCallEngine\x12\x33\n\x04type\x18\x01 \x01(\x0e\x32%.iroha.protocol.CallEngine.EngineType\x12\x0e\n\x06\x63\x61ller\x18\x02 \x01(\t\x12\x10\n\x06\x63\x61llee\x18\x03 \x01(\tH\x00\x12\r\n\x05input\x18\x04 \x01(\t\"\x1b\n\nEngineType\x12\r\n\tkSolidity\x10\x00\x42\x0c\n\nopt_callee\"\xac\t\n\x07\x43ommand\x12>\n\x12\x61\x64\x64_asset_quantity\x18\x01 \x01(\x0b\x32 .iroha.protocol.AddAssetQuantityH\x00\x12+\n\x08\x61\x64\x64_peer\x18\x02 \x01(\x0b\x32\x17.iroha.protocol.AddPeerH\x00\x12\x35\n\radd_signatory\x18\x03 \x01(\x0b\x32\x1c.iroha.protocol.AddSignatoryH\x00\x12\x31\n\x0b\x61ppend_role\x18\x04 \x01(\x0b\x32\x1a.iroha.protocol.AppendRoleH\x00\x12\x37\n\x0e\x63reate_account\x18\x05 \x01(\x0b\x32\x1d.iroha.protocol.CreateAccountH\x00\x12\x33\n\x0c\x63reate_asset\x18\x06 \x01(\x0b\x32\x1b.iroha.protocol.CreateAssetH\x00\x12\x35\n\rcreate_domain\x18\x07 \x01(\x0b\x32\x1c.iroha.protocol.CreateDomainH\x00\x12\x31\n\x0b\x63reate_role\x18\x08 \x01(\x0b\x32\x1a.iroha.protocol.CreateRoleH\x00\x12\x31\n\x0b\x64\x65tach_role\x18\t \x01(\x0b\x32\x1a.iroha.protocol.DetachRoleH\x00\x12;\n\x10grant_permission\x18\n \x01(\x0b\x32\x1f.iroha.protocol.GrantPermissionH\x00\x12;\n\x10remove_signatory\x18\x0b \x01(\x0b\x32\x1f.iroha.protocol.RemoveSignatoryH\x00\x12=\n\x11revoke_permission\x18\x0c \x01(\x0b\x32 .iroha.protocol.RevokePermissionH\x00\x12>\n\x12set_account_detail\x18\r \x01(\x0b\x32 .iroha.protocol.SetAccountDetailH\x00\x12>\n\x12set_account_quorum\x18\x0e \x01(\x0b\x32 .iroha.protocol.SetAccountQuorumH\x00\x12H\n\x17subtract_asset_quantity\x18\x0f \x01(\x0b\x32%.iroha.protocol.SubtractAssetQuantityH\x00\x12\x37\n\x0etransfer_asset\x18\x10 \x01(\x0b\x32\x1d.iroha.protocol.TransferAssetH\x00\x12\x31\n\x0bremove_peer\x18\x11 \x01(\x0b\x32\x1a.iroha.protocol.RemovePeerH\x00\x12T\n\x1e\x63ompare_and_set_account_detail\x18\x12 \x01(\x0b\x32*.iroha.protocol.CompareAndSetAccountDetailH\x00\x12<\n\x11set_setting_value\x18\x13 \x01(\x0b\x32\x1f.iroha.protocol.SetSettingValueH\x00\x12\x31\n\x0b\x63\x61ll_engine\x18\x14 \x01(\x0b\x32\x1a.iroha.protocol.CallEngineH\x00\x42\t\n\x07\x63ommandB\x1aZ\x18iroha.generated/protocolb\x06proto3'
+  serialized_pb=b'\n\x0e\x63ommands.proto\x12\x0eiroha.protocol\x1a\x0fprimitive.proto\"4\n\x10\x41\x64\x64\x41ssetQuantity\x12\x10\n\x08\x61sset_id\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\t\"-\n\x07\x41\x64\x64Peer\x12\"\n\x04peer\x18\x01 \x01(\x0b\x32\x14.iroha.protocol.Peer\" \n\nRemovePeer\x12\x12\n\npublic_key\x18\x01 \x01(\t\"6\n\x0c\x41\x64\x64Signatory\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x12\n\npublic_key\x18\x02 \x01(\t\"G\n\x0b\x43reateAsset\x12\x12\n\nasset_name\x18\x01 \x01(\t\x12\x11\n\tdomain_id\x18\x02 \x01(\t\x12\x11\n\tprecision\x18\x03 \x01(\r\"L\n\rCreateAccount\x12\x14\n\x0c\x61\x63\x63ount_name\x18\x01 \x01(\t\x12\x11\n\tdomain_id\x18\x02 \x01(\t\x12\x12\n\npublic_key\x18\x03 \x01(\t\"B\n\x10SetAccountDetail\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x0b\n\x03key\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\t\"7\n\x0c\x43reateDomain\x12\x11\n\tdomain_id\x18\x01 \x01(\t\x12\x14\n\x0c\x64\x65\x66\x61ult_role\x18\x02 \x01(\t\"9\n\x0fRemoveSignatory\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x12\n\npublic_key\x18\x02 \x01(\t\"6\n\x10SetAccountQuorum\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x0e\n\x06quorum\x18\x02 \x01(\r\"w\n\rTransferAsset\x12\x16\n\x0esrc_account_id\x18\x01 \x01(\t\x12\x17\n\x0f\x64\x65st_account_id\x18\x02 \x01(\t\x12\x10\n\x08\x61sset_id\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x0e\n\x06\x61mount\x18\x05 \x01(\t\"3\n\nAppendRole\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x11\n\trole_name\x18\x02 \x01(\t\"3\n\nDetachRole\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x11\n\trole_name\x18\x02 \x01(\t\"T\n\nCreateRole\x12\x11\n\trole_name\x18\x01 \x01(\t\x12\x33\n\x0bpermissions\x18\x02 \x03(\x0e\x32\x1e.iroha.protocol.RolePermission\"^\n\x0fGrantPermission\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x37\n\npermission\x18\x02 \x01(\x0e\x32#.iroha.protocol.GrantablePermission\"_\n\x10RevokePermission\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x37\n\npermission\x18\x02 \x01(\x0e\x32#.iroha.protocol.GrantablePermission\"9\n\x15SubtractAssetQuantity\x12\x10\n\x08\x61sset_id\x18\x01 \x01(\t\x12\x0e\n\x06\x61mount\x18\x02 \x01(\t\"\x87\x01\n\x1a\x43ompareAndSetAccountDetail\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x0b\n\x03key\x18\x02 \x01(\t\x12\r\n\x05value\x18\x03 \x01(\t\x12\x13\n\told_value\x18\x04 \x01(\tH\x00\x12\x13\n\x0b\x63heck_empty\x18\x05 \x01(\x08\x42\x0f\n\ropt_old_value\"-\n\x0fSetSettingValue\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"\x9d\x01\n\nCallEngine\x12\x33\n\x04type\x18\x01 \x01(\x0e\x32%.iroha.protocol.CallEngine.EngineType\x12\x0e\n\x06\x63\x61ller\x18\x02 \x01(\t\x12\x10\n\x06\x63\x61llee\x18\x03 \x01(\tH\x00\x12\r\n\x05input\x18\x04 \x01(\t\"\x1b\n\nEngineType\x12\r\n\tkSolidity\x10\x00\x42\x0c\n\nopt_callee\"\xac\t\n\x07\x43ommand\x12>\n\x12\x61\x64\x64_asset_quantity\x18\x01 \x01(\x0b\x32 .iroha.protocol.AddAssetQuantityH\x00\x12+\n\x08\x61\x64\x64_peer\x18\x02 \x01(\x0b\x32\x17.iroha.protocol.AddPeerH\x00\x12\x35\n\radd_signatory\x18\x03 \x01(\x0b\x32\x1c.iroha.protocol.AddSignatoryH\x00\x12\x31\n\x0b\x61ppend_role\x18\x04 \x01(\x0b\x32\x1a.iroha.protocol.AppendRoleH\x00\x12\x37\n\x0e\x63reate_account\x18\x05 \x01(\x0b\x32\x1d.iroha.protocol.CreateAccountH\x00\x12\x33\n\x0c\x63reate_asset\x18\x06 \x01(\x0b\x32\x1b.iroha.protocol.CreateAssetH\x00\x12\x35\n\rcreate_domain\x18\x07 \x01(\x0b\x32\x1c.iroha.protocol.CreateDomainH\x00\x12\x31\n\x0b\x63reate_role\x18\x08 \x01(\x0b\x32\x1a.iroha.protocol.CreateRoleH\x00\x12\x31\n\x0b\x64\x65tach_role\x18\t \x01(\x0b\x32\x1a.iroha.protocol.DetachRoleH\x00\x12;\n\x10grant_permission\x18\n \x01(\x0b\x32\x1f.iroha.protocol.GrantPermissionH\x00\x12;\n\x10remove_signatory\x18\x0b \x01(\x0b\x32\x1f.iroha.protocol.RemoveSignatoryH\x00\x12=\n\x11revoke_permission\x18\x0c \x01(\x0b\x32 .iroha.protocol.RevokePermissionH\x00\x12>\n\x12set_account_detail\x18\r \x01(\x0b\x32 .iroha.protocol.SetAccountDetailH\x00\x12>\n\x12set_account_quorum\x18\x0e \x01(\x0b\x32 .iroha.protocol.SetAccountQuorumH\x00\x12H\n\x17subtract_asset_quantity\x18\x0f \x01(\x0b\x32%.iroha.protocol.SubtractAssetQuantityH\x00\x12\x37\n\x0etransfer_asset\x18\x10 \x01(\x0b\x32\x1d.iroha.protocol.TransferAssetH\x00\x12\x31\n\x0bremove_peer\x18\x11 \x01(\x0b\x32\x1a.iroha.protocol.RemovePeerH\x00\x12T\n\x1e\x63ompare_and_set_account_detail\x18\x12 \x01(\x0b\x32*.iroha.protocol.CompareAndSetAccountDetailH\x00\x12<\n\x11set_setting_value\x18\x13 \x01(\x0b\x32\x1f.iroha.protocol.SetSettingValueH\x00\x12\x31\n\x0b\x63\x61ll_engine\x18\x14 \x01(\x0b\x32\x1a.iroha.protocol.CallEngineH\x00\x42\t\n\x07\x63ommandB\x1aZ\x18iroha.generated/protocolb\x06proto3'
   ,
   dependencies=[primitive__pb2.DESCRIPTOR,])
 
@@ -38,8 +38,8 @@ _CALLENGINE_ENGINETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1478,
-  serialized_end=1505,
+  serialized_start=1500,
+  serialized_end=1527,
 )
 _sym_db.RegisterEnumDescriptor(_CALLENGINE_ENGINETYPE)
 
@@ -753,6 +753,13 @@ _COMPAREANDSETACCOUNTDETAIL = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='check_empty', full_name='iroha.protocol.CompareAndSetAccountDetail.check_empty', index=4,
+      number=5, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -768,8 +775,8 @@ _COMPAREANDSETACCOUNTDETAIL = _descriptor.Descriptor(
       name='opt_old_value', full_name='iroha.protocol.CompareAndSetAccountDetail.opt_old_value',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1198,
-  serialized_end=1312,
+  serialized_start=1199,
+  serialized_end=1334,
 )
 
 
@@ -806,8 +813,8 @@ _SETSETTINGVALUE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1314,
-  serialized_end=1359,
+  serialized_start=1336,
+  serialized_end=1381,
 )
 
 
@@ -862,8 +869,8 @@ _CALLENGINE = _descriptor.Descriptor(
       name='opt_callee', full_name='iroha.protocol.CallEngine.opt_callee',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1362,
-  serialized_end=1519,
+  serialized_start=1384,
+  serialized_end=1541,
 )
 
 
@@ -1029,8 +1036,8 @@ _COMMAND = _descriptor.Descriptor(
       name='command', full_name='iroha.protocol.Command.command',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1522,
-  serialized_end=2718,
+  serialized_start=1544,
+  serialized_end=2740,
 )
 
 _ADDPEER.fields_by_name['peer'].message_type = primitive__pb2._PEER
