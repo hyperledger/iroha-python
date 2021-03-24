@@ -4,23 +4,33 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+
+# Here are Iroha dependencies.
+# Python library generally consists of 3 parts:
+# Iroha, IrohaCrypto and IrohaGrpc which we need to import:
 import os
 import binascii
 from iroha import IrohaCrypto
 from iroha import Iroha, IrohaGrpc
+
+# The following line is actually about the permissions
+# you might be using for the transaction.
+# You can find all the permissions here: 
+# https://iroha.readthedocs.io/en/main/develop/api/permissions.html
 from iroha.primitive_pb2 import can_set_my_account_detail
 import sys
 
 if sys.version_info[0] < 3:
     raise Exception('Python 3 or a more recent version is required.')
 
-
+# Here is the information about the environment and admin account information:
 IROHA_HOST_ADDR = os.getenv('IROHA_HOST_ADDR', '127.0.0.1')
 IROHA_PORT = os.getenv('IROHA_PORT', '50051')
 ADMIN_ACCOUNT_ID = os.getenv('ADMIN_ACCOUNT_ID', 'admin@test')
 ADMIN_PRIVATE_KEY = os.getenv(
     'ADMIN_PRIVATE_KEY', 'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70')
 
+# Here we will create user keys
 user_private_key = IrohaCrypto.private_key()
 user_public_key = IrohaCrypto.derive_public_key(user_private_key)
 iroha = Iroha(ADMIN_ACCOUNT_ID)
@@ -41,7 +51,7 @@ def trace(func):
 
     return tracer
 
-
+# Let's start defining the commands:
 @trace
 def send_transaction_and_print_status(transaction):
     hex_hash = binascii.hexlify(IrohaCrypto.hash(transaction))
@@ -51,21 +61,28 @@ def send_transaction_and_print_status(transaction):
     for status in net.tx_status_stream(transaction):
         print(status)
 
-
+# For example, below we define a transaction made of 2 commands:
+# CreateDomain and CreateAsset.
+# Each of Iroha commands has its own set of parameters and there are many commands.
+# You can check out all of them here:
+# https://iroha.readthedocs.io/en/main/develop/api/commands.html
 @trace
 def create_domain_and_asset():
     """
-    Creates domain 'domain' and asset 'coin#domain' with precision 2
+    Create domain 'domain' and asset 'coin#domain' with precision 2
     """
     commands = [
         iroha.command('CreateDomain', domain_id='domain', default_role='user'),
         iroha.command('CreateAsset', asset_name='coin',
                       domain_id='domain', precision=2)
     ]
+# And sign the transaction using the keys from earlier:
     tx = IrohaCrypto.sign_transaction(
         iroha.transaction(commands), ADMIN_PRIVATE_KEY)
     send_transaction_and_print_status(tx)
-
+# You can define queries 
+# (https://iroha.readthedocs.io/en/main/develop/api/queries.html) 
+# the same way.
 
 @trace
 def add_coin_to_admin():
@@ -173,7 +190,7 @@ def get_userone_details():
     data = response.account_detail_response
     print('Account id = {}, details = {}'.format('userone@domain', data.detail))
 
-
+# Let's run the commands defined previously:
 create_domain_and_asset()
 add_coin_to_admin()
 create_account_userone()
