@@ -341,19 +341,26 @@ class IrohaGrpc(object):
     Possible implementation of gRPC transport to Iroha
     """
 
-    def __init__(self, address=None, timeout=None, secure=False):
+    def __init__(self, address=None, timeout=None, secure=False, *, max_message_length=None):
         """
         Create Iroha gRPC client
         :param address: Iroha Torii address with port, example "127.0.0.1:50051"
         :param timeout: timeout for network I/O operations in seconds
         :param secure: enable grpc ssl channel
+        :param max_message_length: it is max message length in bytes for grpc
         """
         self._address = address if address else '127.0.0.1:50051'
 
+        channel_kwargs = {}
+        if max_message_length is not None:
+            channel_kwargs['options'] = [
+                ('grpc.max_send_message_length', max_message_length),
+                ('grpc.max_receive_message_length', max_message_length)]
+
         if secure:
-            self._channel = grpc.secure_channel(self._address, grpc.ssl_channel_credentials())
+            self._channel = grpc.secure_channel(self._address, grpc.ssl_channel_credentials(), **channel_kwargs)
         else:
-            self._channel = grpc.insecure_channel(self._address)
+            self._channel = grpc.insecure_channel(self._address, **channel_kwargs)
 
         self._timeout = timeout
         self._command_service_stub = endpoint_pb2_grpc.CommandService_v1Stub(
