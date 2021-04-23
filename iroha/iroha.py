@@ -448,10 +448,25 @@ class IrohaGrpc(object):
         integral status code, and error code (will be 0 if no error occurred)
         :raise: grpc.RpcError with .code() available in case of any error
         """
+        tx_hash = IrohaCrypto.hash(transaction)
+        yield from self.tx_hash_status_stream(tx_hash, timeout)
+
+    def tx_hash_status_stream(self, transaction_hash: "str or bytes", timeout=None):
+        """
+        Generator of transaction statuses from status stream
+        :param transaction_hash: the hash of transaction, which status is about to be known
+        :param timeout: timeout for network I/O operations in seconds
+        :return: an iterable over a series of tuples with symbolic status description,
+        integral status code, and error code (will be 0 if no error occurred)
+        :raise: grpc.RpcError with .code() available in case of any error
+        """
         if not timeout:
             timeout = self._timeout
         request = endpoint_pb2.TxStatusRequest()
-        request.tx_hash = binascii.hexlify(IrohaCrypto.hash(transaction))
+        if isinstance(transaction_hash, bytes):
+            request.tx_hash = binascii.hexlify(transaction_hash)
+        else:
+            request.tx_hash = transaction_hash.encode('utf-8')
         response = self._command_service_stub.StatusStream(
             request, timeout=timeout)
         for status in response:
