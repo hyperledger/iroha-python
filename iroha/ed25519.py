@@ -43,13 +43,13 @@ import hashlib
 import operator
 import sys
 
+from six import PY3
+from six.moves import range
+
 if sys.version_info < (3, 6):
     import sha3
 
 __version__ = "1.0.dev0"
-
-# Useful for very coarse version differentiation.
-PY3 = sys.version_info[0] == 3
 
 if PY3:
     indexbytes = operator.getitem
@@ -57,7 +57,6 @@ if PY3:
     int2byte = operator.methodcaller("to_bytes", 1, "big")
 else:
     int2byte = chr
-    range = xrange
 
     def indexbytes(buf, i):
         return ord(buf[i])
