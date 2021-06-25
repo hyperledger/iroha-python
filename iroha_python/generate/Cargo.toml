@@ -1,0 +1,17 @@
+[package]
+name = "generate"
+version = "0.1.0"
+authors = ["Iroha 2 team <https://github.com/orgs/soramitsu/teams/iroha2>"]
+edition = "2018"
+license-file = "../../LICENSE"
+
+[features]
+typing = []
+
+[dependencies]
+iroha_schema = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-dev" }
+iroha_data_model  = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-dev" }
+iroha_error  = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-dev" }
+serde_json = "1"
+either = "1.6"
+syn = { version = "1", features = ["full"] }
