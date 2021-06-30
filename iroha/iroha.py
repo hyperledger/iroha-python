@@ -244,7 +244,7 @@ class Iroha(object):
         return command_wrapper
 
     def query(self, name, counter=1, creator_account=None,
-              created_time=None, page_size=None, first_tx_hash=None,
+              created_time=None, page_size=None, first_tx_hash=None, ordering_sequence=None,
               **kwargs):
         """
         Creates a protobuf query with specified set of entities
@@ -264,11 +264,13 @@ class Iroha(object):
             created_time = self.now()
         if not creator_account:
             creator_account = self.creator_account
-        if page_size or first_tx_hash:
+        if page_size or first_tx_hash or ordering_sequence:
             pagination_meta = queries_pb2.TxPaginationMeta()
             pagination_meta.page_size = page_size
             if first_tx_hash:
                 pagination_meta.first_tx_hash = first_tx_hash
+            if ordering_sequence:
+                pagination_meta.ordering_sequence = ordering_sequence
 
         meta = queries_pb2.QueryPayloadMeta()
         meta.created_time = created_time
