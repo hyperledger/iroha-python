@@ -254,6 +254,7 @@ class Iroha(object):
         :param created_time: query creation timestamp in milliseconds
         :param page_size: a non-zero positive number, size of result rowset for queries with pagination
         :param first_tx_hash: optional hash of a transaction that will be the beginning of the next page
+        :param ordering_sequence: an array representing an ordering spec, containing a sequence of fields and directions - example: [queries_pb2.kCreatedTime, queries_pb2.kAscending]
         :param kwargs: query arguments as they defined in schema
         :return: a proto query
         """
