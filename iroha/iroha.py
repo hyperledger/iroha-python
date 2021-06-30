@@ -272,7 +272,12 @@ class Iroha(object):
             if first_tx_hash:
                 pagination_meta.first_tx_hash = first_tx_hash
             if ordering_sequence:
-                pagination_meta.ordering_sequence = ordering_sequence
+                ordering = queries_pb2.Ordering()
+                for ordering_elt in ordering_sequence:
+                    ordering_field = ordering.sequence.add()
+                    ordering_field.field = ordering_elt[0]
+                    ordering_field.direction = ordering_elt[1]
+                pagination_meta.ordering.CopyFrom(ordering)
 
         meta = queries_pb2.QueryPayloadMeta()
         meta.created_time = created_time
