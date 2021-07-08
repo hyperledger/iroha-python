@@ -4,7 +4,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-from . import ed25519
+from . import ed25519 as ed25519_sha3
+import nacl.signing as ed25519_sha2
 import hashlib
 import binascii
 import grpc
@@ -32,10 +33,27 @@ class IrohaCrypto(object):
         :param private_key: hex encoded private key
         :return: hex encoded public key
         """
-        secret = binascii.unhexlify(private_key)
-        public_key = ed25519.publickey_unsafe(secret)
-        hex_public_key = binascii.hexlify(public_key)
-        return hex_public_key
+        if isinstance(private_key, (str, bytes)):  # default, legacy
+            secret = binascii.unhexlify(private_key)
+            public_key = ed25519_sha3.publickey_unsafe(secret)
+            hex_public_key = binascii.hexlify(public_key)
+            return hex_public_key
+        elif isinstance(private_key, ed25519_sha2.SigningKey):
+            return 'ed0120' + binascii.hexlify(private_key.verify_key._key).decode("utf-8")
+
+    @staticmethod
+    def get_payload_to_be_signed(proto):
+        """
+        :proto: proto transaction or query
+        :return: bytes representation of what has to be signed
+        """
+        if hasattr(proto, 'payload'):
+            return proto.payload.SerializeToString()
+        # signing of meta is implemented for block streaming queries,
+        # because they do not have a payload in their schema
+        elif hasattr(proto, 'meta'):
+            return proto.meta.SerializeToString()
+        raise RuntimeError('Unknown message type.')
 
     @staticmethod
     def hash(proto_with_payload):
@@ -44,16 +62,8 @@ class IrohaCrypto(object):
         :proto_with_payload: proto transaction or query
         :return: bytes representation of hash
         """
-        obj = None
-        if hasattr(proto_with_payload, 'payload'):
-            obj = getattr(proto_with_payload, 'payload')
-        # hash of meta is implemented for block streaming queries,
-        # because they do not have a payload in their schema
-        elif hasattr(proto_with_payload, 'meta'):
-            obj = getattr(proto_with_payload, 'meta')
-
-        bytes = obj.SerializeToString()
-        hash = hashlib.sha3_256(bytes).digest()
+        obj = IrohaCrypto.get_payload_to_be_signed(proto_with_payload)
+        hash = hashlib.sha3_256(obj).digest()
         return hash
 
     @staticmethod
@@ -65,10 +75,17 @@ class IrohaCrypto(object):
         :return: a proto Signature message
         """
         public_key = IrohaCrypto.derive_public_key(private_key)
-        sk = binascii.unhexlify(private_key)
-        pk = binascii.unhexlify(public_key)
-        message_hash = IrohaCrypto.hash(message)
-        signature_bytes = ed25519.signature_unsafe(message_hash, sk, pk)
+        if isinstance(private_key, (str, bytes)):  # default, legacy
+            message_hash = IrohaCrypto.hash(message)
+            sk = binascii.unhexlify(private_key)
+            pk = binascii.unhexlify(public_key)
+            signature_bytes = ed25519_sha3.signature_unsafe(
+                message_hash, sk, pk)
+        elif isinstance(private_key, ed25519_sha2.SigningKey):
+            signature_bytes = private_key.sign(
+                IrohaCrypto.get_payload_to_be_signed(message)).signature
+        else:
+            raise RuntimeError('Unsupported private key type.')
         signature = primitive_pb2.Signature()
         signature.public_key = public_key
         signature.signature = binascii.hexlify(signature_bytes)
@@ -103,6 +120,39 @@ class IrohaCrypto(object):
         return query
 
     @staticmethod
+    def is_sha2_signature_valid(message, signature):
+        """
+        Verify sha2 signature validity.
+        :param signature: the signature to be checked
+        :param message: message to check the signature against
+        :return: bool, whether the signature is valid for the message
+        """
+        parse_message = IrohaCrypto.get_payload_to_be_signed(message)
+        signature_bytes = binascii.unhexlify(signature.signature)
+        public_key = ed25519_sha2.VerifyKey(binascii.unhexlify(signature.public_key)[3:])
+        valid_message = ed25519_sha2.VerifyKey.verify(public_key, parse_message, signature_bytes)
+        if valid_message == parse_message:
+            return True
+        return False
+
+    @staticmethod
+    def is_signature_valid(message, signature):
+        """
+        Verify sha3 signature validity. To check sha2 signature need use the "is_sha2_signature_valid" method
+        :param signature: the signature to be checked
+        :param message: message to check the signature against
+        :return: bool, whether the signature is valid for the message
+        """
+        message_hash = IrohaCrypto.hash(message)
+        try:
+            signature_bytes = binascii.unhexlify(signature.signature)
+            public_key = binascii.unhexlify(signature.public_key)
+            ed25519_sha3.checkvalid(signature_bytes, message_hash, public_key)
+            return True
+        except (ed25519_sha3.SignatureMismatch, ValueError):
+            return False
+
+    @staticmethod
     def reduced_hash(transaction):
         """
         Calculates hash of reduced payload of a transaction
@@ -117,7 +167,7 @@ class IrohaCrypto(object):
     @staticmethod
     def private_key():
         """
-        Generates new random private key
+        Generates new random ed25519/sha3 private key
         :return: hex representation of private key
         """
         return binascii.b2a_hex(os.urandom(32))
@@ -194,11 +244,8 @@ class Iroha(object):
         return command_wrapper
 
     def query(self, name, counter=1, creator_account=None,
-              created_time=None, page_size=None,
-              first_tx_hash=None, first_tx_time=None,
-              last_tx_time=None, first_tx_height=None,
-              ordering_sequence=None,
-              last_tx_height=None, **kwargs):
+              created_time=None, page_size=None, first_tx_hash=None,
+              **kwargs):
         """
         Creates a protobuf query with specified set of entities
         :param name: CamelCased name of query to be executed
@@ -207,12 +254,6 @@ class Iroha(object):
         :param created_time: query creation timestamp in milliseconds
         :param page_size: a non-zero positive number, size of result rowset for queries with pagination
         :param first_tx_hash: optional hash of a transaction that will be the beginning of the next page
-        :param first_tx_time: optional time of first transaction
-        :param last_tx_time: optional time of last transaction
-        :param first_tx_height: optional block height of first transaction
-        :param last_tx_height: optional block height of last transaction
-        :param ordering_sequence: an array representing an ordering spec, containing a sequence of fields and directions 
-            example: [[queries_pb2.kCreatedTime, queries_pb2.kAscending],[queries_pb2.kPosition, queries_pb2.kDescending]]
         :param kwargs: query arguments as they defined in schema
         :return: a proto query
         """
@@ -223,26 +264,11 @@ class Iroha(object):
             created_time = self.now()
         if not creator_account:
             creator_account = self.creator_account
-        if page_size or first_tx_hash or first_tx_time or last_tx_time or first_tx_height or last_tx_height:
+        if page_size or first_tx_hash:
             pagination_meta = queries_pb2.TxPaginationMeta()
             pagination_meta.page_size = page_size
             if first_tx_hash:
                 pagination_meta.first_tx_hash = first_tx_hash
-            if first_tx_time != None:
-                pagination_meta.first_tx_time.CopyFrom(first_tx_time)
-            if last_tx_time != None:
-                pagination_meta.last_tx_time.CopyFrom(last_tx_time)
-            if first_tx_height != None:
-                pagination_meta.first_tx_height = first_tx_height
-            if last_tx_height != None:
-                pagination_meta.last_tx_height = last_tx_height
-        if ordering_sequence:
-            ordering = queries_pb2.Ordering()
-            for ordering_elt in ordering_sequence:
-                ordering_field = ordering.sequence.add()
-                ordering_field.field = ordering_elt[0]
-                ordering_field.direction = ordering_elt[1]
-            pagination_meta.ordering.CopyFrom(ordering)
 
         meta = queries_pb2.QueryPayloadMeta()
         meta.created_time = created_time
@@ -315,14 +341,35 @@ class IrohaGrpc(object):
     Possible implementation of gRPC transport to Iroha
     """
 
-    def __init__(self, address=None, timeout=None):
+    def __init__(self, address=None, timeout=None, secure=False, root_certificates=None, private_key=None, certificate_chain=None, *, max_message_length=None):
         """
         Create Iroha gRPC client
         :param address: Iroha Torii address with port, example "127.0.0.1:50051"
         :param timeout: timeout for network I/O operations in seconds
+        :param secure: enable grpc ssl channel
+        :param max_message_length: it is max message length in bytes for grpc
+        :param root_certificates The PEM-encoded root certificates as a byte string,
+        or None to retrieve them from a default location chosen by gRPC
+        runtime. https://grpc.io/docs/guides/auth/
+        :param private_key The PEM-encoded private key as a byte string, or None if no
+        private key should be used.
+        :param certificate_chain The PEM-encoded certificate chain as a byte string
+        to use or None if no certificate chain should be used.
         """
         self._address = address if address else '127.0.0.1:50051'
-        self._channel = grpc.insecure_channel(self._address)
+
+        channel_kwargs = {}
+        if max_message_length is not None:
+            channel_kwargs['options'] = [
+                ('grpc.max_send_message_length', max_message_length),
+                ('grpc.max_receive_message_length', max_message_length)]
+
+        if secure:
+            self._channel = grpc.secure_channel(self._address, grpc.ssl_channel_credentials(
+                root_certificates, private_key, certificate_chain), **channel_kwargs)
+        else:
+            self._channel = grpc.insecure_channel(self._address, **channel_kwargs)
+
         self._timeout = timeout
         self._command_service_stub = endpoint_pb2_grpc.CommandService_v1Stub(
             self._channel)
@@ -409,10 +456,25 @@ class IrohaGrpc(object):
         integral status code, and error code (will be 0 if no error occurred)
         :raise: grpc.RpcError with .code() available in case of any error
         """
+        tx_hash = IrohaCrypto.hash(transaction)
+        yield from self.tx_hash_status_stream(tx_hash, timeout)
+
+    def tx_hash_status_stream(self, transaction_hash: "str or bytes", timeout=None):
+        """
+        Generator of transaction statuses from status stream
+        :param transaction_hash: the hash of transaction, which status is about to be known
+        :param timeout: timeout for network I/O operations in seconds
+        :return: an iterable over a series of tuples with symbolic status description,
+        integral status code, and error code (will be 0 if no error occurred)
+        :raise: grpc.RpcError with .code() available in case of any error
+        """
         if not timeout:
             timeout = self._timeout
         request = endpoint_pb2.TxStatusRequest()
-        request.tx_hash = binascii.hexlify(IrohaCrypto.hash(transaction))
+        if isinstance(transaction_hash, bytes):
+            request.tx_hash = binascii.hexlify(transaction_hash)
+        else:
+            request.tx_hash = transaction_hash.encode('utf-8')
         response = self._command_service_stub.StatusStream(
             request, timeout=timeout)
         for status in response:
