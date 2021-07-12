@@ -21,7 +21,7 @@ fn get_metamap() -> MetaMap {
     use iroha_data_model::prelude::*;
     use iroha_data_model::query::QueryBox;
 
-    to_json!(Value, Instruction, Expression, QueryBox,)
+    to_json!(Value, Instruction, Expression, QueryBox, EventFilter,)
 }
 
 fn main() -> Result<(), iroha_error::Reporter> {

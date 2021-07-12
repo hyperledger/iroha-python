@@ -2,14 +2,8 @@
 from importlib import import_module
 from .iroha2 import Dict
 
+
 ClassPath = str
-
-
-def all(it):
-    for i in it:
-        if not i:
-            return False
-    return True
 
 
 def to_rust(obj):
@@ -34,15 +28,16 @@ def get_class(path) -> type:
 
 
 class _Tuple(type):
+    @staticmethod
     def _make_class(fields):
         class RustTuple:
             __fields = None
 
-            @staticmethod
-            def _fields():
-                if not RustTuple.__fields:
-                    RustTuple.__fields = [get_class(f) for f in fields]
-                return RustTuple.__fields
+            @classmethod
+            def _fields(cls):
+                if not cls.__fields:
+                    cls.__fields = [get_class(f) for f in fields]
+                return cls.__fields
 
             def __init__(self, *args):
                 if not all(
@@ -71,18 +66,16 @@ class Tuple(metaclass=_Tuple):
 
 
 class _Enum(type):
+    @staticmethod
     def _make_class(variants):
         class RustEnum:
             __variants = None
 
-            @staticmethod
-            def _variants():
-                if not RustEnum.__variants:
-                    RustEnum.__variants = {
-                        k: get_class(v)
-                        for k, v in variants
-                    }
-                return RustEnum.__variants
+            @classmethod
+            def _variants(cls):
+                if not cls.__variants:
+                    cls.__variants = {k: get_class(v) for k, v in variants}
+                return cls.__variants
 
             def _from_value(self, value):
                 for variant, ty in self._variants().items():
@@ -104,12 +97,24 @@ class _Enum(type):
                 return {self.variant: to_rust(self.value)}
 
         for var, ty in variants:
-            if ty == type(None):
-                constructor = lambda: RustEnum(None, variant=var)
-            else:
-                # https://stackoverflow.com/questions/2295290/what-do-lambda-function-closures-capture
+
+            def constructor_meta(value, var, ty):
+                if isinstance(ty, str):
+                    ty = get_class(ty)
+
+                if not isinstance(value, ty):
+                    value = ty(value)
+                return RustEnum(value, variant=var)
+
+            # https://stackoverflow.com/questions/2295290/what-do-lambda-function-closures-capture
+            if isinstance(None, ty):
                 constructor = (
-                    lambda var: lambda v: RustEnum(v, variant=var))(var)
+                    lambda var: lambda: RustEnum(None, variant=var))(var)
+            else:
+
+                constructor = (
+                    lambda var, ty: lambda v: constructor_meta(v, var, ty))(
+                        var, ty)
 
             constructor = staticmethod(constructor)
             setattr(RustEnum, var, constructor)
@@ -131,16 +136,16 @@ class Enum(metaclass=_Enum):
 
 
 class _Struct(type):
+    @staticmethod
     def _make_class(fields):
         class RustStruct:
             __fields = None
 
-            @staticmethod
-            def _fields():
-                if not RustStruct.__fields:
-                    RustStruct.__fields = [(k, get_class(v))
-                                           for k, v in fields]
-                return RustStruct.__fields
+            @classmethod
+            def _fields(cls):
+                if not cls.__fields:
+                    cls.__fields = [(k, get_class(v)) for k, v in fields]
+                return cls.__fields
 
             def _from_args(self, *args):
                 for v, (k, _) in zip(args, self._fields()):
@@ -161,7 +166,7 @@ class _Struct(type):
                 if len(self.items) != len(self._fields()):
                     raise ValueError("Some fields are missing")
 
-            def to_rust(self) -> tuple:
+            def to_rust(self) -> dict:
                 return {k: to_rust(v) for k, v in self.items.items()}
 
         return RustStruct
@@ -170,6 +175,8 @@ class _Struct(type):
         cls,
         fields,
     ) -> type:
+        if isinstance(fields, tuple) and len(fields) == 0:
+            fields = []
         if isinstance(fields, tuple) and isinstance(fields[0], str):
             fields = [fields]
 
