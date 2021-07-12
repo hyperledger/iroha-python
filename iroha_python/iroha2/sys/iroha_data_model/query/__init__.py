@@ -1,2 +1,37 @@
 from ...rust import Enum, Struct, Tuple, Dict
-QueryBox = Enum[("FindAllAccounts", "iroha_data_model.query.account.FindAllAccounts"), ("FindAccountById", "iroha_data_model.query.account.FindAccountById"), ("FindAccountKeyValueByIdAndKey", "iroha_data_model.query.account.FindAccountKeyValueByIdAndKey"), ("FindAccountsByName", "iroha_data_model.query.account.FindAccountsByName"), ("FindAccountsByDomainName", "iroha_data_model.query.account.FindAccountsByDomainName"), ("FindAllAssets", "iroha_data_model.query.asset.FindAllAssets"), ("FindAllAssetsDefinitions", "iroha_data_model.query.asset.FindAllAssetsDefinitions"), ("FindAssetById", "iroha_data_model.query.asset.FindAssetById"), ("FindAssetsByName", "iroha_data_model.query.asset.FindAssetsByName"), ("FindAssetsByAccountId", "iroha_data_model.query.asset.FindAssetsByAccountId"), ("FindAssetsByAssetDefinitionId", "iroha_data_model.query.asset.FindAssetsByAssetDefinitionId"), ("FindAssetsByDomainName", "iroha_data_model.query.asset.FindAssetsByDomainName"), ("FindAssetsByAccountIdAndAssetDefinitionId", "iroha_data_model.query.asset.FindAssetsByAccountIdAndAssetDefinitionId"), ("FindAssetsByDomainNameAndAssetDefinitionId", "iroha_data_model.query.asset.FindAssetsByDomainNameAndAssetDefinitionId"), ("FindAssetQuantityById", "iroha_data_model.query.asset.FindAssetQuantityById"), ("FindAssetKeyValueByIdAndKey", "iroha_data_model.query.asset.FindAssetKeyValueByIdAndKey"), ("FindAllDomains", "iroha_data_model.query.domain.FindAllDomains"), ("FindDomainByName", "iroha_data_model.query.domain.FindDomainByName"), ("FindAllPeers", "iroha_data_model.query.peer.FindAllPeers"), ("FindTransactionsByAccountId", "iroha_data_model.query.transaction.FindTransactionsByAccountId"), ("FindPermissionTokensByAccountId", "iroha_data_model.query.permissions.FindPermissionTokensByAccountId")] 
+
+QueryBox = Enum[
+    ("FindAllAccounts", "iroha_data_model.query.account.FindAllAccounts"),
+    ("FindAccountById", "iroha_data_model.query.account.FindAccountById"),
+    ("FindAccountKeyValueByIdAndKey",
+     "iroha_data_model.query.account.FindAccountKeyValueByIdAndKey"),
+    ("FindAccountsByName",
+     "iroha_data_model.query.account.FindAccountsByName"),
+    ("FindAccountsByDomainName",
+     "iroha_data_model.query.account.FindAccountsByDomainName"),
+    ("FindAllAssets", "iroha_data_model.query.asset.FindAllAssets"),
+    ("FindAllAssetsDefinitions",
+     "iroha_data_model.query.asset.FindAllAssetsDefinitions"),
+    ("FindAssetById", "iroha_data_model.query.asset.FindAssetById"),
+    ("FindAssetsByName", "iroha_data_model.query.asset.FindAssetsByName"),
+    ("FindAssetsByAccountId",
+     "iroha_data_model.query.asset.FindAssetsByAccountId"),
+    ("FindAssetsByAssetDefinitionId",
+     "iroha_data_model.query.asset.FindAssetsByAssetDefinitionId"),
+    ("FindAssetsByDomainName",
+     "iroha_data_model.query.asset.FindAssetsByDomainName"),
+    ("FindAssetsByAccountIdAndAssetDefinitionId",
+     "iroha_data_model.query.asset.FindAssetsByAccountIdAndAssetDefinitionId"),
+    ("FindAssetsByDomainNameAndAssetDefinitionId",
+     "iroha_data_model.query.asset.FindAssetsByDomainNameAndAssetDefinitionId"
+     ), ("FindAssetQuantityById",
+         "iroha_data_model.query.asset.FindAssetQuantityById"),
+    ("FindAssetKeyValueByIdAndKey",
+     "iroha_data_model.query.asset.FindAssetKeyValueByIdAndKey"),
+    ("FindAllDomains", "iroha_data_model.query.domain.FindAllDomains"),
+    ("FindDomainByName", "iroha_data_model.query.domain.FindDomainByName"),
+    ("FindAllPeers", "iroha_data_model.query.peer.FindAllPeers"),
+    ("FindTransactionsByAccountId",
+     "iroha_data_model.query.transaction.FindTransactionsByAccountId"),
+    ("FindPermissionTokensByAccountId",
+     "iroha_data_model.query.permissions.FindPermissionTokensByAccountId")]

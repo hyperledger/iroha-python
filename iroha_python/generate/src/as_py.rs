@@ -230,6 +230,9 @@ impl fmt::Display for UnnamedStructClass {
             .collect::<Vec<_>>()
             .join(", ");
 
+        if fields.is_empty() {
+            return write!(f, "{} = Tuple[()]", self.name);
+        }
         write!(f, "{} = Tuple[{}]", self.name, fields)
     }
 }

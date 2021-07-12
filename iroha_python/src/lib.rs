@@ -8,8 +8,10 @@ use std::ops::{Deref, DerefMut};
 use iroha_client::{client, config::Configuration};
 use iroha_crypto::{Hash, PrivateKey, PublicKey};
 use iroha_data_model::prelude::*;
+use pyo3::class::iter::IterNextOutput;
 use pyo3::exceptions::PyException;
 use pyo3::prelude::*;
+use pyo3::PyIterProtocol;
 
 macro_rules! wrap_class {
     (
@@ -180,12 +182,42 @@ impl Client {
             .map_err(to_py_err)
             .map(Dict)
     }
+
+    /// Listen on web socket events
+    pub fn listen_for_events(
+        &mut self,
+        event_filter: Dict<EventFilter>,
+    ) -> PyResult<EventIterator> {
+        self.deref_mut()
+            .listen_for_events(*event_filter)
+            .map(EventIterator::from)
+            .map_err(to_py_err)
+    }
+
+    /// Account field on client
+    #[getter]
+    pub fn account(&self) -> Dict<AccountId> {
+        Dict(self.account_id.clone())
+    }
+}
+
+#[pyproto]
+impl PyIterProtocol for EventIterator {
+    fn __next__(
+        mut slf: PyRefMut<Self>,
+    ) -> IterNextOutput<Dict<Result<Event, String>>, &'static str> {
+        match slf.next() {
+            Some(item) => IterNextOutput::Yield(Dict(item.map_err(|e| e.to_string()))),
+            None => IterNextOutput::Return("Ended"),
+        }
+    }
 }
 
 #[rustfmt::skip]
 wrap_class!(
-    KeyPair { keys: iroha_crypto::KeyPair }: Debug + Clone,
-    Client  { cl:   client::Client        }: Debug + Clone,
+    KeyPair        { keys: iroha_crypto::KeyPair }: Debug + Clone,
+    Client         { cl:   client::Client        }: Debug + Clone,
+    EventIterator  { it:   client::EventIterator }: Debug,
 );
 
 /// A Python module implemented in Rust.
