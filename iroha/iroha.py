@@ -266,18 +266,18 @@ class Iroha(object):
             created_time = self.now()
         if not creator_account:
             creator_account = self.creator_account
-        if page_size or first_tx_hash or ordering_sequence:
+        if page_size or first_tx_hash:
             pagination_meta = queries_pb2.TxPaginationMeta()
             pagination_meta.page_size = page_size
             if first_tx_hash:
                 pagination_meta.first_tx_hash = first_tx_hash
-            if ordering_sequence:
-                ordering = queries_pb2.Ordering()
-                for ordering_elt in ordering_sequence:
-                    ordering_field = ordering.sequence.add()
-                    ordering_field.field = ordering_elt[0]
-                    ordering_field.direction = ordering_elt[1]
-                pagination_meta.ordering.CopyFrom(ordering)
+        if ordering_sequence:
+            ordering = queries_pb2.Ordering()
+            for ordering_elt in ordering_sequence:
+                ordering_field = ordering.sequence.add()
+                ordering_field.field = ordering_elt[0]
+                ordering_field.direction = ordering_elt[1]
+            pagination_meta.ordering.CopyFrom(ordering)
 
         meta = queries_pb2.QueryPayloadMeta()
         meta.created_time = created_time
