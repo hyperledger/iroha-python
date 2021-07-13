@@ -195,7 +195,9 @@ class Iroha(object):
 
     def query(self, name, counter=1, creator_account=None,
               created_time=None, page_size=None, first_tx_hash=None,
-              **kwargs):
+              first_tx_time=None, last_tx_time=None,
+              first_tx_height=None, last_tx_height=None,
+               **kwargs):
         """
         Creates a protobuf query with specified set of entities
         :param name: CamelCased name of query to be executed
@@ -214,11 +216,19 @@ class Iroha(object):
             created_time = self.now()
         if not creator_account:
             creator_account = self.creator_account
-        if page_size or first_tx_hash:
+        if page_size or first_tx_hash or first_tx_time or last_tx_time or first_tx_height or last_tx_height:
             pagination_meta = queries_pb2.TxPaginationMeta()
             pagination_meta.page_size = page_size
             if first_tx_hash:
                 pagination_meta.first_tx_hash = first_tx_hash
+            if first_tx_time:
+                pagination_meta.first_tx_time.CopyFrom(first_tx_time)
+            if last_tx_time:
+                pagination_meta.last_tx_time.CopyFrom(last_tx_time)
+            if first_tx_height:
+                pagination_meta.first_tx_height=first_tx_height
+            if last_tx_height:
+                pagination_meta.last_tx_height=last_tx_height
 
         meta = queries_pb2.QueryPayloadMeta()
         meta.created_time = created_time
@@ -291,14 +301,27 @@ class IrohaGrpc(object):
     Possible implementation of gRPC transport to Iroha
     """
 
-    def __init__(self, address=None, timeout=None):
+    def __init__(self, address=None, timeout=None, secure=False, *, max_message_length=None):
         """
         Create Iroha gRPC client
         :param address: Iroha Torii address with port, example "127.0.0.1:50051"
         :param timeout: timeout for network I/O operations in seconds
+        :param secure: enable grpc ssl channel
+        :param max_message_length: it is max message length in bytes for grpc
         """
         self._address = address if address else '127.0.0.1:50051'
-        self._channel = grpc.insecure_channel(self._address)
+
+        channel_kwargs = {}
+        if max_message_length is not None:
+            channel_kwargs['options'] = [
+                ('grpc.max_send_message_length', max_message_length),
+                ('grpc.max_receive_message_length', max_message_length)]
+
+        if secure:
+            self._channel = grpc.secure_channel(self._address, grpc.ssl_channel_credentials(), **channel_kwargs)
+        else:
+            self._channel = grpc.insecure_channel(self._address, **channel_kwargs)
+
         self._timeout = timeout
         self._command_service_stub = endpoint_pb2_grpc.CommandService_v1Stub(
             self._channel)
