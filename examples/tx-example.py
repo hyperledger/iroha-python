@@ -8,6 +8,14 @@ import os
 import binascii
 from iroha import IrohaCrypto
 from iroha import Iroha, IrohaGrpc
+# the following line is neccesary if you want to
+# use Timestamp in query TxPaginationMeta
+from google.protobuf.timestamp_pb2 import Timestamp
+
+# The following line is actually about the permissions
+# you might be using for the transaction.
+# You can find all the permissions here: 
+# https://iroha.readthedocs.io/en/main/develop/api/permissions.html
 from iroha.primitive_pb2 import can_set_my_account_detail
 import sys
 
@@ -160,6 +168,18 @@ def get_account_assets():
         print('Asset id = {}, balance = {}'.format(
             asset.asset_id, asset.balance))
 
+@trace 
+def query_transactions(first_time=None, last_time=None, first_height=None, last_height=None):
+    query = iroha.query('GetAccountTransactions', account_id='admin@test',
+                        first_tx_time = first_time,
+                        last_tx_time = last_time,
+                        first_tx_height = first_height,
+                        last_tx_height = last_height,
+                        page_size=3)
+    IrohaCrypto.sign_query(query, ADMIN_PRIVATE_KEY)
+    response = net.send_query(query)
+    data = response
+    print(data)
 
 @trace
 def get_userone_details():
@@ -183,5 +203,14 @@ set_age_to_userone()
 get_coin_info()
 get_account_assets()
 get_userone_details()
+# set timestamp to correct value
+# for more protobuf timestamp api info see:
+# https://googleapis.dev/python/protobuf/latest/google/protobuf/timestamp_pb2.html
+first_time=Timestamp()
+first_time.FromMilliseconds(1626249925185)
+last_time=Timestamp()
+last_time.FromMilliseconds(1626250078804)
+print(first_time, last_time)
+query_transactions(first_time,last_time)
+query_transactions(first_height=2,last_height=5)
 
-print('done')
