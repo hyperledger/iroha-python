@@ -201,13 +201,13 @@ def get_userone_details():
 
 create_domain_and_asset()
 first_time, last_time = add_coin_to_admin()
-# create_account_userone()
-# transfer_coin_from_admin_to_userone()
-# userone_grants_to_admin_set_account_detail_permission()
-# set_age_to_userone()
-# get_coin_info()
-# get_account_assets()
-# get_userone_details()
+create_account_userone()
+transfer_coin_from_admin_to_userone()
+userone_grants_to_admin_set_account_detail_permission()
+set_age_to_userone()
+get_coin_info()
+get_account_assets()
+get_userone_details()
 # set timestamp to correct value
 # for more protobuf timestamp api info see:
 # https://googleapis.dev/python/protobuf/latest/google/protobuf/timestamp_pb2.html
