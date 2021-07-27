@@ -26,8 +26,7 @@ message TxPaginationMeta {
   }
   oneof opt_last_tx_height {
     uint64 last_tx_height = 7;
-  }
-  
+  }  
 }
 
 message AssetPaginationMeta {

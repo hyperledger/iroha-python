@@ -206,10 +206,10 @@ class Iroha(object):
         :param created_time: query creation timestamp in milliseconds
         :param page_size: a non-zero positive number, size of result rowset for queries with pagination
         :param first_tx_hash: optional hash of a transaction that will be the beginning of the next page
-        :param first_tx_time: optional time of first transaction (will not be included)
-        :param last_tx_time: optional time of last transaction (will not be included)
-        :param first_tx_height: optional block height of first transaction (will not be included)
-        :param last_tx_height: optional block height of last transaction (will not be included)
+        :param first_tx_time: optional time of first transaction
+        :param last_tx_time: optional time of last transaction
+        :param first_tx_height: optional block height of first transaction
+        :param last_tx_height: optional block height of last transaction
         :param kwargs: query arguments as they defined in schema
         :return: a proto query
         """
@@ -230,9 +230,9 @@ class Iroha(object):
             if last_tx_time:
                 pagination_meta.last_tx_time.CopyFrom(last_tx_time)
             if first_tx_height:
-                pagination_meta.first_tx_height=first_tx_height
+                pagination_meta.first_tx_height = first_tx_height
             if last_tx_height:
-                pagination_meta.last_tx_height=last_tx_height
+                pagination_meta.last_tx_height = last_tx_height
 
         meta = queries_pb2.QueryPayloadMeta()
         meta.created_time = created_time
@@ -305,13 +305,20 @@ class IrohaGrpc(object):
     Possible implementation of gRPC transport to Iroha
     """
 
-    def __init__(self, address=None, timeout=None, secure=False, *, max_message_length=None):
+    def __init__(self, address=None, timeout=None, secure=False, root_certificates=None, private_key=None, certificate_chain=None, *, max_message_length=None):
         """
         Create Iroha gRPC client
         :param address: Iroha Torii address with port, example "127.0.0.1:50051"
         :param timeout: timeout for network I/O operations in seconds
         :param secure: enable grpc ssl channel
         :param max_message_length: it is max message length in bytes for grpc
+        :param root_certificates The PEM-encoded root certificates as a byte string,
+        or None to retrieve them from a default location chosen by gRPC
+        runtime. https://grpc.io/docs/guides/auth/
+        :param private_key The PEM-encoded private key as a byte string, or None if no
+        private key should be used.
+        :param certificate_chain The PEM-encoded certificate chain as a byte string
+        to use or None if no certificate chain should be used.
         """
         self._address = address if address else '127.0.0.1:50051'
 
@@ -322,7 +329,8 @@ class IrohaGrpc(object):
                 ('grpc.max_receive_message_length', max_message_length)]
 
         if secure:
-            self._channel = grpc.secure_channel(self._address, grpc.ssl_channel_credentials(), **channel_kwargs)
+            self._channel = grpc.secure_channel(self._address, grpc.ssl_channel_credentials(
+                root_certificates, private_key, certificate_chain), **channel_kwargs)
         else:
             self._channel = grpc.insecure_channel(self._address, **channel_kwargs)
 
