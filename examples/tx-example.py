@@ -173,7 +173,8 @@ def get_account_assets():
             asset.asset_id, asset.balance))
 
 @trace 
-def query_transactions(first_time=None, last_time=None, first_height=None, last_height=None):
+def query_transactions(first_time=None, last_time=None,
+                        first_height=None, last_height=None):
     query = iroha.query('GetAccountTransactions', account_id='admin@test',
                         first_tx_time = first_time,
                         last_tx_time = last_time,
