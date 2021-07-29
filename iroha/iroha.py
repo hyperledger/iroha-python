@@ -242,7 +242,7 @@ class Iroha(object):
                 ordering_field.field = ordering_elt[0]
                 ordering_field.direction = ordering_elt[1]
             pagination_meta.ordering.CopyFrom(ordering)
-            
+
         meta = queries_pb2.QueryPayloadMeta()
         meta.created_time = created_time
         meta.creator_account_id = creator_account
