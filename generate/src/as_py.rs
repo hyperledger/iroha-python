@@ -251,12 +251,11 @@ impl fmt::Display for EnumClass {
 
 impl StructClass {
     pub fn from_meta(name: String, NamedFieldsMeta { declarations }: NamedFieldsMeta) -> Self {
-        let (names, tys): (Vec<_>, Vec<_>) =
-            declarations.into_iter().map(|d| (d.name, d.ty)).unzip();
-        let tys = tys.into_iter().map(RustType::from).collect::<Vec<_>>();
-
-        let tys = tys.into_iter().map(PyType::from).collect::<Vec<_>>();
-        let fields = names.into_iter().zip(tys).collect::<Vec<_>>();
+        let fields = declarations
+            .into_iter()
+            .map(|d| (d.name, d.ty))
+            .map(|(name, ty)| (name, PyType::from(RustType::from(ty))))
+            .collect::<Vec<_>>();
 
         Self { fields, name }
     }
@@ -272,9 +271,9 @@ impl EnumClass {
                 syn::parse_str::<Type>(ty.unwrap_or("()")).unwrap()
             })
             .map(RustType::from)
+            .map(PyType::from)
             .collect::<Vec<_>>();
 
-        let tys = tys.into_iter().map(PyType::from).collect::<Vec<_>>();
         let variants = names.into_iter().zip(tys).collect::<Vec<_>>();
 
         Self { variants, name }
@@ -283,8 +282,11 @@ impl EnumClass {
 
 impl UnnamedStructClass {
     pub fn from_meta(name: String, UnnamedFieldsMeta { types }: UnnamedFieldsMeta) -> Self {
-        let types = types.into_iter().map(RustType::from).collect::<Vec<_>>();
-        let fields = types.into_iter().map(PyType::from).collect::<Vec<_>>();
+        let fields = types
+            .into_iter()
+            .map(RustType::from)
+            .map(PyType::from)
+            .collect::<Vec<_>>();
         Self { fields, name }
     }
 }

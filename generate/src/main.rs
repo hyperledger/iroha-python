@@ -29,9 +29,7 @@ fn main() -> Result<(), iroha_error::Reporter> {
 
     let args = &env::args().collect::<Vec<_>>()[1..];
     if args.is_empty() {
-        Err(iroha_error::error!(
-            "Please provide argument with valid directory"
-        ))?
+        return Err(iroha_error::error!("Please provide argument with valid directory").into());
     }
 
     let module = get_metamap().into_iter().collect::<Module>();

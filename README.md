@@ -7,7 +7,6 @@ Python library for Hyperledger Iroha 2.
 You should install rust (cargo) and python.
 
 ```sh
-cd iroha_python
 cargo build --release
 cp target/release/libiroha2_sys.so iroha2/sys/iroha2.so
 python3 test.py
@@ -48,7 +47,7 @@ directories:
 There is a need to regenerate sys sources and update client library after major rust updates in data model.
 
 ```sh
-cd iroha_python/generate
+cd generate
 cargo run ../iroha2/sys
 ```
 
