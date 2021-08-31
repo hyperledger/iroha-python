@@ -16,10 +16,6 @@ FindAssetQuantityById = Struct[("id",
 FindAssetsByAccountId = Struct[("account_id",
                                 "iroha_data_model.expression.EvaluatesTo")]
 
-FindAssetsByAccountIdAndAssetDefinitionId = Struct[(
-    "account_id", "iroha_data_model.expression.EvaluatesTo"), (
-        "asset_definition_id", "iroha_data_model.expression.EvaluatesTo")]
-
 FindAssetsByAssetDefinitionId = Struct[(
     "asset_definition_id", "iroha_data_model.expression.EvaluatesTo")]
 

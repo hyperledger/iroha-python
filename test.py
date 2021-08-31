@@ -11,8 +11,9 @@ from iroha2.data_model import *
 
 cfg = json.loads(open("./config.json").read())
 cl = Client(cfg)
+
 domain = Domain("xor")
-register = Instruction(Register(Expression(Value(Identifiable(domain)))))
+register = Register(Expression(Value(Identifiable(domain))))
 
 hash = cl.submit_isi(register)
 
@@ -22,11 +23,10 @@ filter = EventFilter.Pipeline(pipeline.EventFilter(
 ))
 listener = cl.listen(filter)
 
-# Strange thing -- ws doesnt work as an iterator
-while True:
-    ev = listener.__next__()
-    if ev["Ok"]["Pipeline"]["status"] != "Committed":
-        continue
-    if ev["Ok"]["Pipeline"]["hash"] != hash:
-        continue
-    break
+for event in listener:
+    print(event)
+
+    if event["Pipeline"]["status"] == "Committed" \
+        and event["Pipeline"]["hash"] == hash:
+
+        break

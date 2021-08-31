@@ -2,7 +2,7 @@
 from .sys.rust import *
 from .sys import KeyPair, Client as _Client
 from .data_model.query import Query as _Query
-
+from .data_model.isi import Instruction as _Instruction
 
 
 class Client:
@@ -18,17 +18,28 @@ class Client:
         return self.cl.submit_all_with_metadata(tx, {})
 
     def submit_isi(self, isi):
-        return self.submit_tx([isi])
+        return self.submit_tx([_Instruction(isi)])
 
     def submit_tx_blocking(self, tx: list):
         tx = [i.to_rust() for i in tx]
         return self.cl.submit_all_blocking_with_metadata(tx, {})
 
     def submit_isi_blocking(self, isi):
-        return self.submit_tx_blocking([isi])
+        return self.submit_tx_blocking([_Instruction(isi)])
 
     def query(self, query):
         return self.cl.request(_Query(query))
 
     def listen(self, events_kind):
-        return self.cl.listen_for_events(events_kind)
+        return Listener(self.cl.listen_for_events(events_kind))
+
+
+class Listener:
+    def __init__(self, listener):
+        self.it = listener
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self.it.__next__()

@@ -8,10 +8,14 @@ use std::ops::{Deref, DerefMut};
 use iroha_client::{client, config::Configuration};
 use iroha_crypto::{Hash, PrivateKey, PublicKey};
 use iroha_data_model::prelude::*;
+use pyo3::class::basic::PyObjectProtocol;
 use pyo3::class::iter::IterNextOutput;
 use pyo3::exceptions::PyException;
 use pyo3::prelude::*;
 use pyo3::PyIterProtocol;
+use pythonize::PythonizeTypes;
+
+mod types;
 
 macro_rules! wrap_class {
     (
@@ -55,8 +59,8 @@ macro_rules! wrap_class {
             }
         }
 
-        #[pymethods]
-        impl $ty {
+        #[pyproto]
+        impl PyObjectProtocol for $ty {
             fn __str__(&self) -> String {
                 format!("{:#?}", self)
             }
@@ -92,6 +96,12 @@ impl<T> Dict<T> {
     }
 }
 
+struct Pythonizer;
+impl<'py> PythonizeTypes<'py> for Pythonizer {
+    type Dict = types::dict::PythonizeDict<'py>;
+    type List = types::list::PythonizeList<'py>;
+}
+
 impl<'source, T: serde::de::DeserializeOwned> FromPyObject<'source> for Dict<T> {
     fn extract(obj: &'source PyAny) -> PyResult<Self> {
         let obj = if obj.hasattr("to_rust")? {
@@ -100,14 +110,17 @@ impl<'source, T: serde::de::DeserializeOwned> FromPyObject<'source> for Dict<T> 
             obj
         };
 
-        pythonize::depythonize(obj).map_err(to_py_err).map(Self)
+        pythonize::depythonize_custom::<Pythonizer, _>(obj)
+            .map_err(to_py_err)
+            .map(Self)
     }
 }
 
 impl<'source, T: serde::Serialize> IntoPy<PyObject> for Dict<T> {
     fn into_py(self, py: Python) -> PyObject {
         #[allow(clippy::expect_used)]
-        pythonize::pythonize(py, &self.into_inner()).expect("Lets hope pythonize won't complain :(")
+        pythonize::pythonize_custom::<Pythonizer, _>(py, &self.into_inner())
+            .expect("Lets hope pythonize won't complain :(")
     }
 }
 
@@ -203,11 +216,9 @@ impl Client {
 
 #[pyproto]
 impl PyIterProtocol for EventIterator {
-    fn __next__(
-        mut slf: PyRefMut<Self>,
-    ) -> IterNextOutput<Dict<Result<Event, String>>, &'static str> {
+    fn __next__(mut slf: PyRefMut<Self>) -> IterNextOutput<Dict<Event>, &'static str> {
         match slf.next() {
-            Some(item) => IterNextOutput::Yield(Dict(item.map_err(|e| e.to_string()))),
+            Some(item) => IterNextOutput::Yield(Dict(item.unwrap())),
             None => IterNextOutput::Return("Ended"),
         }
     }
@@ -224,6 +235,7 @@ wrap_class!(
 #[pymodule]
 pub fn iroha2(_: Python, m: &PyModule) -> PyResult<()> {
     register_wrapped_classes(m)?;
-    m.add_class::<pythonize::dict::Dict>()?;
+    m.add_class::<types::Dict>()?;
+    m.add_class::<types::List>()?;
     Ok(())
 }
