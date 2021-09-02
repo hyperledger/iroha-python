@@ -76,6 +76,7 @@ impl Module {
                 writeln!(f, "{}", e)?;
             }
             Metadata::Int(_)
+            | Metadata::Fixed
             | Metadata::Vec(_)
             | Metadata::Map(_)
             | Metadata::Bool
@@ -96,7 +97,7 @@ impl Module {
         let (module, meta): (Vec<_>, Vec<_>) = self.r#mod.iter().partition(|(_, v)| v.is_left());
 
         if r#in.mods.is_empty() {
-            writeln!(f, "from .iroha2 import *")?;
+            writeln!(f, "from ..iroha2 import *")?;
         }
         writeln!(
             f,

@@ -5,7 +5,7 @@ version = 3
 [[package]]
 name = "actor_derive"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
@@ -375,9 +375,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.0.69"
+version = "1.0.70"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e70cc2f62c6ce1868963827bd677764c62d07c3d9a3e1fb1177ee1a9ab199eb2"
+checksum = "d26a6ce4b6a484fa3edb70f7efa6fc430fd2b87285fe8b84304fd0936faa0dc0"
 
 [[package]]
 name = "cfg-if"
@@ -670,6 +670,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "derive_more"
+version = "0.99.16"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "40eebddd2156ce1bb37b20bbe5151340a31828b1f2d22ba4141f3531710e38df"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "digest"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -782,6 +793,18 @@ dependencies = [
  "bitvec 0.18.5",
  "rand_core 0.5.1",
  "subtle 2.4.1",
+]
+
+[[package]]
+name = "fixnum"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "079f104d02e422d4d3e1476ce46c3f5ad04ace499d3e999da181f54aef62932f"
+dependencies = [
+ "derive_more",
+ "serde",
+ "static_assertions",
+ "typenum",
 ]
 
 [[package]]
@@ -952,11 +975,23 @@ dependencies = [
 [[package]]
 name = "futures_derive"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
  "quote",
+ "syn",
+]
+
+[[package]]
+name = "generate"
+version = "0.1.0"
+dependencies = [
+ "either",
+ "iroha_data_model",
+ "iroha_error",
+ "iroha_schema",
+ "serde_json",
  "syn",
 ]
 
@@ -1044,7 +1079,7 @@ dependencies = [
  "http",
  "indexmap",
  "slab",
- "tokio 1.10.1",
+ "tokio 1.11.0",
  "tokio-util",
  "tracing",
 ]
@@ -1078,6 +1113,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e7f66481bfee273957b1f20485a4ff3362987f85b2c236580d81b4eb7a326429"
 dependencies = [
  "http",
+]
+
+[[package]]
+name = "heck"
+version = "0.3.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6d621efb26863f0e9924c6ac577e8275e5e6b77455db64ffa6c65c904e9e132c"
+dependencies = [
+ "unicode-segmentation",
 ]
 
 [[package]]
@@ -1177,7 +1221,7 @@ dependencies = [
  "itoa",
  "pin-project-lite",
  "socket2",
- "tokio 1.10.1",
+ "tokio 1.11.0",
  "tower-service",
  "tracing",
  "want",
@@ -1274,11 +1318,10 @@ dependencies = [
 [[package]]
 name = "iroha"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "async-trait",
  "chrono",
- "clap",
  "dashmap",
  "futures 0.3.17",
  "iroha_actor",
@@ -1290,14 +1333,15 @@ dependencies = [
  "iroha_futures",
  "iroha_logger",
  "iroha_macro",
- "iroha_network",
  "iroha_p2p",
+ "iroha_schema",
  "iroha_version",
  "parity-scale-codec",
  "rand 0.7.3",
  "serde",
  "serde_json",
- "tokio 1.10.1",
+ "structopt",
+ "tokio 1.11.0",
  "tokio-stream",
  "tracing",
  "ursa",
@@ -1307,7 +1351,7 @@ dependencies = [
 [[package]]
 name = "iroha_actor"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "actor_derive",
  "async-trait",
@@ -1316,13 +1360,13 @@ dependencies = [
  "iroha_error",
  "iroha_logger",
  "once_cell",
- "tokio 1.10.1",
+ "tokio 1.11.0",
 ]
 
 [[package]]
 name = "iroha_client"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "attohttpc",
  "http",
@@ -1345,7 +1389,7 @@ dependencies = [
 [[package]]
 name = "iroha_config"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "iroha_config_derive",
  "serde",
@@ -1355,7 +1399,7 @@ dependencies = [
 [[package]]
 name = "iroha_config_derive"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
@@ -1366,7 +1410,7 @@ dependencies = [
 [[package]]
 name = "iroha_crypto"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "hex",
  "iroha_error",
@@ -1381,10 +1425,11 @@ dependencies = [
 [[package]]
 name = "iroha_data_model"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "chrono",
  "dashmap",
+ "fixnum",
  "iroha_crypto",
  "iroha_derive",
  "iroha_error",
@@ -1401,7 +1446,7 @@ dependencies = [
 [[package]]
 name = "iroha_derive"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "iroha_macro",
  "parity-scale-codec",
@@ -1414,7 +1459,7 @@ dependencies = [
 [[package]]
 name = "iroha_dsl"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "iroha_data_model",
 ]
@@ -1422,7 +1467,7 @@ dependencies = [
 [[package]]
 name = "iroha_error"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "backtrace",
  "iroha_error_macro",
@@ -1432,7 +1477,7 @@ dependencies = [
 [[package]]
 name = "iroha_error_macro"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
@@ -1443,28 +1488,28 @@ dependencies = [
 [[package]]
 name = "iroha_futures"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "futures_derive",
  "iroha_logger",
  "rand 0.8.4",
  "serde",
  "serde_json",
- "tokio 1.10.1",
+ "tokio 1.11.0",
  "tokio-stream",
 ]
 
 [[package]]
 name = "iroha_logger"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "chrono",
  "iroha_config",
  "iroha_error",
  "serde",
  "serde_json",
- "tokio 1.10.1",
+ "tokio 1.11.0",
  "tracing",
  "tracing-core",
  "tracing-futures",
@@ -1474,31 +1519,16 @@ dependencies = [
 [[package]]
 name = "iroha_macro"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "iroha_error",
  "parity-scale-codec",
-]
-
-[[package]]
-name = "iroha_network"
-version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
-dependencies = [
- "iroha_derive",
- "iroha_error",
- "iroha_futures",
- "iroha_logger",
- "iroha_macro",
- "parity-scale-codec",
- "tokio 1.10.1",
- "tracing",
 ]
 
 [[package]]
 name = "iroha_p2p"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "aead",
  "async-stream",
@@ -1514,7 +1544,7 @@ dependencies = [
  "parity-scale-codec",
  "rand 0.7.3",
  "serde",
- "tokio 1.10.1",
+ "tokio 1.11.0",
  "ursa",
 ]
 
@@ -1535,7 +1565,7 @@ dependencies = [
 [[package]]
 name = "iroha_schema"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "iroha_schema_derive",
  "parity-scale-codec",
@@ -1546,7 +1576,7 @@ dependencies = [
 [[package]]
 name = "iroha_schema_derive"
 version = "0.0.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "parity-scale-codec",
  "proc-macro2",
@@ -1557,7 +1587,7 @@ dependencies = [
 [[package]]
 name = "iroha_telemetry"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "futures 0.3.17",
  "iroha_futures",
@@ -1565,7 +1595,7 @@ dependencies = [
  "serde",
  "serde_json",
  "streaming-stats",
- "tokio 1.10.1",
+ "tokio 1.11.0",
  "tokio-stream",
  "tracing",
 ]
@@ -1573,7 +1603,7 @@ dependencies = [
 [[package]]
 name = "iroha_version"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "iroha_derive",
  "iroha_error",
@@ -1589,7 +1619,7 @@ dependencies = [
 [[package]]
 name = "iroha_version_derive"
 version = "0.1.0"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#2166d162559631f3310f081d5793498d9be543fd"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#b07e2a7fb4741c2a6db22b93324ec35312fb6874"
 dependencies = [
  "iroha_derive",
  "iroha_macro",
@@ -2771,6 +2801,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "static_assertions"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
+
+[[package]]
 name = "streaming-stats"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2784,6 +2820,30 @@ name = "strsim"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ea5119cdb4c55b55d432abb513a0429384878c15dde60cc77b1c99de1a95a6a"
+
+[[package]]
+name = "structopt"
+version = "0.3.23"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bf9d950ef167e25e0bdb073cf1d68e9ad2795ac826f2f3f59647817cf23c0bfa"
+dependencies = [
+ "clap",
+ "lazy_static",
+ "structopt-derive",
+]
+
+[[package]]
+name = "structopt-derive"
+version = "0.4.16"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "134d838a2c9943ac3125cf6df165eda53493451b719f3255b2a26b85f772d0ba"
+dependencies = [
+ "heck",
+ "proc-macro-error",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
 
 [[package]]
 name = "subtle"
@@ -2938,9 +2998,9 @@ dependencies = [
 
 [[package]]
 name = "tokio"
-version = "1.10.1"
+version = "1.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "92036be488bb6594459f2e03b60e42df6f937fe6ca5c5ffdcb539c6b84dc40f5"
+checksum = "b4efe6fc2395938c8155973d7be49fe8d03a843726e285e100a8a383cc0154ce"
 dependencies = [
  "autocfg 1.0.1",
  "bytes 1.1.0",
@@ -3044,7 +3104,7 @@ checksum = "7b2f3f698253f03119ac0102beaa64f67a67e08074d03a22d18784104543727f"
 dependencies = [
  "futures-core",
  "pin-project-lite",
- "tokio 1.10.1",
+ "tokio 1.11.0",
 ]
 
 [[package]]
@@ -3109,7 +3169,7 @@ dependencies = [
  "futures-util",
  "log",
  "pin-project",
- "tokio 1.10.1",
+ "tokio 1.11.0",
  "tungstenite 0.12.0",
 ]
 
@@ -3157,7 +3217,7 @@ dependencies = [
  "futures-sink",
  "log",
  "pin-project-lite",
- "tokio 1.10.1",
+ "tokio 1.11.0",
 ]
 
 [[package]]
@@ -3288,9 +3348,9 @@ dependencies = [
 
 [[package]]
 name = "typenum"
-version = "1.13.0"
+version = "1.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "879f6906492a7cd215bfa4cf595b600146ccfac0c79bcbd1f3000162af5e8b06"
+checksum = "b63708a265f51345575b27fe43f9500ad611579e764c79edbc2037b1121959ec"
 
 [[package]]
 name = "unicase"
@@ -3315,6 +3375,12 @@ checksum = "d54590932941a9e9266f0832deed84ebe1bf2e4c9e4a3554d393d18f5e854bf9"
 dependencies = [
  "tinyvec",
 ]
+
+[[package]]
+name = "unicode-segmentation"
+version = "1.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8895849a949e7845e06bd6dc1aa51731a103c42707010a5b591c0038fb73385b"
 
 [[package]]
 name = "unicode-width"
@@ -3450,7 +3516,7 @@ dependencies = [
  "serde",
  "serde_json",
  "serde_urlencoded",
- "tokio 1.10.1",
+ "tokio 1.11.0",
  "tokio-stream",
  "tokio-tungstenite",
  "tokio-util",

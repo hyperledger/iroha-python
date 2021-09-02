@@ -11,10 +11,10 @@ AssetDefinitionEntry = Struct[("definition",
                                "iroha_data_model.asset.AssetDefinition"),
                               ("registered_by", "iroha_data_model.account.Id")]
 
-AssetValue = Enum[("Quantity", int), ("BigQuantity", int),
+AssetValue = Enum[("Quantity", int), ("BigQuantity", int), ("Fixed", float),
                   ("Store", "iroha_data_model.metadata.Metadata")]
 AssetValueType = Enum[("Quantity", type(None)), ("BigQuantity", type(None)),
-                      ("Store", type(None))]
+                      ("Fixed", type(None)), ("Store", type(None))]
 DefinitionId = Struct[("name", str), ("domain_name", str)]
 
 Id = Struct[("definition_id", "iroha_data_model.asset.DefinitionId"),

@@ -1,7 +1,6 @@
 # Export
 from importlib import import_module
-from .iroha2 import Dict
-
+from ..iroha2 import Dict
 
 ClassPath = str
 
@@ -106,8 +105,9 @@ class _Enum(type):
                     value = ty(value)
                 return RustEnum(value, variant=var)
 
-            # https://stackoverflow.com/questions/2295290/what-do-lambda-function-closures-capture
-            if isinstance(None, ty):
+            # Type here might be a string also
+            if ty == type(None):
+                # https://stackoverflow.com/questions/2295290/what-do-lambda-function-closures-capture
                 constructor = (
                     lambda var: lambda: RustEnum(None, variant=var))(var)
             else:
@@ -116,8 +116,7 @@ class _Enum(type):
                     lambda var, ty: lambda v: constructor_meta(v, var, ty))(
                         var, ty)
 
-            constructor = staticmethod(constructor)
-            setattr(RustEnum, var, constructor)
+            setattr(RustEnum, var, staticmethod(constructor))
 
         return RustEnum
 
