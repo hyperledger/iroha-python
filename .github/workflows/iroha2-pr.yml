@@ -28,7 +28,7 @@ jobs:
       - name: Check regeneration of python sys library and formating (PEP8)
         run: |
           cargo run -p generate -- iroha2/sys
-          yapf --style pep8 -r -i ./iroha2/
+          yapf --style pep8 -r -i iroha2 example
           git diff --quiet
 
   test:

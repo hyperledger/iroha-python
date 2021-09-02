@@ -11,7 +11,8 @@ AssetDefinitionEntry = Struct[("definition",
                                "iroha_data_model.asset.AssetDefinition"),
                               ("registered_by", "iroha_data_model.account.Id")]
 
-AssetValue = Enum[("Quantity", int), ("BigQuantity", int), ("Fixed", float),
+AssetValue = Enum[("Quantity", int), ("BigQuantity", int),
+                  ("Fixed", "iroha_data_model.fixed.Fixed"),
                   ("Store", "iroha_data_model.metadata.Metadata")]
 AssetValueType = Enum[("Quantity", type(None)), ("BigQuantity", type(None)),
                       ("Fixed", type(None)), ("Store", type(None))]

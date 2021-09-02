@@ -76,7 +76,7 @@ impl Module {
                 writeln!(f, "{}", e)?;
             }
             Metadata::Int(_)
-            | Metadata::Fixed
+            | Metadata::FixedPoint(_)
             | Metadata::Vec(_)
             | Metadata::Map(_)
             | Metadata::Bool
