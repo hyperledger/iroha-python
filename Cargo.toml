@@ -20,6 +20,7 @@ iroha_error = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-d
 iroha_data_model = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-dev" }
 
 pythonize = { git = "https://github.com/i1i1/pythonize", branch = "dict" }
+parity-scale-codec = "2.2"
 pyo3 = { version = "0.14", features = ["extension-module"] }
 serde = "1"
 serde_json = "1"

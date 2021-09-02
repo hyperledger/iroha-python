@@ -158,8 +158,8 @@ impl From<RustType> for PyType {
             "u8" | "u16" | "u32" | "u64" | "u128" | "i8" | "i16" | "i32" | "i64" | "i128" => {
                 return Self("int".to_owned())
             }
-            "f64" | "f32" | "Fixed" => return Self("float".to_owned()),
-            "String" => return Self("str".to_owned()),
+            "f64" | "f32" => return Self("float".to_owned()),
+            "FixedPoint" | "String" => return Self("str".to_owned()),
             "bool" => return Self("bool".to_owned()),
             "()" if ty.generics.is_empty() => return Self("type(None)".to_owned()),
             "()" => {

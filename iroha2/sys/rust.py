@@ -7,9 +7,9 @@ ClassPath = str
 
 def to_rust(obj):
     if isinstance(obj, list):
-        return [to_rust(obj) for i in obj]
+        return [to_rust(i) for i in obj]
     if isinstance(obj, tuple):
-        return (to_rust(obj) for i in obj)
+        return (to_rust(i) for i in obj)
     if isinstance(obj, dict):
         return {k: to_rust(v) for k, v in obj}
 

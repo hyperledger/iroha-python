@@ -17,10 +17,11 @@ register = Register(Expression(Value(Identifiable(domain))))
 
 hash = cl.submit_isi(register)
 
-filter = EventFilter.Pipeline(pipeline.EventFilter(
-    entity=pipeline.EntityType.Transaction(),
-    hash=None,
-))
+filter = EventFilter.Pipeline(
+    pipeline.EventFilter(
+        entity=pipeline.EntityType.Transaction(),
+        hash=None,
+    ))
 listener = cl.listen(filter)
 
 for event in listener:
