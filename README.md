@@ -7,9 +7,8 @@ Python library for Hyperledger Iroha 2.
 You should install rust (cargo) and python.
 
 ```sh
-cargo build --release
-cp target/release/libiroha2_sys.so iroha2/sys/iroha2.so
-python3 test.py
+pip install maturin
+maturin build
 ```
 
 ## Architecture

@@ -1,0 +1,19 @@
+name: Iroha 2 main branch workflow
+on:
+  push:
+    branches: [iroha2]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build wheel
+        run: docker run --rm -v $(pwd):/io konstin2/maturin build --strip --release
+
+      - name: Archive wheel
+        uses: actions/upload-artifact@v1
+        with:
+          name: iroha-python
+          path: target/wheels
