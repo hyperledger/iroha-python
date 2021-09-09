@@ -226,7 +226,7 @@ last_tx_time = Timestamp()
 last_tx_time.FromMilliseconds(last_time)
 # query for txs in measured time
 print('transactions from time interval query: ')
-query_transactions(first_tx_time,last_tx_time)
+query_transactions(first_tx_time, last_tx_time)
 # query for txs in given height range
 print('transactions from height range query: ')
 query_transactions(first_height = 2, last_height = 3)
