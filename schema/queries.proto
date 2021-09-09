@@ -29,13 +29,6 @@ message TxPaginationMeta {
   }  
 }
 
-message AssetPaginationMeta {
-  uint32 page_size = 1;
-  oneof opt_first_asset_id {
-    string first_asset_id = 2;
-  }
-}
-
 message GetAccount {
   string account_id = 1;
 }
