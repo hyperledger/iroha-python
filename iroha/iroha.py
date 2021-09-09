@@ -235,13 +235,6 @@ class Iroha(object):
                 pagination_meta.first_tx_height = first_tx_height
             if last_tx_height != None:
                 pagination_meta.last_tx_height = last_tx_height
-        if ordering_sequence:
-            ordering = queries_pb2.Ordering()
-            for ordering_elt in ordering_sequence:
-                ordering_field = ordering.sequence.add()
-                ordering_field.field = ordering_elt[0]
-                ordering_field.direction = ordering_elt[1]
-            pagination_meta.ordering.CopyFrom(ordering)
 
         meta = queries_pb2.QueryPayloadMeta()
         meta.created_time = created_time
