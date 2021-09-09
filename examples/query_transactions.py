@@ -13,11 +13,6 @@ import binascii
 from iroha import IrohaCrypto
 from iroha import Iroha, IrohaGrpc
 from google.protobuf.timestamp_pb2 import Timestamp
-import time
-# The following line is actually about the permissions
-# you might be using for the transaction.
-# You can find all the permissions here: 
-# https://iroha.readthedocs.io/en/main/develop/api/permissions.html
 from iroha.primitive_pb2 import can_set_my_account_detail
 import sys
 
