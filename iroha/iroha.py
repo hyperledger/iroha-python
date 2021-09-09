@@ -319,15 +319,6 @@ class IrohaGrpc(object):
         Create Iroha gRPC client
         :param address: Iroha Torii address with port, example "127.0.0.1:50051"
         :param timeout: timeout for network I/O operations in seconds
-        # :param secure: enable grpc ssl channel
-        # :param max_message_length: it is max message length in bytes for grpc
-        # :param root_certificates The PEM-encoded root certificates as a byte string,
-        # or None to retrieve them from a default location chosen by gRPC
-        # runtime. https://grpc.io/docs/guides/auth/
-        # :param private_key The PEM-encoded private key as a byte string, or None if no
-        # private key should be used.
-        # :param certificate_chain The PEM-encoded certificate chain as a byte string
-        # to use or None if no certificate chain should be used.
         """
         self._address = address if address else '127.0.0.1:50051'
         self._channel = grpc.insecure_channel(self._address)
