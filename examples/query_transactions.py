@@ -96,8 +96,7 @@ def add_coin_to_admin():
     ])
     IrohaCrypto.sign_transaction(tx, ADMIN_PRIVATE_KEY)
     send_transaction_and_print_status(tx)
-    # first_time, last_time = tx.reduced_payload
-    tx_tms=tx.payload.reduced_payload.created_time
+    tx_tms = tx.payload.reduced_payload.created_time
     print(tx_tms)
     first_time, last_time = tx_tms - 1, tx_tms + 1
     return first_time, last_time
@@ -131,7 +130,7 @@ def transfer_coin_from_admin_to_userone():
 @trace
 def userone_grants_to_admin_set_account_detail_permission():
     """
-    Make admin@test able to set detail to userone@domain
+    Make 'admin@test' able to set detail to 'userone@domain'
     """
     tx = iroha.transaction([
         iroha.command('GrantPermission', account_id='admin@test',
@@ -144,7 +143,7 @@ def userone_grants_to_admin_set_account_detail_permission():
 @trace
 def set_age_to_userone():
     """
-    Set age to userone@domain by admin@test
+    Set age to 'userone@domain' by 'admin@test'
     """
     tx = iroha.transaction([
         iroha.command('SetAccountDetail',
@@ -157,7 +156,7 @@ def set_age_to_userone():
 @trace
 def get_coin_info():
     """
-    Get asset info for coin#domain
+    Get asset info for 'coin#domain'
     :return:
     """
     query = iroha.query('GetAssetInfo', asset_id='coin#domain')
@@ -171,7 +170,7 @@ def get_coin_info():
 @trace
 def get_account_assets():
     """
-    List all the assets of userone@domain
+    List all the assets of 'userone@domain'
     """
     query = iroha.query('GetAccountAssets', account_id='userone@domain')
     IrohaCrypto.sign_query(query, ADMIN_PRIVATE_KEY)
@@ -199,7 +198,7 @@ def query_transactions(first_time = None, last_time = None,
 @trace
 def get_userone_details():
     """
-    Get all the kv-storage entries for userone@domain
+    Get all the kv-storage entries for 'userone@domain'
     """
     query = iroha.query('GetAccountDetail', account_id='userone@domain')
     IrohaCrypto.sign_query(query, ADMIN_PRIVATE_KEY)
@@ -230,5 +229,5 @@ print('transactions from time interval query: ')
 query_transactions(first_tx_time,last_tx_time)
 # query for txs in given height range
 print('transactions from height range query: ')
-query_transactions(first_height = 2,last_height = 3)
+query_transactions(first_height = 2, last_height = 3)
 print('done')
