@@ -244,8 +244,11 @@ class Iroha(object):
         return command_wrapper
 
     def query(self, name, counter=1, creator_account=None,
-              created_time=None, page_size=None, first_tx_hash=None, ordering_sequence=None,
-              **kwargs):
+              created_time=None, page_size=None,
+              first_tx_hash=None, first_tx_time=None,
+              last_tx_time=None, first_tx_height=None,
+              last_tx_height=None, 
+              ordering_sequence=None, **kwargs):
         """
         Creates a protobuf query with specified set of entities
         :param name: CamelCased name of query to be executed
@@ -254,6 +257,10 @@ class Iroha(object):
         :param created_time: query creation timestamp in milliseconds
         :param page_size: a non-zero positive number, size of result rowset for queries with pagination
         :param first_tx_hash: optional hash of a transaction that will be the beginning of the next page
+        :param first_tx_time: optional time of first transaction
+        :param last_tx_time: optional time of last transaction
+        :param first_tx_height: optional block height of first transaction
+        :param last_tx_height: optional block height of last transaction
         :param ordering_sequence: an array representing an ordering spec, containing a sequence of fields and directions 
             example: [[queries_pb2.kCreatedTime, queries_pb2.kAscending],[queries_pb2.kPosition, queries_pb2.kDescending]]
         :param kwargs: query arguments as they defined in schema
@@ -266,11 +273,19 @@ class Iroha(object):
             created_time = self.now()
         if not creator_account:
             creator_account = self.creator_account
-        if page_size or first_tx_hash:
+        if page_size or first_tx_hash or first_tx_time or last_tx_time or first_tx_height or last_tx_height:
             pagination_meta = queries_pb2.TxPaginationMeta()
             pagination_meta.page_size = page_size
             if first_tx_hash:
                 pagination_meta.first_tx_hash = first_tx_hash
+            if first_tx_time != None:
+                pagination_meta.first_tx_time.CopyFrom(first_tx_time)
+            if last_tx_time != None:
+                pagination_meta.last_tx_time.CopyFrom(last_tx_time)
+            if first_tx_height != None:
+                pagination_meta.first_tx_height = first_tx_height
+            if last_tx_height != None:
+                pagination_meta.last_tx_height = last_tx_height
         if ordering_sequence:
             ordering = queries_pb2.Ordering()
             for ordering_elt in ordering_sequence:
