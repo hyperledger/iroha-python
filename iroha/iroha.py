@@ -194,8 +194,8 @@ class Iroha(object):
         return command_wrapper
 
     def query(self, name, counter=1, creator_account=None,
-              created_time=None, page_size=None, first_tx_hash=None,
-              ordering_sequence=None, first_tx_time=None,
+              created_time=None, page_size=None,
+              first_tx_hash=None, first_tx_time=None,
               last_tx_time=None, first_tx_height=None,
               last_tx_height=None, **kwargs):
         """
@@ -206,8 +206,6 @@ class Iroha(object):
         :param created_time: query creation timestamp in milliseconds
         :param page_size: a non-zero positive number, size of result rowset for queries with pagination
         :param first_tx_hash: optional hash of a transaction that will be the beginning of the next page
-        :param ordering_sequence: an array representing an ordering spec, containing a sequence of fields and directions 
-            example: [[queries_pb2.kCreatedTime, queries_pb2.kAscending],[queries_pb2.kPosition, queries_pb2.kDescending]]
         :param first_tx_time: optional time of first transaction
         :param last_tx_time: optional time of last transaction
         :param first_tx_height: optional block height of first transaction
