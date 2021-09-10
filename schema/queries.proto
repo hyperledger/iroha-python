@@ -7,12 +7,26 @@ syntax = "proto3";
 package iroha.protocol;
 
 import "primitive.proto";
+import "google/protobuf/timestamp.proto";
 
 message TxPaginationMeta {
   uint32 page_size = 1;
   oneof opt_first_tx_hash {
     string first_tx_hash = 2;
   }
+  Ordering ordering = 3;
+  oneof opt_first_tx_time {
+    google.protobuf.Timestamp first_tx_time = 4;
+  }
+  oneof opt_last_tx_time {
+    google.protobuf.Timestamp last_tx_time = 5;
+  }
+  oneof opt_first_tx_height {
+    uint64 first_tx_height = 6;
+  }
+  oneof opt_last_tx_height {
+    uint64 last_tx_height = 7;
+  }  
 }
 
 message GetAccount {
