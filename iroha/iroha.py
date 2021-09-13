@@ -253,10 +253,9 @@ class Iroha(object):
 
     def query(self, name, counter=1, creator_account=None,
               created_time=None, page_size=None,
-              first_tx_hash=None, first_tx_time=None,
-              last_tx_time=None, first_tx_height=None,
-              last_tx_height=None, ordering_sequence=None,
-              **kwargs):
+              first_tx_hash=None, ordering_sequence=None,
+              first_tx_time=None, last_tx_time=None,
+              first_tx_height=None, last_tx_height=None, **kwargs):
         """
         Creates a protobuf query with specified set of entities
         :param name: CamelCased name of query to be executed
@@ -265,12 +264,12 @@ class Iroha(object):
         :param created_time: query creation timestamp in milliseconds
         :param page_size: a non-zero positive number, size of result rowset for queries with pagination
         :param first_tx_hash: optional hash of a transaction that will be the beginning of the next page
+        :param ordering_sequence: an array representing an ordering spec, containing a sequence of fields and directions 
+            example: [[queries_pb2.kCreatedTime, queries_pb2.kAscending],[queries_pb2.kPosition, queries_pb2.kDescending]]
         :param first_tx_time: optional time of first transaction
         :param last_tx_time: optional time of last transaction
         :param first_tx_height: optional block height of first transaction
         :param last_tx_height: optional block height of last transaction
-        :param ordering_sequence: an array representing an ordering spec, containing a sequence of fields and directions 
-            example: [[queries_pb2.kCreatedTime, queries_pb2.kAscending],[queries_pb2.kPosition, queries_pb2.kDescending]]
         :param kwargs: query arguments as they defined in schema
         :return: a proto query
         """
@@ -294,13 +293,13 @@ class Iroha(object):
                 pagination_meta.first_tx_height = first_tx_height
             if last_tx_height != None:
                 pagination_meta.last_tx_height = last_tx_height
-	if ordering_sequence:
-	    ordering = queries_pb2.Ordering()
-	    for ordering_elt in ordering_sequence:
-	        ordering_field = ordering.sequence.add()
-	        ordering_field.field = ordering_elt[0]
-	        ordering_field.direction = ordering_elt[1]
-	    pagination_meta.ordering.CopyFrom(ordering)
+        if ordering_sequence:
+            ordering = queries_pb2.Ordering()
+            for ordering_elt in ordering_sequence:
+                ordering_field = ordering.sequence.add()
+                ordering_field.field = ordering_elt[0]
+                ordering_field.direction = ordering_elt[1]
+            pagination_meta.ordering.CopyFrom(ordering)
 
         meta = queries_pb2.QueryPayloadMeta()
         meta.created_time = created_time
