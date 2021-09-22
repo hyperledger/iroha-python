@@ -21,10 +21,11 @@ jobs:
             python3-pip
           rustup component add clippy rustfmt
           pip3 install yapf
+          cargo install cargo-lints
       - name: Format check
         run: cargo fmt --all -- --check
       - name: Static analysis
-        run: cargo clippy --all --benches --tests
+        run: cargo lints clippy --all --benches --tests
       - name: Check regeneration of python sys library and formating (PEP8)
         run: |
           cargo run -p generate -- iroha2/sys

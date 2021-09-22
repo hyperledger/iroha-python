@@ -3,7 +3,6 @@ use std::fs;
 use std::io::Write;
 use std::iter::FromIterator;
 use std::ops::{Deref, DerefMut};
-use std::path::PathBuf;
 
 use super::as_py::*;
 use either::Either;
@@ -88,7 +87,7 @@ impl Module {
         Ok(())
     }
 
-    fn write_dir_int(&self, dir: PathBuf, r#in: ModulePath) -> Result<()> {
+    fn write_dir_int(&self, dir: &std::path::Path, r#in: &ModulePath) -> Result<()> {
         fs::create_dir_all(&dir).wrap_err("Failed to create directory for module")?;
 
         let f = dir.join("__init__.py");
@@ -107,7 +106,7 @@ impl Module {
 
         for (name, ty) in meta {
             let ty = ty.as_ref().right().unwrap();
-            Self::write_meta(&mut f, name.to_owned(), ty.clone())
+            Self::write_meta(&mut f, name.clone(), ty.clone())
                 .wrap_err_with(|| error!("Failed to write metadata for type {}", name))?;
         }
         drop(f);
@@ -115,22 +114,22 @@ impl Module {
         for (name, module) in module {
             let module = module.as_ref().left().unwrap();
             module
-                .write_dir_int(dir.join(name), r#in.clone().add(name.clone()))
+                .write_dir_int(&dir.join(name), &r#in.clone().add(name.clone()))
                 .wrap_err_with(|| error!("Failed to write module {}", name))?;
         }
 
         Ok(())
     }
 
-    pub fn write_dir(&self, dir: impl Into<PathBuf>) -> Result<()> {
-        self.write_dir_int(dir.into(), ModulePath::default())
+    pub fn write_dir(&self, dir: impl AsRef<std::path::Path>) -> Result<()> {
+        self.write_dir_int(dir.as_ref(), &ModulePath::default())
     }
 }
 
 impl FromIterator<(String, Metadata)> for Module {
     fn from_iter<T: IntoIterator<Item = (String, Metadata)>>(iter: T) -> Self {
         let mut new = Self::default();
-        for (k, v) in iter.into_iter() {
+        for (k, v) in iter {
             new.insert(k, v);
         }
         new
