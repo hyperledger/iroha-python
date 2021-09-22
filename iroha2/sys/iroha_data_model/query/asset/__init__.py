@@ -6,6 +6,10 @@ FindAllAssetsDefinitions = Struct[()]
 
 FindAssetById = Struct[("id", "iroha_data_model.expression.EvaluatesTo")]
 
+FindAssetDefinitionKeyValueByIdAndKey = Struct[(
+    "id", "iroha_data_model.expression.EvaluatesTo"), (
+        "key", "iroha_data_model.expression.EvaluatesTo")]
+
 FindAssetKeyValueByIdAndKey = Struct[(
     "id", "iroha_data_model.expression.EvaluatesTo"), (
         "key", "iroha_data_model.expression.EvaluatesTo")]

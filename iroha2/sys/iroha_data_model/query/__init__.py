@@ -26,6 +26,8 @@ QueryBox = Enum[
          "iroha_data_model.query.asset.FindAssetQuantityById"),
     ("FindAssetKeyValueByIdAndKey",
      "iroha_data_model.query.asset.FindAssetKeyValueByIdAndKey"),
+    ("FindAssetDefinitionKeyValueByIdAndKey",
+     "iroha_data_model.query.asset.FindAssetDefinitionKeyValueByIdAndKey"),
     ("FindAllDomains", "iroha_data_model.query.domain.FindAllDomains"),
     ("FindDomainByName", "iroha_data_model.query.domain.FindDomainByName"),
     ("FindAllPeers", "iroha_data_model.query.peer.FindAllPeers"),

@@ -71,8 +71,8 @@ macro_rules! wrap_class {
 }
 
 /// Into py error converter
-pub fn to_py_err(err: impl Into<iroha_error::Error>) -> PyErr {
-    PyException::new_err(err.into().report().to_string())
+pub fn to_py_err(err: impl Into<color_eyre::eyre::Error>) -> PyErr {
+    PyException::new_err(err.into().to_string())
 }
 
 /// Type for easy and type-safe translation between python and rust

@@ -25,12 +25,14 @@ fn get_metamap() -> MetaMap {
     to_json!(Value, Instruction, Expression, QueryBox, EventFilter)
 }
 
-fn main() -> Result<(), iroha_error::Reporter> {
-    iroha_error::install_panic_reporter();
+fn main() -> Result<(), color_eyre::Report> {
+    color_eyre::install()?;
 
     let args = &env::args().collect::<Vec<_>>()[1..];
     if args.is_empty() {
-        return Err(iroha_error::error!("Please provide argument with valid directory").into());
+        return Err(color_eyre::eyre::eyre!(
+            "Please provide argument with valid directory"
+        ));
     }
 
     let module = get_metamap().into_iter().collect::<Module>();

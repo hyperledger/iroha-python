@@ -14,6 +14,7 @@ use iroha_client::{client, config::Configuration};
 use iroha_crypto::{Hash, KeyGenConfiguration, Signature};
 use iroha_crypto::{PrivateKey, PublicKey};
 use iroha_data_model::prelude::*;
+use iroha_version::prelude::*;
 use pyo3::class::basic::PyObjectProtocol;
 use pyo3::class::iter::IterNextOutput;
 use pyo3::prelude::*;
@@ -88,6 +89,31 @@ impl Client {
             .request(query.into_inner())
             .map_err(to_py_err)
             .map(Dict)
+    }
+
+    /// Get transaction body
+    /// # Errors
+    pub fn tx_body(
+        &mut self,
+        isi: Vec<Dict<Instruction>>,
+        metadata: Dict<UnlimitedMetadata>,
+    ) -> PyResult<Vec<u8>> {
+        let isi = isi.into_iter().map(Dict::into_inner).collect();
+        self.build_transaction(isi, metadata.into_inner())
+            .map(VersionedTransaction::from)
+            .map_err(to_py_err)
+            .and_then(|tx| tx.encode_versioned().map_err(to_py_err))
+    }
+
+    /// Get transaction body
+    /// # Errors
+    pub fn query_body(&mut self, request: Dict<QueryBox>) -> PyResult<Vec<u8>> {
+        let request = QueryRequest::new(request.into_inner(), self.account_id.clone());
+        request
+            .sign(&self.cl.key_pair)
+            .map(VersionedSignedQueryRequest::from)
+            .map_err(to_py_err)
+            .and_then(|req| req.encode_versioned().map_err(to_py_err))
     }
 
     /// Sends transaction to peer
