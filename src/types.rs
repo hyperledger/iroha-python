@@ -90,13 +90,12 @@ pub mod list {
     }
 
     impl List {
-        pub fn hash(&self, py: Python) -> Hash {
-            let sum_hash =
-                |a: isize, b: isize| a.wrapping_add(b).into_py(py).as_ref(py).hash().unwrap();
+        pub fn hash(&self, py: Python) -> PyResult<Hash> {
+            let sum_hash = |a: isize, b: isize| a.wrapping_add(b).into_py(py).as_ref(py).hash();
 
             self.iter(py)
                 .filter_map(|i| i.extract::<isize>().ok())
-                .fold(0, sum_hash)
+                .fold(Ok(0), |a, b| a.and_then(|a| sum_hash(a, b)))
         }
 
         pub fn iter<'py>(&'py self, py: Python<'py>) -> impl Iterator<Item = &'py PyAny> + 'py {
@@ -107,11 +106,15 @@ pub mod list {
     #[pyproto]
     impl PyObjectProtocol for List {
         /// Comparison which relies on hashes
-        fn __richcmp__(&self, other: Self, op: CompareOp) -> bool {
-            matches!(op, CompareOp::Eq if Python::with_gil(|py| self.hash(py) == other.hash(py)))
+        fn __richcmp__(&self, other: Self, op: CompareOp) -> PyResult<bool> {
+            if let CompareOp::Eq = op {
+                Python::with_gil(|py| Ok(self.hash(py)? == other.hash(py)?))
+            } else {
+                Ok(false)
+            }
         }
 
-        fn __hash__(&self) -> isize {
+        fn __hash__(&self) -> PyResult<isize> {
             Python::with_gil(|py| self.hash(py))
         }
 
@@ -119,7 +122,7 @@ pub mod list {
             Python::with_gil(|py| {
                 let items = self
                     .iter(py)
-                    .map(|k| k.str().map(|k| k.to_string()))
+                    .map(|k| k.str().map(ToString::to_string))
                     .collect::<PyResult<Vec<_>>>()?
                     .join(",");
                 Ok(format!("[{}]", items))
@@ -138,17 +141,31 @@ pub mod list {
         }
 
         fn __getitem__(&'p self, idx: isize) -> PyResult<PyObject> {
+            #[allow(clippy::cast_sign_loss, clippy::cast_possible_wrap)]
+            let idx = if idx >= 0 {
+                idx
+            } else {
+                (self.vec.len() as isize) - idx
+            } as usize;
+
             self.vec
-                .get(idx as usize)
+                .get(idx)
                 .map(Clone::clone)
                 .ok_or_else(|| iroha_error::error!("Failed to get item at index {}", idx))
                 .map_err(to_py_err)
         }
 
         fn __setitem__(&mut self, idx: isize, value: PyObject) -> PyResult<()> {
+            #[allow(clippy::cast_sign_loss, clippy::cast_possible_wrap)]
+            let idx = if idx >= 0 {
+                idx
+            } else {
+                (self.vec.len() as isize) - idx
+            } as usize;
+
             *self
                 .vec
-                .get_mut(idx as usize)
+                .get_mut(idx)
                 .ok_or_else(|| iroha_error::error!("Failed to get item at index {}", idx))
                 .map_err(to_py_err)? = value;
             Ok(())
@@ -200,7 +217,7 @@ pub mod dict {
         fn is_eq(py: Python, a: &PyObject, b: &PyObject) -> bool {
             a.as_ref(py)
                 .rich_compare(b.as_ref(py), CompareOp::Eq)
-                .and_then(|b| b.extract::<bool>())
+                .and_then(PyAny::extract)
                 .unwrap_or(false)
         }
 
@@ -295,6 +312,7 @@ pub mod dict {
         }
 
         /// Hashes object
+        #[allow(clippy::unwrap_used)]
         pub fn hash(&self, py: Python) -> Hash {
             let sum_hash =
                 |a: isize, b: isize| a.wrapping_add(b).into_py(py).as_ref(py).hash().unwrap();
@@ -501,7 +519,7 @@ pub mod dict {
         fn new(py: Python<'py>) -> Self {
             Self {
                 py,
-                dict: Default::default(),
+                dict: Dict::default(),
             }
         }
 

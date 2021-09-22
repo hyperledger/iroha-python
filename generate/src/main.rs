@@ -1,4 +1,5 @@
 //! Binary which generates classes from json schema
+#![allow(clippy::unwrap_used, clippy::todo, clippy::unwrap_in_result)]
 
 use std::collections::BTreeMap;
 use std::env;

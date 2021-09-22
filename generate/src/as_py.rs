@@ -46,12 +46,15 @@ pub struct EnumClass {
     name: String,
 }
 
-impl From<String> for RustType {
-    fn from(ty: String) -> Self {
-        syn::parse_str::<Type>(&ty).unwrap().into()
+impl TryFrom<String> for RustType {
+    type Error = syn::Error;
+
+    fn try_from(ty: String) -> syn::Result<Self> {
+        syn::parse_str::<Type>(&ty).map(Into::into)
     }
 }
 
+#[allow(clippy::fallible_impl_from)]
 impl From<Type> for RustType {
     fn from(ty: Type) -> Self {
         fn get_args(args: &PathArguments) -> Vec<Type> {
@@ -100,13 +103,13 @@ impl From<Type> for RustType {
                 len: _len,
                 ..
             }) => Self {
-                module: Default::default(),
+                module: ModulePath::default(),
                 ident: "[]".to_owned(),
                 generics: vec![Self::from(*elem.clone())],
                 ty,
             },
             Type::Tuple(TypeTuple { elems, .. }) => Self {
-                module: Default::default(),
+                module: ModulePath::default(),
                 ident: "()".to_owned(),
                 generics: elems.iter().cloned().map(Self::from).collect::<Vec<_>>(),
                 ty,
@@ -187,9 +190,10 @@ impl From<RustType> for PyType {
     }
 }
 
-impl From<String> for PyType {
-    fn from(ty: String) -> Self {
-        RustType::from(ty).into()
+impl TryFrom<String> for PyType {
+    type Error = syn::Error;
+    fn try_from(ty: String) -> syn::Result<Self> {
+        RustType::try_from(ty).map(Into::into)
     }
 }
 
@@ -255,7 +259,7 @@ impl StructClass {
         let fields = declarations
             .into_iter()
             .map(|d| (d.name, d.ty))
-            .map(|(name, ty)| (name, PyType::from(RustType::from(ty))))
+            .map(|(name, ty)| (name, RustType::try_from(ty).map(PyType::from).unwrap()))
             .collect::<Vec<_>>();
 
         Self { fields, name }
@@ -285,9 +289,10 @@ impl UnnamedStructClass {
     pub fn from_meta(name: String, UnnamedFieldsMeta { types }: UnnamedFieldsMeta) -> Self {
         let fields = types
             .into_iter()
-            .map(RustType::from)
-            .map(PyType::from)
-            .collect::<Vec<_>>();
+            .map(RustType::try_from)
+            .map(|r| r.map(PyType::from))
+            .collect::<syn::Result<Vec<_>>>()
+            .unwrap();
         Self { fields, name }
     }
 }

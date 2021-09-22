@@ -1,7 +1,12 @@
 //! iroha2-python sys library with all classes (wrapped rust structures) with methods
 
 // Allow panic because of bad and unsafe pyo3
-#![allow(clippy::panic)]
+#![allow(
+    clippy::panic,
+    clippy::needless_pass_by_value,
+    clippy::used_underscore_binding,
+    clippy::multiple_inherent_impl
+)]
 
 use std::ops::{Deref, DerefMut};
 
@@ -30,6 +35,8 @@ impl KeyPair {
             .map(Into::into)
     }
 
+    /// Create keypair with some seed
+    /// # Errors
     #[staticmethod]
     pub fn with_seed(seed: Vec<u8>) -> PyResult<Self> {
         let cfg = KeyGenConfiguration::default().use_seed(seed);
@@ -38,22 +45,26 @@ impl KeyPair {
             .map(Into::into)
     }
 
+    /// Gets public key
     #[getter]
     pub fn public(&self) -> Dict<PublicKey> {
         Dict(self.public_key.clone())
     }
 
+    /// Gets private key
     #[getter]
     pub fn private(&self) -> Dict<PrivateKey> {
         Dict(self.private_key.clone())
     }
 }
 
+/// Hash bytes
 #[pyfunction]
 pub fn hash(bytes: Vec<u8>) -> Dict<Hash> {
     Dict(Hash::new(&bytes))
 }
 
+/// Sign payload using keypair
 #[pyfunction]
 pub fn sign(keys: KeyPair, payload: Vec<u8>) -> PyResult<Dict<Signature>> {
     iroha_crypto::Signature::new(keys.into(), &payload)
@@ -63,6 +74,7 @@ pub fn sign(keys: KeyPair, payload: Vec<u8>) -> PyResult<Dict<Signature>> {
 
 #[pymethods]
 impl Client {
+    /// Creates new client
     #[new]
     pub fn new(cfg: Dict<Configuration>) -> Self {
         client::Client::new(&cfg).into()
@@ -75,10 +87,7 @@ impl Client {
         self.deref_mut()
             .request(query.into_inner())
             .map_err(to_py_err)
-            .map(|e| {
-                dbg!(&e);
-                Dict(e)
-            })
+            .map(Dict)
     }
 
     /// Sends transaction to peer
@@ -132,6 +141,7 @@ impl Client {
 #[pyproto]
 impl PyIterProtocol for EventIterator {
     fn __next__(mut slf: PyRefMut<Self>) -> IterNextOutput<Dict<Event>, &'static str> {
+        #[allow(clippy::unwrap_used)]
         match slf.next() {
             Some(item) => IterNextOutput::Yield(Dict(item.unwrap())),
             None => IterNextOutput::Return("Ended"),
