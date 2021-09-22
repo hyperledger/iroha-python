@@ -4,6 +4,7 @@ use std::collections::btree_map::IntoIter;
 use std::collections::BTreeMap;
 use std::convert::{TryFrom, TryInto};
 
+use color_eyre::eyre::eyre;
 use pyo3::basic::CompareOp;
 use pyo3::class::iter::{IterNextOutput, PyIterProtocol};
 use pyo3::conversion::{ToBorrowedObject, ToPyObject};
@@ -151,7 +152,7 @@ pub mod list {
             self.vec
                 .get(idx)
                 .map(Clone::clone)
-                .ok_or_else(|| iroha_error::error!("Failed to get item at index {}", idx))
+                .ok_or_else(|| eyre!("Failed to get item at index {}", idx))
                 .map_err(to_py_err)
         }
 
@@ -166,7 +167,7 @@ pub mod list {
             *self
                 .vec
                 .get_mut(idx)
-                .ok_or_else(|| iroha_error::error!("Failed to get item at index {}", idx))
+                .ok_or_else(|| eyre!("Failed to get item at index {}", idx))
                 .map_err(to_py_err)? = value;
             Ok(())
         }

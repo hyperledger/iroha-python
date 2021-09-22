@@ -13,6 +13,12 @@ class Client:
     def account(self):
         return self.cl.account
 
+    def tx_body(self, tx: list):
+        return self.cl.tx_body(tx, {})
+
+    def query_body(self, query):
+        return self.cl.query_body(_Query(query))
+
     def submit_tx(self, tx: list):
         tx = [i.to_rust() for i in tx]
         return self.cl.submit_all_with_metadata(tx, {})

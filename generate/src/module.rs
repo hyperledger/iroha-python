@@ -5,9 +5,8 @@ use std::iter::FromIterator;
 use std::ops::{Deref, DerefMut};
 
 use super::as_py::*;
+use color_eyre::eyre::{eyre, Result, WrapErr};
 use either::Either;
-use iroha_error::error;
-use iroha_error::{Result, WrapErr};
 use iroha_schema::Metadata;
 use syn::{Path, Type, TypePath};
 
@@ -107,7 +106,7 @@ impl Module {
         for (name, ty) in meta {
             let ty = ty.as_ref().right().unwrap();
             Self::write_meta(&mut f, name.clone(), ty.clone())
-                .wrap_err_with(|| error!("Failed to write metadata for type {}", name))?;
+                .wrap_err_with(|| eyre!("Failed to write metadata for type {}", name))?;
         }
         drop(f);
 
@@ -115,7 +114,7 @@ impl Module {
             let module = module.as_ref().left().unwrap();
             module
                 .write_dir_int(&dir.join(name), &r#in.clone().add(name.clone()))
-                .wrap_err_with(|| error!("Failed to write module {}", name))?;
+                .wrap_err_with(|| eyre!("Failed to write module {}", name))?;
         }
 
         Ok(())

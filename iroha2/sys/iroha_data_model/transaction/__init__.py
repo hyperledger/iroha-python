@@ -5,12 +5,13 @@ Payload = Struct[("account_id", "iroha_data_model.account.Id"),
                  ("time_to_live_ms", int), ("metadata", Dict)]
 
 RejectedTransaction = Struct[(
-    "payload", "iroha_data_model.transaction.Payload"), ("signatures", list), (
+    "payload",
+    "iroha_data_model.transaction.Payload"), ("signatures", "BTreeSet"), (
         "rejection_reason",
         "iroha_data_model.events.pipeline.TransactionRejectionReason")]
 
 Transaction = Struct[("payload", "iroha_data_model.transaction.Payload"),
-                     ("signatures", list)]
+                     ("signatures", "BTreeSet")]
 
 TransactionValue = Enum[(
     "Transaction", "iroha_data_model.transaction.VersionedTransaction"), (

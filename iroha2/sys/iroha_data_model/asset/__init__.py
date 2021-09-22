@@ -5,7 +5,8 @@ Asset = Struct[("id", "iroha_data_model.asset.Id"),
 
 AssetDefinition = Struct[("value_type",
                           "iroha_data_model.asset.AssetValueType"),
-                         ("id", "iroha_data_model.asset.DefinitionId")]
+                         ("id", "iroha_data_model.asset.DefinitionId"),
+                         ("metadata", "iroha_data_model.metadata.Metadata")]
 
 AssetDefinitionEntry = Struct[("definition",
                                "iroha_data_model.asset.AssetDefinition"),
