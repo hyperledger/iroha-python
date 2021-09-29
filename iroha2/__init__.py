@@ -13,6 +13,18 @@ class Client:
     def account(self):
         return self.cl.account
 
+    @account.setter
+    def account(self, account):
+        self.cl.account = account
+
+    @property
+    def headers(self):
+        return self.cl.headers
+
+    @headers.setter
+    def headers(self, headers):
+        self.cl.headers = headers
+
     def tx_body(self, tx: list):
         return self.cl.tx_body(tx, {})
 

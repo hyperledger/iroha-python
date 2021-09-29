@@ -8,6 +8,7 @@
     clippy::multiple_inherent_impl
 )]
 
+use std::collections::HashMap;
 use std::ops::{Deref, DerefMut};
 
 use iroha_client::{client, config::Configuration};
@@ -159,8 +160,26 @@ impl Client {
 
     /// Account field on client
     #[getter]
-    pub fn account(&self) -> Dict<AccountId> {
+    pub fn get_account(&self) -> Dict<AccountId> {
         Dict(self.account_id.clone())
+    }
+
+    /// Account field on client
+    #[setter]
+    pub fn set_account(&mut self, account: Dict<AccountId>) {
+        self.account_id = account.into_inner();
+    }
+
+    /// Headers field on client
+    #[getter]
+    pub fn get_headers(&self) -> HashMap<String, String> {
+        self.headers.clone()
+    }
+
+    /// Account field on client
+    #[setter]
+    pub fn set_headers(&mut self, headers: HashMap<String, String>) {
+        self.headers = headers;
     }
 }
 
