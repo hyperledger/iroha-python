@@ -49,57 +49,57 @@ impl KeyPair {
 
     /// Gets public key
     #[getter]
-    pub fn public(&self) -> Dict<PublicKey> {
-        Dict(self.public_key.clone())
+    pub fn public(&self) -> ToPy<PublicKey> {
+        ToPy(self.public_key.clone())
     }
 
     /// Gets private key
     #[getter]
-    pub fn private(&self) -> Dict<PrivateKey> {
-        Dict(self.private_key.clone())
+    pub fn private(&self) -> ToPy<PrivateKey> {
+        ToPy(self.private_key.clone())
     }
 }
 
 /// Hash bytes
 #[pyfunction]
-pub fn hash(bytes: Vec<u8>) -> Dict<Hash> {
-    Dict(Hash::new(&bytes))
+pub fn hash(bytes: Vec<u8>) -> ToPy<Hash> {
+    ToPy(Hash::new(&bytes))
 }
 
 /// Sign payload using keypair
 #[pyfunction]
-pub fn sign(keys: KeyPair, payload: Vec<u8>) -> PyResult<Dict<Signature>> {
+pub fn sign(keys: KeyPair, payload: Vec<u8>) -> PyResult<ToPy<Signature>> {
     iroha_crypto::Signature::new(keys.into(), &payload)
         .map_err(to_py_err)
-        .map(Dict)
+        .map(ToPy)
 }
 
 #[pymethods]
 impl Client {
     /// Creates new client
     #[new]
-    pub fn new(cfg: Dict<Configuration>) -> Self {
+    pub fn new(cfg: ToPy<Configuration>) -> Self {
         client::Client::new(&cfg).into()
     }
 
     /// Queries peer
     /// # Errors
     /// Can fail if there is no access to peer
-    pub fn request(&mut self, query: Dict<QueryBox>) -> PyResult<Dict<Value>> {
+    pub fn request(&mut self, query: ToPy<QueryBox>) -> PyResult<ToPy<Value>> {
         self.deref_mut()
             .request(query.into_inner())
             .map_err(to_py_err)
-            .map(Dict)
+            .map(ToPy)
     }
 
     /// Get transaction body
     /// # Errors
     pub fn tx_body(
         &mut self,
-        isi: Vec<Dict<Instruction>>,
-        metadata: Dict<UnlimitedMetadata>,
+        isi: Vec<ToPy<Instruction>>,
+        metadata: ToPy<UnlimitedMetadata>,
     ) -> PyResult<Vec<u8>> {
-        let isi = isi.into_iter().map(Dict::into_inner).collect();
+        let isi = isi.into_iter().map(ToPy::into_inner).collect();
         self.build_transaction(isi, metadata.into_inner())
             .map(VersionedTransaction::from)
             .map_err(to_py_err)
@@ -108,7 +108,7 @@ impl Client {
 
     /// Get transaction body
     /// # Errors
-    pub fn query_body(&mut self, request: Dict<QueryBox>) -> PyResult<Vec<u8>> {
+    pub fn query_body(&mut self, request: ToPy<QueryBox>) -> PyResult<Vec<u8>> {
         let request = QueryRequest::new(request.into_inner(), self.account_id.clone());
         request
             .sign(&self.cl.key_pair)
@@ -122,14 +122,14 @@ impl Client {
     /// Can fail if there is no access to peer
     pub fn submit_all_with_metadata(
         &mut self,
-        isi: Vec<Dict<Instruction>>,
-        metadata: Dict<UnlimitedMetadata>,
-    ) -> PyResult<Dict<Hash>> {
-        let isi = isi.into_iter().map(Dict::into_inner).collect();
+        isi: Vec<ToPy<Instruction>>,
+        metadata: ToPy<UnlimitedMetadata>,
+    ) -> PyResult<ToPy<Hash>> {
+        let isi = isi.into_iter().map(ToPy::into_inner).collect();
         self.deref_mut()
             .submit_all_with_metadata(isi, metadata.into_inner())
             .map_err(to_py_err)
-            .map(Dict)
+            .map(ToPy)
     }
 
     /// Sends transaction to peer and waits till its finalization
@@ -137,20 +137,20 @@ impl Client {
     /// Can fail if there is no access to peer
     pub fn submit_all_blocking_with_metadata(
         &mut self,
-        isi: Vec<Dict<Instruction>>,
-        metadata: Dict<UnlimitedMetadata>,
-    ) -> PyResult<Dict<Hash>> {
-        let isi = isi.into_iter().map(Dict::into_inner).collect();
+        isi: Vec<ToPy<Instruction>>,
+        metadata: ToPy<UnlimitedMetadata>,
+    ) -> PyResult<ToPy<Hash>> {
+        let isi = isi.into_iter().map(ToPy::into_inner).collect();
         self.deref_mut()
             .submit_all_blocking_with_metadata(isi, metadata.into_inner())
             .map_err(to_py_err)
-            .map(Dict)
+            .map(ToPy)
     }
 
     /// Listen on web socket events
     pub fn listen_for_events(
         &mut self,
-        event_filter: Dict<EventFilter>,
+        event_filter: ToPy<EventFilter>,
     ) -> PyResult<EventIterator> {
         self.deref_mut()
             .listen_for_events(*event_filter)
@@ -160,13 +160,13 @@ impl Client {
 
     /// Account field on client
     #[getter]
-    pub fn get_account(&self) -> Dict<AccountId> {
-        Dict(self.account_id.clone())
+    pub fn get_account(&self) -> ToPy<AccountId> {
+        ToPy(self.account_id.clone())
     }
 
     /// Account field on client
     #[setter]
-    pub fn set_account(&mut self, account: Dict<AccountId>) {
+    pub fn set_account(&mut self, account: ToPy<AccountId>) {
         self.account_id = account.into_inner();
     }
 
@@ -185,10 +185,10 @@ impl Client {
 
 #[pyproto]
 impl PyIterProtocol for EventIterator {
-    fn __next__(mut slf: PyRefMut<Self>) -> IterNextOutput<Dict<Event>, &'static str> {
+    fn __next__(mut slf: PyRefMut<Self>) -> IterNextOutput<ToPy<Event>, &'static str> {
         #[allow(clippy::unwrap_used)]
         match slf.next() {
-            Some(item) => IterNextOutput::Yield(Dict(item.unwrap())),
+            Some(item) => IterNextOutput::Yield(ToPy(item.unwrap())),
             None => IterNextOutput::Return("Ended"),
         }
     }

@@ -77,22 +77,22 @@ pub fn to_py_err(err: impl Into<color_eyre::eyre::Error>) -> PyErr {
 
 /// Type for easy and type-safe translation between python and rust
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
-pub struct Dict<T>(pub T);
+pub struct ToPy<T>(pub T);
 
-impl<T> Deref for Dict<T> {
+impl<T> Deref for ToPy<T> {
     type Target = T;
     fn deref(&self) -> &Self::Target {
         &self.0
     }
 }
 
-impl<T> DerefMut for Dict<T> {
+impl<T> DerefMut for ToPy<T> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
     }
 }
 
-impl<T> Dict<T> {
+impl<T> ToPy<T> {
     #[allow(clippy::missing_const_for_fn)]
     pub fn into_inner(self) -> T {
         self.0
@@ -100,12 +100,12 @@ impl<T> Dict<T> {
 }
 
 pub struct Pythonizer;
-impl<'py> PythonizeTypes<'py> for Pythonizer {
-    type Dict = types::dict::PythonizeDict<'py>;
-    type List = types::list::PythonizeList<'py>;
+impl PythonizeTypes for Pythonizer {
+    type Map = types::dict::PythonizeDict;
+    type List = types::list::PythonizeList;
 }
 
-impl<'source, T: serde::de::DeserializeOwned> FromPyObject<'source> for Dict<T> {
+impl<'source, T: serde::de::DeserializeOwned> FromPyObject<'source> for ToPy<T> {
     fn extract(obj: &'source PyAny) -> PyResult<Self> {
         let obj = if obj.hasattr("to_rust")? {
             obj.call_method0("to_rust")?
@@ -113,13 +113,11 @@ impl<'source, T: serde::de::DeserializeOwned> FromPyObject<'source> for Dict<T> 
             obj
         };
 
-        pythonize::depythonize_custom::<Pythonizer, _>(obj)
-            .map_err(to_py_err)
-            .map(Self)
+        pythonize::depythonize(obj).map_err(to_py_err).map(Self)
     }
 }
 
-impl<'source, T: serde::Serialize> IntoPy<PyObject> for Dict<T> {
+impl<'source, T: serde::Serialize> IntoPy<PyObject> for ToPy<T> {
     fn into_py(self, py: Python) -> PyObject {
         #[allow(clippy::expect_used)]
         pythonize::pythonize_custom::<Pythonizer, _>(py, &self.into_inner())
