@@ -33,5 +33,7 @@ QueryBox = Enum[
     ("FindAllPeers", "iroha_data_model.query.peer.FindAllPeers"),
     ("FindTransactionsByAccountId",
      "iroha_data_model.query.transaction.FindTransactionsByAccountId"),
+    ("FindTransactionByHash",
+     "iroha_data_model.query.transaction.FindTransactionByHash"),
     ("FindPermissionTokensByAccountId",
      "iroha_data_model.query.permissions.FindPermissionTokensByAccountId")]

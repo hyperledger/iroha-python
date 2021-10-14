@@ -20,8 +20,9 @@ iroha_data_model = { git = "https://github.com/hyperledger/iroha", branch = "iro
 iroha_version = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-dev" }
 
 color-eyre = "0.5"
-pythonize = { git = "https://github.com/i1i1/pythonize", branch = "dict" }
 parity-scale-codec = "2.2"
-pyo3 = { version = "0.14", features = ["extension-module"] }
+pyo3 = { git = "https://github.com/PyO3/pyo3", rev = "4ea03a3159401a91de7042726f2451317c955316", features = ["extension-module"] }
+#pythonize = { git = "https://github.com/davidhewitt/pythonize", branch = "main" }
+pythonize = { git = "https://github.com/i1i1/pythonize", branch = "fix-lifetimes" }
 serde = "1"
 serde_json = "1"

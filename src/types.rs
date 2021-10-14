@@ -2,7 +2,7 @@
 
 use std::collections::btree_map::IntoIter;
 use std::collections::BTreeMap;
-use std::convert::{TryFrom, TryInto};
+use std::convert::TryFrom;
 
 use color_eyre::eyre::eyre;
 use pyo3::basic::CompareOp;
@@ -11,7 +11,7 @@ use pyo3::conversion::{ToBorrowedObject, ToPyObject};
 use pyo3::exceptions::PyKeyError;
 use pyo3::types::{PyDict, PyList};
 use pyo3::{prelude::*, PyMappingProtocol, PyNativeType, PyObjectProtocol};
-use pythonize::types::*;
+use pythonize::{AsPyMapping, AsPySequence};
 
 pub use dict::Dict;
 pub use list::List;
@@ -19,7 +19,7 @@ pub use list::List;
 type Hash = isize;
 
 pub mod list {
-    use pyo3::PySequenceProtocol;
+    use pyo3::{types::PySequence, PySequenceProtocol};
 
     use crate::to_py_err;
 
@@ -45,48 +45,23 @@ pub mod list {
 
     /// List which implements pythonize sequence trait
     #[derive(Clone)]
-    pub struct PythonizeList<'py> {
-        py: Python<'py>,
-        list: List,
-    }
+    pub struct PythonizeList(pub Py<List>);
 
-    impl<'py> From<PythonizeList<'py>> for PyObject {
-        fn from(PythonizeList { py, list }: PythonizeList<'py>) -> Self {
-            list.into_py(py)
-        }
-    }
-
-    impl<'py> PythonizeSequence<'py> for PythonizeList<'py> {
-        fn new<T, U>(py: Python<'py>, elements: impl IntoIterator<Item = T, IntoIter = U>) -> Self
+    impl AsPySequence for PythonizeList {
+        fn new<T, U>(
+            py: Python,
+            elements: impl IntoIterator<Item = T, IntoIter = U>,
+        ) -> PyResult<Self>
         where
             T: ToPyObject,
             U: ExactSizeIterator<Item = T>,
         {
             let vec = elements.into_iter().map(move |k| k.to_object(py)).collect();
-            let list = List { vec };
-            Self { py, list }
+            Py::new(py, List { vec }).map(PythonizeList)
         }
 
-        fn py(&self) -> Python<'py> {
-            self.py
-        }
-
-        fn len(&self) -> usize {
-            self.list.vec.len()
-        }
-
-        fn downcast(obj: &'py PyAny) -> PyResult<Self> {
-            let py = obj.py();
-            let list = if obj.is_instance::<PyList>()? {
-                obj.downcast::<PyList>()?.into()
-            } else {
-                obj.extract()?
-            };
-            Ok(Self { py, list })
-        }
-
-        fn is_instance(obj: &'py PyAny) -> PyResult<bool> {
-            Ok(obj.is_instance::<List>()? || obj.is_instance::<PyList>()?)
+        fn as_sequence<'a>(&'a self, py: Python<'a>) -> PyResult<&'a PySequence> {
+            self.0.as_ref(py).downcast().map_err(Into::into)
         }
     }
 
@@ -175,6 +150,8 @@ pub mod list {
 }
 
 pub mod dict {
+    use pyo3::types::PyMapping;
+
     use super::*;
 
     /// Dictionary which can be hashed. Requires both keys and values to be hashable
@@ -503,78 +480,15 @@ pub mod dict {
 
     /// Pythonize dictionary which implements pythonize mapping trait
     #[derive(Clone)]
-    pub struct PythonizeDict<'py> {
-        py: Python<'py>,
-        dict: Dict,
-    }
+    pub struct PythonizeDict(Py<Dict>);
 
-    impl<'py> From<PythonizeDict<'py>> for Py<PyAny> {
-        fn from(PythonizeDict { py, dict }: PythonizeDict<'py>) -> Self {
-            dict.into_py(py)
-        }
-    }
-
-    impl<'py> PythonizeMapping<'py> for PythonizeDict<'py> {
-        type PyIter = std::vec::IntoIter<(PyObject, PyObject)>;
-
-        fn new(py: Python<'py>) -> Self {
-            Self {
-                py,
-                dict: Dict::default(),
-            }
+    impl AsPyMapping for PythonizeDict {
+        fn new(py: Python) -> PyResult<Self> {
+            Py::new(py, Dict::new()).map(PythonizeDict)
         }
 
-        fn py(&self) -> Python<'py> {
-            self.py
-        }
-
-        fn set_item<V, K>(&mut self, key: &K, value: &V) -> PyResult<()>
-        where
-            K: ToPyObject,
-            V: ToPyObject,
-        {
-            self.dict.set_item(self.py, key, value)
-        }
-
-        fn get_item<K>(&self, key: &K) -> Option<&PyAny>
-        where
-            K: ToBorrowedObject,
-        {
-            self.dict
-                .get_item(self.py, key)
-                .ok()
-                .flatten()
-                .map(|v| v.into_ref(self.py))
-        }
-
-        fn len(&self) -> usize {
-            self.dict.len()
-        }
-
-        fn keys(&self) -> &PyList {
-            PyList::new(self.py, self.dict.keys(self.py).collect::<Vec<_>>())
-        }
-
-        fn iter(&self) -> Self::PyIter {
-            self.dict
-                .iter(self.py)
-                .map(|(k, v)| (k.into_py(self.py), v.into_py(self.py)))
-                .collect::<Vec<_>>()
-                .into_iter()
-        }
-
-        fn downcast(obj: &'py PyAny) -> PyResult<Self> {
-            let py = obj.py();
-            let dict = if obj.is_instance::<PyDict>()? {
-                obj.downcast::<PyDict>()?.try_into()?
-            } else {
-                obj.extract()?
-            };
-            Ok(Self { py, dict })
-        }
-
-        fn is_instance(obj: &PyAny) -> PyResult<bool> {
-            Ok(obj.is_instance::<Dict>()? || obj.is_instance::<PyDict>()?)
+        fn as_mapping<'a>(&'a self, py: Python<'a>) -> PyResult<&'a PyMapping> {
+            self.0.as_ref(py).downcast().map_err(Into::into)
         }
     }
 }
