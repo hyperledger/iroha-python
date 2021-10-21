@@ -11,7 +11,7 @@ use pyo3::conversion::{ToBorrowedObject, ToPyObject};
 use pyo3::exceptions::PyKeyError;
 use pyo3::types::{PyDict, PyList};
 use pyo3::{prelude::*, PyMappingProtocol, PyNativeType, PyObjectProtocol};
-use pythonize::{AsPyMapping, AsPySequence};
+use pythonize::{PythonizeDictType, PythonizeListType};
 
 pub use dict::Dict;
 pub use list::List;
@@ -43,25 +43,20 @@ pub mod list {
         }
     }
 
-    /// List which implements pythonize sequence trait
-    #[derive(Clone)]
-    pub struct PythonizeList(pub Py<List>);
-
-    impl AsPySequence for PythonizeList {
-        fn new<T, U>(
+    impl PythonizeListType for List {
+        fn create_sequence<T, U>(
             py: Python,
             elements: impl IntoIterator<Item = T, IntoIter = U>,
-        ) -> PyResult<Self>
+        ) -> PyResult<&PySequence>
         where
             T: ToPyObject,
             U: ExactSizeIterator<Item = T>,
         {
             let vec = elements.into_iter().map(move |k| k.to_object(py)).collect();
-            Py::new(py, List { vec }).map(PythonizeList)
-        }
-
-        fn as_sequence<'a>(&'a self, py: Python<'a>) -> PyResult<&'a PySequence> {
-            self.0.as_ref(py).downcast().map_err(Into::into)
+            Py::new(py, List { vec })?
+                .into_ref(py)
+                .downcast()
+                .map_err(Into::into)
         }
     }
 
@@ -478,17 +473,12 @@ pub mod dict {
         }
     }
 
-    /// Pythonize dictionary which implements pythonize mapping trait
-    #[derive(Clone)]
-    pub struct PythonizeDict(Py<Dict>);
-
-    impl AsPyMapping for PythonizeDict {
-        fn new(py: Python) -> PyResult<Self> {
-            Py::new(py, Dict::new()).map(PythonizeDict)
-        }
-
-        fn as_mapping<'a>(&'a self, py: Python<'a>) -> PyResult<&'a PyMapping> {
-            self.0.as_ref(py).downcast().map_err(Into::into)
+    impl PythonizeDictType for Dict {
+        fn create_mapping(py: Python) -> PyResult<&PyMapping> {
+            Py::new(py, Dict::new())?
+                .into_ref(py)
+                .downcast()
+                .map_err(Into::into)
         }
     }
 }

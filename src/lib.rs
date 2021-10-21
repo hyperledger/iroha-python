@@ -111,7 +111,7 @@ impl Client {
     pub fn query_body(&mut self, request: ToPy<QueryBox>) -> PyResult<Vec<u8>> {
         let request = QueryRequest::new(request.into_inner(), self.account_id.clone());
         request
-            .sign(&self.cl.key_pair)
+            .sign(self.cl.key_pair.clone())
             .map(VersionedSignedQueryRequest::from)
             .map_err(to_py_err)
             .and_then(|req| req.encode_versioned().map_err(to_py_err))
@@ -128,6 +128,7 @@ impl Client {
         let isi = isi.into_iter().map(ToPy::into_inner).collect();
         self.deref_mut()
             .submit_all_with_metadata(isi, metadata.into_inner())
+            .map(|h| *h)
             .map_err(to_py_err)
             .map(ToPy)
     }
@@ -143,6 +144,7 @@ impl Client {
         let isi = isi.into_iter().map(ToPy::into_inner).collect();
         self.deref_mut()
             .submit_all_blocking_with_metadata(isi, metadata.into_inner())
+            .map(|h| *h)
             .map_err(to_py_err)
             .map(ToPy)
     }

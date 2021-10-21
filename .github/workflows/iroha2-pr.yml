@@ -6,7 +6,7 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    container: rust:1.54-buster
+    container: rust:1.56-buster
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies

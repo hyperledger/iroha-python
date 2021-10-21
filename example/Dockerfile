@@ -1,4 +1,4 @@
-FROM rust:1.54
+FROM rust:1.56
 
 RUN set -ex; \
     apt-get update -yq; \
