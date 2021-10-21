@@ -27,4 +27,4 @@ Value = Enum[("U32", int), ("Bool", bool), ("String", str),
               "iroha_data_model.transaction.TransactionValue"),
              ("PermissionToken",
               "iroha_data_model.permissions.PermissionToken"),
-             ("Hash", "iroha_crypto.Hash")]
+             ("Hash", "iroha_crypto.hash.Hash")]

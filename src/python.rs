@@ -101,8 +101,8 @@ impl<T> ToPy<T> {
 
 pub struct Pythonizer;
 impl PythonizeTypes for Pythonizer {
-    type Map = types::dict::PythonizeDict;
-    type List = types::list::PythonizeList;
+    type Map = types::dict::Dict;
+    type List = types::list::List;
 }
 
 impl<'source, T: serde::de::DeserializeOwned> FromPyObject<'source> for ToPy<T> {

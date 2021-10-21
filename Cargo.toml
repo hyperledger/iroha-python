@@ -22,7 +22,6 @@ iroha_version = { git = "https://github.com/hyperledger/iroha", branch = "iroha2
 color-eyre = "0.5"
 parity-scale-codec = "2.2"
 pyo3 = { git = "https://github.com/PyO3/pyo3", rev = "4ea03a3159401a91de7042726f2451317c955316", features = ["extension-module"] }
-#pythonize = { git = "https://github.com/davidhewitt/pythonize", branch = "main" }
-pythonize = { git = "https://github.com/i1i1/pythonize", branch = "fix-lifetimes" }
+pythonize = { git = "https://github.com/davidhewitt/pythonize", rev = "08e7c1bd61ba771bf50b4df910136ab7c02c98a0" }
 serde = "1"
 serde_json = "1"
