@@ -2,17 +2,17 @@ version: "3.3"
 
 services:
   iroha:
-    image: iroha1/iroha:iroha2-dev
+    image: hyperledger/iroha2:dev
     environment:
       TORII_P2P_ADDR: iroha:1337
       TORII_API_URL: iroha:8080
       IROHA_PUBLIC_KEY: "ed01207233bfc89dcbd68c19fde6ce6158225298ec1131b6a130d1aeb454c1ab5183c0"
       IROHA_PRIVATE_KEY: '{"digest_function": "ed25519", "payload": "9ac47abf59b356e0bd7dcbbbb4dec080e302156a48ca907e47cb6aea1d32719e7233bfc89dcbd68c19fde6ce6158225298ec1131b6a130d1aeb454c1ab5183c0"}'
       SUMERAGI_TRUSTED_PEERS: '[{"address":"iroha:1337", "public_key": "ed01207233bfc89dcbd68c19fde6ce6158225298ec1131b6a130d1aeb454c1ab5183c0"}, {"address":"iroha2:1338", "public_key": "ed0120cc25624d62896d3a0bfd8940f928dc2abf27cc57cefeb442aa96d9081aae58a1"}, {"address": "iroha3:1339", "public_key": "ed0120faca9e8aa83225cb4d16d67f27dd4f93fc30ffa11adc1f5c88fd5495ecc91020"}, {"address": "iroha4:1340", "public_key": "ed01208e351a70b6a603ed285d666b8d689b680865913ba03ce29fb7d13a166c4e7f1f"}]'
-    command: ./iroha_cli --submit-genesis
+    command: ./iroha --submit-genesis
 
   iroha2:
-    image: iroha1/iroha:iroha2-dev
+    image: hyperledger/iroha2:dev
     environment:
       TORII_P2P_ADDR: iroha2:1338
       TORII_API_URL: iroha2:8081
@@ -21,7 +21,7 @@ services:
       SUMERAGI_TRUSTED_PEERS: '[{"address":"iroha:1337", "public_key": "ed01207233bfc89dcbd68c19fde6ce6158225298ec1131b6a130d1aeb454c1ab5183c0"}, {"address":"iroha2:1338", "public_key": "ed0120cc25624d62896d3a0bfd8940f928dc2abf27cc57cefeb442aa96d9081aae58a1"}, {"address": "iroha3:1339", "public_key": "ed0120faca9e8aa83225cb4d16d67f27dd4f93fc30ffa11adc1f5c88fd5495ecc91020"}, {"address": "iroha4:1340", "public_key": "ed01208e351a70b6a603ed285d666b8d689b680865913ba03ce29fb7d13a166c4e7f1f"}]'
 
   iroha3:
-    image: iroha1/iroha:iroha2-dev
+    image: hyperledger/iroha2:dev
     environment:
       TORII_P2P_ADDR: iroha3:1339
       TORII_API_URL: iroha3:8082
@@ -30,7 +30,7 @@ services:
       SUMERAGI_TRUSTED_PEERS: '[{"address":"iroha:1337", "public_key": "ed01207233bfc89dcbd68c19fde6ce6158225298ec1131b6a130d1aeb454c1ab5183c0"}, {"address":"iroha2:1338", "public_key": "ed0120cc25624d62896d3a0bfd8940f928dc2abf27cc57cefeb442aa96d9081aae58a1"}, {"address": "iroha3:1339", "public_key": "ed0120faca9e8aa83225cb4d16d67f27dd4f93fc30ffa11adc1f5c88fd5495ecc91020"}, {"address": "iroha4:1340", "public_key": "ed01208e351a70b6a603ed285d666b8d689b680865913ba03ce29fb7d13a166c4e7f1f"}]'
 
   iroha4:
-    image: iroha1/iroha:iroha2-dev
+    image: hyperledger/iroha2:dev
     environment:
       TORII_P2P_ADDR: iroha4:1340
       TORII_API_URL: iroha4:8083

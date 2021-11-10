@@ -2,7 +2,7 @@ from ...rust import Enum, Struct, Tuple, Dict
 
 Payload = Struct[("account_id", "iroha_data_model.account.Id"),
                  ("instructions", list), ("creation_time", int),
-                 ("time_to_live_ms", int), ("metadata", Dict)]
+                 ("time_to_live_ms", int), ("nonce", int), ("metadata", Dict)]
 
 RejectedTransaction = Struct[
     ("payload", "iroha_data_model.transaction.Payload"),

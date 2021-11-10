@@ -49,15 +49,4 @@ class Client:
         return self.cl.request(_Query(query))
 
     def listen(self, events_kind):
-        return Listener(self.cl.listen_for_events(events_kind))
-
-
-class Listener:
-    def __init__(self, listener):
-        self.it = listener
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        return self.it.__next__()
+        return self.cl.listen_for_events(events_kind)

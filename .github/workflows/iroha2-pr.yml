@@ -32,7 +32,30 @@ jobs:
           yapf --style pep8 -r -i iroha2 example
           git diff --quiet
 
-  test:
+  pytest:
+    runs-on: ubuntu-latest
+    container: rust:1.56-buster
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            build-essential \
+            ca-certificates \
+            clang \
+            git \
+            llvm-dev \
+            python3-pip
+          pip3 install --upgrade pip
+          pip3 install maturin pytest
+      - name: Install iroha2
+        run: maturin build && pip3 install target/wheels/*
+      - name: Pytest
+        working-directory: tests
+        run: pytest
+
+  integration-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -47,4 +70,6 @@ jobs:
         working-directory: example
         run: |
           docker-compose up -d
-          docker run --net example_default -v $PWD:/test iroha:python-test python3 test.py
+          docker run --net example_default -v $PWD:/test iroha:python-test \
+              timeout 3 python3 test.py ||
+              (docker-compose logs && false)

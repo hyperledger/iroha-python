@@ -72,7 +72,23 @@ macro_rules! wrap_class {
 
 /// Into py error converter
 pub fn to_py_err(err: impl Into<color_eyre::eyre::Error>) -> PyErr {
-    PyException::new_err(err.into().to_string())
+    fn to_string(mut err: &dyn std::error::Error) -> String {
+        let mut s = String::new();
+        let mut idx = 0;
+        loop {
+            s += &format!("    {}: {}\n", idx, &err.to_string());
+            idx += 1;
+            match err.source() {
+                Some(e) => err = e,
+                None => return s,
+            }
+        }
+    }
+
+    let err = err.into();
+    let s = format!("Error: {}\n", err);
+
+    PyException::new_err(s + &to_string(err.root_cause()))
 }
 
 /// Type for easy and type-safe translation between python and rust
