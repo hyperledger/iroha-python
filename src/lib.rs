@@ -187,12 +187,16 @@ impl Client {
 
 #[pyproto]
 impl PyIterProtocol for EventIterator {
+    fn __iter__(slf: PyRefMut<Self>) -> PyRefMut<Self> {
+        slf
+    }
+
     fn __next__(mut slf: PyRefMut<Self>) -> IterNextOutput<ToPy<Event>, &'static str> {
         #[allow(clippy::unwrap_used)]
-        match slf.next() {
-            Some(item) => IterNextOutput::Yield(ToPy(item.unwrap())),
-            None => IterNextOutput::Return("Ended"),
-        }
+        slf.next()
+            .map(Result::unwrap)
+            .map(ToPy)
+            .map_or(IterNextOutput::Return("Ended"), IterNextOutput::Yield)
     }
 }
 

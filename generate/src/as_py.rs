@@ -15,7 +15,7 @@ pub struct ModulePath {
     pub mods: Vec<String>,
 }
 
-#[derive(PartialEq, Eq, Clone, Hash, Debug)]
+#[derive(Clone)]
 pub struct RustType {
     /// in module
     module: ModulePath,

@@ -1,6 +1,6 @@
 # Export
 from importlib import import_module
-from ..iroha2 import Dict
+from ..iroha2 import Dict, List
 
 ClassPath = str
 

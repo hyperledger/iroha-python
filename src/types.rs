@@ -19,7 +19,14 @@ pub use list::List;
 type Hash = isize;
 
 pub mod list {
-    use pyo3::{types::PySequence, PySequenceProtocol};
+    // Because of `*` glob in List::new
+    #![allow(clippy::unwrap_used)]
+
+    use pyo3::{
+        exceptions::PyIndexError,
+        types::{PySequence, PyTuple},
+        PySequenceProtocol,
+    };
 
     use crate::to_py_err;
 
@@ -74,6 +81,27 @@ pub mod list {
         }
     }
 
+    #[pymethods]
+    impl List {
+        #[new]
+        #[args(items = "*")]
+        pub fn new(items: &PyTuple) -> Self {
+            let py = items.py();
+            let vec = items.into_iter().map(|i| i.into_py(py)).collect();
+            Self { vec }
+        }
+
+        pub fn append(&mut self, elem: PyObject) {
+            self.vec.push(elem)
+        }
+
+        pub fn pop(&mut self) -> PyResult<PyObject> {
+            self.vec
+                .pop()
+                .ok_or_else(|| pyo3::exceptions::PyIndexError::new_err(""))
+        }
+    }
+
     #[pyproto]
     impl PyObjectProtocol for List {
         /// Comparison which relies on hashes
@@ -122,8 +150,7 @@ pub mod list {
             self.vec
                 .get(idx)
                 .map(Clone::clone)
-                .ok_or_else(|| eyre!("Failed to get item at index {}", idx))
-                .map_err(to_py_err)
+                .ok_or_else(|| PyIndexError::new_err("list index out of range"))
         }
 
         fn __setitem__(&mut self, idx: isize, value: PyObject) -> PyResult<()> {
@@ -168,11 +195,7 @@ pub mod dict {
     impl TryFrom<&PyDict> for Dict {
         type Error = PyErr;
         fn try_from(dict: &PyDict) -> PyResult<Self> {
-            let mut map = Dict::new();
-            for (k, v) in dict {
-                map.set_item(dict.py(), k, v)?;
-            }
-            Ok(map)
+            Dict::new(dict.py(), Some(dict))
         }
     }
 
@@ -311,8 +334,14 @@ pub mod dict {
     impl Dict {
         /// Constructor
         #[new]
-        pub fn new() -> Self {
-            Self::default()
+        #[args(items = "**")]
+        pub fn new(py: Python, items: Option<&PyDict>) -> PyResult<Self> {
+            let items = items.unwrap_or_else(|| PyDict::new(py));
+            let mut me = Self::default();
+            for (k, v) in items {
+                me.set_item(py, k, v)?;
+            }
+            Ok(me)
         }
 
         /// Returns an iterator over keys
@@ -330,6 +359,13 @@ pub mod dict {
         /// Returns an iterator over both keys and values
         fn items(&self) -> Items {
             Items::new(self.clone())
+        }
+    }
+
+    #[pyproto]
+    impl PyIterProtocol for Dict {
+        fn __iter__(slf: PyRef<Self>) -> Keys {
+            slf._keys()
         }
     }
 
@@ -391,7 +427,7 @@ pub mod dict {
     }
 
     #[pyclass]
-    struct Items {
+    pub struct Items {
         dict: IntoIter<Hash, BTreeMap<Hash, (PyObject, PyObject)>>,
         bucket: Option<IntoIter<Hash, (PyObject, PyObject)>>,
     }
@@ -420,7 +456,7 @@ pub mod dict {
     }
 
     #[pyclass]
-    struct Keys {
+    pub struct Keys {
         items: Items,
     }
 
@@ -432,7 +468,7 @@ pub mod dict {
     }
 
     #[pyclass]
-    struct Values {
+    pub struct Values {
         items: Items,
     }
 
@@ -445,6 +481,10 @@ pub mod dict {
 
     #[pyproto]
     impl PyIterProtocol for Items {
+        fn __iter__(slf: PyRef<Self>) -> PyRef<Self> {
+            slf
+        }
+
         fn __next__(mut slf: PyRefMut<Self>) -> IterNextOutput<(PyObject, PyObject), ()> {
             match slf.next() {
                 Some(entry) => IterNextOutput::Yield(entry),
@@ -455,6 +495,10 @@ pub mod dict {
 
     #[pyproto]
     impl PyIterProtocol for Keys {
+        fn __iter__(slf: PyRef<Self>) -> PyRef<Self> {
+            slf
+        }
+
         fn __next__(mut slf: PyRefMut<Self>) -> IterNextOutput<PyObject, ()> {
             match slf.items.next() {
                 Some((entry, _)) => IterNextOutput::Yield(entry),
@@ -465,6 +509,10 @@ pub mod dict {
 
     #[pyproto]
     impl PyIterProtocol for Values {
+        fn __iter__(slf: PyRef<Self>) -> PyRef<Self> {
+            slf
+        }
+
         fn __next__(mut slf: PyRefMut<Self>) -> IterNextOutput<PyObject, ()> {
             match slf.items.next() {
                 Some((_, entry)) => IterNextOutput::Yield(entry),
@@ -475,7 +523,7 @@ pub mod dict {
 
     impl PythonizeDictType for Dict {
         fn create_mapping(py: Python) -> PyResult<&PyMapping> {
-            Py::new(py, Dict::new())?
+            Py::new(py, Dict::default())?
                 .into_ref(py)
                 .downcast()
                 .map_err(Into::into)
