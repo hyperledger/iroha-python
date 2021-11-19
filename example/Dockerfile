@@ -1,4 +1,4 @@
-FROM rust:1.56
+FROM rust:1.56-buster
 
 RUN set -ex; \
     apt-get update -yq; \

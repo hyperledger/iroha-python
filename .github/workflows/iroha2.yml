@@ -2,15 +2,24 @@ name: Iroha 2 main branch workflow
 on:
   push:
     branches: [iroha2]
+  pull_request:
+    branches: [iroha2]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: rust:1.56-buster
     steps:
       - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends python3-pip
+          pip3 install --upgrade pip
+          pip3 install maturin
 
-      - name: Build wheel
-        run: docker run --rm -v $(pwd):/io konstin2/maturin build --strip --release
+      - name: Build wheels
+        run: maturin build
 
       - name: Archive wheel
         uses: actions/upload-artifact@v1
