@@ -5,6 +5,17 @@ from ..iroha2 import Dict, List
 ClassPath = str
 
 
+def query(*path):
+    class IntoInner:
+        @staticmethod
+        def parse_output(out):
+            for p in path:
+                out = out[p]
+            return out
+
+    return IntoInner
+
+
 def to_rust(obj):
     if isinstance(obj, list):
         return [to_rust(i) for i in obj]

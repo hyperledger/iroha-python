@@ -46,7 +46,6 @@ directories:
 There is a need to regenerate sys sources and update client library after major rust updates in data model.
 
 ```sh
-cd generate
-cargo run ../iroha2/sys
+cargo run -p generate -- iroha2/sys
+yapf --style pep8 -r -i iroha2 example
 ```
-
