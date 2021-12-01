@@ -15,7 +15,7 @@ IdentifiableBox = Enum[("Account", "iroha_data_model.account.Account"),
                                                                 type(None))]
 Parameter = Enum[("MaximumFaultyPeersAmount", int), ("BlockTime", int),
                  ("CommitTime", int), ("TransactionReceiptTime", int)]
-Value = Enum[("U32", int), ("Bool", bool), ("String", str),
+Value = Enum[("U32", int), ("U128", int), ("Bool", bool), ("String", str),
              ("Fixed", "iroha_data_model.fixed.Fixed"), ("Vec", list),
              ("Id", "iroha_data_model.IdBox"),
              ("Identifiable", "iroha_data_model.IdentifiableBox"),

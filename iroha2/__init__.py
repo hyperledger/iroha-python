@@ -45,8 +45,9 @@ class Client:
     def submit_isi_blocking(self, isi):
         return self.submit_tx_blocking([_Instruction(isi)])
 
-    def query(self, query):
-        return self.cl.request(_Query(query))
+    def query(self, q):
+        out = self.cl.request(_Query(q))
+        return q.parse_output(out) if hasattr(q, "parse_output") else out
 
     def listen(self, events_kind):
         return self.cl.listen_for_events(events_kind)

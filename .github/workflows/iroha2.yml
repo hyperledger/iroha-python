@@ -2,8 +2,6 @@ name: Iroha 2 main branch workflow
 on:
   push:
     branches: [iroha2]
-  pull_request:
-    branches: [iroha2]
 
 jobs:
   build:
