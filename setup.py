@@ -17,10 +17,10 @@ setuptools.setup(
         exclude=['dist', 'build', '*.pyc', '.DS_Store',
                  '.vscode',  '.idea', '__pycache__', '*.bak']),
     install_requires=[
-        'protobuf>=3.5.2.post1',
+        'protobuf>=3.8.0',
         'grpcio-tools>=1.12.1',
         'pysha3;python_version<"3.6"',
-
+        'pynacl>=1.4.0'
     ],
     classifiers=[
         'Programming Language :: Python :: 3',

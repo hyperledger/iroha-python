@@ -5,6 +5,9 @@
 
 syntax = "proto3";
 package iroha.protocol;
+
+option go_package = "iroha.generated/protocol";
+
 import "block.proto";
 import "transaction.proto";
 import "primitive.proto";
@@ -37,10 +40,16 @@ message AccountAsset {
 // *** Responses *** //
 message AccountAssetResponse {
   repeated AccountAsset account_assets = 1;
+  uint32 total_number = 2;
+  oneof opt_next_asset_id {
+    string next_asset_id = 3;
+  }
 }
 
 message AccountDetailResponse {
   string detail = 1;
+  uint64 total_number = 2;
+  AccountDetailRecordId next_record_id = 3;
 }
 
 message AccountResponse {
@@ -93,6 +102,24 @@ message TransactionsPageResponse {
   }
 }
 
+message PendingTransactionsPageResponse {
+  message BatchInfo {
+    string first_tx_hash = 1;
+    uint32 batch_size = 2;
+  }
+  repeated Transaction transactions = 1;
+  uint32 all_transactions_size = 2;
+  BatchInfo next_batch_info = 3;
+}
+
+message PeersResponse {
+  repeated Peer peers = 1;
+}
+
+message EngineReceiptsResponse {
+  repeated EngineReceipt engine_receipts = 1;
+}
+
 message QueryResponse {
   oneof response {
     AccountAssetResponse account_assets_response = 1;
@@ -105,7 +132,10 @@ message QueryResponse {
     RolesResponse roles_response = 8;
     RolePermissionsResponse role_permissions_response = 9;
     TransactionsPageResponse transactions_page_response = 11;
+    PendingTransactionsPageResponse pending_transactions_page_response = 13;
     BlockResponse block_response = 12;
+    PeersResponse peers_response = 14;
+    EngineReceiptsResponse engine_receipts_response = 15;
   }
   string query_hash = 10;
 }
