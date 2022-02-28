@@ -4,6 +4,7 @@
 """Generated protocol buffer code."""
 from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -214,6 +215,58 @@ BlocksQuery = _reflection.GeneratedProtocolMessageType('BlocksQuery', (_message.
   })
 _sym_db.RegisterMessage(BlocksQuery)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'Z\030iroha.generated/protocol'
+  _FIELD._serialized_start=2959
+  _FIELD._serialized_end=2999
+  _DIRECTION._serialized_start=3001
+  _DIRECTION._serialized_end=3045
+  _ORDERING._serialized_start=84
+  _ORDERING._serialized_end=253
+  _ORDERING_FIELDORDERING._serialized_start=154
+  _ORDERING_FIELDORDERING._serialized_end=253
+  _TXPAGINATIONMETA._serialized_start=256
+  _TXPAGINATIONMETA._serialized_end=627
+  _ASSETPAGINATIONMETA._serialized_start=629
+  _ASSETPAGINATIONMETA._serialized_end=717
+  _GETACCOUNT._serialized_start=719
+  _GETACCOUNT._serialized_end=751
+  _GETBLOCK._serialized_start=753
+  _GETBLOCK._serialized_end=779
+  _GETSIGNATORIES._serialized_start=781
+  _GETSIGNATORIES._serialized_end=817
+  _GETACCOUNTTRANSACTIONS._serialized_start=819
+  _GETACCOUNTTRANSACTIONS._serialized_end=922
+  _GETACCOUNTASSETTRANSACTIONS._serialized_start=924
+  _GETACCOUNTASSETTRANSACTIONS._serialized_end=1050
+  _GETTRANSACTIONS._serialized_start=1052
+  _GETTRANSACTIONS._serialized_end=1088
+  _GETACCOUNTASSETS._serialized_start=1090
+  _GETACCOUNTASSETS._serialized_end=1190
+  _ACCOUNTDETAILPAGINATIONMETA._serialized_start=1192
+  _ACCOUNTDETAILPAGINATIONMETA._serialized_end=1304
+  _GETACCOUNTDETAIL._serialized_start=1307
+  _GETACCOUNTDETAIL._serialized_end=1493
+  _GETASSETINFO._serialized_start=1495
+  _GETASSETINFO._serialized_end=1527
+  _GETROLES._serialized_start=1529
+  _GETROLES._serialized_end=1539
+  _GETROLEPERMISSIONS._serialized_start=1541
+  _GETROLEPERMISSIONS._serialized_end=1578
+  _GETPENDINGTRANSACTIONS._serialized_start=1580
+  _GETPENDINGTRANSACTIONS._serialized_end=1663
+  _GETPEERS._serialized_start=1665
+  _GETPEERS._serialized_end=1675
+  _QUERYPAYLOADMETA._serialized_start=1677
+  _QUERYPAYLOADMETA._serialized_end=1768
+  _GETENGINERECEIPTS._serialized_start=1770
+  _GETENGINERECEIPTS._serialized_end=1806
+  _QUERY._serialized_start=1809
+  _QUERY._serialized_end=2848
+  _QUERY_PAYLOAD._serialized_start=1913
+  _QUERY_PAYLOAD._serialized_end=2848
+  _BLOCKSQUERY._serialized_start=2850
+  _BLOCKSQUERY._serialized_end=2957
 # @@protoc_insertion_point(module_scope)

@@ -4,6 +4,7 @@
 """Generated protocol buffer code."""
 from google.protobuf.internal import enum_type_wrapper
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -129,6 +130,24 @@ EngineReceipt = _reflection.GeneratedProtocolMessageType('EngineReceipt', (_mess
   })
 _sym_db.RegisterMessage(EngineReceipt)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'Z\030iroha.generated/protocol'
+  _ROLEPERMISSION._serialized_start=567
+  _ROLEPERMISSION._serialized_end=1974
+  _GRANTABLEPERMISSION._serialized_start=1977
+  _GRANTABLEPERMISSION._serialized_end=2169
+  _SIGNATURE._serialized_start=35
+  _SIGNATURE._serialized_end=85
+  _PEER._serialized_start=87
+  _PEER._serialized_end=192
+  _ACCOUNTDETAILRECORDID._serialized_start=194
+  _ACCOUNTDETAILRECORDID._serialized_end=246
+  _ENGINELOG._serialized_start=248
+  _ENGINELOG._serialized_end=306
+  _CALLRESULT._serialized_start=308
+  _CALLRESULT._serialized_end=357
+  _ENGINERECEIPT._serialized_start=360
+  _ENGINERECEIPT._serialized_end=564
 # @@protoc_insertion_point(module_scope)

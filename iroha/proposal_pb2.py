@@ -3,6 +3,7 @@
 # source: proposal.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -26,6 +27,10 @@ Proposal = _reflection.GeneratedProtocolMessageType('Proposal', (_message.Messag
   })
 _sym_db.RegisterMessage(Proposal)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'Z\030iroha.generated/protocol'
+  _PROPOSAL._serialized_start=53
+  _PROPOSAL._serialized_end=152
 # @@protoc_insertion_point(module_scope)

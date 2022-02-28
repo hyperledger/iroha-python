@@ -3,6 +3,7 @@
 # source: block.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -44,6 +45,14 @@ Block = _reflection.GeneratedProtocolMessageType('Block', (_message.Message,), {
   })
 _sym_db.RegisterMessage(Block)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'Z\030iroha.generated/protocol'
+  _BLOCK_V1._serialized_start=68
+  _BLOCK_V1._serialized_end=359
+  _BLOCK_V1_PAYLOAD._serialized_start=179
+  _BLOCK_V1_PAYLOAD._serialized_end=359
+  _BLOCK._serialized_start=361
+  _BLOCK._serialized_end=431
 # @@protoc_insertion_point(module_scope)

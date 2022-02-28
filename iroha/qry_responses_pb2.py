@@ -3,6 +3,7 @@
 # source: qry_responses.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -199,6 +200,63 @@ BlockQueryResponse = _reflection.GeneratedProtocolMessageType('BlockQueryRespons
   })
 _sym_db.RegisterMessage(BlockQueryResponse)
 
+HealthcheckData = _reflection.GeneratedProtocolMessageType('HealthcheckData', (_message.Message,), {
+  'DESCRIPTOR' : _HEALTHCHECKDATA,
+  '__module__' : 'qry_responses_pb2'
+  # @@protoc_insertion_point(class_scope:iroha.protocol.HealthcheckData)
+  })
+_sym_db.RegisterMessage(HealthcheckData)
 
-DESCRIPTOR._options = None
+if _descriptor._USE_C_DESCRIPTORS == False:
+
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'Z\030iroha.generated/protocol'
+  _ASSET._serialized_start=88
+  _ASSET._serialized_end=151
+  _DOMAIN._serialized_start=153
+  _DOMAIN._serialized_end=202
+  _ACCOUNT._serialized_start=204
+  _ACCOUNT._serialized_end=287
+  _ACCOUNTASSET._serialized_start=289
+  _ACCOUNTASSET._serialized_end=358
+  _ACCOUNTASSETRESPONSE._serialized_start=361
+  _ACCOUNTASSETRESPONSE._serialized_end=505
+  _ACCOUNTDETAILRESPONSE._serialized_start=507
+  _ACCOUNTDETAILRESPONSE._serialized_end=631
+  _ACCOUNTRESPONSE._serialized_start=633
+  _ACCOUNTRESPONSE._serialized_end=715
+  _ASSETRESPONSE._serialized_start=717
+  _ASSETRESPONSE._serialized_end=770
+  _ROLESRESPONSE._serialized_start=772
+  _ROLESRESPONSE._serialized_end=802
+  _ROLEPERMISSIONSRESPONSE._serialized_start=804
+  _ROLEPERMISSIONSRESPONSE._serialized_end=882
+  _ERRORRESPONSE._serialized_start=885
+  _ERRORRESPONSE._serialized_end=1176
+  _ERRORRESPONSE_REASON._serialized_start=994
+  _ERRORRESPONSE_REASON._serialized_end=1176
+  _SIGNATORIESRESPONSE._serialized_start=1178
+  _SIGNATORIESRESPONSE._serialized_end=1213
+  _TRANSACTIONSRESPONSE._serialized_start=1215
+  _TRANSACTIONSRESPONSE._serialized_end=1288
+  _TRANSACTIONSPAGERESPONSE._serialized_start=1291
+  _TRANSACTIONSPAGERESPONSE._serialized_end=1440
+  _PENDINGTRANSACTIONSPAGERESPONSE._serialized_start=1443
+  _PENDINGTRANSACTIONSPAGERESPONSE._serialized_end=1698
+  _PENDINGTRANSACTIONSPAGERESPONSE_BATCHINFO._serialized_start=1644
+  _PENDINGTRANSACTIONSPAGERESPONSE_BATCHINFO._serialized_end=1698
+  _PEERSRESPONSE._serialized_start=1700
+  _PEERSRESPONSE._serialized_end=1752
+  _ENGINERECEIPTSRESPONSE._serialized_start=1754
+  _ENGINERECEIPTSRESPONSE._serialized_end=1834
+  _QUERYRESPONSE._serialized_start=1837
+  _QUERYRESPONSE._serialized_end=2846
+  _BLOCKRESPONSE._serialized_start=2848
+  _BLOCKRESPONSE._serialized_end=2901
+  _BLOCKERRORRESPONSE._serialized_start=2903
+  _BLOCKERRORRESPONSE._serialized_end=2940
+  _BLOCKQUERYRESPONSE._serialized_start=2943
+  _BLOCKQUERYRESPONSE._serialized_end=3100
+  _HEALTHCHECKDATA._serialized_start=3103
+  _HEALTHCHECKDATA._serialized_end=3364
 # @@protoc_insertion_point(module_scope)

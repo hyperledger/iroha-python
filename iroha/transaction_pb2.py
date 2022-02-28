@@ -3,6 +3,7 @@
 # source: transaction.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -55,6 +56,18 @@ _sym_db.RegisterMessage(Transaction.Payload)
 _sym_db.RegisterMessage(Transaction.Payload.BatchMeta)
 _sym_db.RegisterMessage(Transaction.Payload.ReducedPayload)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'Z\030iroha.generated/protocol'
+  _TRANSACTION._serialized_start=71
+  _TRANSACTION._serialized_end=635
+  _TRANSACTION_PAYLOAD._serialized_start=188
+  _TRANSACTION_PAYLOAD._serialized_end=635
+  _TRANSACTION_PAYLOAD_BATCHMETA._serialized_start=341
+  _TRANSACTION_PAYLOAD_BATCHMETA._serialized_end=485
+  _TRANSACTION_PAYLOAD_BATCHMETA_BATCHTYPE._serialized_start=449
+  _TRANSACTION_PAYLOAD_BATCHMETA_BATCHTYPE._serialized_end=485
+  _TRANSACTION_PAYLOAD_REDUCEDPAYLOAD._serialized_start=487
+  _TRANSACTION_PAYLOAD_REDUCEDPAYLOAD._serialized_end=612
 # @@protoc_insertion_point(module_scope)

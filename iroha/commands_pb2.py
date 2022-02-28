@@ -3,6 +3,7 @@
 # source: commands.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -187,6 +188,52 @@ Command = _reflection.GeneratedProtocolMessageType('Command', (_message.Message,
   })
 _sym_db.RegisterMessage(Command)
 
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-DESCRIPTOR._options = None
+  DESCRIPTOR._options = None
+  DESCRIPTOR._serialized_options = b'Z\030iroha.generated/protocol'
+  _ADDASSETQUANTITY._serialized_start=51
+  _ADDASSETQUANTITY._serialized_end=103
+  _ADDPEER._serialized_start=105
+  _ADDPEER._serialized_end=150
+  _REMOVEPEER._serialized_start=152
+  _REMOVEPEER._serialized_end=184
+  _ADDSIGNATORY._serialized_start=186
+  _ADDSIGNATORY._serialized_end=240
+  _CREATEASSET._serialized_start=242
+  _CREATEASSET._serialized_end=313
+  _CREATEACCOUNT._serialized_start=315
+  _CREATEACCOUNT._serialized_end=391
+  _SETACCOUNTDETAIL._serialized_start=393
+  _SETACCOUNTDETAIL._serialized_end=459
+  _CREATEDOMAIN._serialized_start=461
+  _CREATEDOMAIN._serialized_end=516
+  _REMOVESIGNATORY._serialized_start=518
+  _REMOVESIGNATORY._serialized_end=575
+  _SETACCOUNTQUORUM._serialized_start=577
+  _SETACCOUNTQUORUM._serialized_end=631
+  _TRANSFERASSET._serialized_start=633
+  _TRANSFERASSET._serialized_end=752
+  _APPENDROLE._serialized_start=754
+  _APPENDROLE._serialized_end=805
+  _DETACHROLE._serialized_start=807
+  _DETACHROLE._serialized_end=858
+  _CREATEROLE._serialized_start=860
+  _CREATEROLE._serialized_end=944
+  _GRANTPERMISSION._serialized_start=946
+  _GRANTPERMISSION._serialized_end=1040
+  _REVOKEPERMISSION._serialized_start=1042
+  _REVOKEPERMISSION._serialized_end=1137
+  _SUBTRACTASSETQUANTITY._serialized_start=1139
+  _SUBTRACTASSETQUANTITY._serialized_end=1196
+  _COMPAREANDSETACCOUNTDETAIL._serialized_start=1199
+  _COMPAREANDSETACCOUNTDETAIL._serialized_end=1334
+  _SETSETTINGVALUE._serialized_start=1336
+  _SETSETTINGVALUE._serialized_end=1381
+  _CALLENGINE._serialized_start=1384
+  _CALLENGINE._serialized_end=1541
+  _CALLENGINE_ENGINETYPE._serialized_start=1500
+  _CALLENGINE_ENGINETYPE._serialized_end=1527
+  _COMMAND._serialized_start=1544
+  _COMMAND._serialized_end=2740
 # @@protoc_insertion_point(module_scope)
