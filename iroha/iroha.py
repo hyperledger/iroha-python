@@ -197,7 +197,7 @@ class Iroha(object):
               created_time=None, page_size=None,
               first_tx_hash=None, first_tx_time=None,
               last_tx_time=None, first_tx_height=None,
-	      ordering_sequence=None,
+              ordering_sequence=None,
               last_tx_height=None, **kwargs):
         """
         Creates a protobuf query with specified set of entities
