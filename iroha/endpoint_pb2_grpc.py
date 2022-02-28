@@ -188,6 +188,11 @@ class QueryService_v1Stub(object):
                 request_serializer=queries__pb2.BlocksQuery.SerializeToString,
                 response_deserializer=qry__responses__pb2.BlockQueryResponse.FromString,
                 )
+        self.Healthcheck = channel.unary_unary(
+                '/iroha.protocol.QueryService_v1/Healthcheck',
+                request_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+                response_deserializer=qry__responses__pb2.HealthcheckData.FromString,
+                )
 
 
 class QueryService_v1Servicer(object):
@@ -205,6 +210,12 @@ class QueryService_v1Servicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Healthcheck(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_QueryService_v1Servicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -217,6 +228,11 @@ def add_QueryService_v1Servicer_to_server(servicer, server):
                     servicer.FetchCommits,
                     request_deserializer=queries__pb2.BlocksQuery.FromString,
                     response_serializer=qry__responses__pb2.BlockQueryResponse.SerializeToString,
+            ),
+            'Healthcheck': grpc.unary_unary_rpc_method_handler(
+                    servicer.Healthcheck,
+                    request_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                    response_serializer=qry__responses__pb2.HealthcheckData.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -259,5 +275,22 @@ class QueryService_v1(object):
         return grpc.experimental.unary_stream(request, target, '/iroha.protocol.QueryService_v1/FetchCommits',
             queries__pb2.BlocksQuery.SerializeToString,
             qry__responses__pb2.BlockQueryResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Healthcheck(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/iroha.protocol.QueryService_v1/Healthcheck',
+            google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            qry__responses__pb2.HealthcheckData.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

@@ -24,7 +24,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z\030iroha.generated/protocol',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x0e\x65ndpoint.proto\x12\x0eiroha.protocol\x1a\x11transaction.proto\x1a\rqueries.proto\x1a\x13qry_responses.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x94\x01\n\rToriiResponse\x12+\n\ttx_status\x18\x01 \x01(\x0e\x32\x18.iroha.protocol.TxStatus\x12\x0f\n\x07tx_hash\x18\x02 \x01(\t\x12\x17\n\x0f\x65rr_or_cmd_name\x18\x03 \x01(\t\x12\x18\n\x10\x66\x61iled_cmd_index\x18\x04 \x01(\x04\x12\x12\n\nerror_code\x18\x05 \x01(\r\"\"\n\x0fTxStatusRequest\x12\x0f\n\x07tx_hash\x18\x01 \x01(\t\";\n\x06TxList\x12\x31\n\x0ctransactions\x18\x01 \x03(\x0b\x32\x1b.iroha.protocol.Transaction*\x80\x02\n\x08TxStatus\x12\x1f\n\x1bSTATELESS_VALIDATION_FAILED\x10\x00\x12 \n\x1cSTATELESS_VALIDATION_SUCCESS\x10\x01\x12\x1e\n\x1aSTATEFUL_VALIDATION_FAILED\x10\x02\x12\x1f\n\x1bSTATEFUL_VALIDATION_SUCCESS\x10\x03\x12\x0c\n\x08REJECTED\x10\x04\x12\r\n\tCOMMITTED\x10\x05\x12\x0f\n\x0bMST_EXPIRED\x10\x06\x12\x10\n\x0cNOT_RECEIVED\x10\x07\x12\x0f\n\x0bMST_PENDING\x10\x08\x12\x1f\n\x1b\x45NOUGH_SIGNATURES_COLLECTED\x10\t2\xaa\x02\n\x11\x43ommandService_v1\x12<\n\x05Torii\x12\x1b.iroha.protocol.Transaction\x1a\x16.google.protobuf.Empty\x12;\n\tListTorii\x12\x16.iroha.protocol.TxList\x1a\x16.google.protobuf.Empty\x12H\n\x06Status\x12\x1f.iroha.protocol.TxStatusRequest\x1a\x1d.iroha.protocol.ToriiResponse\x12P\n\x0cStatusStream\x12\x1f.iroha.protocol.TxStatusRequest\x1a\x1d.iroha.protocol.ToriiResponse0\x01\x32\xa2\x01\n\x0fQueryService_v1\x12<\n\x04\x46ind\x12\x15.iroha.protocol.Query\x1a\x1d.iroha.protocol.QueryResponse\x12Q\n\x0c\x46\x65tchCommits\x12\x1b.iroha.protocol.BlocksQuery\x1a\".iroha.protocol.BlockQueryResponse0\x01\x42\x1aZ\x18iroha.generated/protocolb\x06proto3'
+  serialized_pb=b'\n\x0e\x65ndpoint.proto\x12\x0eiroha.protocol\x1a\x11transaction.proto\x1a\rqueries.proto\x1a\x13qry_responses.proto\x1a\x1bgoogle/protobuf/empty.proto\"\x94\x01\n\rToriiResponse\x12+\n\ttx_status\x18\x01 \x01(\x0e\x32\x18.iroha.protocol.TxStatus\x12\x0f\n\x07tx_hash\x18\x02 \x01(\t\x12\x17\n\x0f\x65rr_or_cmd_name\x18\x03 \x01(\t\x12\x18\n\x10\x66\x61iled_cmd_index\x18\x04 \x01(\x04\x12\x12\n\nerror_code\x18\x05 \x01(\r\"\"\n\x0fTxStatusRequest\x12\x0f\n\x07tx_hash\x18\x01 \x01(\t\";\n\x06TxList\x12\x31\n\x0ctransactions\x18\x01 \x03(\x0b\x32\x1b.iroha.protocol.Transaction*\x80\x02\n\x08TxStatus\x12\x1f\n\x1bSTATELESS_VALIDATION_FAILED\x10\x00\x12 \n\x1cSTATELESS_VALIDATION_SUCCESS\x10\x01\x12\x1e\n\x1aSTATEFUL_VALIDATION_FAILED\x10\x02\x12\x1f\n\x1bSTATEFUL_VALIDATION_SUCCESS\x10\x03\x12\x0c\n\x08REJECTED\x10\x04\x12\r\n\tCOMMITTED\x10\x05\x12\x0f\n\x0bMST_EXPIRED\x10\x06\x12\x10\n\x0cNOT_RECEIVED\x10\x07\x12\x0f\n\x0bMST_PENDING\x10\x08\x12\x1f\n\x1b\x45NOUGH_SIGNATURES_COLLECTED\x10\t2\xaa\x02\n\x11\x43ommandService_v1\x12<\n\x05Torii\x12\x1b.iroha.protocol.Transaction\x1a\x16.google.protobuf.Empty\x12;\n\tListTorii\x12\x16.iroha.protocol.TxList\x1a\x16.google.protobuf.Empty\x12H\n\x06Status\x12\x1f.iroha.protocol.TxStatusRequest\x1a\x1d.iroha.protocol.ToriiResponse\x12P\n\x0cStatusStream\x12\x1f.iroha.protocol.TxStatusRequest\x1a\x1d.iroha.protocol.ToriiResponse0\x01\x32\xea\x01\n\x0fQueryService_v1\x12<\n\x04\x46ind\x12\x15.iroha.protocol.Query\x1a\x1d.iroha.protocol.QueryResponse\x12Q\n\x0c\x46\x65tchCommits\x12\x1b.iroha.protocol.BlocksQuery\x1a\".iroha.protocol.BlockQueryResponse0\x01\x12\x46\n\x0bHealthcheck\x12\x16.google.protobuf.Empty\x1a\x1f.iroha.protocol.HealthcheckDataB\x1aZ\x18iroha.generated/protocolb\x06proto3'
   ,
   dependencies=[transaction__pb2.DESCRIPTOR,queries__pb2.DESCRIPTOR,qry__responses__pb2.DESCRIPTOR,google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 
@@ -326,7 +326,7 @@ _QUERYSERVICE_V1 = _descriptor.ServiceDescriptor(
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
   serialized_start=927,
-  serialized_end=1089,
+  serialized_end=1161,
   methods=[
   _descriptor.MethodDescriptor(
     name='Find',
@@ -345,6 +345,16 @@ _QUERYSERVICE_V1 = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=queries__pb2._BLOCKSQUERY,
     output_type=qry__responses__pb2._BLOCKQUERYRESPONSE,
+    serialized_options=None,
+    create_key=_descriptor._internal_create_key,
+  ),
+  _descriptor.MethodDescriptor(
+    name='Healthcheck',
+    full_name='iroha.protocol.QueryService_v1.Healthcheck',
+    index=2,
+    containing_service=None,
+    input_type=google_dot_protobuf_dot_empty__pb2._EMPTY,
+    output_type=qry__responses__pb2._HEALTHCHECKDATA,
     serialized_options=None,
     create_key=_descriptor._internal_create_key,
   ),
