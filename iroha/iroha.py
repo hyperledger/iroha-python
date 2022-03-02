@@ -309,12 +309,12 @@ class Iroha(object):
                 hashes_attr.extend(value)
                 continue
             setattr(internal_query, key, value)
-        if pagination_meta:
-            pagination_meta_attr = getattr(internal_query, 'pagination_meta')
-            pagination_meta_attr.CopyFrom(pagination_meta)
         if not len(kwargs):
             message = getattr(queries_pb2, name)()
             internal_query.CopyFrom(message)
+        if pagination_meta:
+            pagination_meta_attr = getattr(internal_query, 'pagination_meta')
+            pagination_meta_attr.CopyFrom(pagination_meta)
         return query_wrapper
 
     def blocks_query(self, counter=1, creator_account=None, created_time=None):
