@@ -22,7 +22,7 @@ def to_rust(obj):
     if isinstance(obj, tuple):
         return (to_rust(i) for i in obj)
     if isinstance(obj, dict):
-        return {k: to_rust(v) for k, v in obj}
+        return {k: to_rust(v) for k, v in obj.items()}
 
     return obj.to_rust() if hasattr(obj, 'to_rust') else obj
 
@@ -174,7 +174,8 @@ class _Struct(type):
                     self._from_kwargs(**kwargs)
 
                 if len(self.items) != len(self._fields()):
-                    raise ValueError("Some fields are missing")
+                    missing = set(self.items) - set(self._fields())
+                    raise ValueError(f"Some fields are missing: {missing}")
 
             def to_rust(self) -> dict:
                 return {k: to_rust(v) for k, v in self.items.items()}

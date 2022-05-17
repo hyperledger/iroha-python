@@ -1,30 +1,7 @@
 from ..rust import Enum, Struct, Tuple, Dict
-
-IdBox = Enum[("AccountId", "iroha_data_model.account.Id"),
-             ("AssetId", "iroha_data_model.asset.Id"),
-             ("AssetDefinitionId", "iroha_data_model.asset.DefinitionId"),
-             ("DomainName", str), ("PeerId", "iroha_data_model.peer.Id"),
-             ("WorldId", type(None))]
-IdentifiableBox = Enum[("Account", "iroha_data_model.account.Account"),
-                       ("NewAccount", "iroha_data_model.account.NewAccount"),
-                       ("Asset", "iroha_data_model.asset.Asset"),
-                       ("AssetDefinition",
-                        "iroha_data_model.asset.AssetDefinition"),
-                       ("Domain", "iroha_data_model.domain.Domain"),
-                       ("Peer", "iroha_data_model.peer.Peer"), ("World",
-                                                                type(None))]
-Parameter = Enum[("MaximumFaultyPeersAmount", int), ("BlockTime", int),
-                 ("CommitTime", int), ("TransactionReceiptTime", int)]
-Value = Enum[("U32", int), ("U128", int), ("Bool", bool), ("String", str),
-             ("Fixed", "iroha_data_model.fixed.Fixed"), ("Vec", list),
-             ("Id", "iroha_data_model.IdBox"),
-             ("Identifiable", "iroha_data_model.IdentifiableBox"),
-             ("PublicKey", "iroha_crypto.PublicKey"),
-             ("Parameter", "iroha_data_model.Parameter"),
-             ("SignatureCheckCondition",
-              "iroha_data_model.account.SignatureCheckCondition"),
-             ("TransactionValue",
-              "iroha_data_model.transaction.TransactionValue"),
-             ("PermissionToken",
-              "iroha_data_model.permissions.PermissionToken"),
-             ("Hash", "iroha_crypto.hash.Hash")]
+IdBox = Enum[("DomainId", "iroha_data_model.domain.Id"), ("AccountId", "iroha_data_model.account.Id"), ("AssetDefinitionId", "iroha_data_model.asset.DefinitionId"), ("AssetId", "iroha_data_model.asset.Id"), ("PeerId", "iroha_data_model.peer.Id"), ("TriggerId", "iroha_data_model.trigger.Id"), ("RoleId", "iroha_data_model.role.Id")] 
+IdentifiableBox = Enum[("Peer", "iroha_data_model.peer.Peer"), ("NewDomain", "iroha_data_model.domain.NewDomain"), ("NewAccount", "iroha_data_model.account.NewAccount"), ("Domain", "iroha_data_model.domain.Domain"), ("Account", "iroha_data_model.account.Account"), ("AssetDefinition", "iroha_data_model.asset.AssetDefinition"), ("Asset", "iroha_data_model.asset.Asset"), ("Trigger", "iroha_data_model.trigger.Trigger"), ("Role", "iroha_data_model.role.Role")] 
+Name = Tuple[str]
+Parameter = Enum[("MaximumFaultyPeersAmount", int), ("BlockTime", int), ("CommitTime", int), ("TransactionReceiptTime", int)] 
+RegistrableBox = Enum[("Peer", "iroha_data_model.peer.Peer"), ("Domain", "iroha_data_model.domain.NewDomain"), ("Account", "iroha_data_model.account.NewAccount"), ("AssetDefinition", "iroha_data_model.asset.AssetDefinition"), ("Asset", "iroha_data_model.asset.Asset"), ("Trigger", "iroha_data_model.trigger.Trigger"), ("Role", "iroha_data_model.role.Role")] 
+Value = Enum[("U32", int), ("U128", int), ("Bool", bool), ("String", str), ("Name", "iroha_data_model.Name"), ("Fixed", "iroha_data_primitives.fixed.Fixed"), ("Vec", list), ("LimitedMetadata", "iroha_data_model.metadata.Metadata"), ("Id", "iroha_data_model.IdBox"), ("Identifiable", "iroha_data_model.IdentifiableBox"), ("PublicKey", "iroha_crypto.PublicKey"), ("Parameter", "iroha_data_model.Parameter"), ("SignatureCheckCondition", "iroha_data_model.account.SignatureCheckCondition"), ("TransactionValue", "iroha_data_model.transaction.TransactionValue"), ("PermissionToken", "iroha_data_model.permissions.PermissionToken"), ("Hash", "iroha_crypto.hash.Hash")] 

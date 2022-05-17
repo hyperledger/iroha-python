@@ -1,29 +1,13 @@
 //! Binary which generates classes from json schema
 #![allow(clippy::unwrap_used, clippy::todo, clippy::unwrap_in_result)]
 
-use std::collections::BTreeMap;
 use std::env;
 
-use iroha_schema::prelude::*;
+use iroha_schema_gen::build_schemas;
 use module::Module;
 
 mod as_py;
 mod module;
-
-macro_rules! to_json {
-    ($($t:ty),* $(,)?) => {{
-        let mut out = BTreeMap::new();
-        $(<$t as IntoSchema>::schema(&mut out);)*
-		out
-    }};
-}
-
-fn get_metamap() -> MetaMap {
-    use iroha_data_model::prelude::*;
-    use iroha_data_model::query::QueryBox;
-
-    to_json!(Value, Instruction, Expression, QueryBox, EventFilter)
-}
 
 fn main() -> Result<(), color_eyre::Report> {
     color_eyre::install()?;
@@ -35,7 +19,7 @@ fn main() -> Result<(), color_eyre::Report> {
         ));
     }
 
-    let module = get_metamap().into_iter().collect::<Module>();
+    let module = build_schemas().into_iter().collect::<Module>();
     module.write_dir(&args[0])?;
     Ok(())
 }

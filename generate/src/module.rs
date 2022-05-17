@@ -31,6 +31,7 @@ impl DerefMut for Module {
 impl Module {
     pub fn insert(&mut self, name: String, ty: Metadata) {
         let syn_ty = syn::parse_str::<Type>(&name).unwrap();
+        println!("Inserting {name}: {ty:#?}");
 
         match syn_ty {
             Type::Path(TypePath {
@@ -65,7 +66,7 @@ impl Module {
                 let s = StructClass::from_meta(name, s);
                 writeln!(f, "{}", s)?;
             }
-            Metadata::TupleStruct(s) => {
+            Metadata::Tuple(s) => {
                 let s = UnnamedStructClass::from_meta(name, s);
                 writeln!(f, "{}", s)?;
             }

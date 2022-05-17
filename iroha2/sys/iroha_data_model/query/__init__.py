@@ -1,41 +1,11 @@
 from ...rust import Enum, Struct, Tuple, Dict
+PaginatedQueryResult = Struct[("result", "iroha_data_model.query.QueryResult"), ("pagination", "iroha_data_model.pagination.Pagination"), ("total", int)]
 
-QueryBox = Enum[
-    ("FindAllAccounts", "iroha_data_model.query.account.FindAllAccounts"),
-    ("FindAccountById", "iroha_data_model.query.account.FindAccountById"),
-    ("FindAccountKeyValueByIdAndKey",
-     "iroha_data_model.query.account.FindAccountKeyValueByIdAndKey"),
-    ("FindAccountsByName",
-     "iroha_data_model.query.account.FindAccountsByName"),
-    ("FindAccountsByDomainName",
-     "iroha_data_model.query.account.FindAccountsByDomainName"),
-    ("FindAllAssets", "iroha_data_model.query.asset.FindAllAssets"),
-    ("FindAllAssetsDefinitions",
-     "iroha_data_model.query.asset.FindAllAssetsDefinitions"),
-    ("FindAssetById", "iroha_data_model.query.asset.FindAssetById"),
-    ("FindAssetsByName", "iroha_data_model.query.asset.FindAssetsByName"),
-    ("FindAssetsByAccountId",
-     "iroha_data_model.query.asset.FindAssetsByAccountId"),
-    ("FindAssetsByAssetDefinitionId",
-     "iroha_data_model.query.asset.FindAssetsByAssetDefinitionId"),
-    ("FindAssetsByDomainName",
-     "iroha_data_model.query.asset.FindAssetsByDomainName"),
-    ("FindAssetsByDomainNameAndAssetDefinitionId",
-     "iroha_data_model.query.asset.FindAssetsByDomainNameAndAssetDefinitionId"
-     ), ("FindAssetQuantityById",
-         "iroha_data_model.query.asset.FindAssetQuantityById"),
-    ("FindAssetKeyValueByIdAndKey",
-     "iroha_data_model.query.asset.FindAssetKeyValueByIdAndKey"),
-    ("FindAssetDefinitionKeyValueByIdAndKey",
-     "iroha_data_model.query.asset.FindAssetDefinitionKeyValueByIdAndKey"),
-    ("FindAllDomains", "iroha_data_model.query.domain.FindAllDomains"),
-    ("FindDomainByName", "iroha_data_model.query.domain.FindDomainByName"),
-    ("FindDomainKeyValueByIdAndKey",
-     "iroha_data_model.query.domain.FindDomainKeyValueByIdAndKey"),
-    ("FindAllPeers", "iroha_data_model.query.peer.FindAllPeers"),
-    ("FindTransactionsByAccountId",
-     "iroha_data_model.query.transaction.FindTransactionsByAccountId"),
-    ("FindTransactionByHash",
-     "iroha_data_model.query.transaction.FindTransactionByHash"),
-    ("FindPermissionTokensByAccountId",
-     "iroha_data_model.query.permissions.FindPermissionTokensByAccountId")]
+Payload = Struct[("timestamp_ms", "Compact"), ("query", "iroha_data_model.query.QueryBox"), ("account_id", "iroha_data_model.account.Id")]
+
+QueryBox = Enum[("FindAllAccounts", "iroha_data_model.query.account.FindAllAccounts"), ("FindAccountById", "iroha_data_model.query.account.FindAccountById"), ("FindAccountKeyValueByIdAndKey", "iroha_data_model.query.account.FindAccountKeyValueByIdAndKey"), ("FindAccountsByName", "iroha_data_model.query.account.FindAccountsByName"), ("FindAccountsByDomainId", "iroha_data_model.query.account.FindAccountsByDomainId"), ("FindAccountsWithAsset", "iroha_data_model.query.account.FindAccountsWithAsset"), ("FindAllAssets", "iroha_data_model.query.asset.FindAllAssets"), ("FindAllAssetsDefinitions", "iroha_data_model.query.asset.FindAllAssetsDefinitions"), ("FindAssetById", "iroha_data_model.query.asset.FindAssetById"), ("FindAssetsByName", "iroha_data_model.query.asset.FindAssetsByName"), ("FindAssetsByAccountId", "iroha_data_model.query.asset.FindAssetsByAccountId"), ("FindAssetsByAssetDefinitionId", "iroha_data_model.query.asset.FindAssetsByAssetDefinitionId"), ("FindAssetsByDomainId", "iroha_data_model.query.asset.FindAssetsByDomainId"), ("FindAssetsByDomainIdAndAssetDefinitionId", "iroha_data_model.query.asset.FindAssetsByDomainIdAndAssetDefinitionId"), ("FindAssetQuantityById", "iroha_data_model.query.asset.FindAssetQuantityById"), ("FindAssetKeyValueByIdAndKey", "iroha_data_model.query.asset.FindAssetKeyValueByIdAndKey"), ("FindAssetDefinitionKeyValueByIdAndKey", "iroha_data_model.query.asset.FindAssetDefinitionKeyValueByIdAndKey"), ("FindAllDomains", "iroha_data_model.query.domain.FindAllDomains"), ("FindDomainById", "iroha_data_model.query.domain.FindDomainById"), ("FindDomainKeyValueByIdAndKey", "iroha_data_model.query.domain.FindDomainKeyValueByIdAndKey"), ("FindAllPeers", "iroha_data_model.query.peer.FindAllPeers"), ("FindTransactionsByAccountId", "iroha_data_model.query.transaction.FindTransactionsByAccountId"), ("FindTransactionByHash", "iroha_data_model.query.transaction.FindTransactionByHash"), ("FindPermissionTokensByAccountId", "iroha_data_model.query.permissions.FindPermissionTokensByAccountId"), ("FindAllActiveTriggerIds", "iroha_data_model.query.trigger.FindAllActiveTriggerIds"), ("FindTriggerById", "iroha_data_model.query.trigger.FindTriggerById"), ("FindTriggerKeyValueByIdAndKey", "iroha_data_model.query.trigger.FindTriggerKeyValueByIdAndKey"), ("FindAllRoles", "iroha_data_model.query.role.FindAllRoles"), ("FindAllRoleIds", "iroha_data_model.query.role.FindAllRoleIds"), ("FindRoleByRoleId", "iroha_data_model.query.role.FindRoleByRoleId"), ("FindRolesByAccountId", "iroha_data_model.query.role.FindRolesByAccountId")] 
+QueryResult = Tuple["iroha_data_model.Value"]
+SignedQueryRequest = Struct[("payload", "iroha_data_model.query.Payload"), ("signature", "iroha_crypto.signature.SignatureOf")]
+
+VersionedPaginatedQueryResult = Enum[("V1", "iroha_data_model.query.PaginatedQueryResult")] 
+VersionedSignedQueryRequest = Enum[("V1", "iroha_data_model.query.SignedQueryRequest")] 

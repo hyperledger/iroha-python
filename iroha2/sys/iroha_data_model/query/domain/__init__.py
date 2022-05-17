@@ -1,9 +1,6 @@
 from ....rust import Enum, Struct, Tuple, Dict
+FindAllDomains = Tuple[()]
+FindDomainById = Struct[("id", "iroha_data_model.expression.EvaluatesTo")]
 
-FindAllDomains = Struct[()]
+FindDomainKeyValueByIdAndKey = Struct[("id", "iroha_data_model.expression.EvaluatesTo"), ("key", "iroha_data_model.expression.EvaluatesTo")]
 
-FindDomainByName = Struct[("name", "iroha_data_model.expression.EvaluatesTo")]
-
-FindDomainKeyValueByIdAndKey = Struct[(
-    "name", "iroha_data_model.expression.EvaluatesTo"), (
-        "key", "iroha_data_model.expression.EvaluatesTo")]

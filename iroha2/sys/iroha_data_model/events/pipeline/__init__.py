@@ -1,22 +1,8 @@
 from ....rust import Enum, Struct, Tuple, Dict
+EntityKind = Enum[("Block", type(None)), ("Transaction", type(None))] 
+Event = Struct[("entity_kind", "iroha_data_model.events.pipeline.EntityKind"), ("status", "iroha_data_model.events.pipeline.Status"), ("hash", "iroha_crypto.hash.Hash")]
 
-EntityType = Enum[("Block", type(None)), ("Transaction", type(None))]
-EventFilter = Struct[("entity", "iroha_data_model.events.pipeline.EntityType"),
-                     ("hash", "iroha_crypto.hash.Hash")]
+EventFilter = Struct[("entity_kind", "iroha_data_model.events.pipeline.EntityKind"), ("status_kind", "iroha_data_model.events.pipeline.StatusKind"), ("hash", "iroha_crypto.hash.Hash")]
 
-InstructionExecutionFail = Struct[("instruction",
-                                   "iroha_data_model.isi.Instruction"),
-                                  ("reason", str)]
-
-NotPermittedFail = Struct[("reason", str)]
-
-TransactionRejectionReason = Enum[
-    ("NotPermitted", "iroha_data_model.events.pipeline.NotPermittedFail"),
-    ("UnsatisfiedSignatureCondition",
-     "iroha_data_model.events.pipeline.UnsatisfiedSignatureConditionFail"),
-    ("InstructionExecution",
-     "iroha_data_model.events.pipeline.InstructionExecutionFail"),
-    ("SignatureVerification",
-     "iroha_crypto.signature.SignatureVerificationFail"),
-    ("UnexpectedGenesisAccountSignature", type(None))]
-UnsatisfiedSignatureConditionFail = Struct[("reason", str)]
+Status = Enum[("Validating", type(None)), ("Rejected", "iroha_data_model.transaction.RejectionReason"), ("Committed", type(None))] 
+StatusKind = Enum[("Validating", type(None)), ("Rejected", type(None)), ("Committed", type(None))] 
