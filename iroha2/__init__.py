@@ -6,6 +6,7 @@ from .data_model.isi import Instruction as _Instruction
 
 
 class Client:
+
     def __init__(self, cfg):
         self.cl = _Client(cfg)
 
@@ -33,6 +34,7 @@ class Client:
 
     def submit_tx(self, tx: list):
         tx = [i.to_rust() for i in tx]
+        print(tx)
         return self.cl.submit_all_with_metadata(tx, {})
 
     def submit_isi(self, isi):

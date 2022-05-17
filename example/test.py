@@ -3,23 +3,26 @@ import iroha2
 import json
 
 from iroha2 import Client
+
+from iroha2.data_model import domain
 from iroha2.data_model.isi import *
 from iroha2.data_model.domain import *
 from iroha2.data_model.expression import *
-from iroha2.data_model.events import EventFilter, pipeline
+from iroha2.data_model.events import FilterBox, pipeline
 from iroha2.data_model import *
 
 cfg = json.loads(open("./config.json").read())
 cl = Client(cfg)
 
-domain = Domain("xor")
-register = Register(Expression(Value(Identifiable(domain))))
+domain = NewDomain("iroha_python")
+register = Register.identifiable(domain)
 
 hash = cl.submit_isi(register)
 
-filter = EventFilter.Pipeline(
+filter = FilterBox.Pipeline(
     pipeline.EventFilter(
-        entity=pipeline.EntityType.Transaction(),
+        entity_kind=pipeline.EntityKind.Transaction(),
+        status_kind=pipeline.StatusKind.Committed(),
         hash=None,
     ))
 listener = cl.listen(filter)

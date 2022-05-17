@@ -8,8 +8,6 @@ from ...sys.iroha_data_model.query.asset import (
     FindAssetQuantityById,
     FindAssetsByAccountId,
     FindAssetsByAssetDefinitionId,
-    FindAssetsByDomainName,
-    FindAssetsByDomainNameAndAssetDefinitionId,
     FindAssetsByName,
 )
 
@@ -18,6 +16,7 @@ from .. import Value, Identifiable, Id
 
 
 class FindAssetById(_FindAssetById, query("Identifiable", "Asset")):
+
     @classmethod
     def id(cls, asset_id):
         return cls(Expression(Value(Id(asset_id))))

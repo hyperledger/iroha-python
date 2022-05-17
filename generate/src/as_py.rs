@@ -156,7 +156,7 @@ impl From<RustType> for PyType {
                 #[cfg(not(feature = "typing"))]
                 return Self("list".to_owned());
             }
-            "BTreeMap" | "HashMap" => return Self("Dict".to_owned()),
+            "BTreeMap" | "HashMap" | "Map" => return Self("Dict".to_owned()),
 
             "u8" | "u16" | "u32" | "u64" | "u128" | "i8" | "i16" | "i32" | "i64" | "i128" => {
                 return Self("int".to_owned())

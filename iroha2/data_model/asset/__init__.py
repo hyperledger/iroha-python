@@ -10,6 +10,7 @@ from ...sys.iroha_data_model.asset import (
 
 
 class DefinitionId(_DefinitionId):
+
     @classmethod
     def parse(cls, addr):
         "Parses the definition id from address in form of name#domain"
