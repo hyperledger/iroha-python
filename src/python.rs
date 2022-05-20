@@ -56,8 +56,8 @@ macro_rules! wrap_class {
             }
         }
 
-        #[pyproto]
-        impl PyObjectProtocol for $ty {
+        #[pymethods]
+        impl $ty {
             fn __str__(&self) -> String {
                 format!("{:#?}", self)
             }

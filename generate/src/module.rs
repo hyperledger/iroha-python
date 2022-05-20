@@ -31,7 +31,6 @@ impl DerefMut for Module {
 impl Module {
     pub fn insert(&mut self, name: String, ty: Metadata) {
         let syn_ty = syn::parse_str::<Type>(&name).unwrap();
-        println!("Inserting {name}: {ty:#?}");
 
         match syn_ty {
             Type::Path(TypePath {
