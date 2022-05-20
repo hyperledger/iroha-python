@@ -1125,8 +1125,8 @@ version = "0.1.0"
 dependencies = [
  "color-eyre",
  "either",
- "iroha_data_model 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_data_model",
+ "iroha_schema",
  "iroha_schema_gen",
  "serde_json",
  "syn",
@@ -1486,32 +1486,15 @@ checksum = "ec58677acfea8a15352d42fc87d11d63596ade9239e0a7c9352914417515dbe6"
 [[package]]
 name = "iroha_actor"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "async-trait",
  "dashmap",
  "eyre",
  "futures",
- "iroha_actor_derive 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_data_primitives 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_logger 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "once_cell",
- "thiserror",
- "tokio",
-]
-
-[[package]]
-name = "iroha_actor"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "async-trait",
- "dashmap",
- "eyre",
- "futures",
- "iroha_actor_derive 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_data_primitives 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_logger 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_actor_derive",
+ "iroha_data_primitives",
+ "iroha_logger",
  "once_cell",
  "thiserror",
  "tokio",
@@ -1520,18 +1503,7 @@ dependencies = [
 [[package]]
 name = "iroha_actor_derive"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
-dependencies = [
- "proc-macro-error",
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "iroha_actor_derive"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
@@ -1542,19 +1514,19 @@ dependencies = [
 [[package]]
 name = "iroha_client"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "attohttpc",
  "base64",
  "eyre",
  "http",
- "iroha_config 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_core 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_crypto 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_data_model 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_logger 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_telemetry 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_version 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
+ "iroha_config",
+ "iroha_core",
+ "iroha_crypto",
+ "iroha_data_model",
+ "iroha_logger",
+ "iroha_telemetry",
+ "iroha_version",
  "rand 0.8.5",
  "serde",
  "serde_json",
@@ -1567,22 +1539,10 @@ dependencies = [
 [[package]]
 name = "iroha_config"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "crossbeam",
- "iroha_config_derive 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "serde",
- "serde_json",
- "thiserror",
-]
-
-[[package]]
-name = "iroha_config"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "crossbeam",
- "iroha_config_derive 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_config_derive",
  "serde",
  "serde_json",
  "thiserror",
@@ -1591,18 +1551,7 @@ dependencies = [
 [[package]]
 name = "iroha_config_derive"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
-dependencies = [
- "proc-macro-error",
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "iroha_config_derive"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
@@ -1613,7 +1562,7 @@ dependencies = [
 [[package]]
 name = "iroha_core"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "anyhow",
  "async-stream",
@@ -1623,54 +1572,17 @@ dependencies = [
  "dashmap",
  "eyre",
  "futures",
- "iroha_actor 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_config 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_crypto 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_data_model 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_futures 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_logger 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_macro 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_p2p 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_telemetry 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_version 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "parity-scale-codec",
- "pin-project",
- "rand 0.8.5",
- "serde",
- "serde_json",
- "smallstr",
- "smallvec",
- "thiserror",
- "tokio",
- "tokio-stream",
- "wasmtime",
-]
-
-[[package]]
-name = "iroha_core"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "anyhow",
- "async-stream",
- "async-trait",
- "color-eyre",
- "crossbeam-queue",
- "dashmap",
- "eyre",
- "futures",
- "iroha_actor 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_config 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_crypto 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_data_model 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_futures 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_logger 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_macro 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_p2p 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_telemetry 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_version 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_actor",
+ "iroha_config",
+ "iroha_crypto",
+ "iroha_data_model",
+ "iroha_futures",
+ "iroha_logger",
+ "iroha_macro",
+ "iroha_p2p",
+ "iroha_schema",
+ "iroha_telemetry",
+ "iroha_version",
  "parity-scale-codec",
  "pin-project",
  "rand 0.8.5",
@@ -1687,26 +1599,12 @@ dependencies = [
 [[package]]
 name = "iroha_crypto"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "derive_more",
  "getset",
  "hex",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "parity-scale-codec",
- "serde",
- "ursa",
-]
-
-[[package]]
-name = "iroha_crypto"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "derive_more",
- "getset",
- "hex",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_schema",
  "parity-scale-codec",
  "serde",
  "ursa",
@@ -1715,68 +1613,34 @@ dependencies = [
 [[package]]
 name = "iroha_data_model"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
+ "dashmap",
  "derive_more",
  "getset",
- "iroha_crypto 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_data_primitives 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_macro 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_version 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
+ "iroha_crypto",
+ "iroha_data_primitives",
+ "iroha_macro",
+ "iroha_schema",
+ "iroha_version",
  "parity-scale-codec",
  "serde",
  "serde_json",
  "strum",
  "thiserror",
- "warp",
-]
-
-[[package]]
-name = "iroha_data_model"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "derive_more",
- "getset",
- "iroha_crypto 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_data_primitives 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_macro 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_version 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "parity-scale-codec",
- "serde",
- "serde_json",
- "strum",
- "thiserror",
+ "tokio",
  "warp",
 ]
 
 [[package]]
 name = "iroha_data_primitives"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "derive_more",
  "fixnum",
- "iroha_macro 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "parity-scale-codec",
- "serde",
- "smallstr",
- "smallvec",
- "thiserror",
-]
-
-[[package]]
-name = "iroha_data_primitives"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "derive_more",
- "fixnum",
- "iroha_macro 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_macro",
+ "iroha_schema",
  "parity-scale-codec",
  "serde",
  "smallstr",
@@ -1787,17 +1651,7 @@ dependencies = [
 [[package]]
 name = "iroha_derive"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "iroha_derive"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1807,23 +1661,10 @@ dependencies = [
 [[package]]
 name = "iroha_futures"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
- "iroha_futures_derive 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_logger 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "rand 0.8.5",
- "serde",
- "serde_json",
- "tokio",
-]
-
-[[package]]
-name = "iroha_futures"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "iroha_futures_derive 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_logger 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_futures_derive",
+ "iroha_logger",
  "rand 0.8.5",
  "serde",
  "serde_json",
@@ -1833,18 +1674,7 @@ dependencies = [
 [[package]]
 name = "iroha_futures_derive"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
-dependencies = [
- "proc-macro-error",
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "iroha_futures_derive"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
@@ -1855,28 +1685,10 @@ dependencies = [
 [[package]]
 name = "iroha_logger"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "color-eyre",
- "iroha_config 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "once_cell",
- "serde",
- "serde_json",
- "tokio",
- "tracing",
- "tracing-bunyan-formatter",
- "tracing-core",
- "tracing-futures",
- "tracing-subscriber 0.3.11",
-]
-
-[[package]]
-name = "iroha_logger"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "color-eyre",
- "iroha_config 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_config",
  "once_cell",
  "serde",
  "serde_json",
@@ -1891,53 +1703,25 @@ dependencies = [
 [[package]]
 name = "iroha_macro"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
- "iroha_derive 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
-]
-
-[[package]]
-name = "iroha_macro"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "iroha_derive 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_derive",
 ]
 
 [[package]]
 name = "iroha_p2p"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "aead",
  "async-stream",
  "async-trait",
  "futures",
- "iroha_actor 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_crypto 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_data_model 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_logger 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_macro 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "parity-scale-codec",
- "rand 0.8.5",
- "thiserror",
- "tokio",
-]
-
-[[package]]
-name = "iroha_p2p"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "aead",
- "async-stream",
- "async-trait",
- "futures",
- "iroha_actor 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_crypto 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_data_model 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_logger 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_macro 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_actor",
+ "iroha_crypto",
+ "iroha_data_model",
+ "iroha_logger",
+ "iroha_macro",
  "parity-scale-codec",
  "rand 0.8.5",
  "thiserror",
@@ -1950,9 +1734,9 @@ version = "0.1.0"
 dependencies = [
  "color-eyre",
  "iroha_client",
- "iroha_crypto 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_data_model 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_version 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
+ "iroha_crypto",
+ "iroha_data_model",
+ "iroha_version",
  "parity-scale-codec",
  "pyo3",
  "pythonize",
@@ -1963,37 +1747,17 @@ dependencies = [
 [[package]]
 name = "iroha_schema"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "fixnum",
- "iroha_schema_derive 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "serde",
-]
-
-[[package]]
-name = "iroha_schema"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "fixnum",
- "iroha_schema_derive 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_schema_derive",
  "serde",
 ]
 
 [[package]]
 name = "iroha_schema_derive"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "iroha_schema_derive"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2003,54 +1767,29 @@ dependencies = [
 [[package]]
 name = "iroha_schema_gen"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
- "iroha_core 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_crypto 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_data_model 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_core",
+ "iroha_crypto",
+ "iroha_data_model",
+ "iroha_schema",
  "serde_json",
 ]
 
 [[package]]
 name = "iroha_telemetry"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "anyhow",
  "async-trait",
  "chrono",
  "eyre",
  "futures",
- "iroha_config 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_futures 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_logger 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_telemetry_derive 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "prometheus",
- "serde",
- "serde_json",
- "streaming-stats",
- "tokio",
- "tokio-stream",
- "tokio-tungstenite",
- "url",
- "vergen",
-]
-
-[[package]]
-name = "iroha_telemetry"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "anyhow",
- "async-trait",
- "chrono",
- "eyre",
- "futures",
- "iroha_config 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_futures 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_logger 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_telemetry_derive 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_config",
+ "iroha_futures",
+ "iroha_logger",
+ "iroha_telemetry_derive",
  "prometheus",
  "serde",
  "serde_json",
@@ -2065,18 +1804,7 @@ dependencies = [
 [[package]]
 name = "iroha_telemetry_derive"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
-dependencies = [
- "proc-macro-error",
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "iroha_telemetry_derive"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",
@@ -2087,26 +1815,11 @@ dependencies = [
 [[package]]
 name = "iroha_version"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
- "iroha_macro 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "iroha_version_derive 2.0.0-pre-rc.4 (git+https://github.com/QuentinI/iroha?branch=2103-additional-queries)",
- "parity-scale-codec",
- "serde",
- "serde_json",
- "thiserror",
- "warp",
-]
-
-[[package]]
-name = "iroha_version"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
-dependencies = [
- "iroha_macro 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_schema 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
- "iroha_version_derive 2.0.0-pre-rc.4 (git+https://github.com/hyperledger/iroha?branch=iroha2-dev)",
+ "iroha_macro",
+ "iroha_schema",
+ "iroha_version_derive",
  "parity-scale-codec",
  "serde",
  "serde_json",
@@ -2117,18 +1830,7 @@ dependencies = [
 [[package]]
 name = "iroha_version_derive"
 version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/QuentinI/iroha?branch=2103-additional-queries#d23ca9da395914ede89f9c60b9963bc53799b89a"
-dependencies = [
- "proc-macro-error",
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "iroha_version_derive"
-version = "2.0.0-pre-rc.4"
-source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#c7c7fa9eddf6c6f87f22c2d7d8935a377686b3ca"
+source = "git+https://github.com/hyperledger/iroha?branch=iroha2-dev#49407ff210a96c63de41038d9ee68007e5f02098"
 dependencies = [
  "proc-macro-error",
  "proc-macro2",

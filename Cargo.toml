@@ -14,10 +14,10 @@ name = "iroha2"
 crate-type = ["cdylib"]
 
 [dependencies]
-iroha_client = { git = "https://github.com/QuentinI/iroha", branch = "2103-additional-queries" }
-iroha_crypto = { git = "https://github.com/QuentinI/iroha", branch = "2103-additional-queries" }
-iroha_data_model = { git = "https://github.com/QuentinI/iroha", branch = "2103-additional-queries" }
-iroha_version = { git = "https://github.com/QuentinI/iroha", branch = "2103-additional-queries" }
+iroha_client = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-dev" }
+iroha_crypto = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-dev" }
+iroha_data_model = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-dev" }
+iroha_version = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-dev" }
 
 color-eyre = "0.5"
 parity-scale-codec = "2.2"
