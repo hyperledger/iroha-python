@@ -201,7 +201,7 @@ pub mod dict {
 
     fn as_dict_obj(py: Python, obj: PyObject) -> PyResult<PyObject> {
         let obj = obj.into_ref(py);
-        let obj = if obj.is_instance::<PyDict>()? {
+        let obj = if obj.is_instance_of::<PyDict>()? {
             Dict::try_from(obj.downcast::<PyDict>()?)?.into_py(py)
         } else {
             obj.to_object(py)
