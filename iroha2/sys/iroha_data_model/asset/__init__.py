@@ -12,3 +12,5 @@ DefinitionId = Struct[("name", "iroha_data_model.Name"), ("domain_id", "iroha_da
 Id = Struct[("definition_id", "iroha_data_model.asset.DefinitionId"), ("account_id", "iroha_data_model.account.Id")]
 
 Mintable = Enum[("Infinitely", type(None)), ("Once", type(None)), ("Not", type(None))] 
+NewAssetDefinition = Struct[("id", "iroha_data_model.asset.DefinitionId"), ("value_type", "iroha_data_model.asset.AssetValueType"), ("mintable", "iroha_data_model.asset.Mintable"), ("metadata", "iroha_data_model.metadata.Metadata")]
+

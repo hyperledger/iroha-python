@@ -165,6 +165,12 @@ class _Struct(type):
                 for k, v in kwargs.items():
                     self.items[k] = v
 
+            def __getattr__(self, name):
+                if name in self.items:
+                    return self.items[name]
+                else:
+                    raise AttributeError(name=name, obj=self)
+
             def __init__(self, *args, **kwargs):
                 self.items = {}
 
@@ -174,7 +180,8 @@ class _Struct(type):
                     self._from_kwargs(**kwargs)
 
                 if len(self.items) != len(self._fields()):
-                    missing = set(self.items) - set(self._fields())
+                    missing = set(map(lambda x: x[0], self._fields())) \
+                        - set(self.items.keys())
                     raise ValueError(f"Some fields are missing: {missing}")
 
             def to_rust(self) -> dict:
