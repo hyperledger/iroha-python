@@ -1,40 +1,21 @@
 #!/usr/bin/env python
-from .sys.rust import *
-from .sys import KeyPair, Client as _Client
+from .sys import Client as _Client
 from .data_model.query import Query as _Query
 from .data_model.isi import Instruction as _Instruction
 
 
 class Client:
-
-    def __init__(self, cfg):
-        self.cl = _Client(cfg)
-
-    @property
-    def account(self):
-        return self.cl.account
-
-    @account.setter
-    def account(self, account):
-        self.cl.account = account
-
-    @property
-    def headers(self):
-        return self.cl.headers
-
-    @headers.setter
-    def headers(self, headers):
-        self.cl.headers = headers
+    def __init__(self, cfg, headers=None):
+        if headers is None:
+            self.cl = _Client(cfg)
+        else:
+            self.cl = _Client.with_headers(cfg, headers)
 
     def tx_body(self, tx: list):
         return self.cl.tx_body(tx, {})
 
-    def query_body(self, query):
-        return self.cl.query_body(_Query(query))
-
     def submit_tx(self, tx: list):
         tx = [i.to_rust() for i in tx]
-        print(tx)
         return self.cl.submit_all_with_metadata(tx, {})
 
     def submit_isi(self, isi):

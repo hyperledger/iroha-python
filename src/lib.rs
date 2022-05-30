@@ -65,13 +65,22 @@ pub fn hash(bytes: Vec<u8>) -> ToPy<Hash> {
     ToPy(Hash::new(&bytes))
 }
 
-/// TODO: signing
 #[pymethods]
 impl Client {
     /// Creates new client
     #[new]
     pub fn new(cfg: ToPy<Configuration>) -> PyResult<Self> {
         client::Client::new(&cfg).map_err(to_py_err).map(Self::from)
+    }
+
+    #[staticmethod]
+    pub fn with_headers(
+        cfg: ToPy<Configuration>,
+        headers: HashMap<String, String>,
+    ) -> PyResult<Self> {
+        client::Client::with_headers(&cfg, headers)
+            .map_err(to_py_err)
+            .map(Self::from)
     }
 
     /// Queries peer
@@ -97,18 +106,6 @@ impl Client {
             .map_err(to_py_err)
             .map(|tx| tx.encode_versioned())
     }
-
-    // TODO:
-    /// Get transaction body
-    /// # Errors
-    //  pub fn query_body(&mut self, request: ToPy<QueryBox>) -> PyResult<Vec<u8>> {
-    //      let request = QueryRequest::new(request.into_inner(), self.cl.account_id.clone());
-    //      let signed = self.cl.sign_query(request);
-    //      signed
-    //          .map(VersionedSignedQueryRequest::from)
-    //          .map_err(to_py_err)
-    //          .map(|req| req.encode_versioned())
-    //  }
 
     /// Sends transaction to peer
     /// # Errors
@@ -152,34 +149,6 @@ impl Client {
                 EventIterator::new(boxed)
             })
     }
-
-    // TODO:
-    // /// Account field on client
-    // #[getter]
-    // pub fn get_account(&self) -> ToPy<AccountId> {
-    //     ToPy(self.account_id.clone())
-    // }
-
-    // TODO:
-    // /// Account field on client
-    // #[setter]
-    // pub fn set_account(&mut self, account: ToPy<AccountId>) {
-    //   self.account_id = account.into_inner();
-    // }
-
-    // TODO:
-    // /// Headers field on client
-    // #[getter]
-    // pub fn get_headers(&self) -> HashMap<String, String> {
-    //     self.headers.clone()
-    // }
-
-    // TODO:
-    // /// Headers field on client
-    // #[setter]
-    // pub fn set_headers(&mut self, headers: HashMap<String, String>) {
-    //     self.headers = headers;
-    // }
 }
 
 // HACK: `EventIterator` was made private in iroha for some reason
