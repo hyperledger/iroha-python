@@ -1,3 +1,5 @@
+from abc import ABC
+
 from ...sys.iroha_data_model.isi import (
     BurnBox as Burn,
     FailBox as Fail,
@@ -17,12 +19,20 @@ from iroha2.data_model.expression import Expression
 from iroha2.data_model import Value, Identifiable, Id
 
 
-class Register(_Register):
+class Registrable(ABC):
+    def registrable(self):
+        return self
 
+
+class Register(_Register):
     @classmethod
     def identifiable(cls, identifiable):
         "Creates instruction with raw identifiable"
-        return cls(Expression(Value(Identifiable(identifiable))))
+        if issubclass(type(identifiable), Registrable):
+            registrable = identifiable.registrable()
+            return cls(Expression(Value(Identifiable(registrable))))
+        else:
+            return cls(Expression(Value(Identifiable(identifiable))))
 
 
 class Unregister(_Unregister):
