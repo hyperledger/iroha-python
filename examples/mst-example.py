@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# this code was originally coded by user: Leo (@iptelephony)
+
 import os
 import sys
 import binascii
@@ -160,7 +162,6 @@ def get_account_assets(account_id):
 
 @trace
 def get_pending_transactions():
-    # global net
     query = IrohaCrypto.sign_query(Iroha(group['account']).query('GetPendingTransactions'), ADMIN_PRIVATE_KEY)
     pending_transactions = net.send_query(query)
     print(len(pending_transactions.transactions_response.transactions))
