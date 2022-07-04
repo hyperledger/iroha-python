@@ -47,7 +47,7 @@ def trace(func):
     @wraps(func)
     def tracer(*args, **kwargs):
         name = func.__name__
-        print(f'\tEntering "{name}"')
+        print(f'\tEntering "{name}": {args}')
         result = func(*args, **kwargs)
         print(f'\tLeaving "{name}"')
         return result
