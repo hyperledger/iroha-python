@@ -12,6 +12,8 @@ import os
 import binascii
 from iroha import IrohaCrypto
 from iroha import Iroha, IrohaGrpc
+import grpc  # grpc.RpcError
+
 
 # The following line is actually about the permissions
 # you might be using for the transaction.
@@ -223,5 +225,11 @@ if __name__ == '__main__':
         get_coin_info(asset='coin#domain')
         get_account_assets(account_id='userone@domain')
         get_user_details(account_id='userone@domain')
+    except grpc.RpcError as rpc_error:
+        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+            print(f'[E] Iroha is not running in address:'
+                  f'{IROHA_HOST_ADDR}:{IROHA_TLS_PORT}!')
+        else:
+            print(e)
     except RuntimeError as e:
         print(e)
