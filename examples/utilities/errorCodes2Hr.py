@@ -190,7 +190,7 @@ error_codes_per_command = {
     'grant_permission': resultOf_GrantPermission_ToHumanReadable,
     'set_account_detail': resultOf_SetAccountDetail_ToHumanReadable,
     'set_account_quorum': resultOf_SetAccountQuorum_ToHumanReadable,
-    'compareAndSetAccountDetail': resultOf_CompareAndSetAccountDetail_ToHumanReadable,
+    'compare_and_set_account_detail': resultOf_CompareAndSetAccountDetail_ToHumanReadable,
     'create_role': resultOf_CreateRole_ToHumanReadable,
     'cppend_role': resultOf_AppendRole_ToHumanReadable,
     'add_peer': resultOf_AddPeer_ToHumanReadable,
