@@ -9,20 +9,19 @@
 # Python library generally consists of 3 parts:
 # Iroha, IrohaCrypto and IrohaGrpc which we need to import:
 import os
+import sys
 import binascii
 from iroha import IrohaCrypto
 from iroha import Iroha, IrohaGrpc
 import grpc  # grpc.RpcError
-
+from functools import wraps
+from utilities.errorCodes2Hr import get_proper_functions_for_commands
 
 # The following line is actually about the permissions
 # you might be using for the transaction.
 # You can find all the permissions here: 
 # https://iroha.readthedocs.io/en/main/develop/api/permissions.html
 from iroha.primitive_pb2 import can_set_my_account_detail
-import sys
-from functools import wraps
-from utilities.errorCodes2Hr import get_proper_functions_for_commands
 
 if sys.version_info[0] < 3:
     raise Exception('Python 3 or a more recent version is required.')
