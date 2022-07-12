@@ -3,7 +3,9 @@
 # Copyright Soramitsu Co., Ltd. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0
 #
-
+"""
+The example demonstrates how to use few Iroha commands and queries.
+"""
 
 # Here are Iroha dependencies.
 # Python library generally consists of 3 parts:
@@ -11,9 +13,9 @@
 import os
 import sys
 import binascii
-from iroha import IrohaCrypto
-from iroha import Iroha, IrohaGrpc
 import grpc  # grpc.RpcError
+import inspect  # inspect.stack(0)
+from iroha import Iroha, IrohaGrpc, IrohaCrypto
 from functools import wraps
 from utilities.errorCodes2Hr import get_proper_functions_for_commands
 
@@ -48,9 +50,11 @@ def trace(func):
     @wraps(func)
     def tracer(*args, **kwargs):
         name = func.__name__
-        print(f'\tEntering "{name}": {args}')
+        stack_size = int(len(inspect.stack(0)) / 2)  # @wraps(func) is also increasing the size
+        indent = stack_size*'\t'
+        print(f'{indent}> Entering "{name}": args: {args}')
         result = func(*args, **kwargs)
-        print(f'\tLeaving "{name}"')
+        print(f'{indent}< Leaving "{name}"')
         return result
 
     return tracer
@@ -227,7 +231,7 @@ if __name__ == '__main__':
     except grpc.RpcError as rpc_error:
         if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
-                  f'{IROHA_HOST_ADDR}:{IROHA_TLS_PORT}!')
+                  f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:
             print(e)
     except RuntimeError as e:

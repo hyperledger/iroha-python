@@ -4,6 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+"""
+The example demonstrates querying blocks of transactions - we can query blocks one by one
+after calling function:  Iroha.blocks_query
+"""
+
 from iroha import Iroha, IrohaGrpc
 from iroha import IrohaCrypto
 import os
@@ -55,6 +60,6 @@ if __name__ == '__main__':
     except grpc.RpcError as rpc_error:
         if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
-                  f'{IROHA_HOST_ADDR}:{IROHA_TLS_PORT}!')
+                  f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:
             print(e)

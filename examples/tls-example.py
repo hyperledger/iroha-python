@@ -4,22 +4,26 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+"""
+This example demonstrates how to use TLS connection between Iroha peer and iroha-python.
+Before running the example first configure torii_tls_params according to documentation:
+https://iroha.readthedocs.io/en/main/configure/torii-tls.html
+Note: You need certificate for your server (sample from Iroha will not work).
+"""
+
 import os
 import binascii
-from iroha import IrohaCrypto
-from iroha import Iroha, IrohaGrpc
 import sys
 import grpc  # grpc.RpcError
+import inspect  # inspect.stack(0)
+from iroha import Iroha, IrohaGrpc, IrohaCrypto
 from functools import wraps
 from utilities.errorCodes2Hr import get_proper_functions_for_commands
+
 
 if sys.version_info[0] < 3:
     raise Exception('Python 3 or a more recent version is required.')
 
-print("""
-This example works only through a TLS connection, you must first configure torii_tls_params
-https://iroha.readthedocs.io/en/main/configure/torii-tls.html
-""")
 
 IROHA_HOST_ADDR = os.getenv('IROHA_HOST_ADDR', 'localhost')
 IROHA_TLS_PORT = os.getenv('IROHA_PORT', '55552')
@@ -61,9 +65,11 @@ def trace(func):
     @wraps(func)
     def tracer(*args, **kwargs):
         name = func.__name__
-        print(f'\tEntering "{name}": {args}')
+        stack_size = int(len(inspect.stack(0)) / 2)  # @wraps(func) is also increasing the size
+        indent = stack_size*'\t'
+        print(f'{indent}> Entering "{name}": args: {args}')
         result = func(*args, **kwargs)
-        print(f'\tLeaving "{name}"')
+        print(f'{indent}< Leaving "{name}"')
         return result
 
     return tracer
@@ -123,6 +129,10 @@ def get_account_assets(account_id: str):
 
 
 if __name__ == '__main__':
+    print("""
+    This example works only through a TLS connection, you must first configure torii_tls_params
+    https://iroha.readthedocs.io/en/main/configure/torii-tls.html
+    """)
     try:
         add_coin_to_admin(asset_id='coin#domain', amount_to_add='1000.00')
         get_account_assets(account_id=ADMIN_ACCOUNT_ID)

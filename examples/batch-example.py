@@ -4,12 +4,23 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+"""
+This example demonstrates how to use atomic batch of multiple transactions.
+The batch is atomic - so it means that it would be committed only and only if all transactions
+would be committed, otherwise entire batch (all transactions) would be rejected.
+Transactions in batch can be authored by multiple accounts - each account signs
+his transactions.
+
+Note that to create batch to be signed by multiple accounts extra params need to be used:
+`creator_account` and `quorum`.
+"""
+
 import binascii
-from iroha import IrohaCrypto as ic
 from iroha import Iroha, IrohaGrpc, IrohaCrypto
 import os
 import sys
 import grpc  # grpc.RpcError
+import inspect  # inspect.stack(0)
 from functools import wraps
 from utilities.errorCodes2Hr import get_proper_functions_for_commands
 
@@ -50,9 +61,11 @@ def trace(func):
     @wraps(func)
     def tracer(*args, **kwargs):
         name = func.__name__
-        print(f'\tEntering "{name}": {args}')
+        stack_size = int(len(inspect.stack(0)) / 2)  # @wraps(func) is also increasing the size
+        indent = stack_size*'\t'
+        print(f'{indent}> Entering "{name}": args: {args}')
         result = func(*args, **kwargs)
-        print(f'\tLeaving "{name}"')
+        print(f'{indent}< Leaving "{name}"')
         return result
 
     return tracer
@@ -94,7 +107,7 @@ def send_batch_and_print_status(transactions):
     global net
     net.send_txs(transactions)
     for tx in transactions:
-        hex_hash = binascii.hexlify(ic.hash(tx))
+        hex_hash = binascii.hexlify(IrohaCrypto.hash(tx))
         print('\t' + '-' * 20)
         creator = tx.payload.reduced_payload.creator_account_id
         print(f'Transaction hash = {hex_hash}, creator = {creator}')
@@ -123,21 +136,21 @@ def prepare_users():
                       asset_id='dogecoin#test', description='init doge', amount='20000')
     ]
     init_tx = iroha.transaction(init_cmds)
-    ic.sign_transaction(init_tx, ADMIN_PRIVATE_KEY)
+    IrohaCrypto.sign_transaction(init_tx, ADMIN_PRIVATE_KEY)
     send_transaction_and_print_status(init_tx)
 
 
 @trace
 def add_keys_and_set_quorum():
-    add_key_ans_set_quorum(account_id='alice@test', account_private_key=alice_private_keys[0],
+    add_key_and_set_quorum(account_id='alice@test', account_private_key=alice_private_keys[0],
                            account_private_key_to_add=alice_private_keys[1])
 
-    add_key_ans_set_quorum(account_id='bob@test', account_private_key=bob_private_keys[0],
+    add_key_and_set_quorum(account_id='bob@test', account_private_key=bob_private_keys[0],
                            account_private_key_to_add=bob_private_keys[1])
 
 
 @trace
-def add_key_ans_set_quorum(account_id, account_private_key, account_private_key_to_add):
+def add_key_and_set_quorum(account_id, account_private_key, account_private_key_to_add):
     public_key_to_add_signatory = public_key_from_private(account_private_key_to_add)
     iroha_local = Iroha(account_id)
     cmds = [
@@ -147,7 +160,7 @@ def add_key_ans_set_quorum(account_id, account_private_key, account_private_key_
                             account_id=account_id, quorum=2)
     ]
     tx = iroha_local.transaction(cmds)
-    ic.sign_transaction(tx, account_private_key)
+    IrohaCrypto.sign_transaction(tx, account_private_key)
     send_transaction_and_print_status(tx)
 
 
@@ -177,14 +190,14 @@ def alice_creates_exchange_batch():
     )
     iroha.batch([alice_tx, bob_tx], atomic=True)
     # sign transactions only after batch meta creation
-    ic.sign_transaction(alice_tx, *alice_private_keys)
+    IrohaCrypto.sign_transaction(alice_tx, *alice_private_keys)
     send_batch_and_print_status([alice_tx, bob_tx])
 
 
 @trace
 def bob_accepts_exchange_request():
     global net
-    q = ic.sign_query(
+    q = IrohaCrypto.sign_query(
         Iroha('bob@test').query('GetPendingTransactions'),
         bob_private_keys[0]
     )
@@ -194,7 +207,7 @@ def bob_accepts_exchange_request():
             # we need do this temporarily, otherwise accept will not reach MST engine
             del tx.signatures[:]
         else:
-            ic.sign_transaction(tx, *bob_private_keys)
+            IrohaCrypto.sign_transaction(tx, *bob_private_keys)
     send_batch_and_print_status(
         pending_transactions.transactions_response.transactions)
 
@@ -204,7 +217,7 @@ def check_no_pending_txs(account_id: str, account_private_key):
     print(' ~~~ No pending txs expected:')
     print(
         net.send_query(
-            ic.sign_query(
+            IrohaCrypto.sign_query(
                 iroha.query('GetPendingTransactions',
                             creator_account=account_id),
                 account_private_key
@@ -222,7 +235,7 @@ def bob_declines_exchange_request():
     
     """)
     global net
-    q = ic.sign_query(
+    q = IrohaCrypto.sign_query(
         Iroha('bob@test').query('GetPendingTransactions'),
         bob_private_keys[0]
     )
@@ -233,7 +246,7 @@ def bob_declines_exchange_request():
             del tx.signatures[:]
         else:
             # intentionally alice keys were used to fail bob's txs
-            ic.sign_transaction(tx, *alice_private_keys)
+            IrohaCrypto.sign_transaction(tx, *alice_private_keys)
             # zeroes as private keys are also acceptable
     send_batch_and_print_status(
         pending_transactions.transactions_response.transactions)
@@ -257,7 +270,7 @@ if __name__ == '__main__':
     except grpc.RpcError as rpc_error:
         if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
-                  f'{IROHA_HOST_ADDR}:{IROHA_TLS_PORT}!')
+                  f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:
             print(e)
     except RuntimeError as e:

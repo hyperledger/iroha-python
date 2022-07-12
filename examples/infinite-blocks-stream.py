@@ -4,11 +4,16 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-from iroha import Iroha, IrohaGrpc
-from iroha import IrohaCrypto
+"""
+The script will wait for new blocks.
+You need to send some commands to the node to see any blocks coming
+"""
+
 import sys
 import os
 import grpc  # grpc.RpcError
+import inspect  # inspect.stack(0)
+from iroha import Iroha, IrohaGrpc, IrohaCrypto
 from functools import wraps
 
 
@@ -32,9 +37,11 @@ def trace(func):
     @wraps(func)
     def tracer(*args, **kwargs):
         name = func.__name__
-        print(f'\tEntering "{name}": {args}')
+        stack_size = int(len(inspect.stack(0)) / 2)  # @wraps(func) is also increasing the size
+        indent = stack_size*'\t'
+        print(f'{indent}> Entering "{name}": args: {args}')
         result = func(*args, **kwargs)
-        print(f'\tLeaving "{name}"')
+        print(f'{indent}< Leaving "{name}"')
         return result
 
     return tracer
@@ -60,7 +67,7 @@ if __name__ == '__main__':
     except grpc.RpcError as rpc_error:
         if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
-                  f'{IROHA_HOST_ADDR}:{IROHA_TLS_PORT}!')
+                  f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:
             print(e)
     except RuntimeError as e:

@@ -195,7 +195,7 @@ if __name__ == '__main__':
     except grpc.RpcError as rpc_error:
         if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
-                  f'{IROHA_HOST_ADDR}:{IROHA_TLS_PORT}!')
+                  f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:
             print(e)
     except RuntimeError as e:
