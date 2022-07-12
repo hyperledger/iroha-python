@@ -11,6 +11,19 @@ pip install maturin
 maturin build
 ```
 
+After the build, you'll a name of the generated package "wheel" in the log, similar to this one:
+
+```
+📦 Built wheel for CPython 3.10 to …/iroha-python/target/wheels/iroha_python-0.1.0-cp310-cp310-linux_x86_64.whl
+```
+
+Remember the version, change the directory and install the package:
+
+```
+cd target/wheels
+pip install iroha_python-VERSION-linux_x86_64.whl
+```
+
 ## Architecture
 
 ### Stack
