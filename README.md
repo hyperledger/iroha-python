@@ -3,7 +3,7 @@
 
 This is a source repository for HL Iroha Python library.
 
-Currently, latest [HL Iroha release 1.4](https://github.com/hyperledger/iroha/releases) is supported. It can be ussed with one of official docker images:
+Currently, latest [HL Iroha release 1.5](https://github.com/hyperledger/iroha/releases) is supported. It can be ussed with one of official docker images:
 - `hyperledger/iroha:latest`
 - `hyperledger/iroha-burrow:latest` with Hyperledger-Burrow support (smart contracts).
 
