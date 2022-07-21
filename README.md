@@ -22,7 +22,27 @@ Remember the version, change the directory and install the package:
 ```
 cd target/wheels
 pip install iroha_python-VERSION-linux_x86_64.whl
+cd ~
 ```
+
+After an installation, do a small test to check the installation was successful.
+
+Normally, this test will display the library's contents:
+
+```
+python3 -c "import iroha2; print(dir(iroha2))"
+['ClassPath', 'Client', 'Dict', 'Enum', 'KeyPair', 'List', 'Struct', 'Tuple', '_Client', '_Instruction', '_Query', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__', 'data_model', 'get_class', 'import_module', 'iroha2', 'query', 'sys', 'to_rust']
+```
+
+If there was no error, you should be able to use iroha2-python library.
+
+You may also see an error that ends like this:
+
+```
+ModuleNotFoundError: No module named 'iroha2.iroha2'
+```
+
+If it appears, your current directory may be the same as the directory with `iroha2` and Python may be attempting to import it instead of the module. Switch to another directory and repeat the test.
 
 ## Architecture
 
