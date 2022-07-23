@@ -27,8 +27,15 @@ if sys.version_info[0] < 3:
 IROHA_HOST_ADDR = os.getenv('IROHA_HOST_ADDR', '127.0.0.1')
 IROHA_PORT = os.getenv('IROHA_PORT', '50051')
 ADMIN_ACCOUNT_ID = os.getenv('ADMIN_ACCOUNT_ID', 'admin@test')
+
+# Uncomment only one, depending on your implementation 
+# Using Iroha's native crypto libraries (ed25519_sha3_256)
 ADMIN_PRIVATE_KEY = os.getenv(
     'ADMIN_PRIVATE_KEY', 'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70')
+# Using Libursa's crypto libraries (ed25519_sha2_256)
+# ADMIN_PRIVATE_KEY = ed25519_sha2.SigningKey(
+#   os.getenv(
+    'ADMIN_PRIVATE_KEY', 'f101537e319568c765b2cc89698325604991dca57b9716b58016b253506cab70'), encoder=ed25519_sha2.encoding.HexEncoder)
 
 # Here we will create user keys
 user_private_key = IrohaCrypto.private_key()
