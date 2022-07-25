@@ -1,7 +1,7 @@
-from ...rust import Enum, Struct, Tuple, Dict
-Id = Struct[("name", "iroha_data_model.name.Name")]
+from ...rust import Enum, make_struct, make_tuple, Dict
+Id = make_struct("Id", [("name", "iroha_data_model.name.Name")])
 
-NewRole = Struct[("inner", "iroha_data_model.role.Role")]
+NewRole = make_struct("NewRole", [("inner", "iroha_data_model.role.Role")])
 
-Role = Struct[("id", "iroha_data_model.role.Id"), ("permissions", list)]
+Role = make_struct("Role", [("id", "iroha_data_model.role.Id"), ("permissions", list)])
 

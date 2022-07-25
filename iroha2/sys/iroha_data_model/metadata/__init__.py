@@ -1,3 +1,3 @@
-from ...rust import Enum, Struct, Tuple, Dict
-Metadata = Struct[("map", Dict)]
+from ...rust import Enum, make_struct, make_tuple, Dict
+Metadata = make_struct("Metadata", [("map", Dict)])
 

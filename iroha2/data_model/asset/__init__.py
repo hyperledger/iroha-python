@@ -38,8 +38,7 @@ class Definition(_Definition, Registrable):
         if isinstance(id, str):
             id = DefinitionId.parse(id)
 
-        return super().__init__(self,
-                                id=id,
+        return super().__init__(id=id,
                                 value_type=value_type,
                                 mintable=mintable,
                                 metadata=metadata)

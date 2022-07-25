@@ -216,7 +216,11 @@ impl fmt::Display for StructClass {
             fields = "()".to_owned();
         }
 
-        writeln!(f, "{} = Struct[{}]", self.name, fields)
+        writeln!(
+            f,
+            "{} = make_struct(\"{}\", [{}])",
+            self.name, self.name, fields
+        )
     }
 }
 
@@ -230,9 +234,13 @@ impl fmt::Display for UnnamedStructClass {
             .join(", ");
 
         if fields.is_empty() {
-            return write!(f, "{} = Tuple[()]", self.name);
+            return write!(f, "{} = make_tuple(\"{}\")", self.name, self.name);
         }
-        write!(f, "{} = Tuple[{}]", self.name, fields)
+        write!(
+            f,
+            "{} = make_tuple(\"{}\", [{}])",
+            self.name, self.name, fields
+        )
     }
 }
 

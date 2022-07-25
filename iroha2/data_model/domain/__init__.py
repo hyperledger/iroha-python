@@ -13,8 +13,7 @@ class Domain(_Domain, Registrable):
         if isinstance(id, str):
             id = Id(id)
 
-        super().__init__(self,
-                         id=id,
+        super().__init__(id=id,
                          logo=logo,
                          accounts={},
                          asset_definitions={},

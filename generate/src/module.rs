@@ -99,7 +99,7 @@ impl Module {
         }
         writeln!(
             f,
-            "from .{}rust import Enum, Struct, Tuple, Dict",
+            "from .{}rust import Enum, make_struct, make_tuple, Dict",
             ".".repeat(r#in.mods.len())
         )?;
 

@@ -1,30 +1,30 @@
-from ...rust import Enum, Struct, Tuple, Dict
-BurnBox = Struct[("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")]
+from ...rust import Enum, make_struct, make_tuple, Dict
+BurnBox = make_struct("BurnBox", [("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")])
 
-ExecuteTriggerBox = Struct[("trigger_id", "iroha_data_model.trigger.Id")]
+ExecuteTriggerBox = make_struct("ExecuteTriggerBox", [("trigger_id", "iroha_data_model.trigger.Id")])
 
-FailBox = Struct[("message", str)]
+FailBox = make_struct("FailBox", [("message", str)])
 
-GrantBox = Struct[("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")]
+GrantBox = make_struct("GrantBox", [("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")])
 
-If = Struct[("condition", "iroha_data_model.expression.EvaluatesTo"), ("then", "iroha_data_model.isi.Instruction"), ("otherwise", "iroha_data_model.isi.Instruction")]
+If = make_struct("If", [("condition", "iroha_data_model.expression.EvaluatesTo"), ("then", "iroha_data_model.isi.Instruction"), ("otherwise", "iroha_data_model.isi.Instruction")])
 
 Instruction = Enum[("Register", "iroha_data_model.isi.RegisterBox"), ("Unregister", "iroha_data_model.isi.UnregisterBox"), ("Mint", "iroha_data_model.isi.MintBox"), ("Burn", "iroha_data_model.isi.BurnBox"), ("Transfer", "iroha_data_model.isi.TransferBox"), ("If", "iroha_data_model.isi.If"), ("Pair", "iroha_data_model.isi.Pair"), ("Sequence", "iroha_data_model.isi.SequenceBox"), ("Fail", "iroha_data_model.isi.FailBox"), ("SetKeyValue", "iroha_data_model.isi.SetKeyValueBox"), ("RemoveKeyValue", "iroha_data_model.isi.RemoveKeyValueBox"), ("Grant", "iroha_data_model.isi.GrantBox"), ("Revoke", "iroha_data_model.isi.RevokeBox"), ("ExecuteTrigger", "iroha_data_model.isi.ExecuteTriggerBox")] 
-MintBox = Struct[("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")]
+MintBox = make_struct("MintBox", [("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")])
 
-Pair = Struct[("left_instruction", "iroha_data_model.isi.Instruction"), ("right_instruction", "iroha_data_model.isi.Instruction")]
+Pair = make_struct("Pair", [("left_instruction", "iroha_data_model.isi.Instruction"), ("right_instruction", "iroha_data_model.isi.Instruction")])
 
-RegisterBox = Struct[("object", "iroha_data_model.expression.EvaluatesTo")]
+RegisterBox = make_struct("RegisterBox", [("object", "iroha_data_model.expression.EvaluatesTo")])
 
-RemoveKeyValueBox = Struct[("object_id", "iroha_data_model.expression.EvaluatesTo"), ("key", "iroha_data_model.expression.EvaluatesTo")]
+RemoveKeyValueBox = make_struct("RemoveKeyValueBox", [("object_id", "iroha_data_model.expression.EvaluatesTo"), ("key", "iroha_data_model.expression.EvaluatesTo")])
 
-RevokeBox = Struct[("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")]
+RevokeBox = make_struct("RevokeBox", [("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")])
 
-SequenceBox = Struct[("instructions", list)]
+SequenceBox = make_struct("SequenceBox", [("instructions", list)])
 
-SetKeyValueBox = Struct[("object_id", "iroha_data_model.expression.EvaluatesTo"), ("key", "iroha_data_model.expression.EvaluatesTo"), ("value", "iroha_data_model.expression.EvaluatesTo")]
+SetKeyValueBox = make_struct("SetKeyValueBox", [("object_id", "iroha_data_model.expression.EvaluatesTo"), ("key", "iroha_data_model.expression.EvaluatesTo"), ("value", "iroha_data_model.expression.EvaluatesTo")])
 
-TransferBox = Struct[("source_id", "iroha_data_model.expression.EvaluatesTo"), ("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")]
+TransferBox = make_struct("TransferBox", [("source_id", "iroha_data_model.expression.EvaluatesTo"), ("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")])
 
-UnregisterBox = Struct[("object_id", "iroha_data_model.expression.EvaluatesTo")]
+UnregisterBox = make_struct("UnregisterBox", [("object_id", "iroha_data_model.expression.EvaluatesTo")])
 

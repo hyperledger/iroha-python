@@ -34,8 +34,7 @@ class Account(_Account, Registrable):
             acct_id, domain_id = id.split("@")
             id = Id(name=acct_id, domain_id=DomainId(domain_id))
 
-        return super().__init__(self,
-                                id=id,
+        return super().__init__(id=id,
                                 metadata=metadata,
                                 assets=assets,
                                 signatories=[],
