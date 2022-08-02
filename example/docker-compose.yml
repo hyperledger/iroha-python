@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   iroha:
-    image: hyperledger/iroha2:dev
+    image: hyperledger/iroha2:stable
     ports:
       - 8080:8080
     environment:
@@ -16,7 +16,7 @@ services:
     command: ./iroha --submit-genesis
 
   iroha2:
-    image: hyperledger/iroha2:dev
+    image: hyperledger/iroha2:stable
     environment:
       TORII_P2P_ADDR: iroha2:1338
       TORII_API_URL: iroha2:8081
@@ -27,7 +27,7 @@ services:
       - './peer_config/:/config/'
 
   iroha3:
-    image: hyperledger/iroha2:dev
+    image: hyperledger/iroha2:stable
     environment:
       TORII_P2P_ADDR: iroha3:1339
       TORII_API_URL: iroha3:8082
@@ -38,7 +38,7 @@ services:
       - './peer_config/:/config/'
 
   iroha4:
-    image: hyperledger/iroha2:dev
+    image: hyperledger/iroha2:stable
     environment:
       TORII_P2P_ADDR: iroha4:1340
       TORII_API_URL: iroha4:8083
