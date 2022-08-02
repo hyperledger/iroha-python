@@ -13,6 +13,8 @@ RejectionReason = Enum[("Block", "iroha_data_model.transaction.BlockRejectionRea
 Transaction = Struct[("payload", "iroha_data_model.transaction.Payload"), ("signatures", list)]
 
 TransactionLimitError = Tuple[str]
+TransactionQueryResult = Struct[("tx_value", "iroha_data_model.transaction.TransactionValue"), ("block_hash", "iroha_crypto.hash.Hash")]
+
 TransactionRejectionReason = Enum[("NotPermitted", "iroha_data_model.transaction.NotPermittedFail"), ("UnsatisfiedSignatureCondition", "iroha_data_model.transaction.UnsatisfiedSignatureConditionFail"), ("LimitCheck", "iroha_data_model.transaction.TransactionLimitError"), ("InstructionExecution", "iroha_data_model.transaction.InstructionExecutionFail"), ("WasmExecution", "iroha_data_model.transaction.WasmExecutionFail"), ("UnexpectedGenesisAccountSignature", type(None))] 
 TransactionValue = Enum[("Transaction", "iroha_data_model.transaction.VersionedTransaction"), ("RejectedTransaction", "iroha_data_model.transaction.VersionedRejectedTransaction")] 
 UnsatisfiedSignatureConditionFail = Struct[("reason", str)]

@@ -14,14 +14,14 @@ name = "iroha2"
 crate-type = ["cdylib"]
 
 [dependencies]
-iroha_client = { git = "https://github.com/QuentinI/iroha", branch = "2103-additional-queries" }
-iroha_crypto = { git = "https://github.com/QuentinI/iroha", branch = "2103-additional-queries" }
-iroha_data_model = { git = "https://github.com/QuentinI/iroha", branch = "2103-additional-queries" }
-iroha_version = { git = "https://github.com/QuentinI/iroha", branch = "2103-additional-queries" }
+iroha_client = { git = "https://github.com/hyperledger/iroha", branch = "iroha2" }
+iroha_crypto = { git = "https://github.com/hyperledger/iroha", branch = "iroha2" }
+iroha_data_model = { git = "https://github.com/hyperledger/iroha", branch = "iroha2" }
+iroha_version = { git = "https://github.com/hyperledger/iroha", branch = "iroha2" }
 
-color-eyre = "0.5"
-parity-scale-codec = "2.2"
-pyo3 = { version = "0.15.0", features = ["extension-module"] }
-pythonize = "0.15.0"
+color-eyre = "0.6"
+parity-scale-codec = "3.1"
+pyo3 = { version = "0.16.4", features = ["extension-module", "multiple-pymethods"] }
+pythonize = "0.16.0"
 serde = "1"
 serde_json = "1"

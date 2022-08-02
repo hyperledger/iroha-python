@@ -13,14 +13,12 @@ use std::ops::{Deref, DerefMut};
 
 use color_eyre::eyre;
 use iroha_client::{client, config::Configuration};
-use iroha_crypto::{Hash, KeyGenConfiguration, Signature};
+use iroha_crypto::{Hash, KeyGenConfiguration};
 use iroha_crypto::{PrivateKey, PublicKey};
 use iroha_data_model::prelude::*;
 use iroha_version::prelude::*;
-use pyo3::class::basic::PyObjectProtocol;
 use pyo3::class::iter::IterNextOutput;
 use pyo3::prelude::*;
-use pyo3::PyIterProtocol;
 
 use crate::python::*;
 
@@ -67,14 +65,22 @@ pub fn hash(bytes: Vec<u8>) -> ToPy<Hash> {
     ToPy(Hash::new(&bytes))
 }
 
-/// TODO: signing
 #[pymethods]
 impl Client {
     /// Creates new client
     #[new]
-    pub fn new(cfg: ToPy<Configuration>) -> Self {
-        // TODO:
-        client::Client::new(&cfg).unwrap().into()
+    pub fn new(cfg: ToPy<Configuration>) -> PyResult<Self> {
+        client::Client::new(&cfg).map_err(to_py_err).map(Self::from)
+    }
+
+    #[staticmethod]
+    pub fn with_headers(
+        cfg: ToPy<Configuration>,
+        headers: HashMap<String, String>,
+    ) -> PyResult<Self> {
+        client::Client::with_headers(&cfg, headers)
+            .map_err(to_py_err)
+            .map(Self::from)
     }
 
     /// Queries peer
@@ -100,18 +106,6 @@ impl Client {
             .map_err(to_py_err)
             .map(|tx| tx.encode_versioned())
     }
-
-    // TODO:
-    /// Get transaction body
-    /// # Errors
-    //  pub fn query_body(&mut self, request: ToPy<QueryBox>) -> PyResult<Vec<u8>> {
-    //      let request = QueryRequest::new(request.into_inner(), self.cl.account_id.clone());
-    //      let signed = self.cl.sign_query(request);
-    //      signed
-    //          .map(VersionedSignedQueryRequest::from)
-    //          .map_err(to_py_err)
-    //          .map(|req| req.encode_versioned())
-    //  }
 
     /// Sends transaction to peer
     /// # Errors
@@ -155,38 +149,9 @@ impl Client {
                 EventIterator::new(boxed)
             })
     }
-
-    // TODO:
-    // /// Account field on client
-    // #[getter]
-    // pub fn get_account(&self) -> ToPy<AccountId> {
-    //     ToPy(self.account_id.clone())
-    // }
-
-    // TODO:
-    // /// Account field on client
-    // #[setter]
-    // pub fn set_account(&mut self, account: ToPy<AccountId>) {
-    //   self.account_id = account.into_inner();
-    // }
-
-    // TODO:
-    // /// Headers field on client
-    // #[getter]
-    // pub fn get_headers(&self) -> HashMap<String, String> {
-    //     self.headers.clone()
-    // }
-
-    // TODO:
-    // /// Account field on client
-    // #[setter]
-    // pub fn set_headers(&mut self, headers: HashMap<String, String>) {
-    //     self.headers = headers;
-    // }
 }
 
-// TODO:
-// `EventIterator` was made private in iroha for some reason
+// HACK: `EventIterator` was made private in iroha for some reason
 #[pyclass]
 pub struct EventIterator {
     inner: Box<dyn Iterator<Item = eyre::Result<Event>> + Send>,
@@ -198,18 +163,17 @@ impl EventIterator {
     }
 }
 
-#[pyproto]
-impl PyIterProtocol for EventIterator {
+#[pymethods]
+impl EventIterator {
     fn __iter__(slf: PyRefMut<Self>) -> PyRefMut<Self> {
         slf
     }
 
-    // TODO
     fn __next__(mut slf: PyRefMut<Self>) -> IterNextOutput<ToPy<Event>, &'static str> {
         #[allow(clippy::unwrap_used)]
         slf.inner
             .next()
-            .map(Result::unwrap)
+            .map(Result::unwrap) // TODO:
             .map(ToPy)
             .map_or(IterNextOutput::Return("Ended"), IterNextOutput::Yield)
     }

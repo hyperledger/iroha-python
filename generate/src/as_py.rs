@@ -23,9 +23,6 @@ pub struct RustType {
     ident: String,
     /// With generics
     generics: Vec<RustType>,
-
-    /// Syn type (for a record)
-    ty: Type,
 }
 
 #[derive(PartialEq, Eq, Clone, Debug)]
@@ -93,7 +90,6 @@ impl From<Type> for RustType {
                     module,
                     ident,
                     generics,
-                    ty,
                 }
             }
 
@@ -106,13 +102,11 @@ impl From<Type> for RustType {
                 module: ModulePath::default(),
                 ident: "[]".to_owned(),
                 generics: vec![Self::from(*elem.clone())],
-                ty,
             },
             Type::Tuple(TypeTuple { elems, .. }) => Self {
                 module: ModulePath::default(),
                 ident: "()".to_owned(),
                 generics: elems.iter().cloned().map(Self::from).collect::<Vec<_>>(),
-                ty,
             },
 
             _ => todo!("Should not be such types within python library"),

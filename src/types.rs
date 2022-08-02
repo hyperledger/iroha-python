@@ -6,11 +6,11 @@ use std::convert::TryFrom;
 
 use color_eyre::eyre::eyre;
 use pyo3::basic::CompareOp;
-use pyo3::class::iter::{IterNextOutput, PyIterProtocol};
+use pyo3::class::iter::IterNextOutput;
 use pyo3::conversion::{ToBorrowedObject, ToPyObject};
 use pyo3::exceptions::PyKeyError;
 use pyo3::types::{PyDict, PyList};
-use pyo3::{prelude::*, PyMappingProtocol, PyNativeType, PyObjectProtocol};
+use pyo3::{prelude::*, PyNativeType};
 use pythonize::{PythonizeDictType, PythonizeListType};
 
 pub use dict::Dict;
@@ -25,7 +25,6 @@ pub mod list {
     use pyo3::{
         exceptions::PyIndexError,
         types::{PySequence, PyTuple},
-        PySequenceProtocol,
     };
 
     use crate::to_py_err;
@@ -102,8 +101,9 @@ pub mod list {
         }
     }
 
-    #[pyproto]
-    impl PyObjectProtocol for List {
+    // Object implementation
+    #[pymethods]
+    impl List {
         /// Comparison which relies on hashes
         fn __richcmp__(&self, other: Self, op: CompareOp) -> PyResult<bool> {
             if let CompareOp::Eq = op {
@@ -133,13 +133,14 @@ pub mod list {
         }
     }
 
-    #[pyproto]
-    impl PySequenceProtocol for List {
-        fn __len__(&'p self) -> usize {
+    // Sequence
+    #[pymethods]
+    impl List {
+        fn __len__(&self) -> usize {
             self.vec.len()
         }
 
-        fn __getitem__(&'p self, idx: isize) -> PyResult<PyObject> {
+        fn __getitem__(&self, idx: isize) -> PyResult<PyObject> {
             #[allow(clippy::cast_sign_loss, clippy::cast_possible_wrap)]
             let idx = if idx >= 0 {
                 idx
@@ -201,7 +202,7 @@ pub mod dict {
 
     fn as_dict_obj(py: Python, obj: PyObject) -> PyResult<PyObject> {
         let obj = obj.into_ref(py);
-        let obj = if obj.is_instance::<PyDict>()? {
+        let obj = if obj.is_instance_of::<PyDict>()? {
             Dict::try_from(obj.downcast::<PyDict>()?)?.into_py(py)
         } else {
             obj.to_object(py)
@@ -362,15 +363,17 @@ pub mod dict {
         }
     }
 
-    #[pyproto]
-    impl PyIterProtocol for Dict {
+    // Iter
+    #[pymethods]
+    impl Dict {
         fn __iter__(slf: PyRef<Self>) -> Keys {
             slf._keys()
         }
     }
 
-    #[pyproto]
-    impl PyObjectProtocol for Dict {
+    // Object
+    #[pymethods]
+    impl Dict {
         /// Comparison which relies on hashes
         fn __richcmp__(&self, other: Self, op: CompareOp) -> bool {
             matches!(op, CompareOp::Eq if Python::with_gil(|py| self.hash(py) == other.hash(py)))
@@ -403,8 +406,9 @@ pub mod dict {
         }
     }
 
-    #[pyproto]
-    impl PyMappingProtocol for Dict {
+    // Mapping
+    #[pymethods]
+    impl Dict {
         fn __len__(&self) -> usize {
             self.len()
         }
@@ -479,8 +483,9 @@ pub mod dict {
         }
     }
 
-    #[pyproto]
-    impl PyIterProtocol for Items {
+    // Iter
+    #[pymethods]
+    impl Items {
         fn __iter__(slf: PyRef<Self>) -> PyRef<Self> {
             slf
         }
@@ -493,8 +498,9 @@ pub mod dict {
         }
     }
 
-    #[pyproto]
-    impl PyIterProtocol for Keys {
+    // Iter
+    #[pymethods]
+    impl Keys {
         fn __iter__(slf: PyRef<Self>) -> PyRef<Self> {
             slf
         }
@@ -507,8 +513,9 @@ pub mod dict {
         }
     }
 
-    #[pyproto]
-    impl PyIterProtocol for Values {
+    // Iter
+    #[pymethods]
+    impl Values {
         fn __iter__(slf: PyRef<Self>) -> PyRef<Self> {
             slf
         }
