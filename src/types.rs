@@ -1,5 +1,9 @@
 //! Module with python dictionary which can be hashed
 
+// Generates warnings for derived code in
+// #[pymethod] impl blocks
+#![allow(clippy::redundant_closure_for_method_calls)]
+
 use std::collections::btree_map::IntoIter;
 use std::collections::BTreeMap;
 use std::convert::TryFrom;
@@ -72,7 +76,7 @@ pub mod list {
 
             self.iter(py)
                 .filter_map(|i| i.extract::<isize>().ok())
-                .fold(Ok(0), |a, b| a.and_then(|a| sum_hash(a, b)))
+                .fold(Ok(0), |res, b| res.and_then(|a| sum_hash(a, b)))
         }
 
         pub fn iter<'py>(&'py self, py: Python<'py>) -> impl Iterator<Item = &'py PyAny> + 'py {

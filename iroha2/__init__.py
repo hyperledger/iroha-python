@@ -5,6 +5,7 @@ from .data_model.isi import Instruction as _Instruction
 
 
 class Client:
+
     def __init__(self, cfg, headers=None):
         if headers is None:
             self.cl = _Client(cfg)

@@ -6,7 +6,9 @@ ClassPath = str
 
 
 def query(*path):
+
     class IntoInner:
+
         @staticmethod
         def parse_output(out):
             for p in path:
@@ -38,8 +40,10 @@ def get_class(path) -> type:
 
 
 class _Tuple(type):
+
     @staticmethod
     def _make_class(fields):
+
         class RustTuple:
             __fields = None
 
@@ -76,8 +80,10 @@ class Tuple(metaclass=_Tuple):
 
 
 class _Enum(type):
+
     @staticmethod
     def _make_class(variants):
+
         class RustEnum:
             __variants = None
 
@@ -146,8 +152,10 @@ class Enum(metaclass=_Enum):
 
 
 class _Struct(type):
+
     @staticmethod
     def _make_class(fields):
+
         class RustStruct:
             __fields = None
 

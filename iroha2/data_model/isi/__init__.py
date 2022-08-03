@@ -20,11 +20,13 @@ from iroha2.data_model import Value, Identifiable, Id
 
 
 class Registrable(ABC):
+
     def registrable(self):
         return self
 
 
 class Register(_Register):
+
     @classmethod
     def identifiable(cls, identifiable):
         "Creates instruction with raw identifiable"

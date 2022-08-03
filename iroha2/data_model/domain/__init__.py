@@ -8,6 +8,7 @@ from ..isi import Registrable
 
 
 class Domain(_Domain, Registrable):
+
     def __init__(self, id: Union[Id, str], logo: Optional[str] = None):
         if isinstance(id, str):
             id = Id(id)
@@ -20,6 +21,4 @@ class Domain(_Domain, Registrable):
                          metadata={})
 
     def registrable(self):
-        return _NewDomain(id=self.id,
-                          logo=self.logo,
-                          metadata={})
+        return _NewDomain(id=self.id, logo=self.logo, metadata={})

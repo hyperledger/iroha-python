@@ -25,9 +25,11 @@ class DefinitionId(_DefinitionId, Registrable):
 
 
 class Definition(_Definition, Registrable):
+
     def __init__(self,
                  id: Union[str, DefinitionId],
-                 value_type: ValueType, mintable: Mintable,
+                 value_type: ValueType,
+                 mintable: Mintable,
                  metadata: Optional[dict] = None):
 
         if metadata is None:
@@ -43,4 +45,5 @@ class Definition(_Definition, Registrable):
                                 metadata=metadata)
 
     def registrable(self):
-        return NewDefinition(self.id, self.value_type, self.mintable, self.metadata)
+        return NewDefinition(self.id, self.value_type, self.mintable,
+                             self.metadata)
