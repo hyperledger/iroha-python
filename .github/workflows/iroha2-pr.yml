@@ -6,7 +6,7 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    container: rust:1.56-buster
+    container: rust:1.60-buster
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
@@ -34,7 +34,7 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
-    container: rust:1.56-buster
+    container: rust:1.60-buster
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
@@ -45,6 +45,7 @@ jobs:
             ca-certificates \
             clang \
             git \
+            patchelf \
             llvm-dev \
             python3-pip
           pip3 install --upgrade pip
@@ -69,7 +70,7 @@ jobs:
       - name: Run test in docker
         working-directory: example
         run: |
-          docker-compose up -d && sleep 2
+          docker-compose up -d && sleep 5
           docker run --net example_default -v $PWD:/test iroha:python-test \
               timeout 3 python3 test.py ||
               (docker-compose logs && false)
