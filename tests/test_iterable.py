@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from iroha2 import Dict, List
+from iroha2.sys.rust import Dict, List
 
 
 def test_list_iterable():

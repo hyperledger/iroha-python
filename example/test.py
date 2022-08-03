@@ -27,8 +27,7 @@ def wait_for_tx(cl: Client, hash: str):
                 pass
             else:
                 raise RuntimeError(
-                    f"Tx rejected: {event['Pipeline']['status']}"
-                )
+                    f"Tx rejected: {event['Pipeline']['status']}")
 
 
 cfg = json.loads(open("./config.json").read())

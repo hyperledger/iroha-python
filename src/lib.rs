@@ -73,6 +73,10 @@ impl Client {
         client::Client::new(&cfg).map_err(to_py_err).map(Self::from)
     }
 
+    /// Creates new client with specified headers
+    ///
+    /// # Errors
+    /// - If configuration isn't valid
     #[staticmethod]
     pub fn with_headers(
         cfg: ToPy<Configuration>,

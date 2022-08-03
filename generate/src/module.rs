@@ -92,7 +92,7 @@ impl Module {
         let f = dir.join("__init__.py");
         let mut f = fs::File::create(f).wrap_err("Failed to create __init__.py file")?;
 
-        let (module, meta): (Vec<_>, Vec<_>) = self.r#mod.iter().partition(|(_, v)| v.is_left());
+        let (modules, meta): (Vec<_>, Vec<_>) = self.r#mod.iter().partition(|(_, v)| v.is_left());
 
         if r#in.mods.is_empty() {
             writeln!(f, "from ..iroha2 import *")?;
@@ -110,8 +110,8 @@ impl Module {
         }
         drop(f);
 
-        for (name, module) in module {
-            let module = module.as_ref().left().unwrap();
+        for (name, either_module) in modules {
+            let module = either_module.as_ref().left().unwrap();
             module
                 .write_dir_int(&dir.join(name), &r#in.clone().add(name.clone()))
                 .wrap_err_with(|| eyre!("Failed to write module {}", name))?;

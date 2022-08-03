@@ -165,7 +165,7 @@ impl From<RustType> for PyType {
                     ty.generics
                         .into_iter()
                         .map(Self::from)
-                        .map(|ty| ty.to_string())
+                        .map(|generic_ty| generic_ty.to_string())
                         .collect::<Vec<_>>()
                         .join(", ")
                 ))
@@ -253,7 +253,7 @@ impl StructClass {
         let fields = declarations
             .into_iter()
             .map(|d| (d.name, d.ty))
-            .map(|(name, ty)| (name, RustType::try_from(ty).map(PyType::from).unwrap()))
+            .map(|(decl_name, ty)| (decl_name, RustType::try_from(ty).map(PyType::from).unwrap()))
             .collect::<Vec<_>>();
 
         Self { fields, name }
@@ -261,8 +261,12 @@ impl StructClass {
 }
 
 impl EnumClass {
-    pub fn from_meta(name: String, EnumMeta { variants }: EnumMeta) -> Self {
-        let (names, tys): (Vec<_>, Vec<_>) = variants.into_iter().map(|d| (d.name, d.ty)).unzip();
+    pub fn from_meta(name: String, enum_meta: EnumMeta) -> Self {
+        let (names, tys): (Vec<_>, Vec<_>) = enum_meta
+            .variants
+            .into_iter()
+            .map(|d| (d.name, d.ty))
+            .unzip();
         let tys = tys
             .into_iter()
             .map(|ty| {
