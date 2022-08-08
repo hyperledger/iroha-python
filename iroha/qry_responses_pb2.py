@@ -33,58 +33,48 @@ _ERRORRESPONSE_REASON = _descriptor.EnumDescriptor(
   full_name='iroha.protocol.ErrorResponse.Reason',
   filename=None,
   file=DESCRIPTOR,
-  create_key=_descriptor._internal_create_key,
   values=[
     _descriptor.EnumValueDescriptor(
       name='STATELESS_INVALID', index=0, number=0,
       serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
+      type=None),
     _descriptor.EnumValueDescriptor(
       name='STATEFUL_INVALID', index=1, number=1,
       serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
+      type=None),
     _descriptor.EnumValueDescriptor(
       name='NO_ACCOUNT', index=2, number=2,
       serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
+      type=None),
     _descriptor.EnumValueDescriptor(
       name='NO_ACCOUNT_ASSETS', index=3, number=3,
       serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
+      type=None),
     _descriptor.EnumValueDescriptor(
       name='NO_ACCOUNT_DETAIL', index=4, number=4,
       serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
+      type=None),
     _descriptor.EnumValueDescriptor(
       name='NO_SIGNATORIES', index=5, number=5,
       serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
+      type=None),
     _descriptor.EnumValueDescriptor(
       name='NOT_SUPPORTED', index=6, number=6,
       serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
+      type=None),
     _descriptor.EnumValueDescriptor(
       name='NO_ASSET', index=7, number=7,
       serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
+      type=None),
     _descriptor.EnumValueDescriptor(
       name='NO_ROLES', index=8, number=8,
       serialized_options=None,
-      type=None,
-      create_key=_descriptor._internal_create_key),
+      type=None),
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=994,
-  serialized_end=1176,
+  serialized_start=840,
+  serialized_end=1022,
 )
 _sym_db.RegisterEnumDescriptor(_ERRORRESPONSE_REASON)
 
@@ -95,29 +85,28 @@ _ASSET = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='asset_id', full_name='iroha.protocol.Asset.asset_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='domain_id', full_name='iroha.protocol.Asset.domain_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='precision', full_name='iroha.protocol.Asset.precision', index=2,
       number=3, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -141,22 +130,21 @@ _DOMAIN = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='domain_id', full_name='iroha.protocol.Domain.domain_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='default_role', full_name='iroha.protocol.Domain.default_role', index=1,
       number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -180,36 +168,35 @@ _ACCOUNT = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='account_id', full_name='iroha.protocol.Account.account_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='domain_id', full_name='iroha.protocol.Account.domain_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='quorum', full_name='iroha.protocol.Account.quorum', index=2,
       number=3, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='json_data', full_name='iroha.protocol.Account.json_data', index=3,
       number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -233,29 +220,28 @@ _ACCOUNTASSET = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='asset_id', full_name='iroha.protocol.AccountAsset.asset_id', index=0,
       number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='account_id', full_name='iroha.protocol.AccountAsset.account_id', index=1,
       number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='balance', full_name='iroha.protocol.AccountAsset.balance', index=2,
       number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -279,7 +265,6 @@ _ACCOUNTASSETRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='account_assets', full_name='iroha.protocol.AccountAssetResponse.account_assets', index=0,
@@ -287,21 +272,7 @@ _ACCOUNTASSETRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='total_number', full_name='iroha.protocol.AccountAssetResponse.total_number', index=1,
-      number=2, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='next_asset_id', full_name='iroha.protocol.AccountAssetResponse.next_asset_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -313,14 +284,9 @@ _ACCOUNTASSETRESPONSE = _descriptor.Descriptor(
   syntax='proto3',
   extension_ranges=[],
   oneofs=[
-    _descriptor.OneofDescriptor(
-      name='opt_next_asset_id', full_name='iroha.protocol.AccountAssetResponse.opt_next_asset_id',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
   ],
-  serialized_start=361,
-  serialized_end=505,
+  serialized_start=360,
+  serialized_end=436,
 )
 
 
@@ -330,29 +296,14 @@ _ACCOUNTDETAILRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='detail', full_name='iroha.protocol.AccountDetailResponse.detail', index=0,
       number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='total_number', full_name='iroha.protocol.AccountDetailResponse.total_number', index=1,
-      number=2, type=4, cpp_type=4, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='next_record_id', full_name='iroha.protocol.AccountDetailResponse.next_record_id', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -365,8 +316,8 @@ _ACCOUNTDETAILRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=507,
-  serialized_end=631,
+  serialized_start=438,
+  serialized_end=477,
 )
 
 
@@ -376,7 +327,6 @@ _ACCOUNTRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='account', full_name='iroha.protocol.AccountResponse.account', index=0,
@@ -384,14 +334,14 @@ _ACCOUNTRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='account_roles', full_name='iroha.protocol.AccountResponse.account_roles', index=1,
       number=2, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -404,8 +354,8 @@ _ACCOUNTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=633,
-  serialized_end=715,
+  serialized_start=479,
+  serialized_end=561,
 )
 
 
@@ -415,7 +365,6 @@ _ASSETRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='asset', full_name='iroha.protocol.AssetResponse.asset', index=0,
@@ -423,7 +372,7 @@ _ASSETRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -436,8 +385,8 @@ _ASSETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=717,
-  serialized_end=770,
+  serialized_start=563,
+  serialized_end=616,
 )
 
 
@@ -447,7 +396,6 @@ _ROLESRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='roles', full_name='iroha.protocol.RolesResponse.roles', index=0,
@@ -455,7 +403,7 @@ _ROLESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -468,8 +416,8 @@ _ROLESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=772,
-  serialized_end=802,
+  serialized_start=618,
+  serialized_end=648,
 )
 
 
@@ -479,7 +427,6 @@ _ROLEPERMISSIONSRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='permissions', full_name='iroha.protocol.RolePermissionsResponse.permissions', index=0,
@@ -487,7 +434,7 @@ _ROLEPERMISSIONSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -500,8 +447,8 @@ _ROLEPERMISSIONSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=804,
-  serialized_end=882,
+  serialized_start=650,
+  serialized_end=728,
 )
 
 
@@ -511,7 +458,6 @@ _ERRORRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='reason', full_name='iroha.protocol.ErrorResponse.reason', index=0,
@@ -519,21 +465,21 @@ _ERRORRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='message', full_name='iroha.protocol.ErrorResponse.message', index=1,
       number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='error_code', full_name='iroha.protocol.ErrorResponse.error_code', index=2,
       number=3, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -547,8 +493,8 @@ _ERRORRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=885,
-  serialized_end=1176,
+  serialized_start=731,
+  serialized_end=1022,
 )
 
 
@@ -558,7 +504,6 @@ _SIGNATORIESRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='keys', full_name='iroha.protocol.SignatoriesResponse.keys', index=0,
@@ -566,7 +511,7 @@ _SIGNATORIESRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -579,8 +524,8 @@ _SIGNATORIESRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1178,
-  serialized_end=1213,
+  serialized_start=1024,
+  serialized_end=1059,
 )
 
 
@@ -590,7 +535,6 @@ _TRANSACTIONSRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='transactions', full_name='iroha.protocol.TransactionsResponse.transactions', index=0,
@@ -598,7 +542,7 @@ _TRANSACTIONSRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -611,8 +555,8 @@ _TRANSACTIONSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1215,
-  serialized_end=1288,
+  serialized_start=1061,
+  serialized_end=1134,
 )
 
 
@@ -622,7 +566,6 @@ _TRANSACTIONSPAGERESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='transactions', full_name='iroha.protocol.TransactionsPageResponse.transactions', index=0,
@@ -630,21 +573,21 @@ _TRANSACTIONSPAGERESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='all_transactions_size', full_name='iroha.protocol.TransactionsPageResponse.all_transactions_size', index=1,
       number=2, type=13, cpp_type=3, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='next_tx_hash', full_name='iroha.protocol.TransactionsPageResponse.next_tx_hash', index=2,
       number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -658,160 +601,10 @@ _TRANSACTIONSPAGERESPONSE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='next_page_tag', full_name='iroha.protocol.TransactionsPageResponse.next_page_tag',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
+      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1291,
-  serialized_end=1440,
-)
-
-
-_PENDINGTRANSACTIONSPAGERESPONSE_BATCHINFO = _descriptor.Descriptor(
-  name='BatchInfo',
-  full_name='iroha.protocol.PendingTransactionsPageResponse.BatchInfo',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='first_tx_hash', full_name='iroha.protocol.PendingTransactionsPageResponse.BatchInfo.first_tx_hash', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='batch_size', full_name='iroha.protocol.PendingTransactionsPageResponse.BatchInfo.batch_size', index=1,
-      number=2, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1644,
-  serialized_end=1698,
-)
-
-_PENDINGTRANSACTIONSPAGERESPONSE = _descriptor.Descriptor(
-  name='PendingTransactionsPageResponse',
-  full_name='iroha.protocol.PendingTransactionsPageResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='transactions', full_name='iroha.protocol.PendingTransactionsPageResponse.transactions', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='all_transactions_size', full_name='iroha.protocol.PendingTransactionsPageResponse.all_transactions_size', index=1,
-      number=2, type=13, cpp_type=3, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='next_batch_info', full_name='iroha.protocol.PendingTransactionsPageResponse.next_batch_info', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[_PENDINGTRANSACTIONSPAGERESPONSE_BATCHINFO, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1443,
-  serialized_end=1698,
-)
-
-
-_PEERSRESPONSE = _descriptor.Descriptor(
-  name='PeersResponse',
-  full_name='iroha.protocol.PeersResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='peers', full_name='iroha.protocol.PeersResponse.peers', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1700,
-  serialized_end=1752,
-)
-
-
-_ENGINERECEIPTSRESPONSE = _descriptor.Descriptor(
-  name='EngineReceiptsResponse',
-  full_name='iroha.protocol.EngineReceiptsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='engine_receipts', full_name='iroha.protocol.EngineReceiptsResponse.engine_receipts', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1754,
-  serialized_end=1834,
+  serialized_start=1137,
+  serialized_end=1286,
 )
 
 
@@ -821,7 +614,6 @@ _QUERYRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='account_assets_response', full_name='iroha.protocol.QueryResponse.account_assets_response', index=0,
@@ -829,105 +621,84 @@ _QUERYRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='account_detail_response', full_name='iroha.protocol.QueryResponse.account_detail_response', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='account_response', full_name='iroha.protocol.QueryResponse.account_response', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='error_response', full_name='iroha.protocol.QueryResponse.error_response', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='signatories_response', full_name='iroha.protocol.QueryResponse.signatories_response', index=4,
       number=5, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transactions_response', full_name='iroha.protocol.QueryResponse.transactions_response', index=5,
       number=6, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='asset_response', full_name='iroha.protocol.QueryResponse.asset_response', index=6,
       number=7, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='roles_response', full_name='iroha.protocol.QueryResponse.roles_response', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='role_permissions_response', full_name='iroha.protocol.QueryResponse.role_permissions_response', index=8,
       number=9, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='transactions_page_response', full_name='iroha.protocol.QueryResponse.transactions_page_response', index=9,
       number=11, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='pending_transactions_page_response', full_name='iroha.protocol.QueryResponse.pending_transactions_page_response', index=10,
-      number=13, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='block_response', full_name='iroha.protocol.QueryResponse.block_response', index=11,
+      name='block_response', full_name='iroha.protocol.QueryResponse.block_response', index=10,
       number=12, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='peers_response', full_name='iroha.protocol.QueryResponse.peers_response', index=12,
-      number=14, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='engine_receipts_response', full_name='iroha.protocol.QueryResponse.engine_receipts_response', index=13,
-      number=15, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='query_hash', full_name='iroha.protocol.QueryResponse.query_hash', index=14,
+      name='query_hash', full_name='iroha.protocol.QueryResponse.query_hash', index=11,
       number=10, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -941,12 +712,10 @@ _QUERYRESPONSE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='response', full_name='iroha.protocol.QueryResponse.response',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
+      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1837,
-  serialized_end=2846,
+  serialized_start=1289,
+  serialized_end=2070,
 )
 
 
@@ -956,7 +725,6 @@ _BLOCKRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='block', full_name='iroha.protocol.BlockResponse.block', index=0,
@@ -964,7 +732,7 @@ _BLOCKRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -977,8 +745,8 @@ _BLOCKRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2848,
-  serialized_end=2901,
+  serialized_start=2072,
+  serialized_end=2125,
 )
 
 
@@ -988,15 +756,14 @@ _BLOCKERRORRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='message', full_name='iroha.protocol.BlockErrorResponse.message', index=0,
       number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1009,8 +776,8 @@ _BLOCKERRORRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2903,
-  serialized_end=2940,
+  serialized_start=2127,
+  serialized_end=2164,
 )
 
 
@@ -1020,7 +787,6 @@ _BLOCKQUERYRESPONSE = _descriptor.Descriptor(
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
-  create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
       name='block_response', full_name='iroha.protocol.BlockQueryResponse.block_response', index=0,
@@ -1028,14 +794,14 @@ _BLOCKQUERYRESPONSE = _descriptor.Descriptor(
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
       name='block_error_response', full_name='iroha.protocol.BlockQueryResponse.block_error_response', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1049,104 +815,13 @@ _BLOCKQUERYRESPONSE = _descriptor.Descriptor(
   oneofs=[
     _descriptor.OneofDescriptor(
       name='response', full_name='iroha.protocol.BlockQueryResponse.response',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
+      index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2943,
-  serialized_end=3100,
-)
-
-
-_HEALTHCHECKDATA = _descriptor.Descriptor(
-  name='HealthcheckData',
-  full_name='iroha.protocol.HealthcheckData',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='memory_consumption', full_name='iroha.protocol.HealthcheckData.memory_consumption', index=0,
-      number=1, type=4, cpp_type=4, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_healthy', full_name='iroha.protocol.HealthcheckData.is_healthy', index=1,
-      number=2, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='is_syncing', full_name='iroha.protocol.HealthcheckData.is_syncing', index=2,
-      number=3, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='last_block_height', full_name='iroha.protocol.HealthcheckData.last_block_height', index=3,
-      number=4, type=4, cpp_type=4, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='last_block_reject', full_name='iroha.protocol.HealthcheckData.last_block_reject', index=4,
-      number=5, type=4, cpp_type=4, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='opt_memory_consumption', full_name='iroha.protocol.HealthcheckData.opt_memory_consumption',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='opt_is_healthy', full_name='iroha.protocol.HealthcheckData.opt_is_healthy',
-      index=1, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='opt_is_syncing', full_name='iroha.protocol.HealthcheckData.opt_is_syncing',
-      index=2, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='opt_last_block_height', full_name='iroha.protocol.HealthcheckData.opt_last_block_height',
-      index=3, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='opt_last_block_reject', full_name='iroha.protocol.HealthcheckData.opt_last_block_reject',
-      index=4, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-  ],
-  serialized_start=3103,
-  serialized_end=3364,
+  serialized_start=2167,
+  serialized_end=2324,
 )
 
 _ACCOUNTASSETRESPONSE.fields_by_name['account_assets'].message_type = _ACCOUNTASSET
-_ACCOUNTASSETRESPONSE.oneofs_by_name['opt_next_asset_id'].fields.append(
-  _ACCOUNTASSETRESPONSE.fields_by_name['next_asset_id'])
-_ACCOUNTASSETRESPONSE.fields_by_name['next_asset_id'].containing_oneof = _ACCOUNTASSETRESPONSE.oneofs_by_name['opt_next_asset_id']
-_ACCOUNTDETAILRESPONSE.fields_by_name['next_record_id'].message_type = primitive__pb2._ACCOUNTDETAILRECORDID
 _ACCOUNTRESPONSE.fields_by_name['account'].message_type = _ACCOUNT
 _ASSETRESPONSE.fields_by_name['asset'].message_type = _ASSET
 _ROLEPERMISSIONSRESPONSE.fields_by_name['permissions'].enum_type = primitive__pb2._ROLEPERMISSION
@@ -1157,11 +832,6 @@ _TRANSACTIONSPAGERESPONSE.fields_by_name['transactions'].message_type = transact
 _TRANSACTIONSPAGERESPONSE.oneofs_by_name['next_page_tag'].fields.append(
   _TRANSACTIONSPAGERESPONSE.fields_by_name['next_tx_hash'])
 _TRANSACTIONSPAGERESPONSE.fields_by_name['next_tx_hash'].containing_oneof = _TRANSACTIONSPAGERESPONSE.oneofs_by_name['next_page_tag']
-_PENDINGTRANSACTIONSPAGERESPONSE_BATCHINFO.containing_type = _PENDINGTRANSACTIONSPAGERESPONSE
-_PENDINGTRANSACTIONSPAGERESPONSE.fields_by_name['transactions'].message_type = transaction__pb2._TRANSACTION
-_PENDINGTRANSACTIONSPAGERESPONSE.fields_by_name['next_batch_info'].message_type = _PENDINGTRANSACTIONSPAGERESPONSE_BATCHINFO
-_PEERSRESPONSE.fields_by_name['peers'].message_type = primitive__pb2._PEER
-_ENGINERECEIPTSRESPONSE.fields_by_name['engine_receipts'].message_type = primitive__pb2._ENGINERECEIPT
 _QUERYRESPONSE.fields_by_name['account_assets_response'].message_type = _ACCOUNTASSETRESPONSE
 _QUERYRESPONSE.fields_by_name['account_detail_response'].message_type = _ACCOUNTDETAILRESPONSE
 _QUERYRESPONSE.fields_by_name['account_response'].message_type = _ACCOUNTRESPONSE
@@ -1172,10 +842,7 @@ _QUERYRESPONSE.fields_by_name['asset_response'].message_type = _ASSETRESPONSE
 _QUERYRESPONSE.fields_by_name['roles_response'].message_type = _ROLESRESPONSE
 _QUERYRESPONSE.fields_by_name['role_permissions_response'].message_type = _ROLEPERMISSIONSRESPONSE
 _QUERYRESPONSE.fields_by_name['transactions_page_response'].message_type = _TRANSACTIONSPAGERESPONSE
-_QUERYRESPONSE.fields_by_name['pending_transactions_page_response'].message_type = _PENDINGTRANSACTIONSPAGERESPONSE
 _QUERYRESPONSE.fields_by_name['block_response'].message_type = _BLOCKRESPONSE
-_QUERYRESPONSE.fields_by_name['peers_response'].message_type = _PEERSRESPONSE
-_QUERYRESPONSE.fields_by_name['engine_receipts_response'].message_type = _ENGINERECEIPTSRESPONSE
 _QUERYRESPONSE.oneofs_by_name['response'].fields.append(
   _QUERYRESPONSE.fields_by_name['account_assets_response'])
 _QUERYRESPONSE.fields_by_name['account_assets_response'].containing_oneof = _QUERYRESPONSE.oneofs_by_name['response']
@@ -1207,17 +874,8 @@ _QUERYRESPONSE.oneofs_by_name['response'].fields.append(
   _QUERYRESPONSE.fields_by_name['transactions_page_response'])
 _QUERYRESPONSE.fields_by_name['transactions_page_response'].containing_oneof = _QUERYRESPONSE.oneofs_by_name['response']
 _QUERYRESPONSE.oneofs_by_name['response'].fields.append(
-  _QUERYRESPONSE.fields_by_name['pending_transactions_page_response'])
-_QUERYRESPONSE.fields_by_name['pending_transactions_page_response'].containing_oneof = _QUERYRESPONSE.oneofs_by_name['response']
-_QUERYRESPONSE.oneofs_by_name['response'].fields.append(
   _QUERYRESPONSE.fields_by_name['block_response'])
 _QUERYRESPONSE.fields_by_name['block_response'].containing_oneof = _QUERYRESPONSE.oneofs_by_name['response']
-_QUERYRESPONSE.oneofs_by_name['response'].fields.append(
-  _QUERYRESPONSE.fields_by_name['peers_response'])
-_QUERYRESPONSE.fields_by_name['peers_response'].containing_oneof = _QUERYRESPONSE.oneofs_by_name['response']
-_QUERYRESPONSE.oneofs_by_name['response'].fields.append(
-  _QUERYRESPONSE.fields_by_name['engine_receipts_response'])
-_QUERYRESPONSE.fields_by_name['engine_receipts_response'].containing_oneof = _QUERYRESPONSE.oneofs_by_name['response']
 _BLOCKRESPONSE.fields_by_name['block'].message_type = block__pb2._BLOCK
 _BLOCKQUERYRESPONSE.fields_by_name['block_response'].message_type = _BLOCKRESPONSE
 _BLOCKQUERYRESPONSE.fields_by_name['block_error_response'].message_type = _BLOCKERRORRESPONSE
@@ -1227,21 +885,6 @@ _BLOCKQUERYRESPONSE.fields_by_name['block_response'].containing_oneof = _BLOCKQU
 _BLOCKQUERYRESPONSE.oneofs_by_name['response'].fields.append(
   _BLOCKQUERYRESPONSE.fields_by_name['block_error_response'])
 _BLOCKQUERYRESPONSE.fields_by_name['block_error_response'].containing_oneof = _BLOCKQUERYRESPONSE.oneofs_by_name['response']
-_HEALTHCHECKDATA.oneofs_by_name['opt_memory_consumption'].fields.append(
-  _HEALTHCHECKDATA.fields_by_name['memory_consumption'])
-_HEALTHCHECKDATA.fields_by_name['memory_consumption'].containing_oneof = _HEALTHCHECKDATA.oneofs_by_name['opt_memory_consumption']
-_HEALTHCHECKDATA.oneofs_by_name['opt_is_healthy'].fields.append(
-  _HEALTHCHECKDATA.fields_by_name['is_healthy'])
-_HEALTHCHECKDATA.fields_by_name['is_healthy'].containing_oneof = _HEALTHCHECKDATA.oneofs_by_name['opt_is_healthy']
-_HEALTHCHECKDATA.oneofs_by_name['opt_is_syncing'].fields.append(
-  _HEALTHCHECKDATA.fields_by_name['is_syncing'])
-_HEALTHCHECKDATA.fields_by_name['is_syncing'].containing_oneof = _HEALTHCHECKDATA.oneofs_by_name['opt_is_syncing']
-_HEALTHCHECKDATA.oneofs_by_name['opt_last_block_height'].fields.append(
-  _HEALTHCHECKDATA.fields_by_name['last_block_height'])
-_HEALTHCHECKDATA.fields_by_name['last_block_height'].containing_oneof = _HEALTHCHECKDATA.oneofs_by_name['opt_last_block_height']
-_HEALTHCHECKDATA.oneofs_by_name['opt_last_block_reject'].fields.append(
-  _HEALTHCHECKDATA.fields_by_name['last_block_reject'])
-_HEALTHCHECKDATA.fields_by_name['last_block_reject'].containing_oneof = _HEALTHCHECKDATA.oneofs_by_name['opt_last_block_reject']
 DESCRIPTOR.message_types_by_name['Asset'] = _ASSET
 DESCRIPTOR.message_types_by_name['Domain'] = _DOMAIN
 DESCRIPTOR.message_types_by_name['Account'] = _ACCOUNT
@@ -1256,178 +899,137 @@ DESCRIPTOR.message_types_by_name['ErrorResponse'] = _ERRORRESPONSE
 DESCRIPTOR.message_types_by_name['SignatoriesResponse'] = _SIGNATORIESRESPONSE
 DESCRIPTOR.message_types_by_name['TransactionsResponse'] = _TRANSACTIONSRESPONSE
 DESCRIPTOR.message_types_by_name['TransactionsPageResponse'] = _TRANSACTIONSPAGERESPONSE
-DESCRIPTOR.message_types_by_name['PendingTransactionsPageResponse'] = _PENDINGTRANSACTIONSPAGERESPONSE
-DESCRIPTOR.message_types_by_name['PeersResponse'] = _PEERSRESPONSE
-DESCRIPTOR.message_types_by_name['EngineReceiptsResponse'] = _ENGINERECEIPTSRESPONSE
 DESCRIPTOR.message_types_by_name['QueryResponse'] = _QUERYRESPONSE
 DESCRIPTOR.message_types_by_name['BlockResponse'] = _BLOCKRESPONSE
 DESCRIPTOR.message_types_by_name['BlockErrorResponse'] = _BLOCKERRORRESPONSE
 DESCRIPTOR.message_types_by_name['BlockQueryResponse'] = _BLOCKQUERYRESPONSE
-DESCRIPTOR.message_types_by_name['HealthcheckData'] = _HEALTHCHECKDATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
-Asset = _reflection.GeneratedProtocolMessageType('Asset', (_message.Message,), {
-  'DESCRIPTOR' : _ASSET,
-  '__module__' : 'qry_responses_pb2'
+Asset = _reflection.GeneratedProtocolMessageType('Asset', (_message.Message,), dict(
+  DESCRIPTOR = _ASSET,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.Asset)
-  })
+  ))
 _sym_db.RegisterMessage(Asset)
 
-Domain = _reflection.GeneratedProtocolMessageType('Domain', (_message.Message,), {
-  'DESCRIPTOR' : _DOMAIN,
-  '__module__' : 'qry_responses_pb2'
+Domain = _reflection.GeneratedProtocolMessageType('Domain', (_message.Message,), dict(
+  DESCRIPTOR = _DOMAIN,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.Domain)
-  })
+  ))
 _sym_db.RegisterMessage(Domain)
 
-Account = _reflection.GeneratedProtocolMessageType('Account', (_message.Message,), {
-  'DESCRIPTOR' : _ACCOUNT,
-  '__module__' : 'qry_responses_pb2'
+Account = _reflection.GeneratedProtocolMessageType('Account', (_message.Message,), dict(
+  DESCRIPTOR = _ACCOUNT,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.Account)
-  })
+  ))
 _sym_db.RegisterMessage(Account)
 
-AccountAsset = _reflection.GeneratedProtocolMessageType('AccountAsset', (_message.Message,), {
-  'DESCRIPTOR' : _ACCOUNTASSET,
-  '__module__' : 'qry_responses_pb2'
+AccountAsset = _reflection.GeneratedProtocolMessageType('AccountAsset', (_message.Message,), dict(
+  DESCRIPTOR = _ACCOUNTASSET,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.AccountAsset)
-  })
+  ))
 _sym_db.RegisterMessage(AccountAsset)
 
-AccountAssetResponse = _reflection.GeneratedProtocolMessageType('AccountAssetResponse', (_message.Message,), {
-  'DESCRIPTOR' : _ACCOUNTASSETRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+AccountAssetResponse = _reflection.GeneratedProtocolMessageType('AccountAssetResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ACCOUNTASSETRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.AccountAssetResponse)
-  })
+  ))
 _sym_db.RegisterMessage(AccountAssetResponse)
 
-AccountDetailResponse = _reflection.GeneratedProtocolMessageType('AccountDetailResponse', (_message.Message,), {
-  'DESCRIPTOR' : _ACCOUNTDETAILRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+AccountDetailResponse = _reflection.GeneratedProtocolMessageType('AccountDetailResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ACCOUNTDETAILRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.AccountDetailResponse)
-  })
+  ))
 _sym_db.RegisterMessage(AccountDetailResponse)
 
-AccountResponse = _reflection.GeneratedProtocolMessageType('AccountResponse', (_message.Message,), {
-  'DESCRIPTOR' : _ACCOUNTRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+AccountResponse = _reflection.GeneratedProtocolMessageType('AccountResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ACCOUNTRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.AccountResponse)
-  })
+  ))
 _sym_db.RegisterMessage(AccountResponse)
 
-AssetResponse = _reflection.GeneratedProtocolMessageType('AssetResponse', (_message.Message,), {
-  'DESCRIPTOR' : _ASSETRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+AssetResponse = _reflection.GeneratedProtocolMessageType('AssetResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ASSETRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.AssetResponse)
-  })
+  ))
 _sym_db.RegisterMessage(AssetResponse)
 
-RolesResponse = _reflection.GeneratedProtocolMessageType('RolesResponse', (_message.Message,), {
-  'DESCRIPTOR' : _ROLESRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+RolesResponse = _reflection.GeneratedProtocolMessageType('RolesResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ROLESRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.RolesResponse)
-  })
+  ))
 _sym_db.RegisterMessage(RolesResponse)
 
-RolePermissionsResponse = _reflection.GeneratedProtocolMessageType('RolePermissionsResponse', (_message.Message,), {
-  'DESCRIPTOR' : _ROLEPERMISSIONSRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+RolePermissionsResponse = _reflection.GeneratedProtocolMessageType('RolePermissionsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ROLEPERMISSIONSRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.RolePermissionsResponse)
-  })
+  ))
 _sym_db.RegisterMessage(RolePermissionsResponse)
 
-ErrorResponse = _reflection.GeneratedProtocolMessageType('ErrorResponse', (_message.Message,), {
-  'DESCRIPTOR' : _ERRORRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+ErrorResponse = _reflection.GeneratedProtocolMessageType('ErrorResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ERRORRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.ErrorResponse)
-  })
+  ))
 _sym_db.RegisterMessage(ErrorResponse)
 
-SignatoriesResponse = _reflection.GeneratedProtocolMessageType('SignatoriesResponse', (_message.Message,), {
-  'DESCRIPTOR' : _SIGNATORIESRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+SignatoriesResponse = _reflection.GeneratedProtocolMessageType('SignatoriesResponse', (_message.Message,), dict(
+  DESCRIPTOR = _SIGNATORIESRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.SignatoriesResponse)
-  })
+  ))
 _sym_db.RegisterMessage(SignatoriesResponse)
 
-TransactionsResponse = _reflection.GeneratedProtocolMessageType('TransactionsResponse', (_message.Message,), {
-  'DESCRIPTOR' : _TRANSACTIONSRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+TransactionsResponse = _reflection.GeneratedProtocolMessageType('TransactionsResponse', (_message.Message,), dict(
+  DESCRIPTOR = _TRANSACTIONSRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.TransactionsResponse)
-  })
+  ))
 _sym_db.RegisterMessage(TransactionsResponse)
 
-TransactionsPageResponse = _reflection.GeneratedProtocolMessageType('TransactionsPageResponse', (_message.Message,), {
-  'DESCRIPTOR' : _TRANSACTIONSPAGERESPONSE,
-  '__module__' : 'qry_responses_pb2'
+TransactionsPageResponse = _reflection.GeneratedProtocolMessageType('TransactionsPageResponse', (_message.Message,), dict(
+  DESCRIPTOR = _TRANSACTIONSPAGERESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.TransactionsPageResponse)
-  })
+  ))
 _sym_db.RegisterMessage(TransactionsPageResponse)
 
-PendingTransactionsPageResponse = _reflection.GeneratedProtocolMessageType('PendingTransactionsPageResponse', (_message.Message,), {
-
-  'BatchInfo' : _reflection.GeneratedProtocolMessageType('BatchInfo', (_message.Message,), {
-    'DESCRIPTOR' : _PENDINGTRANSACTIONSPAGERESPONSE_BATCHINFO,
-    '__module__' : 'qry_responses_pb2'
-    # @@protoc_insertion_point(class_scope:iroha.protocol.PendingTransactionsPageResponse.BatchInfo)
-    })
-  ,
-  'DESCRIPTOR' : _PENDINGTRANSACTIONSPAGERESPONSE,
-  '__module__' : 'qry_responses_pb2'
-  # @@protoc_insertion_point(class_scope:iroha.protocol.PendingTransactionsPageResponse)
-  })
-_sym_db.RegisterMessage(PendingTransactionsPageResponse)
-_sym_db.RegisterMessage(PendingTransactionsPageResponse.BatchInfo)
-
-PeersResponse = _reflection.GeneratedProtocolMessageType('PeersResponse', (_message.Message,), {
-  'DESCRIPTOR' : _PEERSRESPONSE,
-  '__module__' : 'qry_responses_pb2'
-  # @@protoc_insertion_point(class_scope:iroha.protocol.PeersResponse)
-  })
-_sym_db.RegisterMessage(PeersResponse)
-
-EngineReceiptsResponse = _reflection.GeneratedProtocolMessageType('EngineReceiptsResponse', (_message.Message,), {
-  'DESCRIPTOR' : _ENGINERECEIPTSRESPONSE,
-  '__module__' : 'qry_responses_pb2'
-  # @@protoc_insertion_point(class_scope:iroha.protocol.EngineReceiptsResponse)
-  })
-_sym_db.RegisterMessage(EngineReceiptsResponse)
-
-QueryResponse = _reflection.GeneratedProtocolMessageType('QueryResponse', (_message.Message,), {
-  'DESCRIPTOR' : _QUERYRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+QueryResponse = _reflection.GeneratedProtocolMessageType('QueryResponse', (_message.Message,), dict(
+  DESCRIPTOR = _QUERYRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.QueryResponse)
-  })
+  ))
 _sym_db.RegisterMessage(QueryResponse)
 
-BlockResponse = _reflection.GeneratedProtocolMessageType('BlockResponse', (_message.Message,), {
-  'DESCRIPTOR' : _BLOCKRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+BlockResponse = _reflection.GeneratedProtocolMessageType('BlockResponse', (_message.Message,), dict(
+  DESCRIPTOR = _BLOCKRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.BlockResponse)
-  })
+  ))
 _sym_db.RegisterMessage(BlockResponse)
 
-BlockErrorResponse = _reflection.GeneratedProtocolMessageType('BlockErrorResponse', (_message.Message,), {
-  'DESCRIPTOR' : _BLOCKERRORRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+BlockErrorResponse = _reflection.GeneratedProtocolMessageType('BlockErrorResponse', (_message.Message,), dict(
+  DESCRIPTOR = _BLOCKERRORRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.BlockErrorResponse)
-  })
+  ))
 _sym_db.RegisterMessage(BlockErrorResponse)
 
-BlockQueryResponse = _reflection.GeneratedProtocolMessageType('BlockQueryResponse', (_message.Message,), {
-  'DESCRIPTOR' : _BLOCKQUERYRESPONSE,
-  '__module__' : 'qry_responses_pb2'
+BlockQueryResponse = _reflection.GeneratedProtocolMessageType('BlockQueryResponse', (_message.Message,), dict(
+  DESCRIPTOR = _BLOCKQUERYRESPONSE,
+  __module__ = 'qry_responses_pb2'
   # @@protoc_insertion_point(class_scope:iroha.protocol.BlockQueryResponse)
-  })
+  ))
 _sym_db.RegisterMessage(BlockQueryResponse)
 
-HealthcheckData = _reflection.GeneratedProtocolMessageType('HealthcheckData', (_message.Message,), {
-  'DESCRIPTOR' : _HEALTHCHECKDATA,
-  '__module__' : 'qry_responses_pb2'
-  # @@protoc_insertion_point(class_scope:iroha.protocol.HealthcheckData)
-  })
-_sym_db.RegisterMessage(HealthcheckData)
 
-
-DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

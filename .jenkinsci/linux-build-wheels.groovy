@@ -44,7 +44,7 @@ def testWheels() {
     def tests = ['tx-example.py', 'batch-example.py', 'blocks-query.py']
     DOCKER_NETWORK = "${scmVars.CHANGE_ID}-${scmVars.GIT_COMMIT}-${BUILD_NUMBER}"
     writeFile file: ".env", text: "SUBNET=${DOCKER_NETWORK}\nIROHA_VERSION=${IROHA_VERSION}"
-    sh(script: "wget https://raw.githubusercontent.com/hyperledger/iroha/develop/example/config.docker -O docker/iroha/config.docker")
+    sh(script: "wget https://raw.githubusercontent.com/hyperledger/iroha/master/example/config.docker -O docker/iroha/config.docker")
     sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml pull")
     sh(returnStdout: true, script: "docker-compose -f docker/docker-compose.yaml up --build -d")
     for (String item : tests) {
