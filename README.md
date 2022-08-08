@@ -3,9 +3,11 @@
 
 This is a source repository for HL Iroha Python library.
 
-Currently, latest HL Iroha rc5 release (`hyperledger/iroha:latest` Docker image) is supported.
+Currently, latest [HL Iroha release 1.5](https://github.com/hyperledger/iroha/releases) is supported. It can be ussed with one of official docker images:
+- `hyperledger/iroha:latest`
+- `hyperledger/iroha-burrow:latest` with Hyperledger-Burrow support (smart contracts).
 
-The library works in Python 3 environment (Python 2 is not supported now).
+The library works in Python 3 environment (Python 2 is not supported).
 
 ### Installation
 
@@ -45,3 +47,5 @@ Please explore [examples](examples) directory for more usage examples.
 All the library methods have docstrings in its source [iroha.py](iroha/iroha.py).
 
 *The links above are broken outside the [hyperledger/iroha-python](https://github.com/hyperledger/iroha-python) GitHub repository.*
+
+If you are interested in different HL Iroha client libraries you can check our [Wiki](https://wiki.hyperledger.org/display/iroha/Hyperledger+Iroha).

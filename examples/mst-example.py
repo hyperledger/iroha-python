@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 # this code was originally coded by user: Leo (@iptelephony)
 
+"""
+The example demonstrates how to use multi-signature transactions.
+MST are transactions which must be signed by multiple keys.
+MST can contain multiple transactions, to be signed by multiple accounts.
+"""
+
 import os
 import sys
 import binascii
 import time
-
-from iroha import IrohaCrypto
-from iroha import Iroha, IrohaGrpc
+import grpc  # grpc.RpcError
+import inspect  # inspect.stack(0)
+from iroha import Iroha, IrohaGrpc, IrohaCrypto
 from functools import wraps
 from iroha.primitive_pb2 import can_set_my_account_detail, can_set_my_quorum
 from utilities.errorCodes2Hr import get_proper_functions_for_commands
@@ -59,9 +65,11 @@ def trace(func):
     @wraps(func)
     def tracer(*args, **kwargs):
         name = func.__name__
-        print(f'\tEntering "{name}": {args}')
+        stack_size = int(len(inspect.stack(0)) / 2)  # @wraps(func) is also increasing the size
+        indent = stack_size*'\t'
+        print(f'{indent}> Entering "{name}": args: {args}')
         result = func(*args, **kwargs)
-        print(f'\tLeaving "{name}"')
+        print(f'{indent}< Leaving "{name}"')
         return result
 
     return tracer
@@ -250,6 +258,11 @@ if __name__ == '__main__':
         time.sleep(5)
         get_account_assets(receiver['account'])
         get_account_assets(group['account'])
-
+    except grpc.RpcError as rpc_error:
+        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+            print(f'[E] Iroha is not running in address:'
+                  f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
+        else:
+            print(e)
     except RuntimeError as e:
         print(e)
