@@ -18,6 +18,7 @@ setuptools.setup(
                  '.vscode',  '.idea', '__pycache__', '*.bak']),
     install_requires=[
         'protobuf>=3.8.0',
+        'protobuf<=3.20.1',
         'grpcio-tools>=1.12.1',
         'pysha3;python_version<"3.6"',
         'pynacl>=1.4.0'
