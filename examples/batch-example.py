@@ -63,9 +63,9 @@ def trace(func):
         name = func.__name__
         stack_size = int(len(inspect.stack(0)) / 2)  # @wraps(func) is also increasing the size
         indent = stack_size*'\t'
-        print(f'{indent}> Entering "{name}": args: {args}')
+        print(f'{indent} > Entering "{name}": args: {args}')
         result = func(*args, **kwargs)
-        print(f'{indent}< Leaving "{name}"')
+        print(f'{indent} < Leaving "{name}"')
         return result
 
     return tracer
