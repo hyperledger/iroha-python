@@ -19,7 +19,7 @@ from iroha import Iroha, IrohaGrpc, IrohaCrypto
 from google.protobuf.timestamp_pb2 import Timestamp
 from iroha.primitive_pb2 import can_set_my_account_detail
 from functools import wraps
-import grpc  # grpc.RpcError
+from grpc import RpcError, StatusCode
 import inspect  # inspect.stack(0)
 
 from utilities.errorCodes2Hr import get_proper_functions_for_commands
@@ -276,8 +276,8 @@ if __name__ == '__main__':
         print('transactions from height range query: ')
         query_transactions(first_height=2, last_height=3)
         print('done')
-    except grpc.RpcError as rpc_error:
-        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+    except RpcError as rpc_error:
+        if rpc_error.code() == StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
                   f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:

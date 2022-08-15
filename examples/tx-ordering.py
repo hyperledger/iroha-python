@@ -12,7 +12,7 @@ import inspect  # inspect.stack(0)
 from iroha import IrohaCrypto, Iroha, IrohaGrpc, queries_pb2
 from functools import wraps
 from time import sleep
-import grpc  # grpc.RpcError
+from grpc import RpcError, StatusCode
 from utilities.errorCodes2Hr import get_proper_functions_for_commands
 
 
@@ -192,8 +192,8 @@ if __name__ == '__main__':
         print_paragraph('Quering as with reversed order')
         get_account_transactions(user_account, user_private_key, ASSET_ID, transactions_limit=3,
                                  direction=queries_pb2.kDescending)
-    except grpc.RpcError as rpc_error:
-        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+    except RpcError as rpc_error:
+        if rpc_error.code() == StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
                   f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:

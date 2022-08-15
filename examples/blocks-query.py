@@ -15,7 +15,7 @@ import os
 import sys
 import time
 import uuid
-import grpc  # grpc.RpcError
+from grpc import RpcError, StatusCode
 
 
 if sys.version_info[0] < 3:
@@ -57,8 +57,8 @@ if __name__ == '__main__':
         print('\nNext block:\n', next(blocks))
         send_create_account_transaction()
         print('\nNext block:\n', next(blocks))
-    except grpc.RpcError as rpc_error:
-        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+    except RpcError as rpc_error:
+        if rpc_error.code() == StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
                   f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:

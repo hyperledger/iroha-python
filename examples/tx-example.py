@@ -13,7 +13,7 @@ The example demonstrates how to use few Iroha commands and queries.
 import os
 import sys
 import binascii
-import grpc  # grpc.RpcError
+from grpc import RpcError, StatusCode
 import inspect  # inspect.stack(0)
 from iroha import Iroha, IrohaGrpc, IrohaCrypto
 from functools import wraps
@@ -228,8 +228,8 @@ if __name__ == '__main__':
         get_coin_info(asset='coin#domain')
         get_account_assets(account_id='userone@domain')
         get_user_details(account_id='userone@domain')
-    except grpc.RpcError as rpc_error:
-        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+    except RpcError as rpc_error:
+        if rpc_error.code() == StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
                   f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:

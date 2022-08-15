@@ -14,7 +14,7 @@ Note: You need certificate for your server (sample from Iroha will not work).
 import os
 import binascii
 import sys
-import grpc  # grpc.RpcError
+from grpc import RpcError, StatusCode
 import inspect  # inspect.stack(0)
 from iroha import Iroha, IrohaGrpc, IrohaCrypto
 from functools import wraps
@@ -136,8 +136,8 @@ if __name__ == '__main__':
     try:
         add_coin_to_admin(asset_id='coin#domain', amount_to_add='1000.00')
         get_account_assets(account_id=ADMIN_ACCOUNT_ID)
-    except grpc.RpcError as rpc_error:
-        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+    except RpcError as rpc_error:
+        if rpc_error.code() == StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
                   f'{IROHA_HOST_ADDR}:{IROHA_TLS_PORT}, '
                   f'or invalid certificate for TLS connection')

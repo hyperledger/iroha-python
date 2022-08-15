@@ -11,7 +11,7 @@ import os
 import sys
 import binascii
 import time
-import grpc  # grpc.RpcError
+from grpc import RpcError, StatusCode
 import inspect  # inspect.stack(0)
 from iroha import Iroha, IrohaGrpc, IrohaCrypto
 from functools import wraps
@@ -258,8 +258,8 @@ if __name__ == '__main__':
         time.sleep(5)
         get_account_assets(receiver['account'])
         get_account_assets(group['account'])
-    except grpc.RpcError as rpc_error:
-        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+    except RpcError as rpc_error:
+        if rpc_error.code() == StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
                   f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:

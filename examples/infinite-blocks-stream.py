@@ -11,7 +11,7 @@ You need to send some commands to the node to see any blocks coming
 
 import sys
 import os
-import grpc  # grpc.RpcError
+from grpc import RpcError, StatusCode
 import inspect  # inspect.stack(0)
 from iroha import Iroha, IrohaGrpc, IrohaCrypto
 from functools import wraps
@@ -64,8 +64,8 @@ if __name__ == '__main__':
         print('The script will wait for new blocks. '
               'You need to send some commands to the node to see any blocks coming')
         get_blocks()
-    except grpc.RpcError as rpc_error:
-        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+    except RpcError as rpc_error:
+        if rpc_error.code() == StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address:'
                   f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:

@@ -8,7 +8,7 @@ import os
 import sys
 from functools import wraps
 from iroha import primitive_pb2, IrohaCrypto, binascii, IrohaGrpc, Iroha
-import grpc  # grpc.RpcError
+from grpc import RpcError, StatusCode
 import inspect  # inspect.stack(0)
 from utilities.errorCodes2Hr import get_proper_functions_for_commands
 
@@ -111,8 +111,8 @@ if __name__ == '__main__':
                   peer_public_key=NEW_PEER_PUBLIC_KEY)
         print_peers('Peers after adding the new one - query to old peer', net)
         print_peers('Peers after adding the new one - query to new peer', net_new_peer)
-    except grpc.RpcError as rpc_error:
-        if rpc_error.code() == grpc.StatusCode.UNAVAILABLE:
+    except RpcError as rpc_error:
+        if rpc_error.code() == StatusCode.UNAVAILABLE:
             print(f'[E] Iroha is not running in address: '
                   f'{IROHA_HOST_ADDR}:{IROHA_PORT}!')
         else:
