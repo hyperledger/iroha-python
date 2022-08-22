@@ -62,8 +62,16 @@ class IrohaCrypto(object):
         :proto_with_payload: proto transaction or query
         :return: bytes representation of hash
         """
-        obj = IrohaCrypto.get_payload_to_be_signed(proto_with_payload)
-        hash = hashlib.sha3_256(obj).digest()
+        obj = None
+        if hasattr(proto_with_payload, 'payload'):
+            obj = getattr(proto_with_payload, 'payload')
+        # hash of meta is implemented for block streaming queries,
+        # because they do not have a payload in their schema
+        elif hasattr(proto_with_payload, 'meta'):
+            obj = getattr(proto_with_payload, 'meta')
+
+        bytes = obj.SerializeToString()
+        hash = hashlib.sha3_256(bytes).digest()
         return hash
 
     @staticmethod
