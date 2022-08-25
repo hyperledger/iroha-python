@@ -1,0 +1,44 @@
+# the Dockerfile should help to test iroha-python library if it is working in all systems
+# currently only Ubuntu or Manjaro are supported (commands to install dependencies)
+#
+# building the image samples:
+# docker build . --file Dockerfile_to_test_various_versions_of_library --build-arg 'SYSTEM=ubuntu' --build-arg 'SYSTEM_VERSION=20.04' --tag iroha-python-test:ubuntu_20.04
+# docker build . --file Dockerfile_to_test_various_versions_of_library --build-arg 'SYSTEM=manjarolinux/base' --build-arg 'SYSTEM_VERSION=20220807' --tag iroha-python-test:manjaro_20220807
+# docker build . --file Dockerfile_to_test_various_versions_of_library --build-arg 'SYSTEM=ubuntu' --build-arg 'SYSTEM_VERSION=20.04' --build-arg 'IROHA_REPOSITORY_OWNER=hyperledger' --build-arg 'IROHA_BRANCH=develop' --tag iroha-python-test:ubuntu_20.04_hl_dev
+#
+# to run instance from created image samples:
+# docker run --rm --network=host iroha-python-test:ubuntu_20.04
+#
+# to remove image samples:
+# docker rmi iroha-python-test:ubuntu_20.04
+
+
+ARG SYSTEM=ubuntu
+ARG SYSTEM_VERSION=20.04
+
+FROM ${SYSTEM}:${SYSTEM_VERSION}
+
+#### installing dependencies for Ubuntu or Manjaro:
+RUN echo "Current distribution: '$(cat /etc/*-release | head -n1 | sed 's/DISTRIB_ID=//g')'"
+RUN if [ "$(cat /etc/*-release | head -n1 | sed 's/DISTRIB_ID=//g')" = "Ubuntu" ] ; then \
+    apt-get update && apt-get install -y python3-pip git ; else echo "Current system is not Ubuntu!" ; fi
+RUN if [ "$(cat /etc/*-release | head -n1 | sed 's/DISTRIB_ID=//g')" == "Manjaro Linux" ] ; then \
+    pacman -Syu && pacman -S python-pip --noconfirm ; else echo "Current system is not Manjaro!" ; fi
+
+
+ARG IROHA_BRANCH=main
+ARG IROHA_REPOSITORY_OWNER=hyperledger
+
+
+RUN pip3 install "git+https://github.com/${IROHA_REPOSITORY_OWNER}/iroha-python.git@${IROHA_BRANCH}"
+
+RUN pip3 list
+
+RUN python3 -c 'import iroha'
+
+
+WORKDIR /home/
+
+RUN git clone --depth=1 -b ${IROHA_BRANCH} https://github.com/${IROHA_REPOSITORY_OWNER}/iroha-python.git
+
+ENTRYPOINT ["./iroha-python/examples/tx-ordering.py"] 
