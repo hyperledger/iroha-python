@@ -12,7 +12,7 @@ use std::collections::HashMap;
 use std::ops::{Deref, DerefMut};
 
 use color_eyre::eyre;
-use iroha_client::{client, config::Configuration};
+use iroha_client::{client, Configuration};
 use iroha_crypto::{Hash, KeyGenConfiguration};
 use iroha_crypto::{PrivateKey, PublicKey};
 use iroha_data_model::prelude::*;

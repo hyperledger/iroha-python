@@ -1,9 +1,9 @@
-from ....rust import Enum, Struct, Tuple, Dict
-Event = Struct[("prev_interval", "iroha_data_model.events.time.Interval"), ("interval", "iroha_data_model.events.time.Interval")]
+from ....rust import Enum, make_struct, make_tuple, Dict
+Event = make_struct("Event", [("prev_interval", "iroha_data_model.events.time.Interval"), ("interval", "iroha_data_model.events.time.Interval")])
 
-EventFilter = Tuple["iroha_data_model.events.time.ExecutionTime"]
+EventFilter = make_tuple("EventFilter", ["iroha_data_model.events.time.ExecutionTime"])
 ExecutionTime = Enum[("PreCommit", type(None)), ("Schedule", "iroha_data_model.events.time.Schedule")] 
-Interval = Struct[("since", "Duration"), ("length", "Duration")]
+Interval = make_struct("Interval", [("since", "Duration"), ("length", "Duration")])
 
-Schedule = Struct[("start", "Duration"), ("period", "Duration")]
+Schedule = make_struct("Schedule", [("start", "Duration"), ("period", "Duration")])
 

@@ -1,5 +1,5 @@
-from ...rust import Enum, Struct, Tuple, Dict
-GenesisTransaction = Struct[("isi", list)]
+from ...rust import Enum, make_struct, make_tuple, Dict
+GenesisTransaction = make_struct("GenesisTransaction", [("isi", list)])
 
-RawGenesisBlock = Struct[("transactions", list)]
+RawGenesisBlock = make_struct("RawGenesisBlock", [("transactions", list)])
 

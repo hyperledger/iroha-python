@@ -1,12 +1,12 @@
-from ....rust import Enum, Struct, Tuple, Dict
-FindAccountById = Struct[("id", "iroha_data_model.expression.EvaluatesTo")]
+from ....rust import Enum, make_struct, make_tuple, Dict
+FindAccountById = make_struct("FindAccountById", [("id", "iroha_data_model.expression.EvaluatesTo")])
 
-FindAccountKeyValueByIdAndKey = Struct[("id", "iroha_data_model.expression.EvaluatesTo"), ("key", "iroha_data_model.expression.EvaluatesTo")]
+FindAccountKeyValueByIdAndKey = make_struct("FindAccountKeyValueByIdAndKey", [("id", "iroha_data_model.expression.EvaluatesTo"), ("key", "iroha_data_model.expression.EvaluatesTo")])
 
-FindAccountsByDomainId = Struct[("domain_id", "iroha_data_model.expression.EvaluatesTo")]
+FindAccountsByDomainId = make_struct("FindAccountsByDomainId", [("domain_id", "iroha_data_model.expression.EvaluatesTo")])
 
-FindAccountsByName = Struct[("name", "iroha_data_model.expression.EvaluatesTo")]
+FindAccountsByName = make_struct("FindAccountsByName", [("name", "iroha_data_model.expression.EvaluatesTo")])
 
-FindAccountsWithAsset = Struct[("asset_definition_id", "iroha_data_model.expression.EvaluatesTo")]
+FindAccountsWithAsset = make_struct("FindAccountsWithAsset", [("asset_definition_id", "iroha_data_model.expression.EvaluatesTo")])
 
-FindAllAccounts = Tuple[()]
+FindAllAccounts = make_tuple("FindAllAccounts")

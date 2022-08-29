@@ -17,6 +17,7 @@ from ...sys.iroha_data_model.isi import (
 )
 from iroha2.data_model.expression import Expression
 from iroha2.data_model import Value, Identifiable, Id
+from .. import wrapper
 
 
 class Registrable(ABC):
@@ -25,6 +26,7 @@ class Registrable(ABC):
         return self
 
 
+@wrapper(_Register)
 class Register(_Register):
 
     @classmethod

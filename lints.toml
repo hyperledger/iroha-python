@@ -22,6 +22,7 @@ deny = [
     'variant_size_differences',
 ]
 allow = [
+    'clippy::arithmetic',
     'clippy::as_conversions',
     'clippy::default_numeric_fallback',
     'clippy::else_if_without_else',
@@ -39,10 +40,13 @@ allow = [
     'clippy::module_name_repetitions',
     'clippy::must_use_candidate',
     'clippy::pattern_type_mismatch',
+    'clippy::pub_use',
     'clippy::semicolon_if_nothing_returned',
     'clippy::shadow_reuse',
     'clippy::shadow_same',
     'clippy::string_add',
+    'clippy::std_instead_of_alloc',
+    'clippy::std_instead_of_core',
     'clippy::unreachable',
     'clippy::use_self',
     'clippy::wildcard_enum_match_arm',
