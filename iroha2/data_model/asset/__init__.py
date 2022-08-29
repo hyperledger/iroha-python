@@ -13,8 +13,10 @@ from ...sys.iroha_data_model.asset import (
 )
 from ..domain import Id as DomainId
 from ..isi import Registrable
+from .. import wrapper
 
 
+@wrapper(_DefinitionId)
 class DefinitionId(_DefinitionId, Registrable):
 
     @classmethod
@@ -24,6 +26,7 @@ class DefinitionId(_DefinitionId, Registrable):
         return cls(name=name, domain_id=DomainId(domain_id))
 
 
+@wrapper(_Definition)
 class Definition(_Definition, Registrable):
 
     def __init__(self,
@@ -38,8 +41,7 @@ class Definition(_Definition, Registrable):
         if isinstance(id, str):
             id = DefinitionId.parse(id)
 
-        return super().__init__(self,
-                                id=id,
+        return super().__init__(id=id,
                                 value_type=value_type,
                                 mintable=mintable,
                                 metadata=metadata)

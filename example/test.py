@@ -5,8 +5,10 @@ from iroha2 import Client
 
 from iroha2.data_model.isi import Register
 from iroha2.data_model.domain import Domain
+from iroha2.data_model.account import Account
 from iroha2.data_model import asset, account
 from iroha2.data_model.events import FilterBox, pipeline
+from iroha2.crypto import KeyPair
 
 
 def wait_for_tx(cl: Client, hash: str):
@@ -20,14 +22,14 @@ def wait_for_tx(cl: Client, hash: str):
     listener = cl.listen(filter)
 
     for event in listener:
-        if event["Pipeline"]["hash"] == hash:
-            if event["Pipeline"]["status"] == "Committed":
-                return
-            elif event["Pipeline"]["status"] == "Validating":
-                pass
-            else:
-                raise RuntimeError(
-                    f"Tx rejected: {event['Pipeline']['status']}")
+        if event.variant is event.Type.Pipeline:
+            if event.value.hash == hash:
+                if event.value.status.variant is pipeline.Status.Type.Committed:
+                    return
+                elif event.value.status.variant is pipeline.Status.Type.Validating:
+                    pass
+                else:
+                    raise RuntimeError(f"Tx rejected: {event.value.status}")
 
 
 cfg = json.loads(open("./config.json").read())
@@ -47,7 +49,8 @@ register = Register.identifiable(asset_definition)
 hash = cl.submit_isi(register)
 wait_for_tx(cl, hash)
 
-acct = account.Account("monty@python")
+keypair = KeyPair()
+acct = account.Account("monty@python", signatories=[keypair.public])
 register = Register.identifiable(acct)
 hash = cl.submit_isi(register)
 wait_for_tx(cl, hash)

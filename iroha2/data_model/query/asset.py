@@ -13,8 +13,10 @@ from ...sys.iroha_data_model.query.asset import (
 
 from ..expression import Expression
 from .. import Value, Identifiable, Id
+from .. import wrapper
 
 
+@wrapper(_FindAssetById)
 class FindAssetById(_FindAssetById, query("Identifiable", "Asset")):
 
     @classmethod

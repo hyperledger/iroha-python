@@ -1,6 +1,6 @@
-from ...rust import Enum, Struct, Tuple, Dict
-Signature = Struct[("public_key", "iroha_crypto.PublicKey"), ("payload", list)]
+from ...rust import Enum, make_struct, make_tuple, Dict
+Signature = make_struct("Signature", [("public_key", "iroha_crypto.PublicKey"), ("payload", list)])
 
-SignatureOf = Tuple["iroha_crypto.signature.Signature"]
-SignaturesOf = Struct[("signatures", Dict)]
+SignatureOf = make_tuple("SignatureOf", ["iroha_crypto.signature.Signature"])
+SignaturesOf = make_struct("SignaturesOf", [("signatures", Dict)])
 

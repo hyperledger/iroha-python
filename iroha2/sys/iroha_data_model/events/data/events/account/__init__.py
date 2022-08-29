@@ -1,5 +1,5 @@
-from ......rust import Enum, Struct, Tuple, Dict
+from ......rust import Enum, make_struct, make_tuple, Dict
 AccountEvent = Enum[("Asset", "iroha_data_model.events.data.events.asset.AssetEvent"), ("Created", "iroha_data_model.account.Id"), ("Deleted", "iroha_data_model.account.Id"), ("AuthenticationAdded", "iroha_data_model.account.Id"), ("AuthenticationRemoved", "iroha_data_model.account.Id"), ("PermissionAdded", "iroha_data_model.account.Id"), ("PermissionRemoved", "iroha_data_model.account.Id"), ("RoleRevoked", "iroha_data_model.account.Id"), ("RoleGranted", "iroha_data_model.account.Id"), ("MetadataInserted", "iroha_data_model.account.Id"), ("MetadataRemoved", "iroha_data_model.account.Id")] 
 AccountEventFilter = Enum[("ByCreated", type(None)), ("ByDeleted", type(None)), ("ByAuthenticationAdded", type(None)), ("ByAuthenticationRemoved", type(None)), ("ByPermissionAdded", type(None)), ("ByPermissionRemoved", type(None)), ("ByRoleRevoked", type(None)), ("ByRoleGranted", type(None)), ("ByMetadataInserted", type(None)), ("ByMetadataRemoved", type(None)), ("ByAsset", "iroha_data_model.events.data.filters.FilterOpt")] 
-AccountFilter = Struct[("id_filter", "iroha_data_model.events.data.filters.FilterOpt"), ("event_filter", "iroha_data_model.events.data.filters.FilterOpt")]
+AccountFilter = make_struct("AccountFilter", [("origin_filter", "iroha_data_model.events.data.filters.FilterOpt"), ("event_filter", "iroha_data_model.events.data.filters.FilterOpt")])
 

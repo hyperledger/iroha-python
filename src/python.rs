@@ -1,4 +1,7 @@
-use std::ops::{Deref, DerefMut};
+use std::{
+    fmt::Write,
+    ops::{Deref, DerefMut},
+};
 
 use pyo3::exceptions::PyException;
 use pyo3::prelude::*;
@@ -76,7 +79,7 @@ pub fn to_py_err(err: impl Into<color_eyre::eyre::Error>) -> PyErr {
         let mut s = String::new();
         let mut idx = 0;
         loop {
-            s += &format!("    {}: {}\n", idx, &err.to_string());
+            let _ = writeln!(s, "    {}: {}", idx, &err.to_string());
             idx += 1;
             match err.source() {
                 Some(e) => err = e,
@@ -133,7 +136,7 @@ impl<'source, T: serde::de::DeserializeOwned> FromPyObject<'source> for ToPy<T> 
     }
 }
 
-impl<'source, T: serde::Serialize> IntoPy<PyObject> for ToPy<T> {
+impl<T: serde::Serialize> IntoPy<PyObject> for ToPy<T> {
     fn into_py(self, py: Python) -> PyObject {
         #[allow(clippy::expect_used)]
         pythonize::pythonize_custom::<Pythonizer, _>(py, &self.into_inner())

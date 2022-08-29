@@ -4,3 +4,5 @@ from ..sys.iroha_data_model import (
     Parameter,
     Value,
 )
+
+from ..sys.rust import wrapper

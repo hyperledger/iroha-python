@@ -1,3 +1,3 @@
-from ...rust import Enum, Struct, Tuple, Dict
-Pagination = Struct[("start", int), ("limit", int)]
+from ...rust import Enum, make_struct, make_tuple, Dict
+Pagination = make_struct("Pagination", [("start", int), ("limit", int)])
 
