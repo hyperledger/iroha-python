@@ -6,7 +6,7 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    container: rust:1.60-buster
+    container: rust:1.64-buster
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
@@ -34,7 +34,7 @@ jobs:
 
   pytest:
     runs-on: ubuntu-latest
-    container: rust:1.60-buster
+    container: rust:1.64-buster
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
