@@ -1,4 +1,7 @@
-from ....rust import Enum, make_struct, make_tuple, Dict
+
+from ....rust import make_enum, make_struct, make_tuple, get_class, SelfResolvingTypeVar, Dict
+import typing
+            
 FindAllAssets = make_tuple("FindAllAssets")
 FindAllAssetsDefinitions = make_tuple("FindAllAssetsDefinitions")
 FindAssetById = make_struct("FindAssetById", [("id", "iroha_data_model.expression.EvaluatesTo")])
@@ -21,3 +24,6 @@ FindAssetsByDomainIdAndAssetDefinitionId = make_struct("FindAssetsByDomainIdAndA
 
 FindAssetsByName = make_struct("FindAssetsByName", [("name", "iroha_data_model.expression.EvaluatesTo")])
 
+FindTotalAssetQuantityByAssetDefinitionId = make_struct("FindTotalAssetQuantityByAssetDefinitionId", [("id", "iroha_data_model.expression.EvaluatesTo")])
+
+SelfResolvingTypeVar.resolve_all()

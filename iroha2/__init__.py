@@ -22,7 +22,7 @@ class Client:
         return self.cl.submit_all_with_metadata(tx, {})
 
     def submit_isi(self, isi):
-        return self.submit_tx([_Instruction(isi)])
+        return self.submit_tx([])
 
     def submit_tx_blocking(self, tx: list):
         tx = [i.to_rust() for i in tx]

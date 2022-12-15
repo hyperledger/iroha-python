@@ -20,7 +20,8 @@ class Domain(_Domain, Registrable):
                          logo=logo,
                          accounts={},
                          asset_definitions={},
-                         metadata={})
+                         metadata={},
+                         asset_total_quantities={})
 
     def registrable(self):
         return _NewDomain(id=self.id, logo=self.logo, metadata={})

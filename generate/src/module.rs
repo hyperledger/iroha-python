@@ -99,7 +99,10 @@ impl Module {
         }
         writeln!(
             f,
-            "from .{}rust import Enum, make_struct, make_tuple, Dict",
+            r#"
+from .{}rust import make_enum, make_struct, make_tuple, get_class, SelfResolvingTypeVar, Dict
+import typing
+            "#,
             ".".repeat(r#in.mods.len())
         )?;
 
@@ -108,6 +111,8 @@ impl Module {
             Self::write_meta(&mut f, name.clone(), ty.clone())
                 .wrap_err_with(|| eyre!("Failed to write metadata for type {}", name))?;
         }
+
+        writeln!(f, "SelfResolvingTypeVar.resolve_all()")?;
         drop(f);
 
         for (name, either_module) in modules {
