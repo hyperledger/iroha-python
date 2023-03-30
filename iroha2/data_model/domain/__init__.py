@@ -2,11 +2,19 @@ from typing import Union, Optional
 
 from ...sys.iroha_data_model.domain import Domain as _Domain
 from ...sys.iroha_data_model.domain import NewDomain as _NewDomain
-from ...sys.iroha_data_model.domain import Id as Id
+from ...sys.iroha_data_model.domain import Id as _Id
 
 from ..isi import Registrable
 
-from .. import wrapper
+from .. import wrapper, patch
+
+
+@wrapper(_Id)
+class Id(_Id):
+
+    @patch(_Id, "to_rust")
+    def __repr__(self):
+        return self.name
 
 
 @wrapper(_Domain)

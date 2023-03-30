@@ -9,6 +9,8 @@ from iroha2.data_model.account import Account
 from iroha2.data_model import asset, account
 from iroha2.data_model.events import FilterBox, pipeline, Event
 from iroha2.crypto import KeyPair
+from iroha2.data_model.query.asset import FindAssetById
+from iroha2.data_model.query import Query
 
 
 def wait_for_tx(cl: Client, hash: str):
@@ -28,7 +30,7 @@ def wait_for_tx(cl: Client, hash: str):
             elif isinstance(event.status, pipeline.Status.Validating):
                 pass
             else:
-                raise RuntimeError(f"Tx rejected: {event.value.status}")
+                raise RuntimeError(f"Tx rejected: {event.status}")
 
 
 cfg = json.loads(open("./config.json").read())
@@ -53,3 +55,6 @@ acct = account.Account("monty@python", signatories=[keypair.public])
 register = Register.identifiable(acct)
 hash = cl.submit_isi(register)
 wait_for_tx(cl, hash)
+
+query = FindAssetById.id(asset.Id("rose#wonderland", "alice@wonderland"))
+print(cl.query(query))

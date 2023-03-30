@@ -3,12 +3,26 @@ from typing import Union, Optional
 from ...sys.iroha_data_model.account import (
     Account as _Account,
     NewAccount as _NewAccount,
-    Id,
+    Id as _Id,
 )
 from ..domain import Id as DomainId
 from ..isi import Registrable
 from ...crypto import PublicKey
-from .. import wrapper
+from .. import wrapper, patch
+
+
+@wrapper(_Id)
+class Id(_Id):
+
+    @patch(_Id, "to_rust")
+    def __repr__(self):
+        return f"{self.name}@{self.domain_id}"
+
+    @patch(_Id, "from_rust")
+    @classmethod
+    def parse(cls, id: str):
+        acct_id, domain_id = id.split("@")
+        return cls(name=acct_id, domain_id=DomainId(domain_id))
 
 
 @wrapper(_Account)

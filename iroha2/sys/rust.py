@@ -113,8 +113,10 @@ def from_rust(obj, cls):
 
     if hasattr(cls, 'from_rust'):
         obj = cls.from_rust(obj)
+
     if hasattr(cls, '_into_wrapped'):
-        obj = cls._into_wrapped(obj)
+        obj._into_wrapped()
+
     return obj
 
 
@@ -142,10 +144,12 @@ def make_enum_variant(base, variant_name, variant_type):
         encoded = to_rust(self._value)
         return {variant_name: encoded}
 
-    return type(f"{base.__name__}.{variant_name}", (base, ), {
-        "to_rust": enum_variant_to_rust,
-        "__repr__": repr_enum_variant,
-    })
+    return type(
+        f"{base.__name__}.{variant_name}", (base, ), {
+            "to_rust": enum_variant_to_rust,
+            "__repr__": repr_enum_variant,
+            "_rust_obj": "enum_variant"
+        })
 
 
 def make_enum(enum_name: str, variants: [Tuple[str, type]],
@@ -204,8 +208,12 @@ def make_enum(enum_name: str, variants: [Tuple[str, type]],
         self._value = value
 
     def enum_from_rust(cls, obj):
-        if isinstance(obj, dict):
+        if isinstance(obj, dict) or isinstance(obj, Dict):
             name = list(obj.keys())[0]
+
+            if enum_name == "Expression" and name not in typemap:
+                return cls(from_rust(obj, typemap["Raw"]), "Raw")
+
             value = obj[name]
             return cls(from_rust(value, typemap[name]), name)
         elif isinstance(obj, str):
@@ -224,6 +232,7 @@ def make_enum(enum_name: str, variants: [Tuple[str, type]],
             "__init__": init_enum,
             "__getattr__": get_value_attr,
             "from_rust": classmethod(enum_from_rust),
+            "_rust_obj": "enum"
             # to_rust is defined on variant subclasses
         })
 
@@ -238,7 +247,7 @@ def make_enum(enum_name: str, variants: [Tuple[str, type]],
 
 def make_tuple(name, fields=None):
     """
-    Create an analogue to a rust typle.
+    Create an analogue to a rust tuple.
     """
 
     if fields is None:
@@ -246,12 +255,13 @@ def make_tuple(name, fields=None):
 
     cls = NamedTuple(name, [(f"f{i}", typ) for i, typ in enumerate(fields)])
     cls.to_rust = lambda tup: tuple(to_rust(i) for i in tup)
+    cls._rust_obj = "tuple"
     return cls
 
 
 def make_struct(structname, fields):
     """
-    Create an analogue to a rust typle.
+    Create an analogue to a rust struct.
     """
 
     def struct_to_rust(s):
@@ -289,10 +299,14 @@ def make_struct(structname, fields):
                                           struct_to_rust,
                                           "from_rust":
                                           classmethod(struct_from_rust),
+                                          "_fields":
+                                          fields,
+                                          "_rust_obj":
+                                          "struct"
                                       })
 
 
-def wrapper(base):
+def wrapper(base, flattened=False):
     """
     This function is a decorator that marks class as
     a manual wrapper for a code-generated counterpart.
@@ -327,6 +341,28 @@ def wrapper(base):
         if not issubclass(subclass, base):
             raise TypeError("Wrapping class isn't a subclass of wrapped class")
 
+        if flattened:
+            if getattr(base, "_rust_obj", None) != "struct":
+                raise TypeError("Only structs can be flattened")
+
+            fields = base._fields
+
+            if len(fields) > 1:
+                raise TypeError(
+                    "Transparent struct cannot have multiple fields")
+
+            def struct_to_rust(self):
+                argname, _ = fields[0]
+                return to_rust(getattr(self, argname))
+
+            def struct_from_rust(cls, obj):
+                argname, argtype = fields[0]
+                argtype = get_class(argtype)
+                return cls(from_rust(obj, argtype))
+
+            base.to_rust = struct_to_rust
+            base.from_rust = classmethod(struct_from_rust)
+
         def into_wrapped(self):
             self.__class__ = subclass
 
@@ -334,3 +370,12 @@ def wrapper(base):
         return subclass
 
     return decorate
+
+
+def patch(cls, funcname):
+
+    def decorator(func):
+        setattr(cls, funcname, func)
+        return func
+
+    return decorator

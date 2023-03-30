@@ -2,7 +2,7 @@
 from ....rust import make_enum, make_struct, make_tuple, get_class, SelfResolvingTypeVar, Dict
 import typing
             
-Id = make_struct("Id", [("name", "iroha_data_model.name.Name"), ("account_id", "iroha_data_model.account.Id")])
+Id = make_struct("Id", [("name", "iroha_data_model.name.Name"), ("owned_by", "iroha_data_model.account.Id")])
 
 Type = make_enum("Type", [("Transaction", get_class(type(None))), ("Instruction", get_class(type(None))), ("Query", get_class(type(None))), ("Expression", get_class(type(None)))], typing.Union[get_class(type(None)), get_class(type(None)), get_class(type(None)), get_class(type(None))])
 
