@@ -36,6 +36,9 @@ def wait_for_tx(cl: Client, hash: str):
 cfg = json.loads(open("./config.json").read())
 cl = Client(cfg)
 
+keypair = KeyPair()
+print(keypair)
+
 domain = Domain("python")
 register = Register.identifiable(domain)
 hash = cl.submit_isi(register)

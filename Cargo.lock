@@ -2244,6 +2244,7 @@ name = "iroha_python"
 version = "0.1.0"
 dependencies = [
  "color-eyre",
+ "hex",
  "iroha_client",
  "iroha_config 2.0.0-pre-rc.9",
  "iroha_crypto 2.0.0-pre-rc.9",

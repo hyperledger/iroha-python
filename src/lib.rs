@@ -10,14 +10,16 @@
 
 use core::ops::{Deref, DerefMut};
 use std::collections::HashMap;
+use std::str::FromStr;
 
 use color_eyre::eyre;
 use iroha_client::client;
 use iroha_config::client::Configuration;
-use iroha_crypto::{Hash, KeyGenConfiguration};
+use iroha_crypto::{Algorithm, Hash, KeyGenConfiguration};
 use iroha_crypto::{PrivateKey, PublicKey};
 use iroha_data_model::prelude::*;
 use iroha_version::scale::EncodeVersioned;
+use parity_scale_codec::{Decode, Encode};
 use pyo3::class::iter::IterNextOutput;
 use pyo3::prelude::*;
 
@@ -33,6 +35,22 @@ impl KeyPair {
     #[new]
     pub fn generate() -> PyResult<Self> {
         iroha_crypto::KeyPair::generate()
+            .map_err(to_py_err)
+            .map(Into::into)
+    }
+
+    /// Generate keypair from hex-encoded private key and algorithm
+    /// `algorithm` defaults to ed25519
+    /// # Errors
+    #[staticmethod]
+    pub fn from_private(pk: String, algorithm: Option<String>) -> PyResult<Self> {
+        let algorithm = Algorithm::from_str(algorithm.as_deref().unwrap_or(iroha_crypto::ED_25519))
+            .map_err(to_py_err)?;
+        let pk = PrivateKey::from_hex(algorithm, &pk).map_err(to_py_err)?;
+        let cfg = KeyGenConfiguration::default()
+            .with_algorithm(algorithm)
+            .use_private_key(pk);
+        iroha_crypto::KeyPair::generate_with_configuration(cfg)
             .map_err(to_py_err)
             .map(Into::into)
     }
@@ -184,10 +202,40 @@ impl EventIterator {
     }
 }
 
+#[pymethods]
+impl SignedTransaction {
+    #[staticmethod]
+    /// Decode from hex representation of SCALE-encoded transaction
+    fn decode(encoded: String) -> PyResult<Self> {
+        let data = hex::decode(encoded).map_err(to_py_err)?;
+        let tx = VersionedSignedTransaction::decode(&mut data.as_slice()).map_err(to_py_err)?;
+        Ok(Self { tx })
+    }
+
+    /// Encode to hex representation of SCALE-encoded transaction
+    fn encode(&self) -> String {
+        let encoded = self.tx.encode();
+        hex::encode(encoded)
+    }
+
+    /// Sign the transaction with provided key pair
+    fn append_signature(&mut self, key_pair: KeyPair) -> PyResult<()> {
+        let resigned = self
+            .tx
+            .as_v1()
+            .clone()
+            .sign(key_pair.deref().clone())
+            .map_err(to_py_err)?;
+        *self.tx.as_mut_v1() = resigned;
+        Ok(())
+    }
+}
+
 #[rustfmt::skip]
 wrap_class!(
     KeyPair        { keys: iroha_crypto::KeyPair   }: Debug + Clone,
     Client         { cl:   client::Client          }: Debug + Clone,
+    SignedTransaction { tx: iroha_data_model::transaction::VersionedSignedTransaction }: Debug + Clone,
 );
 
 /// A Python module implemented in Rust.
