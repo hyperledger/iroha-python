@@ -5,7 +5,7 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: iroha-ubuntu-latest
     container: rust:1.64-buster
     steps:
       - uses: actions/checkout@v2
@@ -33,7 +33,7 @@ jobs:
           git diff --quiet
 
   pytest:
-    runs-on: ubuntu-latest
+    runs-on: iroha-ubuntu-latest
     container: rust:1.64-buster
     steps:
       - uses: actions/checkout@v2
@@ -57,7 +57,7 @@ jobs:
         run: pytest
 
   integration-test:
-    runs-on: ubuntu-latest
+    runs-on: iroha-ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build Iroha Python test Docker image
