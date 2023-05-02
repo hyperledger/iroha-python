@@ -67,6 +67,7 @@ jobs:
           dockerfile: example/Dockerfile
           repository: iroha
           tags: python-test
+          context: .
       - name: Run test in docker
         working-directory: example
         run: |
