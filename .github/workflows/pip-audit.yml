@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   selftest:
-    runs-on: ubuntu-latest
+    runs-on: iroha-ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: install
