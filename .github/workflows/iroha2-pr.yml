@@ -8,7 +8,7 @@ jobs:
     runs-on: iroha-ubuntu-latest
     container: rust:1.64-buster
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install dependencies
         run: |
           apt-get update
@@ -36,7 +36,7 @@ jobs:
     runs-on: iroha-ubuntu-latest
     container: rust:1.64-buster
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Install dependencies
         run: |
           apt-get update
@@ -59,9 +59,9 @@ jobs:
   integration-test:
     runs-on: iroha-ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build Iroha Python test Docker image
-        uses: docker/build-push-action@v1.1.0
+        uses: docker/build-push-action@v4
         with:
           push: false
           dockerfile: example/Dockerfile
