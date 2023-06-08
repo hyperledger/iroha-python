@@ -1,4 +1,7 @@
-from ...rust import Enum, make_struct, make_tuple, Dict
+
+from ...rust import make_enum, make_struct, make_tuple, get_class, SelfResolvingTypeVar, Dict
+import typing
+            
 BurnBox = make_struct("BurnBox", [("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")])
 
 ExecuteTriggerBox = make_struct("ExecuteTriggerBox", [("trigger_id", "iroha_data_model.trigger.Id")])
@@ -9,7 +12,8 @@ GrantBox = make_struct("GrantBox", [("object", "iroha_data_model.expression.Eval
 
 If = make_struct("If", [("condition", "iroha_data_model.expression.EvaluatesTo"), ("then", "iroha_data_model.isi.Instruction"), ("otherwise", "iroha_data_model.isi.Instruction")])
 
-Instruction = Enum[("Register", "iroha_data_model.isi.RegisterBox"), ("Unregister", "iroha_data_model.isi.UnregisterBox"), ("Mint", "iroha_data_model.isi.MintBox"), ("Burn", "iroha_data_model.isi.BurnBox"), ("Transfer", "iroha_data_model.isi.TransferBox"), ("If", "iroha_data_model.isi.If"), ("Pair", "iroha_data_model.isi.Pair"), ("Sequence", "iroha_data_model.isi.SequenceBox"), ("Fail", "iroha_data_model.isi.FailBox"), ("SetKeyValue", "iroha_data_model.isi.SetKeyValueBox"), ("RemoveKeyValue", "iroha_data_model.isi.RemoveKeyValueBox"), ("Grant", "iroha_data_model.isi.GrantBox"), ("Revoke", "iroha_data_model.isi.RevokeBox"), ("ExecuteTrigger", "iroha_data_model.isi.ExecuteTriggerBox")] 
+Instruction = make_enum("Instruction", [("Register", get_class("iroha_data_model.isi.RegisterBox")), ("Unregister", get_class("iroha_data_model.isi.UnregisterBox")), ("Mint", get_class("iroha_data_model.isi.MintBox")), ("Burn", get_class("iroha_data_model.isi.BurnBox")), ("Transfer", get_class("iroha_data_model.isi.TransferBox")), ("If", get_class("iroha_data_model.isi.If")), ("Pair", get_class("iroha_data_model.isi.Pair")), ("Sequence", get_class("iroha_data_model.isi.SequenceBox")), ("Fail", get_class("iroha_data_model.isi.FailBox")), ("SetKeyValue", get_class("iroha_data_model.isi.SetKeyValueBox")), ("RemoveKeyValue", get_class("iroha_data_model.isi.RemoveKeyValueBox")), ("Grant", get_class("iroha_data_model.isi.GrantBox")), ("Revoke", get_class("iroha_data_model.isi.RevokeBox")), ("ExecuteTrigger", get_class("iroha_data_model.isi.ExecuteTriggerBox"))], typing.Union[get_class("iroha_data_model.isi.RegisterBox"), get_class("iroha_data_model.isi.UnregisterBox"), get_class("iroha_data_model.isi.MintBox"), get_class("iroha_data_model.isi.BurnBox"), get_class("iroha_data_model.isi.TransferBox"), get_class("iroha_data_model.isi.If"), get_class("iroha_data_model.isi.Pair"), get_class("iroha_data_model.isi.SequenceBox"), get_class("iroha_data_model.isi.FailBox"), get_class("iroha_data_model.isi.SetKeyValueBox"), get_class("iroha_data_model.isi.RemoveKeyValueBox"), get_class("iroha_data_model.isi.GrantBox"), get_class("iroha_data_model.isi.RevokeBox"), get_class("iroha_data_model.isi.ExecuteTriggerBox")])
+
 MintBox = make_struct("MintBox", [("object", "iroha_data_model.expression.EvaluatesTo"), ("destination_id", "iroha_data_model.expression.EvaluatesTo")])
 
 Pair = make_struct("Pair", [("left_instruction", "iroha_data_model.isi.Instruction"), ("right_instruction", "iroha_data_model.isi.Instruction")])
@@ -28,3 +32,4 @@ TransferBox = make_struct("TransferBox", [("source_id", "iroha_data_model.expres
 
 UnregisterBox = make_struct("UnregisterBox", [("object_id", "iroha_data_model.expression.EvaluatesTo")])
 
+SelfResolvingTypeVar.resolve_all()

@@ -1,4 +1,4 @@
-use std::{
+use core::{
     fmt::Write,
     ops::{Deref, DerefMut},
 };

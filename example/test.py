@@ -7,12 +7,12 @@ from iroha2.data_model.isi import Register
 from iroha2.data_model.domain import Domain
 from iroha2.data_model.account import Account
 from iroha2.data_model import asset, account
-from iroha2.data_model.events import FilterBox, pipeline
+from iroha2.data_model.events import FilterBox, pipeline, Event
 from iroha2.crypto import KeyPair
 
 
 def wait_for_tx(cl: Client, hash: str):
-    filter = FilterBox.Pipeline(
+    filter = FilterBox(
         pipeline.EventFilter(
             entity_kind=pipeline.EntityKind.Transaction(),
             status_kind=None,
@@ -22,14 +22,13 @@ def wait_for_tx(cl: Client, hash: str):
     listener = cl.listen(filter)
 
     for event in listener:
-        if event.variant is event.Type.Pipeline:
-            if event.value.hash == hash:
-                if event.value.status.variant is pipeline.Status.Type.Committed:
-                    return
-                elif event.value.status.variant is pipeline.Status.Type.Validating:
-                    pass
-                else:
-                    raise RuntimeError(f"Tx rejected: {event.value.status}")
+        if isinstance(event, Event.Pipeline) and event.hash == hash:
+            if isinstance(event.status, pipeline.Status.Committed):
+                return
+            elif isinstance(event.status, pipeline.Status.Validating):
+                pass
+            else:
+                raise RuntimeError(f"Tx rejected: {event.value.status}")
 
 
 cfg = json.loads(open("./config.json").read())

@@ -1,14 +1,74 @@
 # Export
+import abc
 from collections.abc import Iterable
 import typing
-from typing import NamedTuple
+import types
+from typing import NamedTuple, Tuple, Union, TypeVar, Optional
+from functools import partial
 import enum
 import collections
 import dataclasses
 from importlib import import_module
 from ..iroha2 import Dict, List
+import inspect
 
 ClassPath = str
+
+
+def get_caller() -> types.ModuleType:
+    """
+    Returns reference to the calling module
+    """
+    stack = inspect.stack()
+    for frame_info in stack:
+        mod = inspect.getmodule(frame_info.frame)
+        if mod is not None and mod.__name__ != __name__:
+            return mod
+    return None
+
+
+class SelfResolvingTypeVar(typing.TypeVar, _root=True):
+    """
+    Hacky workaround type for dependency cycles caused by self-referencing types.
+    """
+
+    def evaluate(self):
+        """
+        Evaluate the underlying TypeVar to the actual type.
+        """
+        return self.__bound__._evaluate(self.caller_module.__dict__, globals(),
+                                        set())
+
+    def resolve(self):
+        """
+        Overwrite self with the actual type
+        """
+        self = self.evaluate()
+
+    def __call__(self, args, **kvargs):
+        return self.evaluate()(args, kvargs)
+
+    def __init__(self, *args, **kvargs):
+        super().__init__(*args, **kvargs)
+
+        caller_module = get_caller()
+
+        if not hasattr(caller_module, "__typevars_to_resolve"):
+            caller_module.__typevars_to_resolve = []
+        caller_module.__typevars_to_resolve.append(self)
+
+        self.caller_module = caller_module
+
+    @classmethod
+    def resolve_all(_):
+        """
+        Resolves all self-referencing placeholders in the calling module,
+        overwriting them with actual types.
+        Should be called at the end of the module.
+        """
+        caller_module = get_caller()
+        for tv in getattr(caller_module, "__typevars_to_resolve", []):
+            tv.resolve()
 
 
 def query(*path):
@@ -27,15 +87,20 @@ def query(*path):
 def to_rust(obj):
     if isinstance(obj, list):
         return [to_rust(i) for i in obj]
+
     if isinstance(obj, tuple):
         if len(obj) == 0:
             return None
         else:
             return tuple(to_rust(i) for i in obj)
+
     if isinstance(obj, dict):
         return {k: to_rust(v) for k, v in obj.items()}
 
-    return obj.to_rust() if hasattr(obj, 'to_rust') else obj
+    if hasattr(obj, "to_rust"):
+        return obj.to_rust()
+
+    return obj
 
 
 def from_rust(obj, cls):
@@ -53,118 +118,129 @@ def from_rust(obj, cls):
     return obj
 
 
-def get_class(path) -> type:
+def get_class(path: Union[type, str]) -> type:
     if isinstance(path, type):
         return path
     path = path.split('.')
     name = path[-1]
     import_path = '.' + '.'.join(path[:-1])
-    mod = import_module(import_path, package='iroha2.sys')
-    return getattr(mod, name)
+    try:
+        mod = import_module(import_path, package='iroha2.sys')
+        return getattr(mod, name)
+    except AttributeError:
+        # Forward reference, not yet in scope
+        # Return symbolic variable to be resolved later
+        return SelfResolvingTypeVar(name, bound=f'{name}')
 
 
-# TODO: (#132) bring in line with other factories
-class _Enum(type):
+def make_enum_variant(base, variant_name, variant_type):
 
-    @staticmethod
-    def _make_class(variants):
+    def repr_enum_variant(self):
+        return f"{base.__name__}.{variant_name}({repr(self._value)})"
 
-        class RustEnum:
-            __variants = None
-            Type = enum.Enum('Type', [k for k, v in variants])
+    def enum_variant_to_rust(self):
+        encoded = to_rust(self._value)
+        return {variant_name: encoded}
 
-            def __str__(self):
-                return f"{self.variant.name}"
-
-            @classmethod
-            def _variants(cls):
-                if not cls.__variants:
-                    cls.__variants = {k: get_class(v) for k, v in variants}
-                return cls.__variants
-
-            @classmethod
-            def from_rust(cls, value):
-                # TODO: Dict should inherit from Mapping
-                if isinstance(value, collections.Mapping)\
-                   or isinstance(value, Dict):
-                    if len(list(value.keys())) > 1:
-                        raise ValueError
-
-                    variant = list(value.keys())[0]
-                    variant_class = cls._variants()[variant]
-                    variant_value = from_rust(value[variant], variant_class)
-                    return cls(variant_value, variant)
-                elif type(value) is str:
-                    if value in cls._variants().keys():
-                        return cls(None, value)
-                    else:
-                        raise ValueError
-                else:
-                    raise ValueError
-
-            def _from_value(self, value):
-                for variant, ty in self._variants().items():
-                    # Strip generics (i. e. list[int] -> list)
-                    # since there's no standard analogue to
-                    # isinstance for generic aliases
-                    ty = typing.get_origin(ty) or ty
-                    if isinstance(value, ty):
-                        self.variant = self.Type[variant]
-                        self.value = value
-                        return
-
-                raise TypeError(f"Unknown type for enum: {value}")
-
-            def __init__(self, value, variant=None):
-                if variant is None:
-                    self._from_value(value)
-                else:
-                    self.variant = self.Type[variant]
-                    self.value = value
-
-            def to_rust(self) -> dict:
-                return {self.variant.name: to_rust(self.value)}
-
-        for var, ty in variants:
-
-            def constructor_meta(value, var, ty):
-                if isinstance(ty, str):
-                    ty = get_class(ty)
-
-                if not isinstance(value, ty):
-                    value = ty(value)
-                return RustEnum(value, variant=var)
-
-            # Type here might be a string also
-            if ty == type(None):
-                # https://stackoverflow.com/questions/2295290/what-do-lambda-function-closures-capture
-                constructor = (
-                    lambda var: lambda: RustEnum(None, variant=var))(var)
-            else:
-
-                constructor = (
-                    lambda var, ty: lambda v: constructor_meta(v, var, ty))(
-                        var, ty)
-
-            setattr(RustEnum, var, staticmethod(constructor))
-
-        return RustEnum
-
-    def __getitem__(
-        cls,
-        variants,
-    ) -> type:
-        if isinstance(variants, tuple) and isinstance(variants[0], str):
-            variants = [variants]
-
-        return cls.__class__._make_class(variants)
+    return type(f"{base.__name__}.{variant_name}", (base, ), {
+        "to_rust": enum_variant_to_rust,
+        "__repr__": repr_enum_variant,
+    })
 
 
-class Enum(metaclass=_Enum):
-    pass
+def make_enum(enum_name: str, variants: [Tuple[str, type]],
+              typs: TypeVar) -> type:
+    """
+    Creates a type corresponding to rust Enum.
+    Actually creates a base enum type and a type
+    corresponding to each of the variants, available as 
+    `EnumName.VariantName`. Base enum type can never be 
+    instantiated, calling it directly tries to guess
+    the variant and instantiate corresponding type,
+    if the value passed to constructor is unambiguous.
+    E.g. for a fictional enum `Value[Integer, String]`
+    `Value(8)` will return `Value.Integer(8)`.
+    """
+
+    typemap = {name: typ for name, typ in variants}
+
+    # __new__ must know the base enum type
+    def make_new(base):
+
+        def new(cls, value: Optional[typs] = None, name: Optional[str] = None):
+            # We should never construct base enum object directly,
+            # always a subclass of representing a concrete variant
+            if cls == base:
+                if name is None:
+                    for var_name in typemap:
+
+                        # Resolve forward references
+                        if isinstance(typemap[var_name], SelfResolvingTypeVar):
+                            typemap[var_name] = typemap[var_name].evaluate()
+
+                        # Found variant of suitable type
+                        if isinstance(value, typemap[var_name]):
+                            # Multiple variants of suitable type exist,
+                            # invocation is ambiguous without specifying
+                            # variant
+                            if name is not None:
+                                raise ValueError(
+                                    f"{base.__name__} instantiated with ambiguous type: {value}"
+                                )
+                            name = var_name
+
+                    # No variant with such type exists
+                    if name is None:
+                        raise TypeError
+
+                cls = getattr(base, name)
+
+            # Instantiate variant-type object
+            return super(base, cls).__new__(cls)
+
+        return new
+
+    def init_enum(self, value: typs = None, name=None):
+        self._value = value
+
+    def enum_from_rust(cls, obj):
+        if isinstance(obj, dict):
+            name = list(obj.keys())[0]
+            value = obj[name]
+            return cls(from_rust(value, typemap[name]), name)
+        elif isinstance(obj, str):
+            return cls(None, obj)
+        else:
+            raise ValueError
+
+    # Dereference to contained value
+    def get_value_attr(self, name):
+        return getattr(self._value, name)
+
+    enum_type = type(
+        enum_name,
+        (abc.ABC, ),
+        {
+            "__init__": init_enum,
+            "__getattr__": get_value_attr,
+            "from_rust": classmethod(enum_from_rust),
+            # to_rust is defined on variant subclasses
+        })
+
+    # These methods need to be generated already
+    # having the base enum type.
+    setattr(enum_type, "__new__", make_new(enum_type))
+    for name, typ in variants:
+        setattr(enum_type, name, make_enum_variant(enum_type, name, typ))
+
+    return enum_type
 
 
 def make_tuple(name, fields=None):
+    """
+    Create an analogue to a rust typle.
+    """
+
     if fields is None:
         fields = []
 
@@ -174,6 +250,9 @@ def make_tuple(name, fields=None):
 
 
 def make_struct(structname, fields):
+    """
+    Create an analogue to a rust typle.
+    """
 
     def struct_to_rust(s):
         # `asdict` doesn't work here since it relies on deepcopy, which isn't
@@ -187,7 +266,8 @@ def make_struct(structname, fields):
             argtype = get_class(argtype)
             try:
                 # Special case, since those are flattened
-                # TODO: handle it better
+                # TODO: requires changes to iroha schema
+                # to handle properly
                 if structname == "EvaluatesTo" or structname == "Metadata":
                     arg = obj
                 else:
