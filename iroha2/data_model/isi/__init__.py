@@ -26,7 +26,7 @@ class Registrable(ABC):
         return self
 
 
-@wrapper(_Register)
+@wrapper(_Register, flattened=True)
 class Register(_Register):
 
     @classmethod

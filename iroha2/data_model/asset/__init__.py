@@ -8,22 +8,49 @@ from ...sys.iroha_data_model.asset import (
     AssetValue as Value,
     AssetValueType as ValueType,
     DefinitionId as _DefinitionId,
-    Id,
+    Id as _Id,
     Mintable,
 )
 from ..domain import Id as DomainId
+from ..account import Id as AccountId
 from ..isi import Registrable
-from .. import wrapper
+from .. import wrapper, patch
+
+
+@wrapper(_Id)
+class Id(_Id, Registrable):
+
+    @patch(_Id, "to_rust")
+    def __repr__(self):
+        return f"{self.definition_id}#{self.account_id}"
+
+    @patch(_Id, "from_rust")
+    @classmethod
+    def parse(cls, asset_id):
+        definition_name, domain_name, account_id = asset_id.rsplit("#")
+        account_id = AccountId.parse(account_id)
+
+        if domain_name == "":
+            domain_id = account_id.domain_id
+        else:
+            domain_id = DomainId(domain_name)
+
+        return Id(DefinitionId(definition_name, domain_id), account_id)
 
 
 @wrapper(_DefinitionId)
 class DefinitionId(_DefinitionId, Registrable):
 
+    @patch(_DefinitionId, "to_rust")
+    def __repr__(self):
+        return f"{self.name}#{self.domain_id}"
+
+    @patch(_DefinitionId, "from_rust")
     @classmethod
     def parse(cls, addr):
         "Parses the definition id from address in form of name#domain"
         name, domain_id = addr.split('#')
-        return cls(name=name, domain_id=DomainId(domain_id))
+        return DefinitionId(name=name, domain_id=DomainId(domain_id))
 
 
 @wrapper(_Definition)

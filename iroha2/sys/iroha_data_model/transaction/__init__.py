@@ -1,30 +1,28 @@
-from ...rust import Enum, make_struct, make_tuple, Dict
-BlockRejectionReason = Enum[("ConsensusBlockRejection", type(None))] 
-Executable = Enum[("Instructions", list), ("Wasm", "iroha_data_model.transaction.WasmSmartContract")] 
-InstructionExecutionFail = make_struct("InstructionExecutionFail", [("instruction", "iroha_data_model.isi.Instruction"), ("reason", str)])
 
-NotPermittedFail = make_struct("NotPermittedFail", [("reason", str)])
+from ...rust import make_enum, make_struct, make_tuple, get_class, SelfResolvingTypeVar, Dict
+import typing
+            
+Executable = make_enum("Executable", [("Instructions", get_class(list)), ("Wasm", get_class("iroha_data_model.transaction.WasmSmartContract"))], typing.Union[get_class(list), get_class("iroha_data_model.transaction.WasmSmartContract")])
 
 Payload = make_struct("Payload", [("account_id", "iroha_data_model.account.Id"), ("instructions", "iroha_data_model.transaction.Executable"), ("creation_time", int), ("time_to_live_ms", int), ("nonce", int), ("metadata", Dict)])
 
-RejectedTransaction = make_struct("RejectedTransaction", [("payload", "iroha_data_model.transaction.Payload"), ("signatures", "iroha_crypto.signature.SignaturesOf"), ("rejection_reason", "iroha_data_model.transaction.TransactionRejectionReason")])
+RejectedTransaction = make_struct("RejectedTransaction", [("payload", "iroha_data_model.transaction.Payload"), ("signatures", "iroha_crypto.signature.SignaturesOf"), ("rejection_reason", "iroha_data_model.transaction.error.TransactionRejectionReason")])
 
-RejectionReason = Enum[("Block", "iroha_data_model.transaction.BlockRejectionReason"), ("Transaction", "iroha_data_model.transaction.TransactionRejectionReason")] 
-Transaction = make_struct("Transaction", [("payload", "iroha_data_model.transaction.Payload"), ("signatures", list)])
+SignedTransaction = make_struct("SignedTransaction", [("payload", "iroha_data_model.transaction.Payload"), ("signatures", list)])
 
-TransactionLimitError = make_tuple("TransactionLimitError", [str])
+TransactionLimits = make_struct("TransactionLimits", [("max_instruction_number", int), ("max_wasm_size_bytes", int)])
+
 TransactionQueryResult = make_struct("TransactionQueryResult", [("tx_value", "iroha_data_model.transaction.TransactionValue"), ("block_hash", "iroha_crypto.hash.Hash")])
 
-TransactionRejectionReason = Enum[("NotPermitted", "iroha_data_model.transaction.NotPermittedFail"), ("UnsatisfiedSignatureCondition", "iroha_data_model.transaction.UnsatisfiedSignatureConditionFail"), ("LimitCheck", "iroha_data_model.transaction.TransactionLimitError"), ("InstructionExecution", "iroha_data_model.transaction.InstructionExecutionFail"), ("WasmExecution", "iroha_data_model.transaction.WasmExecutionFail"), ("UnexpectedGenesisAccountSignature", type(None))] 
-TransactionValue = Enum[("Transaction", "iroha_data_model.transaction.VersionedTransaction"), ("RejectedTransaction", "iroha_data_model.transaction.VersionedRejectedTransaction")] 
-UnsatisfiedSignatureConditionFail = make_struct("UnsatisfiedSignatureConditionFail", [("reason", str)])
+TransactionValue = make_enum("TransactionValue", [("Transaction", get_class("iroha_data_model.transaction.VersionedSignedTransaction")), ("RejectedTransaction", get_class("iroha_data_model.transaction.VersionedRejectedTransaction"))], typing.Union[get_class("iroha_data_model.transaction.VersionedSignedTransaction"), get_class("iroha_data_model.transaction.VersionedRejectedTransaction")])
 
 ValidTransaction = make_struct("ValidTransaction", [("payload", "iroha_data_model.transaction.Payload"), ("signatures", "iroha_crypto.signature.SignaturesOf")])
 
-VersionedRejectedTransaction = Enum[("V1", "iroha_data_model.transaction.RejectedTransaction")] 
-VersionedTransaction = Enum[("V1", "iroha_data_model.transaction.Transaction")] 
-VersionedValidTransaction = Enum[("V1", "iroha_data_model.transaction.ValidTransaction")] 
-WasmExecutionFail = make_struct("WasmExecutionFail", [("reason", str)])
+VersionedRejectedTransaction = make_enum("VersionedRejectedTransaction", [("V1", get_class("iroha_data_model.transaction.RejectedTransaction"))], typing.Union[get_class("iroha_data_model.transaction.RejectedTransaction")])
 
-WasmSmartContract = make_struct("WasmSmartContract", [("raw_data", list)])
+VersionedSignedTransaction = make_enum("VersionedSignedTransaction", [("V1", get_class("iroha_data_model.transaction.SignedTransaction"))], typing.Union[get_class("iroha_data_model.transaction.SignedTransaction")])
 
+VersionedValidTransaction = make_enum("VersionedValidTransaction", [("V1", get_class("iroha_data_model.transaction.ValidTransaction"))], typing.Union[get_class("iroha_data_model.transaction.ValidTransaction")])
+
+WasmSmartContract = make_tuple("WasmSmartContract", [list])
+SelfResolvingTypeVar.resolve_all()

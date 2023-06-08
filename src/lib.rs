@@ -8,15 +8,16 @@
     clippy::multiple_inherent_impl
 )]
 
+use core::ops::{Deref, DerefMut};
 use std::collections::HashMap;
-use std::ops::{Deref, DerefMut};
 
 use color_eyre::eyre;
-use iroha_client::{client, Configuration};
+use iroha_client::client;
+use iroha_config::client::Configuration;
 use iroha_crypto::{Hash, KeyGenConfiguration};
 use iroha_crypto::{PrivateKey, PublicKey};
 use iroha_data_model::prelude::*;
-use iroha_version::prelude::*;
+use iroha_version::scale::EncodeVersioned;
 use pyo3::class::iter::IterNextOutput;
 use pyo3::prelude::*;
 
@@ -106,7 +107,7 @@ impl Client {
     ) -> PyResult<Vec<u8>> {
         let isi = isi.into_iter().map(ToPy::into_inner).into();
         self.build_transaction(isi, metadata.into_inner())
-            .map(VersionedTransaction::from)
+            .map(VersionedSignedTransaction::from)
             .map_err(to_py_err)
             .map(|tx| tx.encode_versioned())
     }

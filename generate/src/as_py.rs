@@ -246,13 +246,23 @@ impl fmt::Display for UnnamedStructClass {
 
 impl fmt::Display for EnumClass {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let typespec = self
+            .variants
+            .iter()
+            .map(|(_, pytype)| format!("get_class({pytype})"))
+            .collect::<Vec<_>>()
+            .join(", ");
         let variants = self
             .variants
             .iter()
-            .map(|(name, ty)| format!("(\"{}\", {})", name, ty))
+            .map(|(name, pytype)| format!("(\"{name}\", get_class({pytype}))"))
             .collect::<Vec<_>>()
             .join(", ");
-        write!(f, "{} = Enum[{}] ", self.name, variants)
+        writeln!(
+            f,
+            "{} = make_enum(\"{}\", [{variants}], typing.Union[{typespec}])",
+            self.name, self.name
+        )
     }
 }
 
