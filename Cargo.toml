@@ -17,8 +17,10 @@ iroha_client = { git = "https://github.com/hyperledger/iroha.git", branch = "iro
 iroha_config = { git = "https://github.com/hyperledger/iroha.git", branch = "iroha2-stable" }
 iroha_data_model = { git = "https://github.com/hyperledger/iroha.git", branch = "iroha2-stable", features = ["transparent_api"] }
 iroha_crypto = { git = "https://github.com/hyperledger/iroha.git", branch = "iroha2-stable" }
+iroha_primitives = { git = "https://github.com/hyperledger/iroha.git", branch = "iroha2-stable" }
 paste = "1.0.14"
 derive_more = "0.99.17"
 eyre = { version = "0.6.9", features = ["pyo3"] }
 rust_decimal = "1.33.1"
 hex = "0.4.3"
+url = "2.4.1"

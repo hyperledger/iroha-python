@@ -1,6 +1,6 @@
 import iroha
 
-keypair1 = iroha.KeyPair.from_json("""
+key_pair1 = iroha.KeyPair.from_json("""
 {
   "public_key": "ed01207233BFC89DCBD68C19FDE6CE6158225298EC1131B6A130D1AEB454C1AB5183C0",
   "private_key": {
@@ -10,12 +10,12 @@ keypair1 = iroha.KeyPair.from_json("""
 }
 """)
 
-keypair2 = iroha.KeyGenConfiguration.default().use_seed_hex("001122").generate()
+key_pair2 = iroha.KeyGenConfiguration.default().use_seed_hex("001122").generate()
 
-keypair3 = iroha.KeyGenConfiguration.default().use_private_key(keypair2.private_key).generate()
+key_pair3 = iroha.KeyGenConfiguration.default().use_private_key(key_pair2.private_key).generate()
 
 # kp2 and kp3 should have the same value
 
-print("kp1 =", keypair1)
-print("kp2 =", keypair2)
-print("kp3 =", keypair3)
+print("kp1 =", key_pair1)
+print("kp2 =", key_pair2)
+print("kp3 =", key_pair3)
