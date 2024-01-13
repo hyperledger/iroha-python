@@ -6,10 +6,21 @@ use pyo3::{
 };
 
 use iroha_client::client::Client as IrohaClient;
+use iroha_config::client::*;
+use std::str::FromStr;
+use std::num::NonZeroU64;
 
 use crate::data_model::asset::{PyAsset, PyAssetDefinition, PyAssetDefinitionId, PyAssetId};
+use crate::data_model::crypto::*;
+use iroha_data_model::account::AccountId;
 use crate::data_model::PyMirror;
 use crate::{data_model::account::PyAccountId, isi::PyInstruction};
+
+#[allow(unsafe_code)]
+const DEFAULT_TRANSACTION_TIME_TO_LIVE_MS: NonZeroU64 =
+    unsafe { NonZeroU64::new_unchecked(100_000) };
+const DEFAULT_TRANSACTION_STATUS_TIMEOUT_MS: u64 = 15_000;
+const DEFAULT_ADD_TRANSACTION_NONCE: bool = false;
 
 #[pyclass]
 pub struct Client {
@@ -18,17 +29,34 @@ pub struct Client {
 
 #[pymethods]
 impl Client {
-    #[new]
-    fn new(config: &str) -> PyResult<Self> {
-        //let config = iroha_config::client::Configuration;
-        //let client = IrohaClient::new();
-        let config: iroha_config::client::Configuration =
-            serde_json::from_str(config).map_err(|e| PyValueError::new_err(e.to_string()))?;
+    #[staticmethod]
+    fn create(
+        key_pair: &PyKeyPair,
+        account_id: &str,
+        web_login: &str,
+        password: &str,
+        api_url: &str,
+    ) -> PyResult<Self> {
+        let config = Configuration {
+            public_key: key_pair.0.public_key().clone(),
+            private_key: key_pair.0.private_key().clone(),
+            account_id: AccountId::from_str(account_id).map_err(|e| PyValueError::new_err(e.to_string()))?,
+            basic_auth: Some(BasicAuth {
+                web_login: WebLogin::from_str(web_login).map_err(|e| PyValueError::new_err(e.to_string()))?,
+                password: iroha_primitives::small::SmallStr::from_str(password),
+            }),
+            torii_api_url: url::Url::parse(api_url).map_err(|e| PyValueError::new_err(e.to_string()))?,
+            transaction_time_to_live_ms: Some(DEFAULT_TRANSACTION_TIME_TO_LIVE_MS),
+            transaction_status_timeout_ms: DEFAULT_TRANSACTION_STATUS_TIMEOUT_MS,
+            // deprecated, does nothing.
+            transaction_limits: iroha_data_model::transaction::TransactionLimits::new(0, 0),
+            add_transaction_nonce: DEFAULT_ADD_TRANSACTION_NONCE,
+        };
         let client = IrohaClient::new(&config).map_err(|e| PyValueError::new_err(e.to_string()))?;
         Ok(Self { client })
     }
 
-    fn submit(&self, py: Python<'_>, isi: PyObject) -> PyResult<String> {
+    fn submit_executable(&self, py: Python<'_>, isi: PyObject) -> PyResult<String> {
         let isi = if let Ok(isi) = isi.extract::<PyInstruction>(py) {
             vec![isi.0]
         } else if let Ok(isi) = isi.extract::<Vec<PyInstruction>>(py) {
