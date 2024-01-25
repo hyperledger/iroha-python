@@ -1,8 +1,12 @@
 use iroha_data_model::isi::{
     InstructionExpr, MintExpr, RegisterExpr, TransferExpr, UnregisterExpr,
 };
+use iroha_data_model::domain::NewDomain;
+use iroha_data_model::prelude::DomainId;
 use iroha_data_model::NumericValue;
 use pyo3::{exceptions::PyValueError, prelude::*};
+
+use std::str::FromStr;
 
 use crate::data_model::account::{PyAccountId, PyNewAccount};
 use crate::data_model::asset::{PyAssetDefinitionId, PyAssetId, PyNewAssetDefinition};
@@ -39,6 +43,17 @@ impl PyInstruction {
         Err(PyValueError::new_err(
             "Only registration of accounts, asset definitions and domains is supported",
         ))
+    }
+    
+    #[staticmethod]
+    /// Create an instruction for registering a new domain.
+    fn register_domain(domain_id: &str) -> PyResult<PyInstruction> {
+        let new_domain_object = NewDomain {
+            id: DomainId::from_str(domain_id).map_err(|e| PyValueError::new_err(e.to_string()))?,
+            logo: None,
+            metadata: Default::default(),
+        };
+        return Ok(PyInstruction(InstructionExpr::Register(RegisterExpr::new(new_domain_object))));
     }
 
     #[staticmethod]
