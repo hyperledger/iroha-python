@@ -1,8 +1,9 @@
+use iroha_data_model::account::NewAccount;
+use iroha_data_model::domain::NewDomain;
 use iroha_data_model::isi::{
     InstructionExpr, MintExpr, RegisterExpr, TransferExpr, UnregisterExpr,
 };
-use iroha_data_model::domain::NewDomain;
-use iroha_data_model::prelude::DomainId;
+use iroha_data_model::prelude::*;
 use iroha_data_model::NumericValue;
 use pyo3::{exceptions::PyValueError, prelude::*};
 
@@ -10,6 +11,7 @@ use std::str::FromStr;
 
 use crate::data_model::account::{PyAccountId, PyNewAccount};
 use crate::data_model::asset::{PyAssetDefinitionId, PyAssetId, PyNewAssetDefinition};
+use crate::data_model::crypto::*;
 use crate::data_model::domain::{PyDomainId, PyNewDomain};
 
 #[derive(Debug, Clone)]
@@ -44,7 +46,7 @@ impl PyInstruction {
             "Only registration of accounts, asset definitions and domains is supported",
         ))
     }
-    
+
     #[staticmethod]
     /// Create an instruction for registering a new domain.
     fn register_domain(domain_id: &str) -> PyResult<PyInstruction> {
@@ -53,7 +55,26 @@ impl PyInstruction {
             logo: None,
             metadata: Default::default(),
         };
-        return Ok(PyInstruction(InstructionExpr::Register(RegisterExpr::new(new_domain_object))));
+        return Ok(PyInstruction(InstructionExpr::Register(RegisterExpr::new(
+            new_domain_object,
+        ))));
+    }
+
+    #[staticmethod]
+    /// Create an instruction for registering a new domain.
+    fn register_account(
+        account_id: &str,
+        public_keys: Vec<PyPublicKey>,
+    ) -> PyResult<PyInstruction> {
+        let new_account_object = NewAccount {
+            id: AccountId::from_str(account_id)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?,
+            signatories: public_keys.into_iter().map(|x| x.into()).collect(),
+            metadata: Metadata::default(),
+        };
+        return Ok(PyInstruction(InstructionExpr::Register(RegisterExpr::new(
+            new_account_object,
+        ))));
     }
 
     #[staticmethod]

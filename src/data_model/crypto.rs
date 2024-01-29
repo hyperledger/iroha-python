@@ -3,7 +3,7 @@ use pyo3::{
     prelude::*,
 };
 
-use iroha_crypto::{Algorithm, KeyPair, PrivateKey, PublicKey, KeyGenConfiguration};
+use iroha_crypto::{Algorithm, KeyGenConfiguration, KeyPair, PrivateKey, PublicKey};
 
 use super::PyMirror;
 
@@ -78,12 +78,18 @@ impl PyKeyPair {
             .map_err(|e| PyRuntimeError::new_err(format!("Failed to generate keypair: {e}")))?;
         Ok(PyKeyPair(kp))
     }
-    
+
     #[staticmethod]
     fn from_json(json_str: &str) -> PyResult<Self> {
-        serde_json::from_str::<KeyPair>(json_str).map(|k| k.into()).map_err(|error| {
-            PyErr::new::<PyValueError, _>(format!("Error: Failed to deserialize keypair: {}", error))
-        }).into()
+        serde_json::from_str::<KeyPair>(json_str)
+            .map(|k| k.into())
+            .map_err(|error| {
+                PyErr::new::<PyValueError, _>(format!(
+                    "Error: Failed to deserialize keypair: {}",
+                    error
+                ))
+            })
+            .into()
     }
 
     #[getter]
@@ -121,18 +127,20 @@ impl PyKeyGenConfiguration {
     }
 
     fn use_seed_hex(&self, hex_str: &str) -> PyResult<Self> {
-        let seed = hex::decode(hex_str).map_err(|e| PyValueError::new_err(format!("Invalid hex string: {e}")))?;
-        let copy : KeyGenConfiguration = self.clone().into();
+        let seed = hex::decode(hex_str)
+            .map_err(|e| PyValueError::new_err(format!("Invalid hex string: {e}")))?;
+        let copy: KeyGenConfiguration = self.clone().into();
         Ok(copy.use_seed(seed).into())
     }
-    
+
     fn use_private_key(&self, private_key: PyPrivateKey) -> PyResult<Self> {
-        let copy : KeyGenConfiguration = self.clone().into();
+        let copy: KeyGenConfiguration = self.clone().into();
         Ok(copy.use_private_key(private_key.into()).into())
     }
-    
+
     fn generate(&self) -> PyResult<PyKeyPair> {
-        let kp = KeyPair::generate_with_configuration(self.0.clone()).map_err(|e| PyRuntimeError::new_err(format!("Failed to generate keypair: {e}")))?;
+        let kp = KeyPair::generate_with_configuration(self.0.clone())
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to generate keypair: {e}")))?;
         Ok(PyKeyPair(kp))
     }
 
@@ -140,7 +148,6 @@ impl PyKeyGenConfiguration {
         format!("{:?}", self.0)
     }
 }
-
 
 pub fn register_items(_py: Python<'_>, module: &PyModule) -> PyResult<()> {
     module.add_class::<PyPrivateKey>()?;

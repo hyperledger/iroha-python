@@ -7,14 +7,15 @@ use pyo3::{
 
 use iroha_client::client::Client as IrohaClient;
 use iroha_config::client::*;
-use std::str::FromStr;
 use std::num::NonZeroU64;
+use std::str::FromStr;
 
 use crate::data_model::asset::{PyAsset, PyAssetDefinition, PyAssetDefinitionId, PyAssetId};
 use crate::data_model::crypto::*;
-use iroha_data_model::account::AccountId;
 use crate::data_model::PyMirror;
 use crate::{data_model::account::PyAccountId, isi::PyInstruction};
+use iroha_data_model::account::AccountId;
+use iroha_data_model::prelude::DomainId;
 
 #[allow(unsafe_code)]
 const DEFAULT_TRANSACTION_TIME_TO_LIVE_MS: NonZeroU64 =
@@ -40,12 +41,15 @@ impl Client {
         let config = Configuration {
             public_key: key_pair.0.public_key().clone(),
             private_key: key_pair.0.private_key().clone(),
-            account_id: AccountId::from_str(account_id).map_err(|e| PyValueError::new_err(e.to_string()))?,
+            account_id: AccountId::from_str(account_id)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?,
             basic_auth: Some(BasicAuth {
-                web_login: WebLogin::from_str(web_login).map_err(|e| PyValueError::new_err(e.to_string()))?,
+                web_login: WebLogin::from_str(web_login)
+                    .map_err(|e| PyValueError::new_err(e.to_string()))?,
                 password: iroha_primitives::small::SmallStr::from_str(password),
             }),
-            torii_api_url: url::Url::parse(api_url).map_err(|e| PyValueError::new_err(e.to_string()))?,
+            torii_api_url: url::Url::parse(api_url)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?,
             transaction_time_to_live_ms: Some(DEFAULT_TRANSACTION_TIME_TO_LIVE_MS),
             transaction_status_timeout_ms: DEFAULT_TRANSACTION_STATUS_TIMEOUT_MS,
             // deprecated, does nothing.
@@ -69,22 +73,43 @@ impl Client {
             .map(|hash| hash.to_string())
             .map_err(|e| PyRuntimeError::new_err(format!("Error submitting instruction: {}", e)))
     }
-    
+
     fn query_all_domains(&self) -> PyResult<Vec<String>> {
         let query = iroha_data_model::query::prelude::FindAllDomains {};
-        
-        let val = self.client.request(query)
+
+        let val = self
+            .client
+            .request(query)
             .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
-        
+
         let mut items = Vec::new();
         for item in val {
             items.push(
-                item
-                    .map(|d| d.id.to_string())
-                    .map_err(|e|
-                        PyRuntimeError::new_err(format!("{e:?}"))
-                    )?
-                );
+                item.map(|d| d.id.to_string())
+                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+            );
+        }
+        Ok(items)
+    }
+
+    fn query_all_accounts_in_domain(&self, domain_id: &str) -> PyResult<Vec<String>> {
+        let query = iroha_data_model::query::prelude::FindAccountsByDomainId {
+            domain_id: DomainId::from_str(domain_id)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?
+                .into(),
+        };
+
+        let val = self
+            .client
+            .request(query)
+            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
+
+        let mut items = Vec::new();
+        for item in val {
+            items.push(
+                item.map(|d| d.id.to_string())
+                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+            );
         }
         Ok(items)
     }
