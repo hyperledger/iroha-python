@@ -23,13 +23,9 @@ client = iroha.Client.create(
             password,
             api_url)
 
-pyasset_id = iroha.AssetDefinitionId("pyasset", "wonderland")
-alice = iroha.AccountId("alice", "wonderland")
-bob = iroha.AccountId("bob", "wonderland")
+domains = client.query_all_domains()
 
+print("Listing all domains...")
+for d in domains:
+    print(" - ", d,)
 
-register = iroha.Instruction.register(iroha.NewAssetDefinition(pyasset_id, iroha.AssetValueType.QUANTITY))
-mint = iroha.Instruction.mint(1024, iroha.AssetId(pyasset_id, alice))
-transfer = iroha.Instruction.transfer(512, iroha.AssetId(pyasset_id, alice), bob)
-
-client.submit_executable([register, mint, transfer])
