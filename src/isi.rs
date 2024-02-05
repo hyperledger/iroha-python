@@ -5,6 +5,7 @@ use iroha_data_model::isi::{
 };
 use iroha_data_model::prelude::*;
 use iroha_data_model::NumericValue;
+use iroha_primitives::fixed::FixedPointOperationError;
 use pyo3::{exceptions::PyValueError, prelude::*};
 
 use std::str::FromStr;
@@ -61,7 +62,7 @@ impl PyInstruction {
     }
 
     #[staticmethod]
-    /// Create an instruction for registering a new domain.
+    /// Create an instruction for registering a new account.
     fn register_account(
         account_id: &str,
         public_keys: Vec<PyPublicKey>,
@@ -74,6 +75,26 @@ impl PyInstruction {
         };
         return Ok(PyInstruction(InstructionExpr::Register(RegisterExpr::new(
             new_account_object,
+        ))));
+    }
+
+    #[staticmethod]
+    /// Create an instruction for registering a new account.
+    fn register_asset_definition(
+        asset_definition_id: &str,
+        value_type: &str,
+    ) -> PyResult<PyInstruction> {
+        let new_definition_object = NewAssetDefinition {
+            id: AssetDefinitionId::from_str(asset_definition_id)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?,
+            value_type: AssetValueType::from_str(value_type)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?,
+            mintable: Mintable::Infinitely,
+            logo: None,
+            metadata: Metadata::default(),
+        };
+        return Ok(PyInstruction(InstructionExpr::Register(RegisterExpr::new(
+            new_definition_object,
         ))));
     }
 
@@ -174,22 +195,31 @@ impl PyInstruction {
 
     #[staticmethod]
     // Mint value to an Asset
-    fn mint(py: Python<'_>, value: PyObject, to: PyAssetId) -> PyResult<PyInstruction> {
-        let val = if let Ok(val) = value.extract::<u32>(py) {
-            NumericValue::U32(val)
-        } else if let Ok(val) = value.extract::<u128>(py) {
-            NumericValue::U128(val)
-        } else if let Ok(val) = value.extract::<f64>(py) {
-            let fixed = val.try_into().map_err(|e| {
-                PyValueError::new_err(format!("Couldn't convert {} to fixed: {}", val, e))
-            })?;
-            NumericValue::Fixed(fixed)
+    fn mint_asset(
+        py: Python<'_>,
+        value: PyObject,
+        asset_id: &str,
+        value_type: &str,
+    ) -> PyResult<PyInstruction> {
+        let val = if value_type == "Quantity" {
+            NumericValue::U32(value.extract::<u32>(py)?)
+        } else if value_type == "BigQuantity" {
+            NumericValue::U128(value.extract::<u128>(py)?)
+        } else if value_type == "Fixed" {
+            NumericValue::Fixed(
+                value
+                    .extract::<f64>(py)?
+                    .try_into()
+                    .map_err(|e: FixedPointOperationError| PyValueError::new_err(e.to_string()))?,
+            )
         } else {
-            return Err(PyValueError::new_err("Invalid value to transfer"));
+            // TODO(Sam): Add Store variant because it's needed for metadata.
+            return Err(PyValueError::new_err("Value type is wrong. It needs to be one of these 4: Quantity, BigQuantity, Fixed or Store."));
         };
 
         Ok(PyInstruction(InstructionExpr::Mint(MintExpr::new(
-            val, to.0,
+            val,
+            AssetId::from_str(asset_id).map_err(|e| PyValueError::new_err(e.to_string()))?,
         ))))
     }
 }
