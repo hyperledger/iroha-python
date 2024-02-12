@@ -1,27 +1,24 @@
 [package]
-name = "iroha_python"
+name = "iroha-python"
 version = "0.1.0"
-authors = ["Iroha 2 team <https://github.com/orgs/soramitsu/teams/iroha2>"]
 edition = "2021"
-license-file = "LICENSE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-[workspace]
-members = ["generate"]
-
 [lib]
-name = "iroha2"
+name = "iroha"
 crate-type = ["cdylib"]
 
 [dependencies]
-iroha_client = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-stable" }
-iroha_crypto = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-stable" }
-iroha_data_model = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-stable" }
-iroha_version = { git = "https://github.com/hyperledger/iroha", branch = "iroha2-stable" }
+pyo3 = { version = "0.20.0", features = ["multiple-pymethods", "rust_decimal"] }
+serde = { version = "1.0.193", features = ["derive"] }
+serde_json = "1.0.108"
 
-color-eyre = "0.6"
-parity-scale-codec = "3.1"
-pyo3 = { version = "0.16.4", features = ["extension-module", "multiple-pymethods"] }
-pythonize = "0.16.0"
-serde = "1"
-serde_json = "1"
+iroha_client = { git = "https://github.com/hyperledger/iroha.git", branch = "iroha2-stable" }
+iroha_config = { git = "https://github.com/hyperledger/iroha.git", branch = "iroha2-stable" }
+iroha_data_model = { git = "https://github.com/hyperledger/iroha.git", branch = "iroha2-stable", features = ["transparent_api"] }
+iroha_crypto = { git = "https://github.com/hyperledger/iroha.git", branch = "iroha2-stable" }
+paste = "1.0.14"
+derive_more = "0.99.17"
+eyre = { version = "0.6.9", features = ["pyo3"] }
+rust_decimal = "1.33.1"
+hex = "0.4.3"
