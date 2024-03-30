@@ -2006,6 +2006,7 @@ dependencies = [
  "iroha_crypto",
  "iroha_data_model",
  "iroha_primitives",
+ "parity-scale-codec",
  "paste",
  "pyo3",
  "rust_decimal",

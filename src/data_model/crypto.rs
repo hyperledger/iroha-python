@@ -3,7 +3,7 @@ use pyo3::{
     prelude::*,
 };
 
-use iroha_crypto::{Algorithm, KeyGenConfiguration, KeyPair, PrivateKey, PublicKey};
+use iroha_crypto::{Algorithm, KeyGenConfiguration, KeyPair, PrivateKey, PublicKey, Signature};
 
 use super::PyMirror;
 
@@ -102,8 +102,33 @@ impl PyKeyPair {
         self.0.public_key().clone().into()
     }
 
+    fn sign(&self, payload: &[u8]) -> PyResult<PySignature> {
+        Signature::new(self.0.clone(), payload)
+            .map(|s| PySignature(s))
+            .map_err(|e| PyRuntimeError::new_err(format!("Failed to create signature: {e}")))
+    }
+
     fn __repr__(&self) -> String {
         format!("{:?}", self.0)
+    }
+}
+
+#[pyclass(name = "Signature")]
+#[derive(Clone, derive_more::From, derive_more::Into, derive_more::Deref)]
+pub struct PySignature(pub Signature);
+
+impl PyMirror for Signature {
+    type Mirror = PySignature;
+
+    fn mirror(self) -> PyResult<Self::Mirror> {
+        Ok(PySignature(self))
+    }
+}
+
+#[pymethods]
+impl PySignature {
+    fn __bytes__(&self) -> &[u8] {
+        self.0.payload()
     }
 }
 

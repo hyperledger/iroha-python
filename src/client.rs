@@ -114,6 +114,24 @@ impl Client {
         Ok(items)
     }
 
+    fn query_all_accounts(&self) -> PyResult<Vec<String>> {
+        let query = iroha_data_model::query::prelude::FindAllAccounts;
+
+        let val = self
+            .client
+            .request(query)
+            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
+
+        let mut items = Vec::new();
+        for item in val {
+            items.push(
+                item.map(|d| d.id.to_string())
+                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+            );
+        }
+        Ok(items)
+    }
+
     fn query_all_assets_owned_by_account(&self, account_id: &str) -> PyResult<Vec<String>> {
         let query = iroha_data_model::query::prelude::FindAssetsByAccountId {
             account_id: AccountId::from_str(account_id)
