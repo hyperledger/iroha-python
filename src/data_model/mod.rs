@@ -18,6 +18,8 @@ pub mod crypto;
 pub mod domain;
 pub mod role;
 
+pub mod tx;
+
 mod util;
 
 pub trait PyMirror {
@@ -124,5 +126,6 @@ pub fn register_items(py: Python<'_>, module: &PyModule) -> PyResult<()> {
     domain::register_items(py, module)?;
     role::register_items(py, module)?;
     crypto::register_items(py, module)?;
+    tx::register_items(py, module)?;
     Ok(())
 }
