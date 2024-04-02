@@ -12,8 +12,11 @@ key_pair = iroha.KeyPair.from_json("""
 }
 """)
 
+# Hash the user's email address:
+hashed_email = iroha.hash(b"email@address")
+
 # Sign the user's email address:
-signature = key_pair.sign(b"email@address")
+signature = key_pair.sign(bytes(hashed_email))
 
 # Retrieve the encoded Hex string of the user's `signature`
 print(f"Encoded signature:\n{bytes(signature).hex()}")
