@@ -3,7 +3,9 @@ use pyo3::{
     prelude::*,
 };
 
-use iroha_crypto::{Algorithm, KeyGenConfiguration, KeyPair, PrivateKey, PublicKey, Signature};
+use iroha_crypto::{
+    Algorithm, Hash, KeyGenConfiguration, KeyPair, PrivateKey, PublicKey, Signature,
+};
 
 use super::PyMirror;
 
@@ -132,6 +134,11 @@ impl PySignature {
     }
 }
 
+#[pyfunction]
+fn hash(bytes: &[u8]) -> [u8; Hash::LENGTH] {
+    Hash::new(bytes).into()
+}
+
 #[pyclass(name = "KeyGenConfiguration")]
 #[derive(Clone, derive_more::From, derive_more::Into, derive_more::Deref)]
 pub struct PyKeyGenConfiguration(pub KeyGenConfiguration);
@@ -179,5 +186,6 @@ pub fn register_items(_py: Python<'_>, module: &PyModule) -> PyResult<()> {
     module.add_class::<PyPublicKey>()?;
     module.add_class::<PyKeyPair>()?;
     module.add_class::<PyKeyGenConfiguration>()?;
+    module.add_wrapped(wrap_pyfunction!(hash))?;
     Ok(())
 }
