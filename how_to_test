@@ -1,1 +1,2 @@
-python -m pytest tests
+maturin build
+poetry run python -m pytest tests
