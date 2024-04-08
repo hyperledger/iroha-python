@@ -1,43 +1,22 @@
+import allure
 import iroha
 import time
 
-def start_client():
-    key_pair = iroha.KeyPair.from_json("""
-    {
-      "public_key": "ed01207233BFC89DCBD68C19FDE6CE6158225298EC1131B6A130D1AEB454C1AB5183C0",
-      "private_key": {
-        "digest_function": "ed25519",
-        "payload": "9ac47abf59b356e0bd7dcbbbb4dec080e302156a48ca907e47cb6aea1d32719e7233bfc89dcbd68c19fde6ce6158225298ec1131b6a130d1aeb454c1ab5183c0"
-      }
-    }
-    """)
-    
-    account_id = "alice@wonderland"
-    web_login = "mad_hatter"
-    password = "ilovetea"
-    api_url = "http://127.0.0.1:8080/"
-    telemetry_url = "http://127.0.0.1:8180/"
-    
-    client = iroha.Client.create(
-                key_pair,
-                account_id,
-                web_login,
-                password,
-                api_url)
-    return client
+import pytest
 
-def test_register_account():
-    client = start_client()
+from tests import client
 
+@pytest.fixture(scope="function", autouse=True)
+def story_account_register_asset():
+    allure.dynamic.story("Account registers an asset")
+    allure.dynamic.label("permission", "no_permission_required")
+
+def test_register_asset(
+        GIVEN_new_asset_id):
     assets = client.query_all_assets_owned_by_account("alice@wonderland")
-    
-    print("Listing all assets owned by alice@wonderland...")
-    for a in assets:
-        print(" - ", a,)
 
     asset_definition_id = "time_" + str(len(assets)) + "#wonderland"
     asset_id = "time_" + str(len(assets)) + "##alice@wonderland"
-    
     assert asset_id not in assets
     
     register_definition = iroha.Instruction.register_asset_definition(asset_definition_id, "Quantity")
