@@ -1,3 +1,5 @@
+import re
+
 import allure
 import iroha
 import time
@@ -11,28 +13,33 @@ def story_account_register_asset():
     allure.dynamic.story("Account registers an asset")
     allure.dynamic.label("permission", "no_permission_required")
 
-def test_register_asset(
-        GIVEN_new_asset_id):
-    assets = client.query_all_assets_owned_by_account("alice@wonderland")
+def test_register_asset_definition(
+        GIVEN_new_asset_definition_id):
+    with allure.step(
+            f'WHEN client registers a new asset definition id "{GIVEN_new_asset_definition_id}"'):
+        (client.submit_executable(
+            [iroha.Instruction
+             .register_asset_definition(
+                GIVEN_new_asset_definition_id,
+                "Quantity")]))
+    time.sleep(3)
+    with allure.step(
+            f'THEN Iroha should have the "{GIVEN_new_asset_definition_id}" account'):
+        assert GIVEN_new_asset_definition_id in client.query_all_asset_definitions()
 
-    asset_definition_id = "time_" + str(len(assets)) + "#wonderland"
-    asset_id = "time_" + str(len(assets)) + "##alice@wonderland"
-    assert asset_id not in assets
-    
-    register_definition = iroha.Instruction.register_asset_definition(asset_definition_id, "Quantity")
-    
-    mint = iroha.Instruction.mint_asset(5, asset_id, "Quantity")
-    
-    client.submit_executable([register_definition, mint])
-
-    for x in range(30):
-        assets = client.query_all_assets_owned_by_account("alice@wonderland")
-        
-        if asset_id in assets:
-            break
-        
-        time.sleep(1)
-        
-    
-    assert asset_id in assets
-    
+def test_mint_asset(
+    GIVEN_registered_asset_definition,
+    GIVEN_registered_account):
+    asset = (lambda s: re.sub(r'(\b\w+\b)(?=.*\1)', '', s))(GIVEN_registered_asset_definition + '#' + GIVEN_registered_account)
+    with allure.step(
+            f'WHEN client mints an asset "{asset}"'):
+        (client.submit_executable(
+            [iroha.Instruction
+             .mint_asset(
+                5,
+                asset,
+                "Quantity")]))
+    time.sleep(3)
+    with allure.step(
+            f'THEN Iroha should have the new asset "{asset}"'):
+        assert asset in client.query_all_assets()

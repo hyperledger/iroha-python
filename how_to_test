@@ -1,2 +1,4 @@
 maturin build
+poetry add target/wheels/iroha-0.1.0-cp39-cp39-macosx_11_0_arm64.whl
+poetry install
 poetry run python -m pytest tests
