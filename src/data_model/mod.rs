@@ -14,6 +14,7 @@ use self::domain::*;
 
 pub mod account;
 pub mod asset;
+pub mod block;
 pub mod crypto;
 pub mod domain;
 pub mod role;
@@ -127,5 +128,6 @@ pub fn register_items(py: Python<'_>, module: &PyModule) -> PyResult<()> {
     role::register_items(py, module)?;
     crypto::register_items(py, module)?;
     tx::register_items(py, module)?;
+    block::register_items(py, module)?;
     Ok(())
 }

@@ -11,6 +11,7 @@ use std::num::NonZeroU64;
 use std::str::FromStr;
 
 use crate::data_model::asset::{PyAsset, PyAssetDefinition, PyAssetDefinitionId, PyAssetId};
+use crate::data_model::block::*;
 use crate::data_model::crypto::*;
 use crate::data_model::PyMirror;
 use crate::{data_model::account::PyAccountId, isi::PyInstruction};
@@ -184,6 +185,24 @@ impl Client {
         for item in val {
             items.push(
                 item.map(|d| d.id.to_string())
+                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+            );
+        }
+        Ok(items)
+    }
+
+    fn query_all_block_headers(&self) -> PyResult<Vec<PyBlockHeader>> {
+        let query = iroha_data_model::query::prelude::FindAllBlockHeaders;
+
+        let val = self
+            .client
+            .request(query)
+            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
+
+        let mut items = Vec::new();
+        for item in val {
+            items.push(
+                item.map(|d| d.into())
                     .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
             );
         }
