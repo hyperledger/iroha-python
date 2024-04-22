@@ -21,7 +21,7 @@ iroha_primitives = { git = "https://github.com/hyperledger/iroha.git", branch = 
 parity-scale-codec = { version = "3.6.5", default-features = false, features = ["derive"] }
 paste = "1.0.14"
 derive_more = "0.99.17"
-eyre = { version = "0.6.9", features = ["pyo3"] }
+eyre = { version = "0.6.12", features = ["pyo3"] }
 rust_decimal = "1.33.1"
 hex = "0.4.3"
 url = "2.4.1"
