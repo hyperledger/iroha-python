@@ -1,3 +1,4 @@
+import re
 import time
 
 import allure
@@ -7,7 +8,7 @@ import pytest
 from tests import client, fake
 from tests.helpers import generate_public_key
 
-
+# Fixtures for Generating New Identifiers
 @pytest.fixture()
 def GIVEN_new_domain_id():
     """Fixture to provide a new fake domain id."""
@@ -36,6 +37,7 @@ def GIVEN_new_asset_definition_id(GIVEN_new_asset_id, GIVEN_registered_domain):
     with allure.step(f'GIVEN a "{asset_name}" asset'):
         return asset_name
 
+# Fixtures for Registering Entities
 @pytest.fixture()
 def GIVEN_registered_asset_definition(GIVEN_new_asset_definition_id):
     """Fixture to provide a registered asset definition."""
@@ -73,7 +75,9 @@ def GIVEN_registered_account(GIVEN_new_account_id):
         return GIVEN_new_account_id
 
 @pytest.fixture()
-def GIVEN_registered_domain_with_registered_accounts(GIVEN_registered_domain, GIVEN_new_account_id):
+def GIVEN_registered_domain_with_registered_accounts(
+        GIVEN_registered_domain,
+        GIVEN_new_account_id):
     """Fixture to provide a domain with accounts"""
     with allure.step(
             f'GIVEN client registers the account "{GIVEN_new_account_id}"'):
@@ -84,3 +88,22 @@ def GIVEN_registered_domain_with_registered_accounts(GIVEN_registered_domain, GI
                 [generate_public_key(seed="abcd1122")])]))
         time.sleep(2)
         return GIVEN_registered_domain
+
+@pytest.fixture()
+def GIVEN_registered_account_with_minted_assets(
+        GIVEN_registered_asset_definition,
+        GIVEN_registered_account
+):
+    """Fixture to provide an account with minted assets"""
+    asset = (lambda s: re.sub(r'(\b\w+\b)(?=.*\1)', '', s))(
+        GIVEN_registered_asset_definition + '#' + GIVEN_registered_account)
+    with allure.step(
+            f'WHEN client mints an asset "{asset}"'):
+        (client.submit_executable(
+            [iroha.Instruction
+            .mint_asset(
+                5,
+                asset,
+                "Quantity")]))
+    time.sleep(3)
+    return GIVEN_registered_account
