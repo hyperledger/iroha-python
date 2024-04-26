@@ -1,4 +1,4 @@
-use iroha_data_model::account::{prelude::*, NewAccount};
+use iroha_data_model::account::{prelude::*, Account, NewAccount};
 
 use pyo3::{
     exceptions::PyValueError,
@@ -81,8 +81,7 @@ impl PyAccount {
     fn get_signatories(&self, py: Python<'_>) -> Py<PyList> {
         let signatories = self
             .0
-            .signatories
-            .iter()
+            .signatories()
             .map(|signatory| PyPublicKey(signatory.clone()).into_py(py))
             .collect::<Vec<_>>();
         PyList::new(py, signatories).into()
@@ -113,9 +112,7 @@ impl PyNewAccount {
         };
 
         let signatories = if let Ok(single) = signatories.extract::<PyPublicKey>(py) {
-            vec![single.0]
-        } else if let Ok(multiple) = signatories.extract::<Vec<PyPublicKey>>(py) {
-            multiple.into_iter().map(|key| key.0).collect::<Vec<_>>()
+            single.0
         } else {
             return Err(PyValueError::new_err(
                 "signatories should be either a list of public keys or a single public key",
@@ -133,26 +130,6 @@ impl PyNewAccount {
     #[setter]
     fn set_id(&mut self, id: PyAccountId) {
         self.0.id = id.clone().into()
-    }
-
-    #[getter]
-    fn get_signatories(&self, py: Python<'_>) -> Py<PyList> {
-        let signatories = self
-            .0
-            .signatories
-            .iter()
-            .map(|signatory| PyPublicKey(signatory.clone()).into_py(py))
-            .collect::<Vec<_>>();
-        PyList::new(py, signatories).into()
-    }
-
-    #[setter]
-    fn set_signatories(&mut self, signatories: Vec<PyPublicKey>) {
-        let signatories = signatories
-            .into_iter()
-            .map(Into::into)
-            .collect::<BTreeSet<_>>();
-        self.0.signatories = signatories
     }
 
     #[getter]

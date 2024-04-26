@@ -21,7 +21,7 @@ def test_register_asset_definition(
             [iroha.Instruction
              .register_asset_definition(
                 GIVEN_new_asset_definition_id,
-                "Quantity")]))
+                iroha.AssetValueType.numeric_fractional(0))]))
     time.sleep(3)
     with allure.step(
             f'THEN Iroha should have the "{GIVEN_new_asset_definition_id}" account'):
@@ -38,7 +38,7 @@ def test_mint_asset(
              .mint_asset(
                 5,
                 asset,
-                "Quantity")]))
+                iroha.AssetValueType.numeric_fractional(0))]))
     time.sleep(3)
     with allure.step(
             f'THEN Iroha should have the new asset "{asset}"'):

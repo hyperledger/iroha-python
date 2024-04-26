@@ -1,9 +1,13 @@
-use rust_decimal::{prelude::ToPrimitive, Decimal};
+use rust_decimal::{
+    prelude::{FromPrimitive, ToPrimitive},
+    Decimal,
+};
 
 use iroha_data_model::asset::{
     Asset, AssetDefinition, AssetDefinitionId, AssetId, AssetValue, AssetValueType, Mintable,
     NewAssetDefinition,
 };
+use iroha_primitives::numeric::{Numeric, NumericSpec};
 
 use pyo3::{
     exceptions::{PyNotImplementedError, PyValueError},
@@ -12,7 +16,7 @@ use pyo3::{
 };
 
 use super::{account::PyAccountId, MetadataWrapper};
-use crate::{mirror_fieldless_enum, mirror_struct};
+use crate::{data_model::PyMirror, mirror_fieldless_enum, mirror_struct};
 
 mirror_struct! {
     /// ID of asset definition, e.g. asset#domain
@@ -243,14 +247,14 @@ impl PyAsset {
     #[new]
     fn new(py: Python<'_>, id: PyAssetId, value: PyObject) -> PyResult<Self> {
         let value = if let Ok(val) = value.extract::<u32>(py) {
-            AssetValue::Quantity(val)
+            AssetValue::Numeric(Numeric::new(val.into(), 0))
         } else if let Ok(val) = value.extract::<u128>(py) {
-            AssetValue::BigQuantity(val)
+            AssetValue::Numeric(Numeric::new(val, 0))
         } else if let Ok(val) = value.extract::<f64>(py) {
-            let fixed = val.try_into().map_err(|e| {
-                PyValueError::new_err(format!("Couldn't convert {} to fixed: {}", val, e))
-            })?;
-            AssetValue::Fixed(fixed)
+            let decimal = Decimal::from_f64(val).ok_or(PyValueError::new_err(
+                "float could not be converted into decimal number",
+            ))?;
+            AssetValue::Numeric(Numeric::new(decimal.mantissa() as u128, decimal.scale()))
         } else {
             return Err(PyValueError::new_err(format!(
                 "Unrecognised value for asset: {}",
@@ -274,16 +278,9 @@ impl PyAsset {
     #[getter]
     fn get_value(&self, py: Python<'_>) -> PyResult<Py<PyAny>> {
         match &self.0.value {
-            AssetValue::Quantity(v) => {
-                let fixedint = PyModule::import(py, "fixedint")?;
-                let quantity = fixedint.getattr("MutableUInt32")?.call1((*v,))?;
-                Ok(quantity.into())
-            }
-            AssetValue::BigQuantity(v) => Ok(v.to_object(py).into()),
-            AssetValue::Fixed(v) => {
-                let quantity = Decimal::from_str_exact(&format!("{}", v))
-                    .unwrap()
-                    .into_py(py);
+            AssetValue::Numeric(n) => {
+                let quantity =
+                    Decimal::from_i128_with_scale(n.mantissa() as i128, n.scale()).into_py(py);
                 Ok(quantity.into())
             }
             AssetValue::Store(v) => {
@@ -295,32 +292,57 @@ impl PyAsset {
 
     #[setter]
     fn set_value(&mut self, py: Python<'_>, value: PyObject) -> PyResult<()> {
-        if let Ok(val) = value.extract::<u32>(py) {
-            self.0.value = AssetValue::Quantity(val)
-        }
-        if let Ok(val) = value.extract::<u128>(py) {
-            self.0.value = AssetValue::BigQuantity(val)
-        }
-        if let Ok(val) = value.extract::<Decimal>(py) {
-            let fixed = val
-                .to_f64()
-                .ok_or_else(|| PyValueError::new_err(format!("Couldn't convert {} to Fixed", val)))?
-                .try_into()
-                .map_err(|e| {
-                    PyValueError::new_err(format!("Couldn't convert {} to fixed: {}", val, e))
-                })?;
-            self.0.value = AssetValue::Fixed(fixed)
-        }
-        Err(PyNotImplementedError::new_err(
-            "Metadata Values are currently read-only",
-        ))
+        let value = if let Ok(val) = value.extract::<u32>(py) {
+            AssetValue::Numeric(Numeric::new(val.into(), 0))
+        } else if let Ok(val) = value.extract::<u128>(py) {
+            AssetValue::Numeric(Numeric::new(val, 0))
+        } else if let Ok(val) = value.extract::<f64>(py) {
+            let decimal = Decimal::from_f64(val).ok_or(PyValueError::new_err(
+                "float could not be converted into decimal number",
+            ))?;
+            AssetValue::Numeric(Numeric::new(decimal.mantissa() as u128, decimal.scale()))
+        } else {
+            return Err(PyNotImplementedError::new_err(
+                "Metadata Values are currently read-only",
+            ));
+        };
+        self.0.value = value;
+        Ok(())
     }
 }
 
-mirror_fieldless_enum! {
-    /// Type of value an Asset can have
-    AssetValueType;
-    Quantity, BigQuantity, Fixed, Store
+#[pyclass(name = "AssetValueType")]
+#[derive(Clone, derive_more::From, derive_more::Into, derive_more::Deref)]
+pub struct PyAssetValueType(pub AssetValueType);
+
+#[pymethods]
+impl PyAssetValueType {
+    #[staticmethod]
+    fn numeric_unconstrained() -> PyResult<Self> {
+        Ok(Self(AssetValueType::Numeric(NumericSpec::unconstrained())))
+    }
+    #[staticmethod]
+    fn numeric_fractional(scale: u32) -> PyResult<Self> {
+        Ok(Self(AssetValueType::Numeric(NumericSpec::fractional(
+            scale,
+        ))))
+    }
+    #[staticmethod]
+    fn store() -> PyResult<Self> {
+        Ok(Self(AssetValueType::Store))
+    }
+
+    fn __repr__(&self) -> String {
+        format!("{:?}", self.0)
+    }
+}
+
+impl PyMirror for AssetValueType {
+    type Mirror = PyAssetValueType;
+
+    fn mirror(self) -> PyResult<Self::Mirror> {
+        Ok(PyAssetValueType(self))
+    }
 }
 
 mirror_fieldless_enum! {
