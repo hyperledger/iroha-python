@@ -18,12 +18,11 @@ def test_register_asset_definition(
         GIVEN_new_asset_definition_id):
     with allure.step(
             f'WHEN client registers a new asset definition id "{GIVEN_new_asset_definition_id}"'):
-        (client.submit_executable(
+        (client.submit_executable_only_success(
             [iroha.Instruction
              .register_asset_definition(
                 GIVEN_new_asset_definition_id,
                 iroha.AssetValueType.numeric_fractional(0))]))
-    time.sleep(3)
     with allure.step(
             f'THEN Iroha should have the "{GIVEN_new_asset_definition_id}" account'):
         assert GIVEN_new_asset_definition_id in client.query_all_asset_definitions()
@@ -35,12 +34,11 @@ def test_mint_asset(
     asset = (lambda s: re.sub(r'(\b\w+\b)(?=.*\1)', '', s))(GIVEN_registered_asset_definition + '#' + GIVEN_registered_account)
     with allure.step(
             f'WHEN client mints an asset "{asset}"'):
-        (client.submit_executable(
+        (client.submit_executable_only_success(
             [iroha.Instruction
              .mint_asset(
                 5,
                 asset)]))
-    time.sleep(3)
     with allure.step(
             f'THEN Iroha should have the new asset "{asset}"'):
         assert asset in client.query_all_assets()

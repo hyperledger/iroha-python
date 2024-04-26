@@ -15,9 +15,8 @@ def story_account_registers_domain():
 def test_register_domain(
         GIVEN_new_domain_id):
     with allure.step(f'WHEN client registers the domain name "{GIVEN_new_domain_id}"'):
-        (client.submit_executable(
+        (client.submit_executable_only_success(
             [iroha.Instruction
              .register_domain(GIVEN_new_domain_id)]))
-        time.sleep(3)
     with allure.step(f'THEN Iroha should have the domain name "{GIVEN_new_domain_id}"'):
         assert GIVEN_new_domain_id in client.query_all_domains()

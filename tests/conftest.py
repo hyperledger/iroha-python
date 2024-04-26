@@ -49,22 +49,20 @@ def GIVEN_registered_asset_definition(GIVEN_new_asset_definition_id):
     """Fixture to provide a registered asset definition."""
     with allure.step(
             f'GIVEN registered asset definition "{GIVEN_new_asset_definition_id}"'):
-        (client.submit_executable(
+        (client.submit_executable_only_success(
             [iroha.Instruction
             .register_asset_definition(
                 GIVEN_new_asset_definition_id,
                 iroha.AssetValueType.numeric_fractional(0))]))
-        time.sleep(2)
         return GIVEN_new_asset_definition_id
 
 @pytest.fixture()
 def GIVEN_registered_domain(GIVEN_new_domain_id):
     """Fixture to provide a registered domain in Iroha"""
     with allure.step(f'GIVEN registered domain name "{GIVEN_new_domain_id}"'):
-        (client.submit_executable(
+        (client.submit_executable_only_success(
             [iroha.Instruction
              .register_domain(GIVEN_new_domain_id)]))
-        time.sleep(2)
         return GIVEN_new_domain_id
 
 @pytest.fixture()
@@ -72,12 +70,11 @@ def GIVEN_registered_account(GIVEN_new_account_id):
     """Fixture to provide a registered account"""
     with allure.step(
             f'GIVEN client registered the account "{GIVEN_new_account_id}"'):
-        (client.submit_executable(
+        (client.submit_executable_only_success(
             [iroha.Instruction
              .register_account(
                 GIVEN_new_account_id,
                 generate_public_key(seed="abcd1122"))]))
-        time.sleep(2)
         return GIVEN_new_account_id
 
 @pytest.fixture()
@@ -87,12 +84,11 @@ def GIVEN_registered_domain_with_registered_accounts(
     """Fixture to provide a domain with accounts"""
     with allure.step(
             f'GIVEN client registers the account "{GIVEN_new_account_id}"'):
-        (client.submit_executable(
+        (client.submit_executable_only_success(
             [iroha.Instruction
              .register_account(
                 GIVEN_new_account_id,
                 generate_public_key(seed="abcd1122"))]))
-        time.sleep(2)
         return GIVEN_registered_domain
 
 @pytest.fixture()
@@ -105,11 +101,10 @@ def GIVEN_registered_account_with_minted_assets(
         GIVEN_registered_asset_definition + '#' + GIVEN_registered_account)
     with allure.step(
             f'WHEN client mints an asset "{asset}"'):
-        (client.submit_executable(
+        (client.submit_executable_only_success(
             [iroha.Instruction
             .mint_asset(
                 5,
                 asset,
                 iroha.AssetValueType.numeric_fractional(0))]))
-    time.sleep(3)
     return GIVEN_registered_account
