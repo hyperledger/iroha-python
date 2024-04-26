@@ -47,7 +47,7 @@ def GIVEN_registered_asset_definition(GIVEN_new_asset_definition_id):
             [iroha.Instruction
             .register_asset_definition(
                 GIVEN_new_asset_definition_id,
-                "Quantity")]))
+                iroha.AssetValueType.numeric_fractional(0))]))
         time.sleep(2)
         return GIVEN_new_asset_definition_id
 
@@ -104,6 +104,6 @@ def GIVEN_registered_account_with_minted_assets(
             .mint_asset(
                 5,
                 asset,
-                "Quantity")]))
+                iroha.AssetValueType.numeric_fractional(0))]))
     time.sleep(3)
     return GIVEN_registered_account

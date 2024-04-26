@@ -9,7 +9,7 @@ key_pair = iroha.KeyPair.from_json("""
 {
   "public_key": "ed0120BA85186D0F8C995F8DEA6C95B3EDA321C88C983D4F6B28E079CC121B40AA8E00",
   "private_key": {
-    "digest_function": "ed25519",
+    "algorithm": "ed25519",
     "payload": "1b9068cd9b4acaabf1e8c66c622d9bd15ff3b04099819b750e3987be73d2096fba85186d0f8c995f8dea6c95b3eda321c88c983d4f6b28e079cc121b40aa8e00"
   }
 }

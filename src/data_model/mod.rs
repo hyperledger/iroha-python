@@ -1,12 +1,14 @@
 use derive_more::{From, Into};
 
 use iroha_client::client::{QueryOutput, ResultSet};
-use iroha_data_model::{metadata::Metadata, IdentifiableBox, Value};
+use iroha_data_model::{metadata::Metadata, IdentifiableBox};
 use pyo3::{
     exceptions::PyRuntimeError,
     prelude::*,
     types::{PyBool, PyDict, PyList, PyString},
 };
+
+use iroha_data_model::query::QueryOutputBox;
 
 use self::account::*;
 use self::asset::*;
@@ -34,7 +36,7 @@ where
     T: PyMirror,
     T: Clone,
     Vec<T>: QueryOutput,
-    <Vec<T> as TryFrom<Value>>::Error: Into<eyre::Report>,
+    <Vec<T> as TryFrom<QueryOutputBox>>::Error: Into<eyre::Report>,
 {
     type Mirror = Vec<T::Mirror>;
 
@@ -79,7 +81,8 @@ impl IntoPy<PyResult<Py<PyDict>>> for MetadataWrapper {
         for (name, value) in self.0.iter() {
             dict.set_item(
                 PyString::new(py, name.as_ref()),
-                Into::<ValueWrapper>::into(value.clone()).into_py(py)?,
+                Into::<ValueWrapper>::into(QueryOutputBox::LimitedMetadata(value.clone()))
+                    .into_py(py)?,
             )?;
         }
         Ok(dict.into_py(py))
@@ -88,7 +91,7 @@ impl IntoPy<PyResult<Py<PyDict>>> for MetadataWrapper {
 
 // Proxy struct to facilitate conversions
 #[derive(From, Into)]
-struct ValueWrapper(Value);
+struct ValueWrapper(QueryOutputBox);
 
 impl IntoPy<PyResult<PyObject>> for ValueWrapper {
     fn into_py(self, py: Python<'_>) -> PyResult<PyObject> {
@@ -100,21 +103,15 @@ impl IntoPy<PyResult<PyObject>> for ValueWrapper {
         }
 
         Ok(match self.0 {
-            iroha_data_model::Value::Bool(v) => PyBool::new(py, v).into(),
-            iroha_data_model::Value::String(v) => PyString::new(py, &v).into(),
-            iroha_data_model::Value::Name(v) => PyString::new(py, v.as_ref()).into(),
-            iroha_data_model::Value::Vec(elems) => {
+            QueryOutputBox::Identifiable(v) => IdentifiableBoxWrapper(v).into_py(py)?,
+            QueryOutputBox::Id(v) => PyString::new(py, &v.to_string()).into(),
+            QueryOutputBox::Vec(elems) => {
                 let mut pyelems = Vec::with_capacity(elems.len());
                 for elem in elems {
                     let pyvalue = ValueWrapper(elem).into_py(py)?;
                     pyelems.push(pyvalue);
                 }
                 PyList::new(py, pyelems).into()
-            }
-            iroha_data_model::Value::Ipv4Addr(v) => to_py_ip(py, v.to_string())?,
-            iroha_data_model::Value::Ipv6Addr(v) => to_py_ip(py, v.to_string())?,
-            iroha_data_model::Value::LimitedMetadata(v) => {
-                Into::<MetadataWrapper>::into(v).into_py(py)?.into()
             }
             _ => unimplemented!(),
         })

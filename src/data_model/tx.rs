@@ -34,13 +34,8 @@ impl PySignedTransaction {
     fn encode_hex(&self) -> String {
         hex::encode(self.encode())
     }
-    fn append_signature(&mut self, key_pair: &PyKeyPair) -> PyResult<()> {
-        self.0 = self
-            .0
-            .clone()
-            .sign(key_pair.0.clone())
-            .map_err(|e| PyValueError::new_err(format!("Failed to sign transaction: {e}")))?;
-        Ok(())
+    fn append_signature(&mut self, key_pair: &PyKeyPair) {
+        self.0 = self.0.clone().sign(&key_pair.0);
     }
 }
 

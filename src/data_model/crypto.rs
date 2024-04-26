@@ -3,9 +3,7 @@ use pyo3::{
     prelude::*,
 };
 
-use iroha_crypto::{
-    Algorithm, Hash, KeyGenConfiguration, KeyPair, PrivateKey, PublicKey, Signature,
-};
+use iroha_crypto::{Algorithm, Hash, KeyPair, PrivateKey, PublicKey, Signature};
 
 use super::PyMirror;
 
@@ -25,9 +23,7 @@ impl PyMirror for PrivateKey {
 impl PyPrivateKey {
     #[new]
     fn new(encoded: &str) -> PyResult<Self> {
-        let bytes = hex::decode(encoded)
-            .map_err(|e| PyValueError::new_err(format!("Invalid private key: {e}")))?;
-        let pk = PrivateKey::from_hex(Algorithm::default(), &bytes)
+        let pk = PrivateKey::from_hex(Algorithm::default(), &encoded)
             .map_err(|e| PyValueError::new_err(format!("Invalid private key: {e}")))?;
         Ok(Self(pk))
     }
@@ -76,9 +72,7 @@ impl PyMirror for KeyPair {
 impl PyKeyPair {
     #[staticmethod]
     fn generate() -> PyResult<Self> {
-        let kp = KeyPair::generate()
-            .map_err(|e| PyRuntimeError::new_err(format!("Failed to generate keypair: {e}")))?;
-        Ok(PyKeyPair(kp))
+        Ok(PyKeyPair(KeyPair::random()))
     }
 
     #[staticmethod]
@@ -104,10 +98,8 @@ impl PyKeyPair {
         self.0.public_key().clone().into()
     }
 
-    fn sign(&self, payload: &[u8]) -> PyResult<PySignature> {
-        Signature::new(self.0.clone(), payload)
-            .map(|s| PySignature(s))
-            .map_err(|e| PyRuntimeError::new_err(format!("Failed to create signature: {e}")))
+    fn sign(&self, payload: &[u8]) -> PySignature {
+        PySignature(Signature::new(&self.0, payload))
     }
 
     fn __repr__(&self) -> String {
@@ -139,53 +131,10 @@ fn hash(bytes: &[u8]) -> [u8; Hash::LENGTH] {
     Hash::new(bytes).into()
 }
 
-#[pyclass(name = "KeyGenConfiguration")]
-#[derive(Clone, derive_more::From, derive_more::Into, derive_more::Deref)]
-pub struct PyKeyGenConfiguration(pub KeyGenConfiguration);
-
-impl PyMirror for KeyGenConfiguration {
-    type Mirror = PyKeyGenConfiguration;
-
-    fn mirror(self) -> PyResult<Self::Mirror> {
-        Ok(PyKeyGenConfiguration(self))
-    }
-}
-
-#[pymethods]
-impl PyKeyGenConfiguration {
-    #[staticmethod]
-    fn default() -> Self {
-        PyKeyGenConfiguration(KeyGenConfiguration::default())
-    }
-
-    fn use_seed_hex(&self, hex_str: &str) -> PyResult<Self> {
-        let seed = hex::decode(hex_str)
-            .map_err(|e| PyValueError::new_err(format!("Invalid hex string: {e}")))?;
-        let copy: KeyGenConfiguration = self.clone().into();
-        Ok(copy.use_seed(seed).into())
-    }
-
-    fn use_private_key(&self, private_key: PyPrivateKey) -> PyResult<Self> {
-        let copy: KeyGenConfiguration = self.clone().into();
-        Ok(copy.use_private_key(private_key.into()).into())
-    }
-
-    fn generate(&self) -> PyResult<PyKeyPair> {
-        let kp = KeyPair::generate_with_configuration(self.0.clone())
-            .map_err(|e| PyRuntimeError::new_err(format!("Failed to generate keypair: {e}")))?;
-        Ok(PyKeyPair(kp))
-    }
-
-    fn __repr__(&self) -> String {
-        format!("{:?}", self.0)
-    }
-}
-
 pub fn register_items(_py: Python<'_>, module: &PyModule) -> PyResult<()> {
     module.add_class::<PyPrivateKey>()?;
     module.add_class::<PyPublicKey>()?;
     module.add_class::<PyKeyPair>()?;
-    module.add_class::<PyKeyGenConfiguration>()?;
     module.add_wrapped(wrap_pyfunction!(hash))?;
     Ok(())
 }

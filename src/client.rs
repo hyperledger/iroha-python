@@ -6,7 +6,9 @@ use pyo3::{
 };
 
 use iroha_client::client::Client as IrohaClient;
-use iroha_config::client::*;
+use iroha_client::config::Config as IrohaClientConfig;
+use iroha_client::config::{BasicAuth, WebLogin};
+
 use std::num::NonZeroU64;
 use std::str::FromStr;
 
@@ -17,6 +19,7 @@ use crate::data_model::PyMirror;
 use crate::{data_model::account::PyAccountId, isi::PyInstruction};
 use iroha_data_model::account::AccountId;
 use iroha_data_model::prelude::DomainId;
+use iroha_data_model::ChainId;
 
 #[allow(unsafe_code)]
 const DEFAULT_TRANSACTION_TIME_TO_LIVE_MS: NonZeroU64 =
@@ -38,12 +41,13 @@ impl Client {
         web_login: &str,
         password: &str,
         api_url: &str,
+        chain_id: &str,
     ) -> PyResult<Self> {
-        let config = Configuration {
-            public_key: key_pair.0.public_key().clone(),
-            private_key: key_pair.0.private_key().clone(),
+        let config = IrohaClientConfig {
+            chain_id: ChainId::from(chain_id),
             account_id: AccountId::from_str(account_id)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?,
+            key_pair: key_pair.clone().into(),
             basic_auth: Some(BasicAuth {
                 web_login: WebLogin::from_str(web_login)
                     .map_err(|e| PyValueError::new_err(e.to_string()))?,
@@ -51,14 +55,18 @@ impl Client {
             }),
             torii_api_url: url::Url::parse(api_url)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?,
-            transaction_time_to_live_ms: Some(DEFAULT_TRANSACTION_TIME_TO_LIVE_MS),
-            transaction_status_timeout_ms: DEFAULT_TRANSACTION_STATUS_TIMEOUT_MS,
+            transaction_ttl: std::time::Duration::from_millis(
+                DEFAULT_TRANSACTION_TIME_TO_LIVE_MS.into(),
+            ),
+            transaction_status_timeout: std::time::Duration::from_millis(
+                DEFAULT_TRANSACTION_STATUS_TIMEOUT_MS,
+            ),
             // deprecated, does nothing.
-            transaction_limits: iroha_data_model::transaction::TransactionLimits::new(0, 0),
-            add_transaction_nonce: DEFAULT_ADD_TRANSACTION_NONCE,
+            transaction_add_nonce: DEFAULT_ADD_TRANSACTION_NONCE,
         };
-        let client = IrohaClient::new(&config).map_err(|e| PyValueError::new_err(e.to_string()))?;
-        Ok(Self { client })
+        Ok(Self {
+            client: IrohaClient::new(config),
+        })
     }
 
     fn submit_executable(&self, py: Python<'_>, isi: PyObject) -> PyResult<String> {
