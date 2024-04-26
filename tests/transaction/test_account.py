@@ -17,12 +17,11 @@ def test_register_account(
         GIVEN_new_account_id):
     with allure.step(
             f'WHEN client registers the account "{GIVEN_new_account_id}"'):
-        (client.submit_executable(
+        (client.submit_executable_only_success(
             [iroha.Instruction
              .register_account(
                 GIVEN_new_account_id,
                 generate_public_key(seed="abcd1122"))]))
-        time.sleep(3)
     with allure.step(
             f'THEN Iroha should have the "{GIVEN_new_account_id}" account'):
         assert GIVEN_new_account_id in client.query_all_accounts()
