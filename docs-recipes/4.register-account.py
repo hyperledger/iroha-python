@@ -25,7 +25,7 @@ client = iroha.Client.create(
             api_url,
             chain_id)
 
-new_account_key_pair = iroha.KeyPair.generate()
+new_account_key_pair = iroha.KeyPair.random()
 new_account_id = "white_rabbit@wonderland"
 
 accounts = client.query_all_accounts_in_domain("wonderland")

@@ -19,27 +19,17 @@ impl PyMirror for PrivateKey {
     }
 }
 
-#[pymethods]
-impl PyPrivateKey {
-    #[new]
-    fn new(encoded: &str) -> PyResult<Self> {
-        let pk = PrivateKey::from_hex(Algorithm::default(), &encoded)
-            .map_err(|e| PyValueError::new_err(format!("Invalid private key: {e}")))?;
-        Ok(Self(pk))
-    }
-}
-
 #[pyclass(name = "PublicKey")]
 #[derive(Clone, derive_more::From, derive_more::Into, derive_more::Deref)]
 pub struct PyPublicKey(pub PublicKey);
 
 #[pymethods]
 impl PyPublicKey {
-    #[new]
-    fn new(encoded: &str) -> PyResult<Self> {
+    #[staticmethod]
+    fn from_string(encoded: &str) -> PyResult<Self> {
         let pk = encoded
             .parse()
-            .map_err(|e| PyValueError::new_err(format!("Invalid private key: {e}")))?;
+            .map_err(|e| PyValueError::new_err(format!("Invalid public key: {e}")))?;
         Ok(Self(pk))
     }
 
@@ -68,13 +58,55 @@ impl PyMirror for KeyPair {
     }
 }
 
+fn string_to_algorithm(string: &str) -> PyResult<Algorithm> {
+    match string {
+        "Ed25519" => Ok(Algorithm::Ed25519),
+        "Secp256k1" => Ok(Algorithm::Secp256k1),
+        "BlsNormal" => Ok(Algorithm::BlsNormal),
+        "BlsSmall" => Ok(Algorithm::BlsSmall),
+        _ => Err(PyErr::new::<PyValueError, _>(format!(
+            "Error: '{}' is not a supported cryptography algorithm. Supported ones are 'Ed25519', 'Secp256k1', 'BlsNormal' and 'BlsSmall'.",
+            string
+        ))),
+    }
+}
+
 #[pymethods]
 impl PyKeyPair {
     #[staticmethod]
-    fn generate() -> PyResult<Self> {
+    fn random() -> PyResult<Self> {
         Ok(PyKeyPair(KeyPair::random()))
     }
+    #[staticmethod]
+    fn random_with_algorithm(algorithm: &str) -> PyResult<Self> {
+        Ok(PyKeyPair(KeyPair::random_with_algorithm(
+            string_to_algorithm(algorithm)?,
+        )))
+    }
 
+    #[staticmethod]
+    fn from_hex_seed(hex_seed: &str) -> PyResult<Self> {
+        let bytes = hex::decode(hex_seed)
+            .map_err(|e| PyValueError::new_err(format!("Failed to decode hex: {e}")))?;
+        Ok(PyKeyPair(KeyPair::from_seed(bytes, Algorithm::default())))
+    }
+    #[staticmethod]
+    fn from_hex_seed_with_algorithm(hex_seed: &str, algorithm: &str) -> PyResult<Self> {
+        let bytes = hex::decode(hex_seed)
+            .map_err(|e| PyValueError::new_err(format!("Failed to decode hex: {e}")))?;
+        Ok(PyKeyPair(KeyPair::from_seed(
+            bytes,
+            string_to_algorithm(algorithm)?,
+        )))
+    }
+
+    #[staticmethod]
+    fn from_private_key(pk: PyPrivateKey) -> PyResult<Self> {
+        Ok(PyKeyPair(
+            KeyPair::new(PublicKey::from(pk.0.clone()), pk.0)
+                .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+        ))
+    }
     #[staticmethod]
     fn from_json(json_str: &str) -> PyResult<Self> {
         serde_json::from_str::<KeyPair>(json_str)
