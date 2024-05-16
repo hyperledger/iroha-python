@@ -11,6 +11,7 @@ def story_account_register_account():
     allure.dynamic.story("Account registers an account")
     allure.dynamic.label("permission", "no_permission_required")
 
+@allure.id("2384")
 @allure.label("sdk_test_id", "register_account")
 def test_register_account(
         GIVEN_new_account_id):
@@ -20,7 +21,7 @@ def test_register_account(
             [iroha.Instruction
              .register_account(
                 GIVEN_new_account_id,
-                [generate_public_key(seed="abcd1122")])]))
+                generate_public_key(seed="abcd1122"))]))
         time.sleep(3)
     with allure.step(
             f'THEN Iroha should have the "{GIVEN_new_account_id}" account'):

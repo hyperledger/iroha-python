@@ -8,6 +8,7 @@ def story_account_queries_domains():
     allure.dynamic.story("Account queries domains")
     allure.dynamic.label("permission", "no_permission_required")
 
+@allure.id("2385")
 @allure.label("sdk_test_id", "query_all_domains")
 def test_query_all_domains():
     with allure.step('WHEN client queries all domains'):

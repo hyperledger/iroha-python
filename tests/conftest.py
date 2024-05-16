@@ -8,6 +8,12 @@ import pytest
 from tests import client, fake
 from tests.helpers import generate_public_key
 
+@pytest.fixture(scope="function", autouse=True)
+def before_each():
+    """Fixture to set up and reset the client_cli state."""
+    allure.dynamic.label("sdk", "Python 3")
+    allure.dynamic.label("owner", "astrokov")
+
 # Fixtures for Generating New Identifiers
 @pytest.fixture()
 def GIVEN_new_domain_id():
@@ -70,7 +76,7 @@ def GIVEN_registered_account(GIVEN_new_account_id):
             [iroha.Instruction
              .register_account(
                 GIVEN_new_account_id,
-                [generate_public_key(seed="abcd1122")])]))
+                generate_public_key(seed="abcd1122"))]))
         time.sleep(2)
         return GIVEN_new_account_id
 
@@ -85,7 +91,7 @@ def GIVEN_registered_domain_with_registered_accounts(
             [iroha.Instruction
              .register_account(
                 GIVEN_new_account_id,
-                [generate_public_key(seed="abcd1122")])]))
+                generate_public_key(seed="abcd1122"))]))
         time.sleep(2)
         return GIVEN_registered_domain
 
