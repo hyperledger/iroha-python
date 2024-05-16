@@ -13,6 +13,7 @@ def story_account_register_asset():
     allure.dynamic.story("Account registers an asset")
     allure.dynamic.label("permission", "no_permission_required")
 
+@allure.id("2383")
 def test_register_asset_definition(
         GIVEN_new_asset_definition_id):
     with allure.step(
@@ -27,6 +28,7 @@ def test_register_asset_definition(
             f'THEN Iroha should have the "{GIVEN_new_asset_definition_id}" account'):
         assert GIVEN_new_asset_definition_id in client.query_all_asset_definitions()
 
+@allure.id("2379")
 def test_mint_asset(
     GIVEN_registered_asset_definition,
     GIVEN_registered_account):
@@ -37,8 +39,7 @@ def test_mint_asset(
             [iroha.Instruction
              .mint_asset(
                 5,
-                asset,
-                iroha.AssetValueType.numeric_fractional(0))]))
+                asset)]))
     time.sleep(3)
     with allure.step(
             f'THEN Iroha should have the new asset "{asset}"'):
