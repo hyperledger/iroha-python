@@ -15,14 +15,15 @@ use std::str::FromStr;
 use crate::data_model::asset::{PyAsset, PyAssetDefinition, PyAssetDefinitionId, PyAssetId};
 use crate::data_model::block::*;
 use crate::data_model::crypto::*;
-use iroha_crypto::{Hash, HashOf};
+use crate::data_model::role::*;
 use crate::data_model::PyMirror;
 use crate::{data_model::account::PyAccountId, isi::PyInstruction};
+use iroha_crypto::{Hash, HashOf};
 use iroha_data_model::account::AccountId;
 use iroha_data_model::prelude::*;
 use iroha_data_model::ChainId;
 
-use iroha_data_model::events::pipeline::{TransactionEventFilter, BlockEventFilter};
+use iroha_data_model::events::pipeline::{BlockEventFilter, TransactionEventFilter};
 
 #[allow(unsafe_code)]
 const DEFAULT_TRANSACTION_TIME_TO_LIVE_MS: NonZeroU64 =
@@ -85,7 +86,7 @@ impl Client {
             .map(|hash| hash.to_string())
             .map_err(|e| PyRuntimeError::new_err(format!("Error submitting instruction: {}", e)))
     }
-    
+
     fn submit_executable_only_success(&self, py: Python<'_>, isi: PyObject) -> PyResult<String> {
         let isi = if let Ok(isi) = isi.extract::<PyInstruction>(py) {
             vec![isi.0]
@@ -94,26 +95,27 @@ impl Client {
         } else {
             return Err(PyValueError::new_err(""));
         };
-        
-        
+
         let transaction = self.client.build_transaction(isi, UnlimitedMetadata::new());
         let hash = transaction.hash();
         self.client.submit_transaction(&transaction)?;
-        
+
         let filters = vec![
             TransactionEventFilter::default().for_hash(hash).into(),
             PipelineEventFilterBox::from(
                 BlockEventFilter::default().for_status(BlockStatus::Applied),
             ),
         ];
-        
+
         let mut block_height = 0;
         for event in self.client.listen_for_events(filters)? {
             let event = event?;
             if let EventBox::Pipeline(event) = event {
                 match event {
                     PipelineEventBox::Transaction(event) => {
-                        if event.status == TransactionStatus::Approved && event.block_height.is_some() {
+                        if event.status == TransactionStatus::Approved
+                            && event.block_height.is_some()
+                        {
                             block_height = event.block_height.unwrap();
                         } else {
                             return Err(PyValueError::new_err("Transaction was not approved."));
@@ -129,19 +131,19 @@ impl Client {
         }
         Err(PyValueError::new_err("No events left."))
     }
-    
+
     fn query_transaction_with_hash(&self, hash: [u8; Hash::LENGTH]) -> PyResult<bool> {
         let query = iroha_data_model::query::prelude::FindTransactionByHash {
             hash: HashOf::from_untyped_unchecked(Hash::prehashed(hash)).into(),
         };
 
-        let ret = self
-            .client
-            .request(query);
+        let ret = self.client.request(query);
         println!("{:?}", ret);
-        Ok(ret.map_err(|e| PyRuntimeError::new_err(format!("{e:?}"))).is_ok())
+        Ok(ret
+            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))
+            .is_ok())
     }
-    
+
     fn query_all_domains(&self) -> PyResult<Vec<String>> {
         let query = iroha_data_model::query::prelude::FindAllDomains {};
 
@@ -270,6 +272,79 @@ impl Client {
         for item in val {
             items.push(
                 item.map(|d| d.into())
+                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+            );
+        }
+        Ok(items)
+    }
+
+    fn query_all_roles(&self) -> PyResult<Vec<PyRole>> {
+        let query = iroha_data_model::query::prelude::FindAllRoles {};
+
+        let val = self
+            .client
+            .request(query)
+            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
+
+        let mut items = Vec::new();
+        for item in val {
+            items.push(
+                item.map(|d| d.into())
+                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+            );
+        }
+        Ok(items)
+    }
+
+    fn query_all_role_ids(&self) -> PyResult<Vec<String>> {
+        let query = iroha_data_model::query::prelude::FindAllRoleIds {};
+
+        let val = self
+            .client
+            .request(query)
+            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
+
+        let mut items = Vec::new();
+        for item in val {
+            items.push(
+                item.map(|d| d.to_string())
+                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+            );
+        }
+        Ok(items)
+    }
+
+    fn query_role_by_id(&self, role_id: &str) -> PyResult<PyRole> {
+        let query = iroha_data_model::query::prelude::FindRoleByRoleId {
+            id: RoleId::from_str(role_id)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?
+                .into(),
+        };
+
+        let val = self
+            .client
+            .request(query)
+            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
+
+        Ok(val.into())
+    }
+
+    fn query_all_roles_of_account(&self, account_id: &str) -> PyResult<Vec<String>> {
+        let query = iroha_data_model::query::prelude::FindRolesByAccountId {
+            id: AccountId::from_str(account_id)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?
+                .into(),
+        };
+
+        let val = self
+            .client
+            .request(query)
+            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
+
+        let mut items = Vec::new();
+        for item in val {
+            items.push(
+                item.map(|d| d.to_string())
                     .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
             );
         }
