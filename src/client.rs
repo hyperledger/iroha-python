@@ -16,6 +16,7 @@ use crate::data_model::asset::{PyAsset, PyAssetDefinition, PyAssetDefinitionId, 
 use crate::data_model::block::*;
 use crate::data_model::crypto::*;
 use crate::data_model::role::*;
+use crate::data_model::tx::*;
 use crate::data_model::PyMirror;
 use crate::{data_model::account::PyAccountId, isi::PyInstruction};
 use iroha_crypto::{Hash, HashOf};
@@ -349,6 +350,65 @@ impl Client {
             );
         }
         Ok(items)
+    }
+
+    fn query_all_transactions(&self) -> PyResult<Vec<PyTransactionQueryOutput>> {
+        let query = iroha_data_model::query::prelude::FindAllTransactions;
+
+        let val = self
+            .client
+            .request(query)
+            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
+
+        let mut items = Vec::new();
+        for item in val {
+            items.push(
+                item.map(|d| d.into())
+                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+            );
+        }
+        Ok(items)
+    }
+
+    fn query_all_transactions_by_account(
+        &self,
+        account_id: &str,
+    ) -> PyResult<Vec<PyTransactionQueryOutput>> {
+        let query = iroha_data_model::query::prelude::FindTransactionsByAccountId {
+            account_id: AccountId::from_str(account_id)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?
+                .into(),
+        };
+
+        let val = self
+            .client
+            .request(query)
+            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
+
+        let mut items = Vec::new();
+        for item in val {
+            items.push(
+                item.map(|d| d.into())
+                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+            );
+        }
+        Ok(items)
+    }
+
+    fn query_all_transaction_by_hash(
+        &self,
+        tx_hash: [u8; Hash::LENGTH],
+    ) -> PyResult<PyTransactionQueryOutput> {
+        let query = iroha_data_model::query::prelude::FindTransactionByHash {
+            hash: HashOf::from_untyped_unchecked(Hash::prehashed(tx_hash).into()),
+        };
+
+        let val = self
+            .client
+            .request(query)
+            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
+
+        Ok(val.into())
     }
 }
 
