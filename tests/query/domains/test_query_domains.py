@@ -1,12 +1,7 @@
 import allure
-import pytest
 
 from tests import client
 
-@pytest.fixture(scope="function", autouse=True)
-def story_account_queries_domains():
-    allure.dynamic.story("Account queries domains")
-    allure.dynamic.label("permission", "no_permission_required")
 
 @allure.id("2385")
 @allure.label("sdk_test_id", "query_all_domains")

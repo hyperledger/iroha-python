@@ -105,6 +105,5 @@ def GIVEN_registered_account_with_minted_assets(
             [iroha.Instruction
             .mint_asset(
                 5,
-                asset,
-                iroha.AssetValueType.numeric_fractional(0))]))
+                asset)]))
     return GIVEN_registered_account

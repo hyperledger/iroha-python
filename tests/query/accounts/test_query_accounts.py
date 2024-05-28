@@ -1,16 +1,9 @@
 import allure
-import pytest
 
 from tests import client
 
 
-@pytest.fixture(scope="function", autouse=True)
-def story_account_queries_accounts():
-    allure.dynamic.story("Account queries accounts")
-    allure.dynamic.label("permission", "no_permission_required")
-
-
-@allure.id("2381")
+@allure.id("2378")
 @allure.label("sdk_test_id", "query_all_accounts")
 def test_query_all_accounts():
     with allure.step('WHEN client queries all accounts'):
@@ -19,7 +12,7 @@ def test_query_all_accounts():
         assert len(all_accounts) > 0, "No accounts found in the system"
 
 
-@allure.id("2380")
+@allure.id("2378")
 @allure.label("sdk_test_id", "query_all_accounts_in_domain")
 def test_query_all_accounts_in_domain(
         GIVEN_registered_domain_with_registered_accounts):
