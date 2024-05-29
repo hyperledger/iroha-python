@@ -395,7 +395,7 @@ impl Client {
         Ok(items)
     }
 
-    fn query_all_transaction_by_hash(
+    fn query_transaction_by_hash(
         &self,
         tx_hash: [u8; Hash::LENGTH],
     ) -> PyResult<PyTransactionQueryOutput> {

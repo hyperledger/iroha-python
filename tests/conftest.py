@@ -107,3 +107,13 @@ def GIVEN_registered_account_with_minted_assets(
                 5,
                 asset)]))
     return GIVEN_registered_account
+
+
+@pytest.fixture()
+def GIVEN_hash_of_registered_transaction(GIVEN_new_domain_id):
+    """Fixture to provide a registered transaction in Iroha"""
+    with allure.step(f'GIVEN registered domain name "{GIVEN_new_domain_id}"'):
+        tx_hash_string = client.submit_executable_only_success(
+            [iroha.Instruction
+             .register_domain(GIVEN_new_domain_id)])
+        return tx_hash_string
