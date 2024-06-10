@@ -12,7 +12,7 @@ def story_account_register_asset():
     allure.dynamic.story("Account mints an asset")
 
 @allure.id("2379")
-@allure.label("sdk_test_id", "")
+@allure.label("sdk_test_id", "mint_asset")
 def test_mint_asset(
     GIVEN_registered_asset_definition,
     GIVEN_registered_account):

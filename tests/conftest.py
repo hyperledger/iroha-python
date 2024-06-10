@@ -83,7 +83,7 @@ def GIVEN_registered_domain_with_registered_accounts(
         GIVEN_new_account_id):
     """Fixture to provide a domain with accounts"""
     with allure.step(
-            f'GIVEN client registers the account "{GIVEN_new_account_id}"'):
+            f'GIVEN client registered the account "{GIVEN_new_account_id}"'):
         (client.submit_executable_only_success(
             [iroha.Instruction
              .register_account(
@@ -97,16 +97,29 @@ def GIVEN_registered_account_with_minted_assets(
         GIVEN_registered_account
 ):
     """Fixture to provide an account with minted assets"""
-    asset = (lambda s: re.sub(r'(\b\w+\b)(?=.*\1)', '', s))(
-        GIVEN_registered_asset_definition + '#' + GIVEN_registered_account)
+    asset = (lambda s: re.sub(r'(\b\w+\b)(?=.*\1)', '', s))(GIVEN_registered_asset_definition + '#' + GIVEN_registered_account)
     with allure.step(
-            f'WHEN client mints an asset "{asset}"'):
+            f'GIVEN client minted an asset "{asset}"'):
         (client.submit_executable_only_success(
             [iroha.Instruction
             .mint_asset(
                 5,
                 asset)]))
     return GIVEN_registered_account
+
+@pytest.fixture()
+def GIVEN_minted_asset(
+    GIVEN_registered_asset_definition,
+    GIVEN_registered_account):
+    asset = (lambda s: re.sub(r'(\b\w+\b)(?=.*\1)', '', s))(GIVEN_registered_asset_definition + '#' + GIVEN_registered_account)
+    with allure.step(
+            f'GIVEN client mints an asset "{asset}"'):
+        (client.submit_executable_only_success(
+            [iroha.Instruction
+             .mint_asset(
+                5,
+                asset)]))
+    return asset
 
 
 @pytest.fixture()

@@ -26,6 +26,6 @@ def test_query_transaction_by_hash(
         GIVEN_hash_of_registered_transaction):
     with allure.step(
             f'WHEN client queries for transaction by hash {GIVEN_hash_of_registered_transaction}"'):
-        tx = client.query_transaction_by_hash(bytes.fromhex(GIVEN_hash_of_registered_transaction))
+        tx = client.query_all_transaction_by_hash(bytes.fromhex(GIVEN_hash_of_registered_transaction))
     with allure.step('THEN there should be a transaction present'):
         assert tx is not None, "No transactions found in the system"

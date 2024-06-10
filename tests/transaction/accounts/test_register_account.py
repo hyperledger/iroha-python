@@ -8,7 +8,6 @@ from tests.helpers import generate_public_key
 @pytest.fixture(scope="function", autouse=True)
 def story_account_register_account():
     allure.dynamic.story("Account registers an account")
-    allure.dynamic.label("permission", "no_permission_required")
 
 @allure.id("2384")
 @allure.label("sdk_test_id", "register_account")
