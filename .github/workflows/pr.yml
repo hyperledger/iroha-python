@@ -6,7 +6,7 @@ on:
 jobs:
   check:
     runs-on: iroha-ubuntu-latest
-    container: rust:1.64-buster
+    container: rust:1.65-buster
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
@@ -22,11 +22,17 @@ jobs:
           rustup component add clippy rustfmt
           pip3 install yapf
           cargo install cargo-lints
+      - name: Check Cargo.toml
+        run: cat Cargo.toml
+      - name: Check Cargo.lock
+        run: cat Cargo.lock
+      - name: Debug Dependencies
+        run: cargo metadata --format-version 1 --verbose
       - name: Format check
         run: cargo fmt --all -- --check
       - name: Static analysis
         run: cargo lints clippy --all --benches --tests
-      - name: Check regeneration of python sys library and formating (PEP8)
+      - name: Check regeneration of python sys library and formatting (PEP8)
         run: |
           cargo run -p generate -- iroha2/sys
           yapf --style pep8 -e 'iroha2/sys/**/*.py' -r -i iroha2 example
@@ -34,7 +40,7 @@ jobs:
 
   pytest:
     runs-on: iroha-ubuntu-latest
-    container: rust:1.64-buster
+    container: rust:1.65-buster
     steps:
       - uses: actions/checkout@v3
       - name: Install dependencies
