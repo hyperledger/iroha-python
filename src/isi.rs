@@ -194,6 +194,47 @@ impl PyInstruction {
             .into(),
         ))
     }
+
+    #[staticmethod]
+    /// Create an instruction for registering a new role.
+    fn register_role(
+        role_id: &str,
+        permission_tokens: Vec<(&str, &str)>,
+    ) -> PyResult<PyInstruction> {
+        let mut role =
+            Role::new(RoleId::from_str(role_id).map_err(|e| PyValueError::new_err(e.to_string()))?);
+        for (definition_id, json_string) in permission_tokens {
+            role = role.add_permission(PermissionToken::new(
+                PermissionTokenId::from_str(definition_id)
+                    .map_err(|e| PyValueError::new_err(e.to_string()))?,
+                &serde_json::from_str(json_string)
+                    .map_err(|e| PyValueError::new_err(e.to_string()))?,
+            ));
+        }
+        return Ok(PyInstruction(Register::role(role).into()));
+    }
+    #[staticmethod]
+    /// Create an instruction for unregistering a role.
+    fn unregister_role(role_id: &str) -> PyResult<PyInstruction> {
+        return Ok(PyInstruction(
+            Unregister::role(
+                RoleId::from_str(role_id).map_err(|e| PyValueError::new_err(e.to_string()))?,
+            )
+            .into(),
+        ));
+    }
+    #[staticmethod]
+    /// Create an instruction for granting a role to an account.
+    fn grant_role(role_id: &str, account_id: &str) -> PyResult<PyInstruction> {
+        return Ok(PyInstruction(
+            Grant::role(
+                RoleId::from_str(role_id).map_err(|e| PyValueError::new_err(e.to_string()))?,
+                AccountId::from_str(account_id)
+                    .map_err(|e| PyValueError::new_err(e.to_string()))?,
+            )
+            .into(),
+        ));
+    }
 }
 
 pub fn register_items(_py: Python<'_>, module: &PyModule) -> PyResult<()> {
