@@ -1,13 +1,9 @@
-use pyo3::{
-    exceptions::{PyRuntimeError, PyValueError},
-    prelude::*,
-};
+use pyo3::{exceptions::PyValueError, prelude::*};
 
 use super::crypto::*;
 use super::PyAccountId;
 use iroha_crypto::{Hash, Signature};
 use iroha_data_model::prelude::{SignedTransaction, TransactionQueryOutput, TransactionValue};
-use iroha_data_model::transaction::TransactionPayload;
 use parity_scale_codec::{Decode, Encode};
 
 use super::PyMirror;

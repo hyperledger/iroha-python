@@ -1,6 +1,5 @@
-use iroha_data_model::account::NewAccount;
 use iroha_data_model::domain::NewDomain;
-use iroha_data_model::isi::{Instruction, Mint, Register, Transfer, Unregister};
+use iroha_data_model::isi::{Mint, Register, Transfer, Unregister};
 use iroha_data_model::prelude::*;
 use iroha_primitives::numeric::Numeric;
 use pyo3::{exceptions::PyValueError, prelude::*};
@@ -8,9 +7,7 @@ use pyo3::{exceptions::PyValueError, prelude::*};
 use std::str::FromStr;
 
 use crate::data_model::account::{PyAccountId, PyNewAccount};
-use crate::data_model::asset::{
-    PyAssetDefinitionId, PyAssetId, PyAssetValueType, PyNewAssetDefinition,
-};
+use crate::data_model::asset::{PyAssetDefinitionId, PyAssetValueType, PyNewAssetDefinition};
 use crate::data_model::crypto::*;
 use crate::data_model::domain::{PyDomainId, PyNewDomain};
 use rust_decimal::{prelude::FromPrimitive, Decimal};
@@ -137,13 +134,9 @@ impl PyInstruction {
 
     #[staticmethod]
     // Transfer asset value from one account to another
-    fn transfer(
-        py: Python<'_>,
-        value: PyObject,
-        from: PyAssetId,
-        to: PyAccountId,
-    ) -> PyResult<PyInstruction> {
-        let (from, to) = (from.0, to.0);
+    fn transfer(py: Python<'_>, value: PyObject, from: &str, to: &str) -> PyResult<PyInstruction> {
+        let from = AssetId::from_str(from).map_err(|e| PyValueError::new_err(e.to_string()))?;
+        let to = AccountId::from_str(to).map_err(|e| PyValueError::new_err(e.to_string()))?;
 
         let value = if let Ok(val) = value.extract::<u32>(py) {
             Numeric::new(val.into(), 0)

@@ -10,7 +10,6 @@ def story_account_transfer_asset():
     allure.dynamic.story("Account transfers assets")
 
 @allure.label("sdk_test_id", "transfer_asset")
-@pytest.mark.xfail(reason="https://github.com/hyperledger/iroha-python/issues/205")
 def test_transfer_asset(
     GIVEN_minted_asset,
     GIVEN_registered_account):

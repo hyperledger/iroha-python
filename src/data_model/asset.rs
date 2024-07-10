@@ -1,7 +1,4 @@
-use rust_decimal::{
-    prelude::{FromPrimitive, ToPrimitive},
-    Decimal,
-};
+use rust_decimal::{prelude::FromPrimitive, Decimal};
 
 use iroha_data_model::asset::{
     Asset, AssetDefinition, AssetDefinitionId, AssetId, AssetValue, AssetValueType, Mintable,
