@@ -1,7 +1,4 @@
-use pyo3::{
-    exceptions::{PyRuntimeError, PyValueError},
-    prelude::*,
-};
+use pyo3::prelude::*;
 
 use iroha_crypto::Hash;
 use iroha_data_model::block::BlockHeader;

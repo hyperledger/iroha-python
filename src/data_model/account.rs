@@ -5,7 +5,7 @@ use pyo3::{
     prelude::*,
     types::{PyDict, PyList},
 };
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 
 use crate::mirror_struct;
 

@@ -5,7 +5,7 @@ use iroha_data_model::{metadata::Metadata, IdentifiableBox};
 use pyo3::{
     exceptions::PyRuntimeError,
     prelude::*,
-    types::{PyBool, PyDict, PyList, PyString},
+    types::{PyDict, PyList, PyString},
 };
 
 use iroha_data_model::query::QueryOutputBox;
