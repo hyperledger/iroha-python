@@ -4,7 +4,7 @@ Python library for Hyperledger Iroha 2.
 
 ## Version
 
-If you are using the latest iroha release, rc21, then you should use the `main` branch. If you are using rc20 then you should use the 'stable' branch.
+If you are using the latest iroha release, iroha2 MVP, then you should use the `main` branch. If you are using rc20 then you should use the 'stable' branch.
 
 ## Install
 
@@ -19,7 +19,7 @@ The exact path to the .whl file may vary. After an installation, do a small test
 
 ```
 python -c "import iroha; print(dir(iroha))"
-['Account', 'AccountId', 'Asset', 'AssetDefinition', 'AssetDefinitionId', 'AssetId', 'AssetValueType', 'BlockHeader', 'Client', 'DomainId', 'Instruction', 'KeyPair', 'Mintable', 'NewAccount', 'NewAssetDefinition', 'PrivateKey', 'PublicKey', 'Role', 'SignedTransaction', 'TransactionQueryOutput', '__all__', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__', 'hash', 'iroha']
+['Account', 'AccountId', 'Asset', 'AssetDefinition', 'AssetDefinitionId', 'AssetId', 'AssetType', 'BlockHeader', 'Client', 'DomainId', 'Instruction', 'KeyPair', 'Mintable', 'NewAccount', 'NewAssetDefinition', 'PrivateKey', 'PublicKey', 'Role', 'SignedTransaction', 'TransactionQueryOutput', '__all__', '__builtins__', '__cached__', '__doc__', '__file__', '__loader__', '__name__', '__package__', '__path__', '__spec__', 'hash', 'iroha']
 ```
 
 If there was no error, you should be able to use iroha-python library.

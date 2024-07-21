@@ -2,15 +2,12 @@ import iroha
 
 key_pair = iroha.KeyPair.from_json("""
 {
-  "public_key": "ed01207233BFC89DCBD68C19FDE6CE6158225298EC1131B6A130D1AEB454C1AB5183C0",
-  "private_key": {
-    "algorithm": "ed25519",
-    "payload": "9ac47abf59b356e0bd7dcbbbb4dec080e302156a48ca907e47cb6aea1d32719e7233bfc89dcbd68c19fde6ce6158225298ec1131b6a130d1aeb454c1ab5183c0"
-  }
+  "public_key": "ed0120CE7FA46C9DCE7EA4B125E2E36BDB63EA33073E7590AC92816AE1E861B7048B03",
+  "private_key": "802620CCF31D85E3B32A4BEA59987CE0C78E3B8E2DB93881468AB2435FE45D5C9DCD53"
 }
 """)
 
-account_id = "alice@wonderland"
+account_id = "ed0120CE7FA46C9DCE7EA4B125E2E36BDB63EA33073E7590AC92816AE1E861B7048B03@wonderland"
 web_login = "mad_hatter"
 password = "ilovetea"
 api_url = "http://127.0.0.1:8080/"
@@ -25,31 +22,31 @@ client = iroha.Client.create(
             api_url,
             chain_id)
 
-assets = client.query_all_assets_owned_by_account("alice@wonderland")
+assets = client.query_all_assets_owned_by_account("ed0120CE7FA46C9DCE7EA4B125E2E36BDB63EA33073E7590AC92816AE1E861B7048B03@wonderland")
 
-print("Listing all assets owned by alice@wonderland...")
+print("Listing all assets owned by ed0120CE7FA46C9DCE7EA4B125E2E36BDB63EA33073E7590AC92816AE1E861B7048B03@wonderland...")
 for a in assets:
     print(" - ", a,)
 
 
 asset_definition_id = "time#wonderland"
-asset_id = "time##alice@wonderland"
+asset_id = "time##ed0120CE7FA46C9DCE7EA4B125E2E36BDB63EA33073E7590AC92816AE1E861B7048B03@wonderland"
 
-if "time##alice@wonderland" in assets:
-    print("'alice@wonderland' already has asset 'time'.")
+if "time##ed0120CE7FA46C9DCE7EA4B125E2E36BDB63EA33073E7590AC92816AE1E861B7048B03@wonderland" in assets:
+    print("'ed0120CE7FA46C9DCE7EA4B125E2E36BDB63EA33073E7590AC92816AE1E861B7048B03@wonderland' already has asset 'time'.")
 
-register_definition = iroha.Instruction.register_asset_definition(asset_definition_id, iroha.AssetValueType.numeric_fractional(0))
+register_definition = iroha.Instruction.register_asset_definition(asset_definition_id, iroha.AssetType.numeric_fractional(0))
 
 mint = iroha.Instruction.mint_asset(5, asset_id)
 
 client.submit_executable([register_definition, mint])
 
 while True:
-    assets = client.query_all_assets_owned_by_account("alice@wonderland")
+    assets = client.query_all_assets_owned_by_account("ed0120CE7FA46C9DCE7EA4B125E2E36BDB63EA33073E7590AC92816AE1E861B7048B03@wonderland")
     
     if asset_id in assets:
         break
 
-print("Listing all assets owned by alice@wonderland...")
+print("Listing all assets owned by ed0120CE7FA46C9DCE7EA4B125E2E36BDB63EA33073E7590AC92816AE1E861B7048B03@wonderland...")
 for a in assets:
     print(" - ", a,)

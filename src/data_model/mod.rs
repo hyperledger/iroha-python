@@ -1,6 +1,6 @@
 use derive_more::{From, Into};
 
-use iroha_client::client::{QueryOutput, ResultSet};
+use iroha::client::{QueryOutput, ResultSet};
 use iroha_data_model::{metadata::Metadata, IdentifiableBox};
 use pyo3::{
     exceptions::PyRuntimeError,
@@ -59,8 +59,6 @@ struct IdentifiableBoxWrapper(IdentifiableBox);
 impl IntoPy<PyResult<PyObject>> for IdentifiableBoxWrapper {
     fn into_py(self, py: Python<'_>) -> PyResult<PyObject> {
         Ok(match self.0 {
-            IdentifiableBox::NewDomain(value) => PyNewDomain(value).into_py(py),
-            IdentifiableBox::NewAccount(value) => PyNewAccount(value).into_py(py),
             IdentifiableBox::NewAssetDefinition(value) => PyNewAssetDefinition(value).into_py(py),
             IdentifiableBox::AssetDefinition(value) => PyAssetDefinition(value).into_py(py),
             IdentifiableBox::Domain(value) => PyDomain(value).into_py(py),
@@ -81,8 +79,7 @@ impl IntoPy<PyResult<Py<PyDict>>> for MetadataWrapper {
         for (name, value) in self.0.iter() {
             dict.set_item(
                 PyString::new(py, name.as_ref()),
-                Into::<ValueWrapper>::into(QueryOutputBox::LimitedMetadata(value.clone()))
-                    .into_py(py)?,
+                Into::<ValueWrapper>::into(QueryOutputBox::Metadata(value.clone())).into_py(py)?,
             )?;
         }
         Ok(dict.into_py(py))

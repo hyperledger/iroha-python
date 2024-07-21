@@ -25,7 +25,7 @@ def GIVEN_new_domain_id():
 @pytest.fixture()
 def GIVEN_new_account_id(GIVEN_registered_domain):
     """Fixture to provide a new fake account id."""
-    name = fake.first_name() + str(len(client.query_all_accounts())) + '@' + GIVEN_registered_domain
+    name = str(generate_public_key(seed=format(len(client.query_all_accounts()), '08x'))) + '@' + GIVEN_registered_domain
     with allure.step(f'GIVEN a "{name}" name'):
         return name
 
@@ -53,7 +53,7 @@ def GIVEN_registered_asset_definition(GIVEN_new_asset_definition_id):
             [iroha.Instruction
             .register_asset_definition(
                 GIVEN_new_asset_definition_id,
-                iroha.AssetValueType.numeric_fractional(0))]))
+                iroha.AssetType.numeric_fractional(0))]))
         return GIVEN_new_asset_definition_id
 
 @pytest.fixture()
@@ -72,9 +72,7 @@ def GIVEN_registered_account(GIVEN_new_account_id):
             f'GIVEN client registered the account "{GIVEN_new_account_id}"'):
         (client.submit_executable_only_success(
             [iroha.Instruction
-             .register_account(
-                GIVEN_new_account_id,
-                generate_public_key(seed="abcd1122"))]))
+             .register_account(GIVEN_new_account_id)]))
         return GIVEN_new_account_id
 
 @pytest.fixture()
@@ -86,9 +84,7 @@ def GIVEN_registered_domain_with_registered_accounts(
             f'GIVEN client registered the account "{GIVEN_new_account_id}"'):
         (client.submit_executable_only_success(
             [iroha.Instruction
-             .register_account(
-                GIVEN_new_account_id,
-                generate_public_key(seed="abcd1122"))]))
+             .register_account(GIVEN_new_account_id)]))
         return GIVEN_registered_domain
 
 @pytest.fixture()

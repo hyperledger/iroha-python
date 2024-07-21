@@ -1,7 +1,7 @@
 use rust_decimal::{prelude::FromPrimitive, Decimal};
 
 use iroha_data_model::asset::{
-    Asset, AssetDefinition, AssetDefinitionId, AssetId, AssetValue, AssetValueType, Mintable,
+    Asset, AssetDefinition, AssetDefinitionId, AssetId, AssetType, AssetValue, Mintable,
     NewAssetDefinition,
 };
 use iroha_primitives::numeric::{Numeric, NumericSpec};
@@ -49,12 +49,12 @@ impl PyAssetDefinitionId {
 
     #[getter]
     fn get_domain(&self) -> &str {
-        self.0.domain_id().name().as_ref()
+        self.0.domain().name().as_ref()
     }
 
     #[setter]
     fn set_domain(&mut self, name: &str) -> PyResult<()> {
-        self.0.domain_id.name = name
+        self.0.domain.name = name
             .parse()
             .map_err(|e| PyValueError::new_err(format!("Invalid Domain name: {e}")))?;
         Ok(())
@@ -82,8 +82,8 @@ impl PyAssetDefinition {
     }
 
     #[getter]
-    fn get_type(&self) -> PyAssetValueType {
-        self.0.value_type.into()
+    fn get_type(&self) -> PyAssetType {
+        self.0.type_.into()
     }
 
     #[getter]
@@ -113,7 +113,7 @@ impl PyNewAssetDefinition {
     fn new(
         py: Python<'_>,
         id: PyObject,
-        value_type: PyAssetValueType,
+        value_type: PyAssetType,
         mintable: Option<PyMintable>,
         logo: Option<String>,
         metadata: Option<Py<PyDict>>,
@@ -163,13 +163,13 @@ impl PyNewAssetDefinition {
     }
 
     #[getter]
-    fn get_type(&self) -> PyAssetValueType {
-        self.0.value_type.into()
+    fn get_type(&self) -> PyAssetType {
+        self.0.type_.into()
     }
 
     #[setter]
-    fn set_type(&mut self, new: PyAssetValueType) -> () {
-        self.0.value_type = new.into();
+    fn set_type(&mut self, new: PyAssetType) -> () {
+        self.0.type_ = new.into();
     }
 
     #[getter]
@@ -178,8 +178,8 @@ impl PyNewAssetDefinition {
     }
 
     #[setter]
-    fn set_mintable(&mut self, new: PyAssetValueType) -> () {
-        self.0.value_type = new.into();
+    fn set_mintable(&mut self, new: PyAssetType) -> () {
+        self.0.type_ = new.into();
     }
 
     #[getter]
@@ -215,22 +215,22 @@ impl PyAssetId {
 
     #[getter]
     fn get_definition_id(&self) -> PyAssetDefinitionId {
-        self.0.definition_id.clone().into()
+        self.0.definition.clone().into()
     }
 
     #[setter]
     fn set_definition_id(&mut self, definition_id: PyAssetDefinitionId) {
-        self.0.definition_id = definition_id.into()
+        self.0.definition = definition_id.into()
     }
 
     #[getter]
     fn get_account_id(&self) -> PyAccountId {
-        self.0.account_id.clone().into()
+        self.0.account.clone().into()
     }
 
     #[setter]
     fn set_account_id(&mut self, account_id: PyAccountId) {
-        self.0.account_id = account_id.into()
+        self.0.account = account_id.into()
     }
 }
 
@@ -308,25 +308,23 @@ impl PyAsset {
     }
 }
 
-#[pyclass(name = "AssetValueType")]
+#[pyclass(name = "AssetType")]
 #[derive(Clone, derive_more::From, derive_more::Into, derive_more::Deref)]
-pub struct PyAssetValueType(pub AssetValueType);
+pub struct PyAssetType(pub AssetType);
 
 #[pymethods]
-impl PyAssetValueType {
+impl PyAssetType {
     #[staticmethod]
     fn numeric_unconstrained() -> PyResult<Self> {
-        Ok(Self(AssetValueType::Numeric(NumericSpec::unconstrained())))
+        Ok(Self(AssetType::Numeric(NumericSpec::unconstrained())))
     }
     #[staticmethod]
     fn numeric_fractional(scale: u32) -> PyResult<Self> {
-        Ok(Self(AssetValueType::Numeric(NumericSpec::fractional(
-            scale,
-        ))))
+        Ok(Self(AssetType::Numeric(NumericSpec::fractional(scale))))
     }
     #[staticmethod]
     fn store() -> PyResult<Self> {
-        Ok(Self(AssetValueType::Store))
+        Ok(Self(AssetType::Store))
     }
 
     fn __repr__(&self) -> String {
@@ -334,11 +332,11 @@ impl PyAssetValueType {
     }
 }
 
-impl PyMirror for AssetValueType {
-    type Mirror = PyAssetValueType;
+impl PyMirror for AssetType {
+    type Mirror = PyAssetType;
 
     fn mirror(self) -> PyResult<Self::Mirror> {
-        Ok(PyAssetValueType(self))
+        Ok(PyAssetType(self))
     }
 }
 
@@ -354,7 +352,7 @@ pub fn register_items(_py: Python<'_>, module: &PyModule) -> PyResult<()> {
     module.add_class::<PyNewAssetDefinition>()?;
     module.add_class::<PyAssetId>()?;
     module.add_class::<PyAsset>()?;
-    module.add_class::<PyAssetValueType>()?;
+    module.add_class::<PyAssetType>()?;
     module.add_class::<PyMintable>()?;
     Ok(())
 }

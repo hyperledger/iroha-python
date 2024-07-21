@@ -5,9 +5,9 @@ use pyo3::{
     prelude::*,
 };
 
-use iroha_client::client::Client as IrohaClient;
-use iroha_client::config::Config as IrohaClientConfig;
-use iroha_client::config::{BasicAuth, WebLogin};
+use iroha::client::Client as IrohaClient;
+use iroha::config::Config as IrohaClientConfig;
+use iroha::config::{BasicAuth, WebLogin};
 
 use std::num::NonZeroU64;
 use std::str::FromStr;
@@ -49,8 +49,8 @@ impl Client {
         chain_id: &str,
     ) -> PyResult<Self> {
         let config = IrohaClientConfig {
-            chain_id: ChainId::from(chain_id),
-            account_id: AccountId::from_str(account_id)
+            chain: ChainId::from(chain_id),
+            account: AccountId::from_str(account_id)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?,
             key_pair: key_pair.clone().into(),
             basic_auth: Some(BasicAuth {
@@ -97,7 +97,7 @@ impl Client {
             return Err(PyValueError::new_err(""));
         };
 
-        let transaction = self.client.build_transaction(isi, UnlimitedMetadata::new());
+        let transaction = self.client.build_transaction(isi, Metadata::default());
         let hash = transaction.hash();
         self.client.submit_transaction(&transaction)?;
 
@@ -108,7 +108,7 @@ impl Client {
             ),
         ];
 
-        let mut block_height = 0;
+        let mut block_height: u64 = 0;
         for event in self.client.listen_for_events(filters)? {
             let event = event?;
             if let EventBox::Pipeline(event) = event {
@@ -117,13 +117,13 @@ impl Client {
                         if event.status == TransactionStatus::Approved
                             && event.block_height.is_some()
                         {
-                            block_height = event.block_height.unwrap();
+                            block_height = event.block_height.unwrap().get();
                         } else {
                             return Err(PyValueError::new_err("Transaction was not approved."));
                         }
                     }
                     PipelineEventBox::Block(event) => {
-                        if event.header().height == block_height {
+                        if event.header().height.get() == block_height {
                             return Ok(hash.to_string());
                         }
                     }
@@ -165,7 +165,7 @@ impl Client {
 
     fn query_all_accounts_in_domain(&self, domain_id: &str) -> PyResult<Vec<String>> {
         let query = iroha_data_model::query::prelude::FindAccountsByDomainId {
-            domain_id: DomainId::from_str(domain_id)
+            domain: DomainId::from_str(domain_id)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?
                 .into(),
         };
@@ -205,7 +205,7 @@ impl Client {
 
     fn query_all_assets_owned_by_account(&self, account_id: &str) -> PyResult<Vec<String>> {
         let query = iroha_data_model::query::prelude::FindAssetsByAccountId {
-            account_id: AccountId::from_str(account_id)
+            account: AccountId::from_str(account_id)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?
                 .into(),
         };
@@ -375,7 +375,7 @@ impl Client {
         account_id: &str,
     ) -> PyResult<Vec<PyTransactionQueryOutput>> {
         let query = iroha_data_model::query::prelude::FindTransactionsByAccountId {
-            account_id: AccountId::from_str(account_id)
+            account: AccountId::from_str(account_id)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?
                 .into(),
         };
@@ -440,13 +440,6 @@ macro_rules! register_query {
         }
     };
 }
-
-register_query!(FindAllAssets; Vec<PyAsset>);
-register_query!(FindAllAssetsDefinitions; Vec<PyAssetDefinition>);
-register_query!(FindAssetById; PyAsset; id: PyAssetId);
-register_query!(FindAssetDefinitionById; PyAssetDefinition; id: PyAssetDefinitionId);
-register_query!(FindAssetsByAccountId; Vec<PyAsset>; account_id: PyAccountId);
-register_query!(FindAssetsByAssetDefinitionId; Vec<PyAsset>; asset_definition_id: PyAssetDefinitionId);
 
 pub fn register_items(_py: Python<'_>, module: &PyModule) -> PyResult<()> {
     module.add_class::<Client>()?;

@@ -21,34 +21,30 @@ impl PyMirror for BlockHeader {
 impl PyBlockHeader {
     #[getter]
     fn get_height(&self) -> u64 {
-        self.0.height
+        self.0.height.get()
     }
 
     #[getter]
     fn get_timestamp_ms(&self) -> u64 {
-        self.0.timestamp_ms
+        self.0.creation_time_ms
     }
 
     #[getter]
     fn get_consensus_previous_block_hash(&self) -> Option<[u8; Hash::LENGTH]> {
         self.0
-            .previous_block_hash
+            .prev_block_hash
             .as_ref()
             .map(|previous_block_hash| previous_block_hash.as_ref())
             .copied()
     }
 
     #[getter]
-    fn get_transactions_hash(&self) -> Option<[u8; Hash::LENGTH]> {
-        self.0
-            .transactions_hash
-            .as_ref()
-            .map(|transactions_hash| transactions_hash.as_ref())
-            .copied()
+    fn get_transactions_hash(&self) -> [u8; Hash::LENGTH] {
+        self.0.transactions_hash.as_ref().clone()
     }
 
     #[getter]
-    fn get_view_change_index(&self) -> u64 {
+    fn get_view_change_index(&self) -> u32 {
         self.0.view_change_index
     }
 
