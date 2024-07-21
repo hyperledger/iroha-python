@@ -6,10 +6,9 @@ use pyo3::{exceptions::PyValueError, prelude::*};
 
 use std::str::FromStr;
 
-use crate::data_model::account::{PyAccountId, PyNewAccount};
-use crate::data_model::asset::{PyAssetDefinitionId, PyAssetValueType, PyNewAssetDefinition};
+use crate::data_model::account::PyAccountId;
+use crate::data_model::asset::{PyAssetDefinitionId, PyAssetType, PyNewAssetDefinition};
 use crate::data_model::crypto::*;
-use crate::data_model::domain::{PyDomainId, PyNewDomain};
 use rust_decimal::{prelude::FromPrimitive, Decimal};
 
 #[derive(Debug, Clone)]
@@ -18,29 +17,6 @@ pub struct PyInstruction(pub InstructionBox);
 
 #[pymethods]
 impl PyInstruction {
-    #[staticmethod]
-    /// Create an instruction for registering a new object.
-    /// Currently supported are: Account, AssetDefinition and Domain
-    fn register(py: Python<'_>, object: PyObject) -> PyResult<PyInstruction> {
-        if let Ok(new_asset_definition) = object.extract::<PyNewAssetDefinition>(py) {
-            return Ok(PyInstruction(
-                Register::asset_definition(new_asset_definition.0).into(),
-            ));
-        }
-
-        if let Ok(new_account) = object.extract::<PyNewAccount>(py) {
-            return Ok(PyInstruction(Register::account(new_account.0).into()));
-        }
-
-        if let Ok(new_domain) = object.extract::<PyNewDomain>(py) {
-            return Ok(PyInstruction(Register::domain(new_domain.0).into()));
-        }
-
-        Err(PyValueError::new_err(
-            "Only registration of accounts, asset definitions and domains is supported",
-        ))
-    }
-
     #[staticmethod]
     /// Create an instruction for registering a new domain.
     fn register_domain(domain_id: &str) -> PyResult<PyInstruction> {
@@ -54,10 +30,9 @@ impl PyInstruction {
 
     #[staticmethod]
     /// Create an instruction for registering a new account.
-    fn register_account(account_id: &str, public_key: PyPublicKey) -> PyResult<PyInstruction> {
+    fn register_account(account_id: &str) -> PyResult<PyInstruction> {
         let new_account_object = Account::new(
             AccountId::from_str(account_id).map_err(|e| PyValueError::new_err(e.to_string()))?,
-            public_key.into(),
         );
         return Ok(PyInstruction(Register::account(new_account_object).into()));
     }
@@ -66,12 +41,12 @@ impl PyInstruction {
     /// Create an instruction for registering a new account.
     fn register_asset_definition(
         asset_definition_id: &str,
-        value_type: PyAssetValueType,
+        value_type: PyAssetType,
     ) -> PyResult<PyInstruction> {
         let new_definition_object = NewAssetDefinition {
             id: AssetDefinitionId::from_str(asset_definition_id)
                 .map_err(|e| PyValueError::new_err(e.to_string()))?,
-            value_type: value_type.into(),
+            type_: value_type.into(),
             mintable: Mintable::Infinitely,
             logo: None,
             metadata: Metadata::default(),
@@ -81,29 +56,7 @@ impl PyInstruction {
         ));
     }
 
-    #[staticmethod]
-    /// Create an instruction for un-registering an object.
-    /// Currently supported are: Account, AssetDefinition and Domain
-    fn unregister(py: Python<'_>, object: PyObject) -> PyResult<PyInstruction> {
-        if let Ok(asset_definition_id) = object.extract::<PyAssetDefinitionId>(py) {
-            return Ok(PyInstruction(
-                Unregister::asset_definition(asset_definition_id.0).into(),
-            ));
-        }
-
-        if let Ok(account_id) = object.extract::<PyAccountId>(py) {
-            return Ok(PyInstruction(Unregister::account(account_id.0).into()));
-        }
-
-        if let Ok(domain_id) = object.extract::<PyDomainId>(py) {
-            return Ok(PyInstruction(Unregister::domain(domain_id.0).into()));
-        }
-
-        Err(PyValueError::new_err(
-            "Only unregistration of accounts, asset definitions and domains is supported",
-        ))
-    }
-
+    /* TODO(Sam): Replace this with explicit functions.
     #[staticmethod]
     /// Create an instruction to transfer ownership of an object
     /// Currently supported are: AssetDefinition and Domain
@@ -130,7 +83,7 @@ impl PyInstruction {
         Err(PyValueError::new_err(
             "Only transferring ownership of accounts, asset definitions and domains is supported",
         ))
-    }
+    }*/
 
     #[staticmethod]
     // Transfer asset value from one account to another
@@ -197,11 +150,10 @@ impl PyInstruction {
         let mut role =
             Role::new(RoleId::from_str(role_id).map_err(|e| PyValueError::new_err(e.to_string()))?);
         for (definition_id, json_string) in permission_tokens {
-            role = role.add_permission(PermissionToken::new(
-                PermissionTokenId::from_str(definition_id)
+            role = role.add_permission(Permission::new(
+                iroha_schema::Ident::from_str(definition_id)
                     .map_err(|e| PyValueError::new_err(e.to_string()))?,
-                &serde_json::from_str(json_string)
-                    .map_err(|e| PyValueError::new_err(e.to_string()))?,
+                json_string,
             ));
         }
         return Ok(PyInstruction(Register::role(role).into()));

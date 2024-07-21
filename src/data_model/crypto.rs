@@ -4,6 +4,7 @@ use pyo3::{
 };
 
 use iroha_crypto::{Algorithm, Hash, KeyPair, PrivateKey, PublicKey, Signature};
+use iroha_primitives::const_vec::ConstVec;
 
 use super::PyMirror;
 
@@ -34,7 +35,7 @@ impl PyPublicKey {
     }
 
     fn __repr__(&self) -> String {
-        format!("{:?}", self.0)
+        format!("{}", self.0)
     }
 }
 
@@ -131,7 +132,7 @@ impl PyKeyPair {
     }
 
     fn sign(&self, payload: &[u8]) -> PySignature {
-        PySignature(Signature::new(&self.0, payload))
+        PySignature(Signature::new(&self.0.private_key(), payload))
     }
 
     fn __repr__(&self) -> String {
@@ -153,9 +154,18 @@ impl PyMirror for Signature {
 
 #[pymethods]
 impl PySignature {
-    fn __bytes__(&self) -> &[u8] {
-        self.0.payload()
+    fn __bytes__(&self) -> Vec<u8> {
+        unsafe {
+            let ss: ShadowSignature = std::mem::transmute(self.0.clone());
+            let mut v = Vec::new();
+            v.extend_from_slice(&ss.payload);
+            v
+        }
     }
+}
+
+struct ShadowSignature {
+    pub payload: ConstVec<u8>,
 }
 
 #[pyfunction]

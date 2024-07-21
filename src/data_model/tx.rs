@@ -3,7 +3,7 @@ use pyo3::{exceptions::PyValueError, prelude::*};
 use super::crypto::*;
 use super::PyAccountId;
 use iroha_crypto::{Hash, Signature};
-use iroha_data_model::prelude::{SignedTransaction, TransactionQueryOutput, TransactionValue};
+use iroha_data_model::prelude::{CommittedTransaction, SignedTransaction, TransactionQueryOutput};
 use parity_scale_codec::{Decode, Encode};
 
 use super::PyMirror;
@@ -28,25 +28,25 @@ impl PyTransactionQueryOutput {
     }
 
     #[getter]
-    fn get_transaction(&self) -> PyTransactionValue {
-        PyTransactionValue(self.0.transaction.clone())
+    fn get_transaction(&self) -> PyCommittedTransaction {
+        PyCommittedTransaction(self.0.transaction.clone())
     }
 }
 
-#[pyclass(name = "TransactionValue")]
+#[pyclass(name = "CommittedTransaction")]
 #[derive(Clone, derive_more::From, derive_more::Into, derive_more::Deref)]
-pub struct PyTransactionValue(pub TransactionValue);
+pub struct PyCommittedTransaction(pub CommittedTransaction);
 
-impl PyMirror for TransactionValue {
-    type Mirror = PyTransactionValue;
+impl PyMirror for CommittedTransaction {
+    type Mirror = PyCommittedTransaction;
 
     fn mirror(self) -> PyResult<Self::Mirror> {
-        Ok(PyTransactionValue(self))
+        Ok(PyCommittedTransaction(self))
     }
 }
 
 #[pymethods]
-impl PyTransactionValue {
+impl PyCommittedTransaction {
     #[getter]
     fn get_value(&self) -> PySignedTransaction {
         self.0.value.clone().into()
@@ -82,9 +82,6 @@ impl PySignedTransaction {
     }
     fn encode_hex(&self) -> String {
         hex::encode(self.encode())
-    }
-    fn append_signature(&mut self, key_pair: &PyKeyPair) {
-        self.0 = self.0.clone().sign(&key_pair.0);
     }
 
     /*
@@ -128,19 +125,13 @@ impl PySignedTransaction {
 
     /// Transaction chain id
     pub fn chain_id(&self) -> String {
-        format!("{:?}", self.0.chain_id())
+        format!("{:?}", self.0.chain())
     }
 
-    /// Return transaction signatures
-    pub fn signatures(&self) -> Vec<PySignature> {
-        self.0
-            .signatures()
-            .into_iter()
-            .map(|s| {
-                let s2: Signature = s.clone().into();
-                s2.into()
-            })
-            .collect()
+    /// Return transaction signature
+    pub fn signature(&self) -> PySignature {
+        let s: Signature = self.0.signature().0.clone().into();
+        s.into()
     }
 
     /// Calculate transaction [`Hash`](`iroha_crypto::HashOf`).

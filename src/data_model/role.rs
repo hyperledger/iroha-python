@@ -1,7 +1,7 @@
 use pyo3::prelude::*;
 
 use super::PyMirror;
-use iroha_data_model::prelude::PermissionToken;
+use iroha_data_model::prelude::Permission;
 use iroha_data_model::prelude::Role;
 
 #[pyclass(name = "Role")]
@@ -24,11 +24,11 @@ impl PyRole {
     }
 
     #[getter]
-    fn get_permissions(&self) -> Vec<PyPermissionToken> {
+    fn get_permissions(&self) -> Vec<PyPermission> {
         self.0
             .permissions
             .iter()
-            .map(|x| PyPermissionToken(x.clone()))
+            .map(|x| PyPermission(x.clone()))
             .collect()
     }
 
@@ -37,23 +37,23 @@ impl PyRole {
     }
 }
 
-#[pyclass(name = "PermissionToken")]
+#[pyclass(name = "Permission")]
 #[derive(Clone, derive_more::From, derive_more::Into, derive_more::Deref)]
-pub struct PyPermissionToken(pub PermissionToken);
+pub struct PyPermission(pub Permission);
 
-impl PyMirror for PermissionToken {
-    type Mirror = PyPermissionToken;
+impl PyMirror for Permission {
+    type Mirror = PyPermission;
 
     fn mirror(self) -> PyResult<Self::Mirror> {
-        Ok(PyPermissionToken(self))
+        Ok(PyPermission(self))
     }
 }
 
 #[pymethods]
-impl PyPermissionToken {
+impl PyPermission {
     #[getter]
-    fn get_definition_id(&self) -> String {
-        format!("{:?}", self.0.definition_id)
+    fn get_name(&self) -> String {
+        format!("{:?}", self.0.name)
     }
 
     #[getter]

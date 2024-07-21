@@ -20,7 +20,7 @@ def test_register_asset_definition(
             [iroha.Instruction
              .register_asset_definition(
                 GIVEN_new_asset_definition_id,
-                iroha.AssetValueType.numeric_fractional(0))]))
+                iroha.AssetType.numeric_fractional(0))]))
     with allure.step(
             f'THEN Iroha should have the "{GIVEN_new_asset_definition_id}" account'):
         assert GIVEN_new_asset_definition_id in client.query_all_asset_definitions()
