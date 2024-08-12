@@ -29,3 +29,5 @@ faker = "^24.4.0"
 allure-pytest = "^2.13.5"
 #iroha = {path = "target/wheels/iroha-0.1.0-cp39-cp39-macosx_11_0_arm64.whl"}
 #iroha = {path = "target/wheels/iroha-0.1.0-cp312-cp312-manylinux_2_34_x86_64.whl"}
+maturin = "^1.7.0"
+iroha = {path = "target/wheels/iroha-0.1.0-cp312-cp312-macosx_11_0_arm64.whl"}
