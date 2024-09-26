@@ -1,4 +1,4 @@
 maturin build
-poetry add target/wheels/iroha-0.1.0-cp312-cp312-macosx_11_0_arm64.whl
+poetry add target/wheels/*
 poetry install
 poetry run python -m pytest tests --alluredir allure-results

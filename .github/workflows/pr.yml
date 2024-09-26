@@ -39,14 +39,27 @@ jobs:
           git diff --quiet
 
   pytest:
-    runs-on: iroha-ubuntu-latest
-    container: rust:1.65-buster
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Iroha code
+        uses: actions/checkout@v4
+        with:
+          repository: 'hyperledger/iroha'
+          ref: '2.0.0-pre-rc.22'
+      - name: Run docker-compose.yml containers
+        run: |
+          docker compose -f ./configs/swarm/docker-compose.yml up --wait || exit 1
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Show containers and directory
+        run: |
+          docker ps -a
+          pwd
+          ls
       - name: Install dependencies
         run: |
-          apt-get update
-          apt-get install -y --no-install-recommends \
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
             build-essential \
             ca-certificates \
             clang \
@@ -54,13 +67,18 @@ jobs:
             patchelf \
             llvm-dev \
             python3-pip
-          pip3 install --upgrade pip
-          pip3 install maturin pytest
-      - name: Install iroha2
-        run: maturin build && pip3 install target/wheels/*
-      - name: Pytest
-        working-directory: tests
-        run: pytest
+          sudo pip3 install --upgrade pip
+          sudo pip3 install maturin pytest
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "export PATH=$HOME/.local/bin:$PATH" >> $GITHUB_ENV
+      - name: Maturin build
+        run: maturin build && poetry add target/wheels/*
+      - name: Poetry install
+        run: poetry install
+      - name: Run test
+        run: poetry run python -m pytest tests
 
   integration-test:
     runs-on: iroha-ubuntu-latest
