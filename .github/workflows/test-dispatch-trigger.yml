@@ -1,0 +1,13 @@
+name: Receive repository dispatch event
+
+on:
+  # Listen to a repository dispatch event by the name of `dispatch-event`
+  repository_dispatch:
+    types: [dispatch-event]
+
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Event received
+        run: echo "Event received"
