@@ -3,6 +3,8 @@ name: Iroha 2 pull request pytests
 on:
   repository_dispatch:
     types: [dispatch-event]
+  pull_request:
+    branches: [main]
 
 env:
   IROHA_REF: 2.0.0-pre-rc.22
