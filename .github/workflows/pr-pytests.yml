@@ -1,0 +1,45 @@
+name: Iroha 2 pull request pytests
+
+on:
+  repository_dispatch:
+    types: [dispatch-event]
+  pull_request:
+    branches: [main]
+
+env:
+  IROHA_REF: 2.0.0-pre-rc.22
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.12 ]
+    steps:
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: pip install poetry
+      - name: Checkout iroha main repo code
+        uses: actions/checkout@v4
+        with:
+          repository: 'hyperledger/iroha'
+          ref: ${{ env.IROHA_REF}}
+      - name: Run docker-compose.yml containers
+        run: docker compose -f ./configs/swarm/docker-compose.yml up --wait || exit 1
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Maturin build
+        run: |
+          pip install maturin
+          maturin build
+          poetry add target/wheels/*
+      - name: Install project dependencies
+        run: poetry install
+      - name: Run tests
+        run: poetry run pytest tests
+      - name: Tear down docker containers
+        if: always()
+        run: docker stop $(docker ps -q) && docker rm $(docker ps -a -q)
