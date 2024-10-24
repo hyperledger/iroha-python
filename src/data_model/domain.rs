@@ -9,8 +9,6 @@ use crate::mirror_struct;
 
 use std::collections::BTreeMap;
 
-use super::MetadataWrapper;
-
 mirror_struct! {
     /// Domain id
     DomainId
@@ -64,7 +62,8 @@ impl PyDomain {
 
     #[getter]
     fn get_metadata(&self, py: Python<'_>) -> PyResult<Py<PyDict>> {
-        MetadataWrapper(self.0.metadata.clone()).into_py(py)
+        //MetadataWrapper(self.0.metadata.clone()).into_py(py)
+        unimplemented!();
     }
 }
 

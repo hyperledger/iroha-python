@@ -48,11 +48,6 @@ impl PyBlockHeader {
         self.0.view_change_index
     }
 
-    #[getter]
-    fn get_consensus_estimation_ms(&self) -> u64 {
-        self.0.consensus_estimation_ms
-    }
-
     fn __repr__(&self) -> String {
         format!("{:?}", self.0)
     }

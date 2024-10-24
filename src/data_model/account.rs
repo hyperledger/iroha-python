@@ -12,7 +12,6 @@ use crate::mirror_struct;
 use super::{
     asset::{PyAsset, PyAssetId},
     crypto::PyPublicKey,
-    MetadataWrapper,
 };
 
 mirror_struct! {
@@ -66,7 +65,8 @@ impl PyAccount {
 
     #[getter]
     fn get_metadata(&self, py: Python<'_>) -> PyResult<Py<PyDict>> {
-        MetadataWrapper(self.0.metadata.clone()).into_py(py)
+        //MetadataWrapper(self.0.metadata.clone()).into_py(py)
+        unimplemented!();
     }
 }
 
