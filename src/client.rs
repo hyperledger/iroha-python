@@ -26,6 +26,8 @@ use iroha_data_model::ChainId;
 
 use iroha_data_model::events::pipeline::{BlockEventFilter, TransactionEventFilter};
 
+use iroha_data_model::query;
+
 #[allow(unsafe_code)]
 const DEFAULT_TRANSACTION_TIME_TO_LIVE_MS: NonZeroU64 =
     unsafe { NonZeroU64::new_unchecked(100_000) };
@@ -133,282 +135,149 @@ impl Client {
         Err(PyValueError::new_err("No events left."))
     }
 
-    fn query_transaction_with_hash(&self, hash: [u8; Hash::LENGTH]) -> PyResult<bool> {
-        let query = iroha_data_model::query::prelude::FindTransactionByHash {
-            hash: HashOf::from_untyped_unchecked(Hash::prehashed(hash)).into(),
-        };
-
-        let ret = self.client.request(query);
-        println!("{:?}", ret);
-        Ok(ret
-            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))
-            .is_ok())
-    }
-
     fn query_all_domains(&self) -> PyResult<Vec<String>> {
-        let query = iroha_data_model::query::prelude::FindAllDomains {};
-
         let val = self
             .client
-            .request(query)
+            .query(query::domain::FindDomains)
+            .execute_all()
             .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
 
         let mut items = Vec::new();
         for item in val {
             items.push(
-                item.map(|d| d.id.to_string())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
-            );
-        }
-        Ok(items)
-    }
-
-    fn query_all_accounts_in_domain(&self, domain_id: &str) -> PyResult<Vec<String>> {
-        let query = iroha_data_model::query::prelude::FindAccountsByDomainId {
-            domain: DomainId::from_str(domain_id)
-                .map_err(|e| PyValueError::new_err(e.to_string()))?
-                .into(),
-        };
-
-        let val = self
-            .client
-            .request(query)
-            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
-
-        let mut items = Vec::new();
-        for item in val {
-            items.push(
-                item.map(|d| d.id.to_string())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+                item.id.to_string()
             );
         }
         Ok(items)
     }
 
     fn query_all_accounts(&self) -> PyResult<Vec<String>> {
-        let query = iroha_data_model::query::prelude::FindAllAccounts;
-
         let val = self
             .client
-            .request(query)
+            .query(query::account::FindAccounts)
+            .execute_all()
             .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
 
         let mut items = Vec::new();
         for item in val {
             items.push(
-                item.map(|d| d.id.to_string())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
-            );
-        }
-        Ok(items)
-    }
-
-    fn query_all_assets_owned_by_account(&self, account_id: &str) -> PyResult<Vec<String>> {
-        let query = iroha_data_model::query::prelude::FindAssetsByAccountId {
-            account: AccountId::from_str(account_id)
-                .map_err(|e| PyValueError::new_err(e.to_string()))?
-                .into(),
-        };
-
-        let val = self
-            .client
-            .request(query)
-            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
-
-        let mut items = Vec::new();
-        for item in val {
-            items.push(
-                item.map(|d| d.id.to_string())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+                item.id.to_string()
             );
         }
         Ok(items)
     }
 
     fn query_all_assets(&self) -> PyResult<Vec<String>> {
-        let query = iroha_data_model::query::prelude::FindAllAssets;
-
         let val = self
             .client
-            .request(query)
+            .query(query::asset::FindAssets)
+            .execute_all()
             .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
 
         let mut items = Vec::new();
         for item in val {
             items.push(
-                item.map(|d| d.id.to_string())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+                item.id.to_string()
             );
         }
         Ok(items)
     }
 
     fn query_all_asset_definitions(&self) -> PyResult<Vec<String>> {
-        let query = iroha_data_model::query::prelude::FindAllAssetsDefinitions;
-
         let val = self
             .client
-            .request(query)
+            .query(query::asset::FindAssetsDefinitions)
+            .execute_all()
             .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
 
         let mut items = Vec::new();
         for item in val {
             items.push(
-                item.map(|d| d.id.to_string())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+                item.id.to_string()
             );
         }
         Ok(items)
     }
 
     fn query_all_block_headers(&self) -> PyResult<Vec<PyBlockHeader>> {
-        let query = iroha_data_model::query::prelude::FindAllBlockHeaders;
-
         let val = self
             .client
-            .request(query)
+            .query(query::block::FindBlockHeaders)
+            .execute_all()
             .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
 
         let mut items = Vec::new();
         for item in val {
             items.push(
-                item.map(|d| d.into())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+                item.into()
             );
         }
         Ok(items)
     }
 
     fn query_all_roles(&self) -> PyResult<Vec<PyRole>> {
-        let query = iroha_data_model::query::prelude::FindAllRoles {};
-
         let val = self
             .client
-            .request(query)
+            .query(query::role::FindRoles)
+            .execute_all()
             .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
 
         let mut items = Vec::new();
         for item in val {
             items.push(
-                item.map(|d| d.into())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+                item.into()
             );
         }
         Ok(items)
     }
 
     fn query_all_role_ids(&self) -> PyResult<Vec<String>> {
-        let query = iroha_data_model::query::prelude::FindAllRoleIds {};
-
         let val = self
             .client
-            .request(query)
+            .query(query::role::FindRoleIds)
+            .execute_all()
             .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
 
         let mut items = Vec::new();
         for item in val {
             items.push(
-                item.map(|d| d.to_string())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+                item.to_string()
             );
         }
         Ok(items)
     }
 
-    fn query_role_by_id(&self, role_id: &str) -> PyResult<PyRole> {
-        let query = iroha_data_model::query::prelude::FindRoleByRoleId {
-            id: RoleId::from_str(role_id)
-                .map_err(|e| PyValueError::new_err(e.to_string()))?
-                .into(),
-        };
-
-        let val = self
-            .client
-            .request(query)
-            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
-
-        Ok(val.into())
-    }
-
     fn query_all_roles_of_account(&self, account_id: &str) -> PyResult<Vec<String>> {
-        let query = iroha_data_model::query::prelude::FindRolesByAccountId {
-            id: AccountId::from_str(account_id)
-                .map_err(|e| PyValueError::new_err(e.to_string()))?
-                .into(),
-        };
-
         let val = self
             .client
-            .request(query)
+            .query(query::role::FindRolesByAccountId { id: AccountId::from_str(account_id)
+                .map_err(|e| PyValueError::new_err(e.to_string()))?})
+            .execute_all()
             .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
 
         let mut items = Vec::new();
         for item in val {
             items.push(
-                item.map(|d| d.to_string())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+                item.to_string()
             );
         }
         Ok(items)
     }
 
     fn query_all_transactions(&self) -> PyResult<Vec<PyTransactionQueryOutput>> {
-        let query = iroha_data_model::query::prelude::FindAllTransactions;
-
         let val = self
             .client
-            .request(query)
+            .query(query::transaction::FindTransactions)
+            .execute_all()
             .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
 
         let mut items = Vec::new();
         for item in val {
             items.push(
-                item.map(|d| d.into())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
+                item.into()
             );
         }
         Ok(items)
-    }
-
-    fn query_all_transactions_by_account(
-        &self,
-        account_id: &str,
-    ) -> PyResult<Vec<PyTransactionQueryOutput>> {
-        let query = iroha_data_model::query::prelude::FindTransactionsByAccountId {
-            account: AccountId::from_str(account_id)
-                .map_err(|e| PyValueError::new_err(e.to_string()))?
-                .into(),
-        };
-
-        let val = self
-            .client
-            .request(query)
-            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
-
-        let mut items = Vec::new();
-        for item in val {
-            items.push(
-                item.map(|d| d.into())
-                    .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?,
-            );
-        }
-        Ok(items)
-    }
-
-    fn query_transaction_by_hash(
-        &self,
-        tx_hash: [u8; Hash::LENGTH],
-    ) -> PyResult<PyTransactionQueryOutput> {
-        let query = iroha_data_model::query::prelude::FindTransactionByHash {
-            hash: HashOf::from_untyped_unchecked(Hash::prehashed(tx_hash).into()),
-        };
-
-        let val = self
-            .client
-            .request(query)
-            .map_err(|e| PyRuntimeError::new_err(format!("{e:?}")))?;
-
-        Ok(val.into())
     }
 }
 

@@ -8,7 +8,7 @@ If you are using the latest iroha release, iroha2 MVP, then you should use the `
 
 ## Install
 
-To build, use the nightly-2024-04-25 version of the rust toolchain. Set it as the default before executing the build steps. TODO, complete list of dependencies.
+To build, use the nightly-2024-09-09 version of the rust toolchain. Set it as the default before executing the build steps. TODO, complete list of dependencies.
 
 ```sh
 maturin build

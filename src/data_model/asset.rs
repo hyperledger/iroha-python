@@ -12,7 +12,7 @@ use pyo3::{
     types::PyDict,
 };
 
-use super::{account::PyAccountId, MetadataWrapper};
+use super::account::PyAccountId;
 use crate::{data_model::PyMirror, mirror_fieldless_enum, mirror_struct};
 
 mirror_struct! {
@@ -281,8 +281,9 @@ impl PyAsset {
                 Ok(quantity.into())
             }
             AssetValue::Store(v) => {
-                let dict = MetadataWrapper(v.clone()).into_py(py)?;
-                Ok(dict.into())
+                //let dict = MetadataWrapper(v.clone()).into_py(py)?;
+                //Ok(dict.into())
+                unimplemented!();
             }
         }
     }

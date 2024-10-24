@@ -145,10 +145,11 @@ impl PyInstruction {
     /// Create an instruction for registering a new role.
     fn register_role(
         role_id: &str,
+        grant_to_account_id: &str,
         permission_tokens: Vec<(&str, &str)>,
     ) -> PyResult<PyInstruction> {
         let mut role =
-            Role::new(RoleId::from_str(role_id).map_err(|e| PyValueError::new_err(e.to_string()))?);
+            Role::new(RoleId::from_str(role_id).map_err(|e| PyValueError::new_err(e.to_string()))?, AccountId::from_str(grant_to_account_id).map_err(|e| PyValueError::new_err(e.to_string()))?);
         for (definition_id, json_string) in permission_tokens {
             role = role.add_permission(Permission::new(
                 iroha_schema::Ident::from_str(definition_id)
@@ -172,7 +173,7 @@ impl PyInstruction {
     /// Create an instruction for granting a role to an account.
     fn grant_role(role_id: &str, account_id: &str) -> PyResult<PyInstruction> {
         return Ok(PyInstruction(
-            Grant::role(
+            Grant::account_role(
                 RoleId::from_str(role_id).map_err(|e| PyValueError::new_err(e.to_string()))?,
                 AccountId::from_str(account_id)
                     .map_err(|e| PyValueError::new_err(e.to_string()))?,
